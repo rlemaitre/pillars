@@ -1,21 +1,27 @@
-// https://typelevel.org/sbt-typelevel/faq.html#what-is-a-base-version-anyway
-ThisBuild / tlBaseVersion := "0.0" // your current series x.y
-
 name                         := "pillars"
 ThisBuild / organization     := "com.rlemaitre"
 ThisBuild / organizationName := "Raphaël Lemaitre"
+ThisBuild / organizationHomepage := Some(url("https://rlemaitre.com/"))
 ThisBuild / startYear        := Some(2023)
 ThisBuild / licenses         := Seq(License.Apache2)
 ThisBuild / developers := List(
-  tlGitHubDev("rlemaitre", "Raphaël Lemaitre")
+  Developer(
+    id = "rlemaitre",
+    name = "Raphaël Lemaitre",
+    email = "raphael@rlemaitre.com",
+    url = url("https://rlemaitre.com/")
+  )
 )
 
-// publish to s01.oss.sonatype.org (set to true to publish to oss.sonatype.org instead)
-ThisBuild / tlSonatypeUseLegacyHost := false
+ThisBuild / scalaVersion := "3.3.1"
 
-// publish website from this branch
-ThisBuild / tlSitePublishBranch := Some("main")
-ThisBuild / scalaVersion        := "3.3.1"
+javaOptions += "-Dotel.java.global-autoconfigure.enabled=true"
+
+enablePlugins(SitePreviewPlugin, AsciidoctorPlugin, ScalaUnidocPlugin)
+
+Asciidoctor / sourceDirectory := (ThisBuild / baseDirectory).value / "docs"
+
+outputStrategy := Some(StdoutOutput)
 
 lazy val core = Project("pillars-core", file("modules/core"))
   .settings(
@@ -29,12 +35,14 @@ lazy val example = Project("pillars-example", file("modules/example"))
   )
   .dependsOn(core)
 
-lazy val docs = Project("pillars-docs", file("site")).enablePlugins(TypelevelSitePlugin)
-
 lazy val pillars = project
   .in(file("."))
   .settings(
     name            := "pillars",
     publishArtifact := false
   )
-  .aggregate(core, example, docs)
+  .settings(
+    ScalaUnidoc / siteSubdirName := "api",
+    addMappingsToSiteDir(ScalaUnidoc / packageDoc / mappings, ScalaUnidoc / siteSubdirName)
+  )
+  .aggregate(core, example)

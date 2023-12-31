@@ -1,18 +1,33 @@
 import sbt.*
 object Dependencies {
-  private val cats: Seq[ModuleID] = Seq(
-    "org.typelevel" %% "cats-core"   % "2.10.0",
-    "org.typelevel" %% "cats-effect" % "3.5.2"
+  private val effect: Seq[ModuleID] = Seq(
+    "org.typelevel" %% "cats-core"             % "2.10.0",
+    "org.typelevel" %% "cats-effect"           % "3.5.2",
+    "co.fs2"        %% "fs2-core"              % "3.7.0",
+    "org.typelevel" %% "cats-collections-core" % "0.9.8",
+    "org.typelevel" %% "cats-time"             % "0.5.1",
+    "org.typelevel" %% "mouse"                 % "1.2.2"
   )
 
-  private val fs2: Seq[ModuleID] = Seq(
-    "co.fs2" %% "fs2-core" % "3.7.0"
+  private val model: Seq[ModuleID] = Seq(
+    "com.comcast"        %% "ip4s-core"     % "3.4.0",
+    "io.github.iltotore" %% "iron"          % "2.4.0",
+    "io.github.iltotore" %% "iron-cats"     % "2.4.0",
+    "io.github.iltotore" %% "iron-circe"    % "2.4.0",
+    "io.github.iltotore" %% "iron-ciris"    % "2.4.0",
+    "io.github.iltotore" %% "iron-decline"  % "2.4.0"
+  )
+
+  private val config: Seq[ModuleID] = Seq(
+    "com.monovore" %% "decline"        % "2.4.1",
+    "com.monovore" %% "decline-effect" % "2.4.1",
+    "is.cir"       %% "ciris"          % "3.5.0"
   )
 
   private val json: Seq[ModuleID] = Seq(
-    "io.circe" %% "circe-core"    % "0.14.5",
-    "io.circe" %% "circe-generic" % "0.14.5",
-    "io.circe" %% "circe-parser"  % "0.14.5"
+    "io.circe" %% "circe-core"    % "0.14.6",
+    "io.circe" %% "circe-generic" % "0.14.6",
+    "io.circe" %% "circe-parser"  % "0.14.6"
   )
 
   private val http4s: Seq[ModuleID] = Seq(
@@ -23,37 +38,25 @@ object Dependencies {
     "org.http4s" %% "http4s-circe"        % "0.23.24"
   )
 
-  private val iron: Seq[ModuleID] = Seq(
-    "io.github.iltotore" %% "iron"         % "2.3.0",
-    "io.github.iltotore" %% "iron-cats"    % "2.3.0",
-    "io.github.iltotore" %% "iron-circe"   % "2.3.0",
-    "io.github.iltotore" %% "iron-ciris"   % "2.3.0",
-//    "io.github.iltotore" %% "iron-decline" % "2.3.0"
+  private val tapir = Seq(
+    "com.softwaremill.sttp.tapir"   %% "tapir-http4s-server"     % "1.9.1",
+    "com.softwaremill.sttp.tapir"   %% "tapir-json-circe"        % "1.9.1",
+    "com.softwaremill.sttp.tapir"   %% "tapir-swagger-ui-bundle" % "1.9.1",
+    "com.softwaremill.sttp.tapir"   %% "tapir-http4s-client"     % "1.9.1" % Test,
+    "com.softwaremill.sttp.tapir"   %% "tapir-sttp-stub-server"  % "1.9.1" % Test,
+    "com.softwaremill.sttp.client3" %% "core"                    % "3.9.1" % Test
   )
 
-  private val decline: Seq[ModuleID] = Seq(
-    "com.monovore" %% "decline" % "2.4.1"
+  private val logging: Seq[ModuleID] = Seq( //
+    "com.outr" %% "scribe"       % "3.13.0",
+    "com.outr" %% "scribe-cats"  % "3.13.0",
+    "com.outr" %% "scribe-slf4j" % "3.13.0"
   )
 
-  private val ciris: Seq[ModuleID] = Seq(
-    "is.cir" %% "ciris" % "3.5.0"
-  )
-
-  private val scribe: Seq[ModuleID] = Seq(
-    "com.outr" %% "scribe" % "3.13.0"
-  )
-
-  private val doobie: Seq[ModuleID] = Seq(
-    "org.tpolecat" %% "doobie-core"     % "1.0.0-RC5",
-    "org.tpolecat" %% "doobie-postgres" % "1.0.0-RC5"
-  )
-
-  private val fly4s: Seq[ModuleID] = Seq(
-    "com.github.geirolz" %% "fly4s-core" % "0.0.19"
-  )
-
-  private val postgresql: Seq[ModuleID] = Seq(
-    "org.postgresql" % "postgresql" % "42.5.4"
+  private val database: Seq[ModuleID] = Seq(
+    "org.tpolecat" %% "skunk-core"  % "1.1.0-M2",
+    "org.tpolecat" %% "skunk-circe" % "1.1.0-M2"
+//    "dev.rolang" %% "dumbo" % "0.0.6" //enable when dumbo uses skunk 1.1.0-M2
   )
 
   private val tests: Seq[ModuleID] = Seq(
@@ -63,7 +66,13 @@ object Dependencies {
     "io.github.iltotore" %% "iron-scalacheck"     % "2.3.0"  % Test
   )
 
+  private val observability: Seq[ModuleID] = Seq(
+    "org.typelevel"   %% "otel4s-java"                               % "0.3.0",
+    "io.opentelemetry" % "opentelemetry-exporter-otlp"               % "1.33.0" % Runtime,
+    "io.opentelemetry" % "opentelemetry-sdk-extension-autoconfigure" % "1.33.0" % Runtime
+  )
+
   val all: Seq[ModuleID] =
-    cats ++ fs2 ++ json ++ http4s ++ iron ++ decline ++ ciris ++ scribe ++ doobie ++ fly4s ++ postgresql ++ tests
+    effect ++ json ++ tapir ++ http4s ++ model ++ config ++ logging ++ database ++ observability ++ tests
 
 }
