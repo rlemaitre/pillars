@@ -9,11 +9,8 @@ final case class DatabaseConfig(
     host: Host,
     port: Port,
     database: DatabaseName,
-    schema: DatabaseSchema,
     username: DatabaseUser,
     password: Secret[DatabasePassword],
     poolSize: PoolSize,
-    schemaBaselineVersion: SchemaVersion,
-    debug: Boolean,
-    migrate: Boolean
+    debug: Boolean
 )

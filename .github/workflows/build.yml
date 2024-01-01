@@ -1,0 +1,46 @@
+name: Build and test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+env:
+  GITHUB_TOKEN: ${{ secrets.CI_BOT_TOKEN }}
+
+jobs:
+  check-formatting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v3
+        with:
+          distribution: adopt
+          java-version: 19
+      - uses: actions/cache@v3
+        with:
+          path: |
+            .ivy2
+            .sbt
+          key: pillars-cache-${{ hashFiles('build.sbt', 'plugins.sbt') }}
+          restore-keys: |
+            pillars-cache-${{ hashFiles('build.sbt', 'plugins.sbt') }}
+      - run: sbt scalafmtCheckAll
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v3
+        with:
+          distribution: adopt
+          java-version: 19
+      - uses: actions/cache@v3
+        with:
+          path: |
+            .ivy2
+            .sbt
+          key: pillars-cache-${{ hashFiles('build.sbt', 'plugins.sbt') }}
+          restore-keys: |
+            pillars-cache-${{ hashFiles('build.sbt', 'plugins.sbt') }}
+      - run: sbt test

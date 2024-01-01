@@ -1,0 +1,57 @@
+= Overview
+:toc: preamble
+:icons: font
+:jbake-menu: User Guide
+:jbake-type: page
+:jbake-title: Overview
+:jbake-status: published
+:jbake-order: 1
+ifndef::imagesdir[]
+:imagesdir: images
+endif::imagesdir[]
+
+This library is a basis for backend applications written in Scala 3 using the TypeLevel stack.
+
+IMPORTANT: It is a work in progress and is not ready for production use.
+
+== Features
+
+- Admin server
+- Configuration
+- Database access
+- Feature flags
+- Logging
+- OpenTelemetry-based observability
+
+== Usage
+
+This library is currently available for Scala binary version 3.3.1.
+
+To use the latest version, include the following in your `build.sbt`:
+
+[source,sbt]
+--
+libraryDependencies ++= Seq(
+  "com.rlemaitre" %% "pillars" % "@VERSION@"
+)
+--
+
+== Dependencies
+
+* link:https://github.com/typelevel/cats[Cats]
+* link:https://github.com/typelevel/cats-collections[Cats collections]
+* link:https://github.com/typelevel/cats-time[Cats time]
+* link:https://github.com/typelevel/mouse/[Mouse]
+* link:https://github.com/Comcast/ip4s[Ip4s]
+* link:https://github.com/typelevel/cats-effect[Cats Effect]
+* link:https://github.com/typelevel/fs2[Fs2]
+* link:https://github.com/circe/circe[Circe]
+* link:https://github.com/bkirwi/decline[Decline]
+* link:https://github.com/vlovgr/ciris[Ciris]
+* link:https://github.com/typelevel/skunk[Skunk]
+* link:https://github.com/outr/scribe[Scribe]
+* link:https://github.com/softwaremill/tapir[Tapir]
+* link:https://github.com/Iltotore/iron[Iron]
+* link:https://github.com/http4s/http4s[Http4s]
+* link:https://github.com/typelevel/otel4s[Otel4s]
+* link:https://github.com/scalameta/munit[mUnit]

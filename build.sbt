@@ -1,9 +1,9 @@
-name                         := "pillars"
-ThisBuild / organization     := "com.rlemaitre"
-ThisBuild / organizationName := "Raphaël Lemaitre"
+name                             := "pillars"
+ThisBuild / organization         := "com.rlemaitre"
+ThisBuild / organizationName     := "Raphaël Lemaitre"
 ThisBuild / organizationHomepage := Some(url("https://rlemaitre.com/"))
-ThisBuild / startYear        := Some(2023)
-ThisBuild / licenses         := Seq(License.Apache2)
+ThisBuild / startYear            := Some(2023)
+ThisBuild / licenses             := Seq(License.Apache2)
 ThisBuild / developers := List(
   Developer(
     id = "rlemaitre",
@@ -35,6 +35,12 @@ lazy val example = Project("pillars-example", file("modules/example"))
   )
   .dependsOn(core)
 
+lazy val docs = Project("pillars-docs", file("modules/docs"))
+  .settings(
+    name := "pillars-docs"
+  )
+  .dependsOn(core)
+
 lazy val pillars = project
   .in(file("."))
   .settings(
@@ -45,4 +51,4 @@ lazy val pillars = project
     ScalaUnidoc / siteSubdirName := "api",
     addMappingsToSiteDir(ScalaUnidoc / packageDoc / mappings, ScalaUnidoc / siteSubdirName)
   )
-  .aggregate(core, example)
+  .aggregate(core, example, docs)

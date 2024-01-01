@@ -1,0 +1,28 @@
+# tag::pillars[]
+pillars:
+  name: Bookstore
+  db:
+    enabled: true
+    host: localhost
+    port: 5432
+    database: bookstore
+    username: bookstore
+    password: bookstore
+    pool-size: 10
+    debug: false
+  api:
+    enabled: true
+    host: 0.0.0.0
+    port: 9876
+    authToken:
+    maxConnections: 1024
+  admin:
+    enabled: true
+    host: 0.0.0.0
+    port: 19876
+    authToken:
+    maxConnections: 32
+  observability:
+    enabled: true
+    service-name: bookstore
+# end::pillars[]

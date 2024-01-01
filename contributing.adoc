@@ -1,5 +1,6 @@
 = Contributing to Pillars
 :toc: macro
+:icons: font
 :idprefix:
 :idseparator: -
 
