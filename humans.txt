@@ -1,0 +1,14 @@
+/* TEAM */
+Creator: Raphaël Lemaitre
+Site: https://rlemaitre.com
+Contact: contact [at] rlemaitre [dot] com
+Twitter: @rlemaitre
+Location: Paris, France
+
+/* THANKS */
+Name: @mjbprod for the logo design and her support
+
+/* SITE */
+Standards: HTML5, CSS3
+Components: Modernizr, jQuery, etc.
+Software: docToolchain <https://doctoolchain.org>
