@@ -123,11 +123,12 @@ object HttpServer:
     val endpointOutput: EndpointOutput[(StatusCode, String)] = statusCode.and(stringBody)
 
     val exceptionHandler: ExceptionHandler[IO] = ExceptionHandler.apply[IO](ctx =>
-      OptionT.pure:
-        ctx.e match
-          case e: APIError => ValuedEndpointOutput(endpointOutput, (e.statusCode, e.getMessage))
-          case _ => ValuedEndpointOutput(endpointOutput, (StatusCode.InternalServerError, "Internal server error"))
-      .value
+      OptionT
+        .pure:
+          ctx.e match
+            case e: APIError => ValuedEndpointOutput(endpointOutput, (e.statusCode, e.getMessage))
+            case _ => ValuedEndpointOutput(endpointOutput, (StatusCode.InternalServerError, "Internal server error"))
+        .value
     )
 
     Http4sServerOptions

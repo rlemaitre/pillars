@@ -1,7 +1,7 @@
 package example
 
-import cats.effect.IO
 import cats.effect.ExitCode
+import cats.effect.IO
 import com.monovore.decline.Command
 import io.github.iltotore.iron.*
 import io.github.iltotore.iron.constraint.all.*

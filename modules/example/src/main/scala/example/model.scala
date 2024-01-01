@@ -19,7 +19,6 @@ object FirstName extends RefinedTypeOps[String, Not[Blank], FirstName]
 opaque type LastName <: String = String :| Not[Blank]
 object LastName extends RefinedTypeOps[String, Not[Blank], LastName]
 
-
 case class Book(title: Title, authors: List[Author], year: Year, pages: Int)
 
 case class Author(firstName: FirstName, lastName: LastName)
