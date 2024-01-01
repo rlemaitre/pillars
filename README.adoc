@@ -1,6 +1,6 @@
 = Pillars
-:toc:
-:imagesdir: ./docs/images
+:toc: preamble
+:imagesdir: ./modules/docs/src/docs/images
 
 [.text-center]
 image:logo.svg[logo,600,600,align=center]
