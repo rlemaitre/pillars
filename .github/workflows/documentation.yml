@@ -28,3 +28,5 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
+          cname: pillars.rlemaitre.com
+          enable_jekyll: false
