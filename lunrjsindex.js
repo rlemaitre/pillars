@@ -13,7 +13,7 @@ var documents = [
     "uri": "user-guide/overview.html",
     "menu": "User Guide",
     "title": "Overview",
-    "text": " Table of Contents Overview Features Usage Dependencies Overview This library is a basis for backend applications written in Scala 3 using the TypeLevel stack. It is a work in progress and is not ready for production use. Features Admin server Configuration Database access Feature flags Logging OpenTelemetry-based observability Usage This library is currently available for Scala binary version 3.3.1. To use the latest version, include the following in your build.sbt : libraryDependencies ++= Seq( \"com.rlemaitre\" %% \"pillars\" % \"@VERSION@\" ) Dependencies Cats Cats collections Cats time Mouse Ip4s Cats Effect Fs2 Circe Decline Ciris Skunk Scribe Tapir Iron Http4s Otel4s mUnit "
+    "text": " Table of Contents Overview Features Usage Dependencies Overview This library is a basis for backend applications written in Scala 3 using the TypeLevel stack. It is a work in progress and is not ready for production use. Features Admin server Configuration Database access Feature flags Logging OpenTelemetry-based observability Usage This library is currently available for Scala binary version 3.3.1. To use the latest version, include the following in your build.sbt : libraryDependencies ++= Seq( \"com.rlemaitre\" %% \"pillars\" % \"@VERSION@\" ) Dependencies Cats Cats collections Cats time Mouse Ip4s Cats Effect Fs2 Circe and Circe YAML Decline Skunk Scribe Tapir Iron Http4s Otel4s mUnit "
 },
 
 {
