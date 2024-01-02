@@ -1,3 +1,6 @@
+import org.typelevel.scalacoptions.ScalaVersion
+import org.typelevel.scalacoptions.ScalacOptions
+
 name                             := "pillars"
 ThisBuild / organization         := "com.rlemaitre"
 ThisBuild / organizationName     := "Raphaël Lemaitre"
@@ -12,14 +15,20 @@ ThisBuild / developers := List(
     url = url("https://rlemaitre.com/")
   )
 )
-
 ThisBuild / scalaVersion := "3.3.1"
 
 javaOptions += "-Dotel.java.global-autoconfigure.enabled=true"
 
-enablePlugins(SitePreviewPlugin, AsciidoctorPlugin, ScalaUnidocPlugin)
+Compile / scalacOptions ++= ScalacOptions.tokensForVersion(ScalaVersion.V3_3_0, Set(
+  ScalacOptions.sourceFuture,
+  ScalacOptions.deprecation,
+  ScalacOptions.feature,
+//  ScalacOptions.newSyntax,
+  ScalacOptions.fatalWarnings,
+  ScalacOptions.lint
+) ++ ScalacOptions.privateWarnOptions ++ ScalacOptions.privateWarnUnusedOptions)
 
-Asciidoctor / sourceDirectory := (ThisBuild / baseDirectory).value / "docs"
+enablePlugins(ScalaUnidocPlugin)
 
 outputStrategy := Some(StdoutOutput)
 
@@ -46,9 +55,5 @@ lazy val pillars = project
   .settings(
     name            := "pillars",
     publishArtifact := false
-  )
-  .settings(
-    ScalaUnidoc / siteSubdirName := "api",
-    addMappingsToSiteDir(ScalaUnidoc / packageDoc / mappings, ScalaUnidoc / siteSubdirName)
   )
   .aggregate(core, example, docs)

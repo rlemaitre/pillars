@@ -1,4 +1,6 @@
 package pillars.logging
 
+import cats.effect.IO
+
 object Log:
-  def init = ???
+  def init: IO[Unit] = ???

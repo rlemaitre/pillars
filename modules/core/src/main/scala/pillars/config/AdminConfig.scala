@@ -1,3 +1,5 @@
 package pillars.config
 
-final case class AdminConfig()
+import io.circe.Codec
+
+final case class AdminConfig() derives Codec.AsObject

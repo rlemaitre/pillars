@@ -15,6 +15,4 @@ object CommandOptions:
         case Left(value)  => Validated.invalidNel(value.getMessage)
     .withDefault(Level.Info)
 
-  val config: Opts[Option[Path]] = Opts
-    .option[Path]("config", "Path to the configuration file")
-    .orNone
+  val config: Opts[Path] = Opts.option[Path]("config", "Path to the configuration file")

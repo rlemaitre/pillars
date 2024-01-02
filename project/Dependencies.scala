@@ -10,24 +10,24 @@ object Dependencies {
   )
 
   private val model: Seq[ModuleID] = Seq(
-    "com.comcast"        %% "ip4s-core"     % "3.4.0",
-    "io.github.iltotore" %% "iron"          % "2.4.0",
-    "io.github.iltotore" %% "iron-cats"     % "2.4.0",
-    "io.github.iltotore" %% "iron-circe"    % "2.4.0",
-    "io.github.iltotore" %% "iron-ciris"    % "2.4.0",
-    "io.github.iltotore" %% "iron-decline"  % "2.4.0"
+    "com.comcast"        %% "ip4s-core"    % "3.4.0",
+    "io.github.iltotore" %% "iron"         % "2.4.0",
+    "io.github.iltotore" %% "iron-cats"    % "2.4.0",
+    "io.github.iltotore" %% "iron-circe"   % "2.4.0",
+    "io.github.iltotore" %% "iron-ciris"   % "2.4.0",
+    "io.github.iltotore" %% "iron-decline" % "2.4.0"
   )
 
-  private val config: Seq[ModuleID] = Seq(
-    "com.monovore" %% "decline"        % "2.4.1",
-    "com.monovore" %% "decline-effect" % "2.4.1",
-    "is.cir"       %% "ciris"          % "3.5.0"
+  private val commandLine: Seq[ModuleID] = Seq(
+    "com.monovore" %% "decline"          % "2.4.1",
+    "com.monovore" %% "decline-effect"   % "2.4.1"
   )
 
   private val json: Seq[ModuleID] = Seq(
     "io.circe" %% "circe-core"    % "0.14.6",
     "io.circe" %% "circe-generic" % "0.14.6",
-    "io.circe" %% "circe-parser"  % "0.14.6"
+    "io.circe" %% "circe-parser"  % "0.14.6",
+    "io.circe" %% "circe-yaml"    % "0.15.1"
   )
 
   private val http4s: Seq[ModuleID] = Seq(
@@ -38,10 +38,15 @@ object Dependencies {
     "org.http4s" %% "http4s-circe"        % "0.23.24"
   )
 
+  private val scodec: Seq[ModuleID] = Seq(
+    "org.scodec" %% "scodec-bits" % "2.2.2",
+    "org.scodec" %% "scodec-core" % "2.2.2"
+  )
+
   private val tapir = Seq(
     "com.softwaremill.sttp.tapir"   %% "tapir-http4s-server"     % "1.9.1",
     "com.softwaremill.sttp.tapir"   %% "tapir-json-circe"        % "1.9.1",
-    "com.softwaremill.sttp.tapir"   %% "tapir-swagger-ui-bundle" % "1.9.1",
+//    "com.softwaremill.sttp.tapir"   %% "tapir-swagger-ui-bundle" % "1.9.1",
     "com.softwaremill.sttp.tapir"   %% "tapir-http4s-client"     % "1.9.1" % Test,
     "com.softwaremill.sttp.tapir"   %% "tapir-sttp-stub-server"  % "1.9.1" % Test,
     "com.softwaremill.sttp.client3" %% "core"                    % "3.9.1" % Test
@@ -73,6 +78,6 @@ object Dependencies {
   )
 
   val all: Seq[ModuleID] =
-    effect ++ json ++ tapir ++ http4s ++ model ++ config ++ logging ++ database ++ observability ++ tests
+    effect ++ json ++ tapir ++ http4s ++ model ++ commandLine ++ logging ++ database ++ observability ++ tests
 
 }

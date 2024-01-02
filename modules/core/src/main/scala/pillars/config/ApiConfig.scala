@@ -1,3 +1,5 @@
 package pillars.config
 
-final case class ApiConfig()
+import io.circe.Codec
+
+final case class ApiConfig() derives Codec.AsObject
