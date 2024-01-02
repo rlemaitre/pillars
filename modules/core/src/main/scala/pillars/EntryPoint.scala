@@ -15,7 +15,8 @@ import pillars.observability.Observability
 class EntryPoint(app: App[IO])(using Decoder[app.Config]) extends IOApp:
 
   override final def run(args: List[String]): IO[ExitCode] =
-    Command(app.name, app.description)((CommandOptions.config, CommandOptions.logLevel).tupled).parse(args, sys.env) match
+    Command(app.name, app.description)((CommandOptions.config, CommandOptions.logLevel).tupled)
+      .parse(args, sys.env) match
       case Left(help) =>
         IO(System.err.println(help)).as(ExitCode.Error)
       case Right((configPath, logLevel)) =>
@@ -30,4 +31,3 @@ class EntryPoint(app: App[IO])(using Decoder[app.Config]) extends IOApp:
         yield Pillars(obs, config, pool)
         prog.use: pillars =>
           app.run(pillars).as(ExitCode.Success)
-      

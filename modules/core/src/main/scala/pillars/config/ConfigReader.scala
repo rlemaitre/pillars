@@ -15,8 +15,9 @@ object ConfigReader:
   private val regex: Regex = """\$\{([^}]+)}""".r
 
   def readConfig[T](path: Path)(using Decoder[T]): Resource[IO, T] =
-    Resource.fromAutoCloseable(IO(Source.fromFile(path.toFile)))
+    Resource
+      .fromAutoCloseable(IO(Source.fromFile(path.toFile)))
       .map(_.getLines().mkString("\n"))
       .map(regex.replaceAllIn(_, matcher))
-      .evalMap:c =>
+      .evalMap: c =>
         IO.fromEither(parser.parse(c).leftMap(ConfigError.ParsingError(_)).flatMap(_.as[T]))
