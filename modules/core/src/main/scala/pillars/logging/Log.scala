@@ -1,25 +1,42 @@
 package pillars.logging
 
 import cats.effect.IO
-import cats.syntax.all.*
 import io.circe.*
 import io.circe.syntax.*
+import io.github.iltotore.iron.*
+import io.github.iltotore.iron.constraint.all.*
 import java.nio.file.Path
 import pillars.config.LogConfig
 import scribe.Level
 import scribe.Logger
+import scribe.file.PathBuilder
+import scribe.format.Formatter
+import scribe.json.ScribeCirceJsonSupport
+import scribe.writer.ConsoleWriter
+import scribe.writer.Writer
 
 object Log:
-  def init(config: LogConfig): IO[Logger] =
+  def init(config: LogConfig): IO[Unit] =
     IO(
       Logger.root
         .clearHandlers()
+        .clearModifiers()
         .withHandler(
-          minimumLevel = Some(config.level)
-//        writer = ScribeCirceJsonSupport.writer
+          formatter = config.format.formatter,
+          minimumLevel = Some(config.level),
+          writer = writer(config),
         )
         .replace()
-    )
+    ).void
+
+  private def writer(config: LogConfig): Writer =
+    config.format match
+      case Format.Json => ScribeCirceJsonSupport.writer(config.output.writer)
+      case _           => config.output.writer
+
+  private type BufferSizeConstraint = Positive DescribedAs "Buffer size should be positive"
+  opaque type BufferSize <: Int     = Int :| BufferSizeConstraint
+  object BufferSize extends RefinedTypeOps[Int, BufferSizeConstraint, BufferSize]
 
   enum Format:
     case Json
@@ -30,6 +47,15 @@ object Log:
     case Enhanced
     case Advanced
     case Strict
+    def formatter: Formatter = this match
+      case Format.Json     => Formatter.default
+      case Format.Simple   => Formatter.simple
+      case Format.Colored  => Formatter.colored
+      case Format.Classic  => Formatter.classic
+      case Format.Compact  => Formatter.compact
+      case Format.Enhanced => Formatter.enhanced
+      case Format.Advanced => Formatter.advanced
+      case Format.Strict   => Formatter.strict
   object Format:
     given Encoder[Format] = Encoder.encodeString.contramap(_.toString.toLowerCase)
     given Decoder[Format] = Decoder.decodeString.emap {
@@ -46,6 +72,10 @@ object Log:
   enum Output:
     case Console
     case File(path: Path)
+
+    def writer: Writer = this match
+      case Output.Console    => ConsoleWriter
+      case Output.File(path) => scribe.file.FileWriter(PathBuilder.static(path))
 
   object Output:
     given Encoder[Output] = Encoder.instance:

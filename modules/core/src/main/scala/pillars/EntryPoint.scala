@@ -9,6 +9,7 @@ import io.circe.Decoder
 import org.typelevel.otel4s.trace.Tracer
 import pillars.config.ConfigReader
 import pillars.db.DB
+import pillars.logging.Log
 import pillars.observability.Observability
 
 class EntryPoint[T: Decoder](app: App[IO, T]) extends IOApp:
@@ -22,6 +23,7 @@ class EntryPoint[T: Decoder](app: App[IO, T]) extends IOApp:
         val prog = for
           config <- ConfigReader.readConfig[app.Config](configPath)
           obs    <- Observability.init[IO](config.observability).toResource
+          _      <- Log.init(config.log).toResource
           pool <- {
             given Tracer[IO] = obs.tracer
             DB.init[IO](config.db)

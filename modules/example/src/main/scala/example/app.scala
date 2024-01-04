@@ -11,8 +11,8 @@ case class Bookstore(name: AppName, version: Version, description: Description)
   override type Config = BookstoreConfig
   override def run(pillars: Pillars[IO, BookstoreConfig]): IO[Unit] =
     for
-      _ <- IO.println(s"📚 Welcome to ${pillars.config.name}!")
-      _ <- IO.println(s"📖 Enabled: ${pillars.config.app.enabled}")
+      _ <- pillars.logger.info(s"📚 Welcome to ${pillars.config.name}!")
+      _ <- pillars.logger.debug(s"📖 Enabled: ${pillars.config.app.enabled}")
     yield ()
 
 object Main
