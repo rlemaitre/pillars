@@ -5,8 +5,8 @@ import pillars.config.PillarConfig
 import pillars.observability.Observability
 import skunk.Session
 
-final case class Pillars[F[_]](
+final case class Pillars[F[_], Config](
     observability: Observability[F],
-    config: PillarConfig,
+    config: PillarConfig[Config],
     pool: Resource[F, Session[F]]
 )

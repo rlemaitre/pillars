@@ -1,5 +1,8 @@
 package pillars.config
 
-import io.circe.Codec
+import io.circe.Decoder
+import io.circe.Encoder
+import io.circe.derivation.ConfiguredDecoder
+import io.circe.derivation.ConfiguredEncoder
 
-final case class AdminConfig() derives Codec.AsObject
+final case class AdminConfig() derives ConfiguredEncoder, ConfiguredDecoder

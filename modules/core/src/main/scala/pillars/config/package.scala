@@ -5,10 +5,12 @@ import com.comcast.ip4s.Host
 import com.comcast.ip4s.Port
 import io.circe.Decoder
 import io.circe.Encoder
+import io.circe.derivation.Configuration
 import scala.concurrent.duration.FiniteDuration
 import scala.jdk.DurationConverters.*
 
 package object config:
+  given Configuration = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults
   given Decoder[Host] = Decoder.decodeString.emap(t => Host.fromString(t).toRight("Failed to parse Host"))
   given Encoder[Host] = Encoder.encodeString.contramap(_.toString)
 

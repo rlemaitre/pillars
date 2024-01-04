@@ -6,9 +6,14 @@ import io.github.iltotore.iron.constraint.all.*
 import pillars.Pillars
 import pillars.model.*
 
-case class BookStore(name: AppName, version: Version, description: Description) extends pillars.App[IO]:
+case class Bookstore(name: AppName, version: Version, description: Description)
+    extends pillars.App[IO, BookstoreConfig]:
   override type Config = BookstoreConfig
-  override def run(pillars: Pillars[IO]): IO[Unit] = ???
+  override def run(pillars: Pillars[IO, BookstoreConfig]): IO[Unit] =
+    for
+      _ <- IO.println(s"📚 Welcome to ${pillars.config.name}!")
+      _ <- IO.println(s"📖 Enabled: ${pillars.config.app.enabled}")
+    yield ()
 
 object Main
-    extends pillars.EntryPoint(BookStore(AppName("BookStore"), Version("0.0.1"), Description("A simple bookstore")))
+    extends pillars.EntryPoint(Bookstore(AppName("BookStore"), Version("0.0.1"), Description("A simple bookstore")))

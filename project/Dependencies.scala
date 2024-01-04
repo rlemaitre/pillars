@@ -19,8 +19,8 @@ object Dependencies {
   )
 
   private val commandLine: Seq[ModuleID] = Seq(
-    "com.monovore" %% "decline"          % "2.4.1",
-    "com.monovore" %% "decline-effect"   % "2.4.1"
+    "com.monovore" %% "decline"        % "2.4.1",
+    "com.monovore" %% "decline-effect" % "2.4.1"
   )
 
   private val json: Seq[ModuleID] = Seq(
@@ -44,18 +44,20 @@ object Dependencies {
   )
 
   private val tapir = Seq(
-    "com.softwaremill.sttp.tapir"   %% "tapir-http4s-server"     % "1.9.1",
-    "com.softwaremill.sttp.tapir"   %% "tapir-json-circe"        % "1.9.1",
+    "com.softwaremill.sttp.tapir" %% "tapir-http4s-server" % "1.9.1",
+    "com.softwaremill.sttp.tapir" %% "tapir-json-circe"    % "1.9.1",
 //    "com.softwaremill.sttp.tapir"   %% "tapir-swagger-ui-bundle" % "1.9.1",
-    "com.softwaremill.sttp.tapir"   %% "tapir-http4s-client"     % "1.9.1" % Test,
-    "com.softwaremill.sttp.tapir"   %% "tapir-sttp-stub-server"  % "1.9.1" % Test,
-    "com.softwaremill.sttp.client3" %% "core"                    % "3.9.1" % Test
+    "com.softwaremill.sttp.tapir"   %% "tapir-http4s-client"    % "1.9.1" % Test,
+    "com.softwaremill.sttp.tapir"   %% "tapir-sttp-stub-server" % "1.9.1" % Test,
+    "com.softwaremill.sttp.client3" %% "core"                   % "3.9.1" % Test
   )
 
   private val logging: Seq[ModuleID] = Seq( //
-    "com.outr" %% "scribe"       % "3.13.0",
-    "com.outr" %% "scribe-cats"  % "3.13.0",
-    "com.outr" %% "scribe-slf4j" % "3.13.0"
+    "com.outr" %% "scribe"            % "3.13.0",
+    "com.outr" %% "scribe-cats"       % "3.13.0",
+    "com.outr" %% "scribe-slf4j"      % "3.13.0",
+    "com.outr" %% "scribe-json-circe" % "3.13.0",
+    "com.outr" %% "scribe-file"       % "3.13.0"
   )
 
   private val database: Seq[ModuleID] = Seq(

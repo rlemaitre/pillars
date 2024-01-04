@@ -3,7 +3,7 @@ package pillars.config
 import cats.effect.IO
 import cats.effect.kernel.Resource
 import cats.syntax.all.*
-import io.circe.Decoder
+import io.circe.derivation.ConfiguredDecoder
 import io.circe.yaml.parser
 import java.nio.file.Path
 import scala.io.Source
@@ -14,10 +14,10 @@ object ConfigReader:
     .getOrElse(regMatch.group(1), throw ConfigError.MissingEnvironmentVariable(regMatch.group(1)))
   private val regex: Regex = """\$\{([^}]+)}""".r
 
-  def readConfig[T](path: Path)(using Decoder[T]): Resource[IO, T] =
+  def readConfig[T: ConfiguredDecoder](path: Path): Resource[IO, PillarConfig[T]] =
     Resource
       .fromAutoCloseable(IO(Source.fromFile(path.toFile)))
       .map(_.getLines().mkString("\n"))
       .map(regex.replaceAllIn(_, matcher))
       .evalMap: c =>
-        IO.fromEither(parser.parse(c).leftMap(ConfigError.ParsingError(_)).flatMap(_.as[T]))
+        IO.fromEither(parser.parse(c).leftMap(ConfigError.ParsingError(_)).flatMap(_.as[PillarConfig[T]]))

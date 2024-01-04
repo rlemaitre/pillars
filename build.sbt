@@ -1,5 +1,5 @@
-import org.typelevel.scalacoptions.ScalaVersion
 import org.typelevel.scalacoptions.ScalacOptions
+import org.typelevel.scalacoptions.ScalaVersion
 
 name                             := "pillars"
 ThisBuild / organization         := "com.rlemaitre"
@@ -19,14 +19,18 @@ ThisBuild / scalaVersion := "3.3.1"
 
 javaOptions += "-Dotel.java.global-autoconfigure.enabled=true"
 
-Compile / scalacOptions ++= ScalacOptions.tokensForVersion(ScalaVersion.V3_3_0, Set(
-  ScalacOptions.sourceFuture,
-  ScalacOptions.deprecation,
-  ScalacOptions.feature,
+Compile / scalacOptions ++= ScalacOptions.tokensForVersion(
+  ScalaVersion.V3_3_0,
+  Set(
+    ScalacOptions.sourceFuture,
+    ScalacOptions.deprecation,
+    ScalacOptions.feature,
 //  ScalacOptions.newSyntax,
-  ScalacOptions.fatalWarnings,
-  ScalacOptions.lint
-) ++ ScalacOptions.privateWarnOptions ++ ScalacOptions.privateWarnUnusedOptions)
+    ScalacOptions.fatalWarnings,
+    ScalacOptions.lint,
+    ScalacOptions.advancedOption("max-inlines", List("128"), _ => true)
+  ) ++ ScalacOptions.privateWarnOptions ++ ScalacOptions.privateWarnUnusedOptions
+)
 
 enablePlugins(ScalaUnidocPlugin)
 
