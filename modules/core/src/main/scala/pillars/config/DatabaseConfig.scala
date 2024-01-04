@@ -1,10 +1,7 @@
 package pillars.config
 
 import com.comcast.ip4s.*
-import io.circe.Decoder
-import io.circe.Encoder
-import io.circe.derivation.ConfiguredDecoder
-import io.circe.derivation.ConfiguredEncoder
+import io.circe.Codec
 import io.github.iltotore.iron.*
 import io.github.iltotore.iron.cats.given
 import io.github.iltotore.iron.circe.given
@@ -19,5 +16,7 @@ final case class DatabaseConfig(
     password: Secret[DatabasePassword],
     poolSize: PoolSize = PoolSize(32),
     debug: Boolean
-) derives ConfiguredEncoder,
-      ConfiguredDecoder
+)
+
+object DatabaseConfig:
+  given Codec[DatabaseConfig] = Codec.AsObject.derivedConfigured

@@ -1,11 +1,12 @@
 package example
 
-import io.circe.derivation.ConfiguredDecoder
-import io.circe.derivation.ConfiguredEncoder
+import io.circe.Codec
 import pillars.config.given
 
 case class BookstoreConfig(enabled: Boolean = true, users: UsersConfig = UsersConfig())
-    derives ConfiguredEncoder,
-      ConfiguredDecoder
+object BookstoreConfig:
+  given Codec[BookstoreConfig] = Codec.AsObject.derivedConfigured
 
-case class UsersConfig(init: Boolean = false) derives ConfiguredEncoder, ConfiguredDecoder
+case class UsersConfig(init: Boolean = false)
+object UsersConfig:
+  given Codec[UsersConfig] = Codec.AsObject.derivedConfigured

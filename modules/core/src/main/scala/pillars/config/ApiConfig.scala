@@ -1,8 +1,8 @@
 package pillars.config
 
-import io.circe.Decoder
-import io.circe.Encoder
-import io.circe.derivation.ConfiguredDecoder
-import io.circe.derivation.ConfiguredEncoder
+import io.circe.Codec
 
-final case class ApiConfig() derives ConfiguredEncoder, ConfiguredDecoder
+final case class ApiConfig()
+
+object ApiConfig:
+  given Codec[ApiConfig] = Codec.AsObject.derivedConfigured

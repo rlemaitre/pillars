@@ -5,13 +5,13 @@ import cats.effect.IO
 import cats.effect.IOApp
 import cats.syntax.all.*
 import com.monovore.decline.Command
-import io.circe.derivation.ConfiguredDecoder
+import io.circe.Decoder
 import org.typelevel.otel4s.trace.Tracer
 import pillars.config.ConfigReader
 import pillars.db.DB
 import pillars.observability.Observability
 
-class EntryPoint[T: ConfiguredDecoder](app: App[IO, T]) extends IOApp:
+class EntryPoint[T: Decoder](app: App[IO, T]) extends IOApp:
 
   override final def run(args: List[String]): IO[ExitCode] =
     Command(app.name, app.description)((CommandOptions.config, CommandOptions.logLevel).tupled)
