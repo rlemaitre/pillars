@@ -15,8 +15,10 @@ import org.http4s.ember.server.EmberServerBuilder
 import org.http4s.server.Server
 import org.http4s.server.middleware.CORS
 import org.http4s.server.middleware.ErrorHandling
+import pillars.PillarsError
 import pillars.api.APIError
 import pillars.config.HttpServerConfig
+
 import scala.concurrent.duration.FiniteDuration
 import scala.util.chaining.*
 import scribe.Level
@@ -26,6 +28,7 @@ import scribe.mdc.MDC
 import sttp.capabilities.fs2.Fs2Streams
 import sttp.model.StatusCode
 import sttp.tapir.*
+import sttp.tapir.json.circe.jsonBody
 import sttp.tapir.server.ServerEndpoint
 import sttp.tapir.server.http4s.Http4sDefaultServerLog
 import sttp.tapir.server.http4s.Http4sServerInterpreter
@@ -120,14 +123,13 @@ object HttpServer:
       metricsInterceptor: Option[MetricsRequestInterceptor[IO]],
       enableDefaultLogging: Boolean = true
   ): Http4sServerOptions[IO] =
-    val endpointOutput: EndpointOutput[(StatusCode, String)] = statusCode.and(stringBody)
-
     val exceptionHandler: ExceptionHandler[IO] = ExceptionHandler.apply[IO](ctx =>
       OptionT
         .pure:
           ctx.e match
-            case e: APIError => ValuedEndpointOutput(endpointOutput, (e.statusCode, e.getMessage))
-            case _ => ValuedEndpointOutput(endpointOutput, (StatusCode.InternalServerError, "Internal server error"))
+            case e: APIError => ValuedEndpointOutput(statusCode.and(jsonBody[PillarsError.View]), (e.statusCode, e.view))
+            case e: PillarsError => ValuedEndpointOutput(statusCode.and(jsonBody[PillarsError.View]), (StatusCode.InternalServerError, e.view))
+            case _ => ValuedEndpointOutput(statusCode.and(stringJsonBody), (StatusCode.InternalServerError, "Internal server error"))
         .value
     )
 

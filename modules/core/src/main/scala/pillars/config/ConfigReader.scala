@@ -19,5 +19,9 @@ object ConfigReader:
       .fromAutoCloseable(IO(Source.fromFile(path.toFile)))
       .map(_.getLines().mkString("\n"))
       .map(regex.replaceAllIn(_, matcher))
-      .evalMap: c =>
-        IO.fromEither(parser.parse(c).leftMap(ConfigError.ParsingError(_)).flatMap(_.as[PillarConfig[T]]))
+      .evalMap: cursor =>
+        IO.fromEither:
+          parser.parse(cursor)
+            .leftMap: failure =>
+              ConfigError.ParsingError(failure)
+            .flatMap(_.as[PillarConfig[T]])
