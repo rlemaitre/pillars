@@ -25,12 +25,11 @@ Compile / scalacOptions ++= ScalacOptions.tokensForVersion(
     ScalacOptions.sourceFuture,
     ScalacOptions.deprecation,
     ScalacOptions.feature,
-//  ScalacOptions.newSyntax,
     ScalacOptions.fatalWarnings,
     ScalacOptions.lint,
     ScalacOptions.advancedOption("max-inlines", List("128"), _ => true)
   ) ++ ScalacOptions.privateWarnOptions ++ ScalacOptions.privateWarnUnusedOptions
-)
+) ++ Seq("-new-syntax")
 
 enablePlugins(ScalaUnidocPlugin)
 

@@ -7,6 +7,8 @@ import cats.syntax.all.*
 import com.monovore.decline.Command
 import io.circe.Decoder
 import org.typelevel.otel4s.trace.Tracer
+import pillars.admin.AdminServer
+import pillars.api.ApiServer
 import pillars.config.ConfigReader
 import pillars.db.DB
 import pillars.logging.Log
@@ -24,10 +26,12 @@ class EntryPoint[T: Decoder](app: App[IO, T]) extends IOApp:
           config <- ConfigReader.readConfig[app.Config](configPath)
           obs    <- Observability.init[IO](config.observability).toResource
           _      <- Log.init(config.log).toResource
+          _      <- AdminServer(config.admin, obs).start().debug("admin-server").background
           pool <- {
             given Tracer[IO] = obs.tracer
             DB.init[IO](config.db)
           }
-        yield Pillars(obs, config, pool)
+          api = ApiServer.init(config.api, obs)
+        yield Pillars(obs, config, pool, api)
         prog.use: pillars =>
           app.run(pillars).as(ExitCode.Success)

@@ -24,7 +24,7 @@ object Log:
         .withHandler(
           formatter = config.format.formatter,
           minimumLevel = Some(config.level),
-          writer = writer(config),
+          writer = writer(config)
         )
         .replace()
     ).void

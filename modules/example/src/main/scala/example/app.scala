@@ -5,6 +5,7 @@ import io.github.iltotore.iron.*
 import io.github.iltotore.iron.constraint.all.*
 import pillars.Pillars
 import pillars.model.*
+import scribe.cats.io.*
 
 case class Bookstore(name: AppName, version: Version, description: Description)
     extends pillars.App[IO, BookstoreConfig]:
@@ -12,7 +13,7 @@ case class Bookstore(name: AppName, version: Version, description: Description)
   override def run(pillars: Pillars[IO, BookstoreConfig]): IO[Unit] =
     for
       _ <- pillars.logger.info(s"📚 Welcome to ${pillars.config.name}!")
-      _ <- pillars.logger.debug(s"📖 Enabled: ${pillars.config.app.enabled}")
+      _ <- pillars.apiServer.start(endpoints.all)
     yield ()
 
 object Main

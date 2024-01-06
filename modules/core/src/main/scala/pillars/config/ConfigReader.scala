@@ -21,7 +21,8 @@ object ConfigReader:
       .map(regex.replaceAllIn(_, matcher))
       .evalMap: cursor =>
         IO.fromEither:
-          parser.parse(cursor)
+          parser
+            .parse(cursor)
             .leftMap: failure =>
               ConfigError.ParsingError(failure)
             .flatMap(_.as[PillarConfig[T]])
