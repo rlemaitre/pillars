@@ -7,7 +7,6 @@ import cats.syntax.all.*
 import pillars.config.AdminConfig
 import pillars.http.server.HttpServer
 import pillars.observability.Observability
-import scribe.cats.io.*
 
 final case class AdminServer[F[_]: Async](config: AdminConfig, obs: Observability[F]):
   def start(): F[Unit] =
