@@ -5,7 +5,7 @@ var documents = [
     "uri": "user-guide/configuration.html",
     "menu": "User Guide",
     "title": "Configuration",
-    "text": " Table of Contents Configuration Pillars Configuration Application Configuration Configuration Pillars is configured using YAML v1.2 files. Pillars Configuration Pillars configuration is structured as follows: name: Bookstore log: level: debug format: enhanced output: type: console db: enabled: true host: localhost port: 5432 database: bookstore username: bookstore password: bookstore pool-size: 10 debug: false api: enabled: true host: 0.0.0.0 port: 9876 auth-token: max-connections: 1024 admin: enabled: true host: 0.0.0.0 port: 19876 authToken: max-connections: 32 observability: enabled: true service-name: bookstore Application Configuration "
+    "text": " Table of Contents Configuration Pillars Configuration Application Configuration Configuration Pillars is configured using YAML v1.2 files. Pillars Configuration Pillars configuration is structured as follows: name: Bookstore log: level: debug format: enhanced output: type: console db: enabled: true host: localhost port: 5432 database: bookstore username: bookstore password: bookstore pool-size: 10 debug: false api: enabled: true http: host: 0.0.0.0 port: 9876 auth-token: max-connections: 1024 admin: enabled: true http: host: 0.0.0.0 port: 19876 max-connections: 32 observability: enabled: true service-name: bookstore Application Configuration "
 },
 
 {
