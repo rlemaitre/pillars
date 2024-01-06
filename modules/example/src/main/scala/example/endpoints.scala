@@ -1,5 +1,6 @@
 package example
+import cats.Monad
 import pillars.http.HttpEndpoint
 
 object endpoints:
-  val all: List[HttpEndpoint] = pillars.admin.endpoints.all
+  def all[F[_]: Monad]: List[HttpEndpoint[F]] = pillars.admin.endpoints.all

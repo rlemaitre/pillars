@@ -1,6 +1,6 @@
 package pillars.http.server
 
-import cats.effect.IO
+import cats.effect.Async
 import cats.effect.Resource
 import org.http4s.HttpApp
 import org.http4s.netty.server.NettyServerBuilder
@@ -16,30 +16,30 @@ import sttp.tapir.*
 import sttp.tapir.server.http4s.Http4sServerInterpreter
 
 object HttpServer:
-  def build(
+  def build[F[_]: Async](
       name: String,
       config: HttpServerConfig,
-      observability: Observability[IO],
-      endpoints: List[HttpEndpoint]
-  ): Resource[IO, Server] =
-    val cors: HttpApp[IO] => HttpApp[IO] =
-      CORS.policy.withAllowMethodsAll.withAllowOriginAll.withAllowHeadersAll.httpApp[IO]
-    val errorHandling: HttpApp[IO] => HttpApp[IO] = ErrorHandling.httpApp[IO]
-    val logging = Logger.httpApp[IO](
+      observability: Observability[F],
+      endpoints: List[HttpEndpoint[F]]
+  ): Resource[F, Server] =
+    val cors: HttpApp[F] => HttpApp[F] =
+      CORS.policy.withAllowMethodsAll.withAllowOriginAll.withAllowHeadersAll.httpApp[F]
+    val errorHandling: HttpApp[F] => HttpApp[F] = ErrorHandling.httpApp[F]
+    val logging = Logger.httpApp[F](
       logHeaders = false,
       logBody = true,
       redactHeadersWhen = _ => false,
-      logAction = Some(scribe.cats.io.debug(_))
+      logAction = Some(scribe.cats[F].debug(_))
     )
-    val app: HttpApp[IO] =
-      Http4sServerInterpreter[IO]()
+    val app: HttpApp[F] =
+      Http4sServerInterpreter[F]()
         .toRoutes(endpoints)
         .orNotFound |>
         logging |>
         errorHandling |>
         cors
 
-    NettyServerBuilder[IO].withoutSsl.withNioTransport
+    NettyServerBuilder[F].withoutSsl.withNioTransport
       .bindHttp(config.port.value, config.host.toString)
       .withHttpApp(app)
       .withoutBanner

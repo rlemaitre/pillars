@@ -1,6 +1,7 @@
 package pillars.logging
 
-import cats.effect.IO
+import cats.effect.Sync
+import cats.syntax.all.*
 import io.circe.*
 import io.circe.syntax.*
 import io.github.iltotore.iron.*
@@ -16,18 +17,20 @@ import scribe.writer.ConsoleWriter
 import scribe.writer.Writer
 
 object Log:
-  def init(config: LogConfig): IO[Unit] =
-    IO(
-      Logger.root
-        .clearHandlers()
-        .clearModifiers()
-        .withHandler(
-          formatter = config.format.formatter,
-          minimumLevel = Some(config.level),
-          writer = writer(config)
-        )
-        .replace()
-    ).void
+  def init[F[_]: Sync](config: LogConfig): F[Unit] =
+    Sync[F]
+      .delay(
+        Logger.root
+          .clearHandlers()
+          .clearModifiers()
+          .withHandler(
+            formatter = config.format.formatter,
+            minimumLevel = Some(config.level),
+            writer = writer(config)
+          )
+          .replace()
+      )
+      .void
 
   private def writer(config: LogConfig): Writer =
     config.format match

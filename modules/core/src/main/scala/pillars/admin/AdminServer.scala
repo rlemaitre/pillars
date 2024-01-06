@@ -1,14 +1,18 @@
 package pillars.admin
 
-import cats.effect.IO
-import cats.effect.kernel.Resource.ExitCase
+import cats.effect.Async
+import cats.effect.Resource.ExitCase
+import cats.effect.kernel.Async
+import cats.syntax.all.*
 import pillars.config.AdminConfig
 import pillars.http.server.HttpServer
 import pillars.observability.Observability
 import scribe.cats.io.*
 
-final case class AdminServer(config: AdminConfig, obs: Observability[IO]):
-  def start(): IO[Unit] =
+final case class AdminServer[F[_]: Async](config: AdminConfig, obs: Observability[F]):
+  def start(): F[Unit] =
+    val logger = scribe.cats.effect[F]
+    import logger.*
     if config.enabled then
       for
         _ <- info(s"Starting admin server on ${config.http.host}:${config.http.port}")
@@ -19,4 +23,4 @@ final case class AdminServer(config: AdminConfig, obs: Observability[IO]):
             case _                   => info("Admin server stopped")
           .useForever
       yield ()
-    else IO.unit
+    else Async[F].unit

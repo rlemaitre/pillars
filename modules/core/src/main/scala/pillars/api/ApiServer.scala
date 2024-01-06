@@ -1,27 +1,28 @@
 package pillars.api
 
-import cats.effect.IO
+import cats.effect.Async
 import cats.effect.Resource.ExitCase
+import cats.syntax.all.*
 import pillars.config.ApiConfig
 import pillars.http.HttpEndpoint
 import pillars.http.server.HttpServer
 import pillars.observability.Observability
-import scribe.cats.io.*
 
-trait ApiServer:
-  def start(endpoints: List[HttpEndpoint]): IO[Unit]
+trait ApiServer[F[_]]:
+  def start(endpoints: List[HttpEndpoint[F]]): F[Unit]
 
 object ApiServer:
-  def init(config: ApiConfig, observability: Observability[IO]): ApiServer =
-    (endpoints: List[HttpEndpoint]) =>
+  def init[F[_]: Async](config: ApiConfig, observability: Observability[F]): ApiServer[F] =
+    (endpoints: List[HttpEndpoint[F]]) =>
       if config.enabled then
+        val logger = scribe.cats[F]
         for
-          _ <- info(s"Starting API server on ${config.http.host}:${config.http.port}")
+          _ <- logger.info(s"Starting API server on ${config.http.host}:${config.http.port}")
           _ <- HttpServer
             .build("api", config.http, observability, endpoints)
             .onFinalizeCase:
-              case ExitCase.Errored(e) => error(s"API server stopped with error: $e")
-              case _                   => info("API server stopped")
+              case ExitCase.Errored(e) => logger.error(s"API server stopped with error: $e")
+              case _                   => logger.info("API server stopped")
             .useForever
         yield ()
-      else IO.unit
+      else Async[F].unit
