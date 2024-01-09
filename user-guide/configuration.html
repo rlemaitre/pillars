@@ -103,7 +103,7 @@
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="yaml">name: Bookstore
 log:
-  level: debug
+  level: info
   format: enhanced
   output:
     type: console
@@ -131,7 +131,14 @@ admin:
     max-connections: 32
 observability:
   enabled: true
-  service-name: bookstore</code></pre>
+  service-name: bookstore
+feature-flags:
+  enabled: true
+  flags:
+    - name: feature-1
+      status: enabled
+    - name: feature-2
+      status: disabled</code></pre>
 </div>
 </div>
 </div>
@@ -246,7 +253,7 @@ observability:
 
 
         <li>
-            <a href="https://github.com/rlemaitre/pillars/issues/new?title=Docs%3A+Feedback+for+%27Configuration%27&body=%0A%0A%5BEnter%20feedback%20here%5D%0A%0A%0A---%0A%23page:%20https://github.com/rlemaitre/pillars/edit/main/docs/user-guide/configuration.adoc%0A%23branch:%20main" target="_blank">
+            <a href="https://github.com/rlemaitre/pillars/issues/new?title=Docs%3A+Feedback+for+%27Configuration%27&body=%0A%0A%5BEnter%20feedback%20here%5D%0A%0A%0A---%0A%23page:%20https://github.com/rlemaitre/pillars/edit/main/docs/user-guide/configuration.adoc%0A%23branch:%20-" target="_blank">
                 <i class="fa fa-github"></i> Create an issue
             </a>
         </li>
