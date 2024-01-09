@@ -4,7 +4,7 @@ import cats.effect.Async
 import cats.effect.Resource.ExitCase
 import cats.syntax.all.*
 import pillars.config.ApiConfig
-import pillars.http.HttpEndpoint
+import pillars.http.server.Controller.HttpEndpoint
 import pillars.http.server.HttpServer
 import pillars.observability.Observability
 

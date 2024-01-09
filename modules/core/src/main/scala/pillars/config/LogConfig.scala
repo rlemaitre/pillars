@@ -1,6 +1,6 @@
 package pillars.config
 
-import io.circe.*
+import cats.syntax.all.*
 import pillars.logging.Log
 import scribe.Level
 
@@ -10,7 +10,3 @@ final case class LogConfig(
     output: Log.Output = Log.Output.Console,
     excludeHikari: Boolean = false
 )
-object LogConfig:
-  given Codec[LogConfig] = Codec.AsObject.derivedConfigured
-  given Decoder[Level]   = Decoder.decodeString.emap(s => Level.get(s).toRight(s"Invalid log level $s"))
-  given Encoder[Level]   = Encoder.encodeString.contramap(_.toString)

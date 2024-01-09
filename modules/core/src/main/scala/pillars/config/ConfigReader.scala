@@ -6,6 +6,7 @@ import cats.syntax.all.*
 import io.circe.Decoder
 import io.circe.yaml.parser
 import java.nio.file.Path
+import pillars.json.config.given
 import scala.io.Source
 import scala.util.matching.Regex
 
@@ -14,7 +15,7 @@ object ConfigReader:
     .getOrElse(regMatch.group(1), throw ConfigError.MissingEnvironmentVariable(regMatch.group(1)))
   private val regex: Regex = """\$\{([^}]+)}""".r
 
-  def readConfig[F[_]: Sync, T: Decoder](path: Path): Resource[F, PillarConfig[T]] =
+  def readConfig[F[_]: Sync, T: Decoder](path: Path): Resource[F, PillarsConfig[T]] =
     Resource
       .fromAutoCloseable(Sync[F].delay(Source.fromFile(path.toFile)))
       .map(_.getLines().mkString("\n"))
@@ -25,4 +26,4 @@ object ConfigReader:
             .parse(cursor)
             .leftMap: failure =>
               ConfigError.ParsingError(failure)
-            .flatMap(_.as[PillarConfig[T]])
+            .flatMap(_.as[PillarsConfig[T]])

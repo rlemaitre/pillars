@@ -1,12 +1,27 @@
 package pillars.admin
 
-import cats.Monad
-import pillars.http.HttpEndpoint
+import io.github.iltotore.iron.*
+import io.github.iltotore.iron.constraint.all.*
+import pillars.admin.views.ErrorView
+import pillars.json.flags.given
+import pillars.model.FeatureFlag
+import sttp.model.Header
+import sttp.model.HeaderNames
 import sttp.tapir.*
+import sttp.tapir.Schema
+import sttp.tapir.codec.iron.*
+import sttp.tapir.codec.iron.given
+import sttp.tapir.json.circe.jsonBody
 object endpoints:
-  def liveness[F[_]: Monad]: HttpEndpoint[F] =
-    endpoint.get.in("healthz").out(stringBody).serverLogicSuccess(_ => Monad[F].pure("OK"))
-  def readiness[F[_]: Monad]: HttpEndpoint[F] =
-    endpoint.get.in("health").out(stringBody).serverLogicSuccess(_ => Monad[F].pure("OK"))
-  def probes[F[_]: Monad]: List[HttpEndpoint[F]] = List(liveness, readiness)
-  def all[F[_]: Monad]: List[HttpEndpoint[F]]    = probes
+  private val baseEndpoint = endpoint.in("admin").errorOut(ErrorView.output)
+  object probes:
+    private val prefix = baseEndpoint.in("probes")
+    def liveness       = prefix.get.in("healthz").out(stringBody)
+    def readiness =
+      prefix.get.in("health").out(stringBody).out(header(Header(HeaderNames.ContentType, "application/health+json")))
+    def all = List(liveness, readiness)
+  object flags:
+    private val prefix = baseEndpoint.in("flags")
+    def list           = prefix.get.out(jsonBody[List[FeatureFlag]])
+    def get            = prefix.get.in(path[FeatureFlag.Name]("name")).out(jsonBody[FeatureFlag])
+    def all            = List(list, get)

@@ -1,5 +1,6 @@
 package pillars.logging
 
+import cats.Show
 import cats.effect.Sync
 import cats.syntax.all.*
 import io.circe.*
@@ -60,6 +61,7 @@ object Log:
       case Format.Advanced => Formatter.advanced
       case Format.Strict   => Formatter.strict
   object Format:
+    given Show[Format]    = Show.fromToString
     given Encoder[Format] = Encoder.encodeString.contramap(_.toString.toLowerCase)
     given Decoder[Format] = Decoder.decodeString.emap {
       case "json"     => Right(Format.Json)
@@ -81,6 +83,10 @@ object Log:
       case Output.File(path) => scribe.file.FileWriter(PathBuilder.static(path))
 
   object Output:
+    given Show[Output] = Show.show:
+      case Console    => "console"
+      case File(path) => s"file($path)"
+
     given Encoder[Output] = Encoder.instance:
       case Output.File(path) => Json.obj("type" -> "file".asJson, "path" -> path.toString.asJson)
       case Output.Console    => Json.obj("type" -> "console".asJson)
