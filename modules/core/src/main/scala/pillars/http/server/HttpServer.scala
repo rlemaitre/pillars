@@ -9,7 +9,7 @@ import org.http4s.server.middleware.CORS
 import org.http4s.server.middleware.ErrorHandling
 import org.http4s.server.middleware.Logger
 import pillars.config.HttpServerConfig
-import pillars.http.HttpEndpoint
+import pillars.http.server.Controller.HttpEndpoint
 import pillars.observability.Observability
 import pillars.utils.*
 import sttp.tapir.*

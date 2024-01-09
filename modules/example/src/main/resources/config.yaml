@@ -1,7 +1,7 @@
 # tag::pillars[]
 name: Bookstore
 log:
-  level: debug
+  level: info
   format: enhanced
   output:
     type: console
@@ -30,6 +30,13 @@ admin:
 observability:
   enabled: true
   service-name: bookstore
+feature-flags:
+  enabled: true
+  flags:
+    - name: feature-1
+      status: enabled
+    - name: feature-2
+      status: disabled
 # end::pillars[]
 # tag::app[]
 app:
