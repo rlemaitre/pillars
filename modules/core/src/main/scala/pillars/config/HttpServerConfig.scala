@@ -1,8 +1,10 @@
 package pillars.config
 
 import com.comcast.ip4s.*
+import io.circe.Codec
+import io.circe.derivation.Configuration
 import io.github.iltotore.iron.*
-import io.github.iltotore.iron.constraint.all.*
+import io.github.iltotore.iron.circe.given
 import pillars.model.PoolSize
 
 final case class HttpServerConfig(
@@ -11,3 +13,6 @@ final case class HttpServerConfig(
     maxConnections: PoolSize = PoolSize(1024),
     enableLogging: Boolean = false
 )
+object HttpServerConfig:
+  given Configuration = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults
+  given Codec[HttpServerConfig] = Codec.AsObject.derivedConfigured
