@@ -27,19 +27,20 @@ import scribe.Scribe
 import scribe.ScribeImpl
 import skunk.Session
 
-final case class Pillars[F[_]: Sync, Config](
+final case class Pillars[F[_]: Sync](
     observability: Observability[F],
-    config: PillarsConfig[Config],
+    config: PillarsConfig,
     pool: Resource[F, Session[F]],
     apiServer: ApiServer[F],
-    flags: FlagManager[F]
+    flags: FlagManager[F],
+    private val configPath: Path
 ):
-  val logger: Scribe[F] = ScribeImpl(Sync[F])
-
+  val logger: Scribe[F]                      = ScribeImpl(Sync[F])
+  def readConfig[T: Decoder]: Resource[F, T] = ConfigReader.readConfig[F, T](configPath)
 object Pillars:
-  def apply[F[_]: LiftIO: Async: Console: Network, Config: Decoder](configPath: Path): Resource[F, Pillars[F, Config]] =
+  def apply[F[_]: LiftIO: Async: Console: Network](configPath: Path): Resource[F, Pillars[F]] =
     for
-      config <- ConfigReader.readConfig[F, Config](configPath)
+      config <- ConfigReader.readConfig[F, PillarsConfig](configPath)
       obs    <- Resource.eval(Observability.init[F](config.observability))
       given Tracer[F] = obs.tracer
       _      <- Resource.eval(Log.init(config.log))
@@ -52,4 +53,4 @@ object Pillars:
         AdminServer[F](config.admin, obs, List(ProbesController(probes), FlagController(flags))).start()
       )
       api = ApiServer.init(config.api, obs)
-    yield Pillars(obs, config, pool, api, flags)
+    yield Pillars(obs, config, pool, api, flags, configPath)

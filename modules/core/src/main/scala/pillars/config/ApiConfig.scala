@@ -1,3 +1,5 @@
 package pillars.config
 
-final case class ApiConfig(enabled: Boolean, http: HttpServerConfig)
+import io.circe.Codec
+
+final case class ApiConfig(enabled: Boolean, http: HttpServerConfig) derives Codec.AsObject
