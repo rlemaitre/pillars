@@ -10,7 +10,7 @@ import org.http4s.client.Client
 import pillars.config.ProbeConfig
 import pillars.config.ProbesConfig
 import skunk.Session
-import skunk.codec.all.int4
+import skunk.codec.all
 import skunk.implicits.*
 
 trait ProbeManager[F[_]]:
@@ -50,40 +50,32 @@ object ProbeManager:
           def globalStatus: F[Status] =
             status.map(_.values.toList.foldLeft(Status.pass)(_ |+| _))
 
+  private def buildCheckStream[F[_]: Async](
+      probe: ProbeConfig,
+      componentErrors: MapRef[F, Component, Option[Int]]
+  )(check: F[Boolean]): Stream[F, Unit] =
+    Stream
+      .fixedRate(probe.interval)
+      .evalMap: _ =>
+        check
+          .attemptTap:
+            case Right(value) if value => componentErrors(probe.component).update(_ => 0.some)
+            case _ =>
+              componentErrors(probe.component).update:
+                case Some(value) => Some(value + 1)
+                case None        => Some(1)
+          .void
+
   private def createStreams[F[_]: Async](
       config: ProbesConfig,
       pool: Resource[F, Session[F]],
       client: Client[F],
       componentErrors: MapRef[F, Component, Option[Int]]
   ): List[Stream[F, Unit]] =
-    config.probes
-      .map:
-        case a @ ProbeConfig.Database(_, timeout, interval, failureCount) =>
-          Stream
-            .fixedRate(interval)
-            .evalMap: _ =>
-              pool
-                .use: session =>
-                  session.unique(sql"select 1".query(int4)).void
-                .attemptTap:
-                  case Left(_) =>
-                    componentErrors(a.component).update:
-                      case Some(value) => Some(value + 1)
-                      case None        => Some(1)
-                  case Right(_) =>
-                    componentErrors(a.component).update(_ => 0.some)
-        case a @ ProbeConfig.Http(_, timeout, interval, failureCount, uri) =>
-          Stream
-            .fixedRate(interval)
-            .evalMap: _ =>
-              client
-                .get(uri): response =>
-                  response.body.compile.drain *>
-                    response.status.isSuccess.pure[F]
-                .attemptTap:
-                  case Right(value) if value => componentErrors(a.component).update(_ => 0.some)
-                  case _ =>
-                    componentErrors(a.component).update:
-                      case Some(value) => Some(value + 1)
-                      case None        => Some(1)
-                .void
+    config.probes.map:
+      case db: ProbeConfig.Database =>
+        buildCheckStream(db, componentErrors):
+          pool.use(session => session.unique(sql"select true".query(all.bool)))
+      case http: ProbeConfig.Http =>
+        buildCheckStream(http, componentErrors):
+          client.get(http.url)(response => response.body.compile.drain *> response.status.isSuccess.pure[F])
