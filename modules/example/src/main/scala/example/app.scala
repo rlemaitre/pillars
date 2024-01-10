@@ -1,7 +1,6 @@
 package example
 
 import cats.effect.IO
-import cats.syntax.all.*
 import io.github.iltotore.iron.*
 import io.github.iltotore.iron.constraint.all.*
 import pillars.Pillars

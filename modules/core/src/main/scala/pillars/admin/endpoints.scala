@@ -3,6 +3,7 @@ package pillars.admin
 import io.github.iltotore.iron.*
 import io.github.iltotore.iron.constraint.all.*
 import pillars.admin.views.ErrorView
+import pillars.admin.views.HealthStatus
 import pillars.json.flags.given
 import pillars.model.FeatureFlag
 import sttp.model.Header
@@ -18,7 +19,10 @@ object endpoints:
     private val prefix = baseEndpoint.in("probes")
     def liveness       = prefix.get.in("healthz").out(stringBody)
     def readiness =
-      prefix.get.in("health").out(stringBody).out(header(Header(HeaderNames.ContentType, "application/health+json")))
+      prefix.get
+        .in("health")
+        .out(jsonBody[HealthStatus])
+        .out(header(Header(HeaderNames.ContentType, "application/health+json")))
     def all = List(liveness, readiness)
   object flags:
     private val prefix = baseEndpoint.in("flags")
