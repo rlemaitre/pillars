@@ -10,8 +10,8 @@ db:
   host: localhost
   port: 5432
   database: bookstore
-  username: bookstore
-  password: bookstore
+  username: postgres
+  password: postgres
   pool-size: 10
   debug: false
 api:
@@ -30,6 +30,21 @@ admin:
 observability:
   enabled: true
   service-name: bookstore
+health-checks:
+  enabled: true
+  probes:
+    - name: postgres
+      type: database
+      timeout: PT5s
+      interval: PT10s
+      failure-count: 2
+      query: SELECT 1
+    - name: api
+      type: http
+      timeout: PT5s
+      interval: PT10s
+      failure-count: 2
+      url: http://localhost:9876/
 feature-flags:
   enabled: true
   flags:

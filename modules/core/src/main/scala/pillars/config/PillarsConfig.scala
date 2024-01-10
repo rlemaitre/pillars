@@ -11,5 +11,6 @@ case class PillarsConfig[T](
     admin: AdminConfig,
     observability: ObservabilityConfig = ObservabilityConfig(),
     featureFlags: FeatureFlagsConfig = FeatureFlagsConfig(),
+    healthChecks: ProbesConfig = ProbesConfig(),
     app: T
 )

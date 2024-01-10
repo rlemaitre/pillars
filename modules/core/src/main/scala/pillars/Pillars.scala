@@ -19,8 +19,10 @@ import pillars.config.ConfigReader
 import pillars.config.PillarsConfig
 import pillars.db.DB
 import pillars.flags.FlagManager
+import pillars.http.client.HttpClient
 import pillars.logging.Log
 import pillars.observability.Observability
+import pillars.probes.ProbeManager
 import scribe.Scribe
 import scribe.ScribeImpl
 import skunk.Session
@@ -40,11 +42,14 @@ object Pillars:
       config <- ConfigReader.readConfig[F, Config](configPath)
       obs    <- Resource.eval(Observability.init[F](config.observability))
       given Tracer[F] = obs.tracer
-      _     <- Resource.eval(Log.init(config.log))
-      pool  <- DB.init[F](config.db)
-      flags <- Resource.eval(FlagManager.init[F](config.featureFlags))
+      _      <- Resource.eval(Log.init(config.log))
+      pool   <- DB.init[F](config.db)
+      flags  <- Resource.eval(FlagManager.init[F](config.featureFlags))
+      client <- HttpClient.build[F]()
+      probes <- ProbeManager.build[F](config.healthChecks, pool, client)
+      _      <- Spawn[F].background(probes.start())
       _ <- Spawn[F].background(
-        AdminServer[F](config.admin, obs, List(ProbesController(), FlagController(flags))).start()
+        AdminServer[F](config.admin, obs, List(ProbesController(probes), FlagController(flags))).start()
       )
       api = ApiServer.init(config.api, obs)
     yield Pillars(obs, config, pool, api, flags)

@@ -1,10 +1,13 @@
 package pillars
 
 import cats.Show
+import cats.syntax.all.*
 import com.comcast.ip4s.Host
 import com.comcast.ip4s.Port
+import io.circe.Codec
 import io.circe.Decoder
 import io.circe.Encoder
+import org.http4s.Uri
 import pillars.config.*
 import scala.concurrent.duration.FiniteDuration
 import scala.jdk.DurationConverters.*
@@ -19,6 +22,11 @@ package object json:
   given Decoder[Port] = Decoder.decodeInt.emap(t => Port.fromInt(t).toRight("Failed to parse Port"))
 
   given Encoder[Port] = Encoder.encodeInt.contramap(_.value)
+
+  given Codec[Uri] = Codec.from(
+    Decoder.decodeString.emap(t => Uri.fromString(t).leftMap(f => f.details)),
+    Encoder.encodeString.contramap(_.toString)
+  )
 
   given Decoder[FiniteDuration] = Decoder.decodeDuration.map(_.toScala)
 
