@@ -5,3 +5,5 @@ boot/
 lib_managed/
 src_managed/
 !modules/docs/src/site
+.bsp
+.idea

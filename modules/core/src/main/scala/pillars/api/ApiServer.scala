@@ -7,15 +7,15 @@ import pillars.config.ApiConfig
 import pillars.http.server.Controller.HttpEndpoint
 import pillars.http.server.HttpServer
 import pillars.observability.Observability
+import scribe.Scribe
 
 trait ApiServer[F[_]]:
   def start(endpoints: List[HttpEndpoint[F]]): F[Unit]
 
 object ApiServer:
-  def init[F[_]: Async](config: ApiConfig, observability: Observability[F]): ApiServer[F] =
+  def init[F[_]: Async](config: ApiConfig, observability: Observability[F], logger: Scribe[F]): ApiServer[F] =
     (endpoints: List[HttpEndpoint[F]]) =>
-      if config.enabled then
-        val logger = scribe.cats[F]
+      Async[F].whenA(config.enabled):
         for
           _ <- logger.info(s"Starting API server on ${config.http.host}:${config.http.port}")
           _ <- HttpServer
@@ -25,4 +25,3 @@ object ApiServer:
               case _                   => logger.info("API server stopped")
             .useForever
         yield ()
-      else Async[F].unit
