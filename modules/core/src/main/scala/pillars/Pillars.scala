@@ -27,7 +27,7 @@ import scribe.Scribe
 import scribe.ScribeImpl
 import skunk.Session
 
-final case class Pillars[F[_]: Sync](
+final case class Pillars[F[_]](
     observability: Observability[F],
     config: PillarsConfig,
     pool: Resource[F, Session[F]],
@@ -35,8 +35,9 @@ final case class Pillars[F[_]: Sync](
     flags: FlagManager[F],
     private val configPath: Path
 ):
-  val logger: Scribe[F]                      = ScribeImpl(Sync[F])
-  def readConfig[T: Decoder]: Resource[F, T] = ConfigReader.readConfig[F, T](configPath)
+  inline def logger(using Sync[F]): Scribe[F] = ScribeImpl(Sync[F])
+  def readConfig[T: Decoder]: Resource[F, T]  = ConfigReader.readConfig[F, T](configPath)
+
 object Pillars:
   def apply[F[_]: LiftIO: Async: Console: Network](configPath: Path): Resource[F, Pillars[F]] =
     for
