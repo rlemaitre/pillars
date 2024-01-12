@@ -5,7 +5,9 @@ import cats.effect.IO
 import cats.effect.IOApp
 import com.monovore.decline.Command
 
-class EntryPoint(app: App[IO]) extends IOApp:
+trait EntryPoint extends IOApp:
+
+  def app: App[IO]
 
   override final def run(args: List[String]): IO[ExitCode] =
     Command(app.name, app.description)(CommandOptions.config).parse(args, sys.env) match
