@@ -14,12 +14,12 @@ object ConfigReader:
     .getOrElse(regMatch.group(1), throw ConfigError.MissingEnvironmentVariable(regMatch.group(1)))
   private val regex: Regex = """\$\{([^}]+)}""".r
 
-  def readConfig[F[_]: Sync, T: Decoder](path: Path): Resource[F, T] =
+  def readConfig[F[_]: Sync, T: Decoder](path: Path): F[T] =
     Resource
       .fromAutoCloseable(Sync[F].delay(Source.fromFile(path.toFile)))
       .map(_.getLines().mkString("\n"))
       .map(regex.replaceAllIn(_, matcher))
-      .evalMap: cursor =>
+      .use: cursor =>
         Sync[F].fromEither:
           parser
             .parse(cursor)

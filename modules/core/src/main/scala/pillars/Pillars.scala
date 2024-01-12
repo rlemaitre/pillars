@@ -1,10 +1,6 @@
 package pillars
 
-import cats.effect.Async
-import cats.effect.LiftIO
-import cats.effect.Resource
-import cats.effect.Spawn
-import cats.effect.Sync
+import cats.effect.*
 import cats.effect.std.Console
 import fs2.io.net.Network
 import io.circe.Decoder
@@ -33,12 +29,12 @@ trait Pillars[F[_]]:
   def apiServer: ApiServer[F]
   def flags: FlagManager[F]
   def logger: Scribe[F]
-  def readConfig[T](using Decoder[T]): Resource[F, T]
+  def readConfig[T](using Decoder[T]): F[T]
 
 object Pillars:
   def apply[F[_]: LiftIO: Async: Console: Network](path: Path): Resource[F, Pillars[F]] =
     for
-      _config <- ConfigReader.readConfig[F, PillarsConfig](path)
+      _config <- Resource.eval(ConfigReader.readConfig[F, PillarsConfig](path))
       obs     <- Resource.eval(Observability.init[F](_config.observability))
       given Tracer[F] = obs.tracer
       _      <- Resource.eval(Log.init(_config.log))
@@ -58,12 +54,12 @@ object Pillars:
       override def pool: Resource[F, Session[F]] = _pool
 
       override def apiServer: ApiServer[F] =
-        ApiServer.init(config.api, obs, logger)
+        ApiServer.init(config.api, observability, logger)
 
       override def flags: FlagManager[F] = _flags
 
       override def logger: Scribe[F] = ScribeImpl[F](Sync[F])
 
-      override def readConfig[T](using Decoder[T]): Resource[F, T] =
+      override def readConfig[T](using Decoder[T]): F[T] =
         ConfigReader.readConfig[F, T](path)
     }
