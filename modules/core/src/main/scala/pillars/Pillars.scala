@@ -1,12 +1,7 @@
 package pillars
 
-import cats.effect.Async
-import cats.effect.LiftIO
-import cats.effect.Resource
-import cats.effect.Spawn
-import cats.effect.Sync
+import cats.effect.*
 import cats.effect.std.Console
-import cats.syntax.all.*
 import fs2.io.net.Network
 import io.circe.Decoder
 import java.nio.file.Path
@@ -27,30 +22,44 @@ import scribe.Scribe
 import scribe.ScribeImpl
 import skunk.Session
 
-final case class Pillars[F[_]: Sync](
-    observability: Observability[F],
-    config: PillarsConfig,
-    pool: Resource[F, Session[F]],
-    apiServer: ApiServer[F],
-    flags: FlagManager[F],
-    private val configPath: Path
-):
-  val logger: Scribe[F]                      = ScribeImpl(Sync[F])
-  def readConfig[T: Decoder]: Resource[F, T] = ConfigReader.readConfig[F, T](configPath)
+trait Pillars[F[_]]:
+  def observability: Observability[F]
+  def config: PillarsConfig
+  def pool: Resource[F, Session[F]]
+  def apiServer: ApiServer[F]
+  def flags: FlagManager[F]
+  def logger: Scribe[F]
+  def readConfig[T](using Decoder[T]): F[T]
+
 object Pillars:
-  def apply[F[_]: LiftIO: Async: Console: Network](configPath: Path): Resource[F, Pillars[F]] =
+  def apply[F[_]: LiftIO: Async: Console: Network](path: Path): Resource[F, Pillars[F]] =
     for
-      config <- ConfigReader.readConfig[F, PillarsConfig](configPath)
-      obs    <- Resource.eval(Observability.init[F](config.observability))
+      _config <- Resource.eval(ConfigReader.readConfig[F, PillarsConfig](path))
+      obs     <- Resource.eval(Observability.init[F](_config.observability))
       given Tracer[F] = obs.tracer
-      _      <- Resource.eval(Log.init(config.log))
-      pool   <- DB.init[F](config.db)
-      flags  <- Resource.eval(FlagManager.init[F](config.featureFlags))
+      _      <- Resource.eval(Log.init(_config.log))
+      _pool  <- DB.init[F](_config.db)
+      _flags <- Resource.eval(FlagManager.init[F](_config.featureFlags))
       client <- HttpClient.build[F]()
-      probes <- ProbeManager.build[F](config.healthChecks, pool, client)
+      probes <- ProbeManager.build[F](_config.healthChecks, _pool, client)
       _      <- Spawn[F].background(probes.start())
       _ <- Spawn[F].background(
-        AdminServer[F](config.admin, obs, List(ProbesController(probes), FlagController(flags))).start()
+        AdminServer[F](_config.admin, obs, List(ProbesController(probes), FlagController(_flags))).start()
       )
-      api = ApiServer.init(config.api, obs)
-    yield Pillars(obs, config, pool, api, flags, configPath)
+    yield new Pillars[F] {
+      override def observability: Observability[F] = obs
+
+      override def config: PillarsConfig = _config
+
+      override def pool: Resource[F, Session[F]] = _pool
+
+      override def apiServer: ApiServer[F] =
+        ApiServer.init(config.api, observability, logger)
+
+      override def flags: FlagManager[F] = _flags
+
+      override def logger: Scribe[F] = ScribeImpl[F](Sync[F])
+
+      override def readConfig[T](using Decoder[T]): F[T] =
+        ConfigReader.readConfig[F, T](path)
+    }

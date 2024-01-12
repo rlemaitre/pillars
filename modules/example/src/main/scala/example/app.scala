@@ -8,9 +8,9 @@ import pillars.model.*
 
 case class Bookstore(name: AppName, version: Version, description: Description) extends pillars.App[IO]:
   override def run(pillars: Pillars[IO]): IO[Unit] =
-    import pillars.logger.*
+    import pillars.*
     for
-      _ <- info(s"📚 Welcome to ${pillars.config.name}!")
+      _ <- logger.info(s"📚 Welcome to ${pillars.config.name}!")
       _ <- pillars.apiServer.start(endpoints.all)
     yield ()
 
