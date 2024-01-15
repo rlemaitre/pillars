@@ -17,20 +17,23 @@ final case class AdminServer[F[_]: Async](
     obs: Observability[F],
     controllers: List[Controller[F]] = List.empty[Controller[F]]
 ):
-  def start(): F[Unit] =
-    val logger = scribe.cats.effect[F]
-    import logger.*
-    if config.enabled then
-      for
-        _ <- info(s"Starting admin server on ${config.http.host}:${config.http.port}")
-        _ <- HttpServer
-          .build("admin", config.http, obs, controllers.foldLeft(List(liveness))(_ ++ _.endpoints))
-          .onFinalizeCase:
-            case ExitCase.Errored(e) => error(s"Admin server stopped with error: $e")
-            case _                   => info("Admin server stopped")
-          .useForever
-      yield ()
-    else Async[F].unit
+    def start(): F[Unit] =
+        val logger = scribe.cats.effect[F]
+        import logger.*
+        if config.enabled then
+            for
+                _ <- info(s"Starting admin server on ${config.http.host}:${config.http.port}")
+                _ <- HttpServer
+                         .build("admin", config.http, obs, controllers.foldLeft(List(liveness))(_ ++ _.endpoints))
+                         .onFinalizeCase:
+                             case ExitCase.Errored(e) => error(s"Admin server stopped with error: $e")
+                             case _                   => info("Admin server stopped")
+                         .useForever
+            yield ()
+        else Async[F].unit
+        end if
+    end start
+end AdminServer
 object AdminServer:
-  private def liveness[F[_]: Applicative]: HttpEndpoint[F] =
-    endpoints.probes.liveness.serverLogicSuccess(_ => "OK".pure[F])
+    private def liveness[F[_]: Applicative]: HttpEndpoint[F] =
+        endpoints.probes.liveness.serverLogicSuccess(_ => "OK".pure[F])

@@ -14,5 +14,5 @@ final case class HttpServerConfig(
     enableLogging: Boolean = false
 )
 object HttpServerConfig:
-  given Configuration = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults
-  given Codec[HttpServerConfig] = Codec.AsObject.derivedConfigured
+    given Configuration           = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults
+    given Codec[HttpServerConfig] = Codec.AsObject.derivedConfigured

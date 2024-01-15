@@ -23,7 +23,7 @@ private type PoolSizeConstraint = GreaterEqual[1] DescribedAs "Pool size must be
 opaque type PoolSize <: Int     = Int :| PoolSizeConstraint
 object PoolSize extends RefinedTypeOps[Int, PoolSizeConstraint, PoolSize]
 
-private type VersionConstraint = Not[Blank] & Match["^(\\d+\\.\\d+\\.\\d+)$"] DescribedAs
-  "Schema version must be in the form of X.Y.Z"
+private type VersionConstraint      = Not[Blank] & Match["^(\\d+\\.\\d+\\.\\d+)$"] DescribedAs
+    "Schema version must be in the form of X.Y.Z"
 opaque type SchemaVersion <: String = String :| VersionConstraint
 object SchemaVersion extends RefinedTypeOps[String, Not[Blank] & Match["^(\\d+\\.\\d+\\.\\d+)$"], SchemaVersion]

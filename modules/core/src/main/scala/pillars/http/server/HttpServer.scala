@@ -16,31 +16,33 @@ import sttp.tapir.*
 import sttp.tapir.server.http4s.Http4sServerInterpreter
 
 object HttpServer:
-  def build[F[_]: Async](
-      name: String,
-      config: HttpServerConfig,
-      observability: Observability[F],
-      endpoints: List[HttpEndpoint[F]]
-  ): Resource[F, Server] =
-    val cors: HttpApp[F] => HttpApp[F] =
-      CORS.policy.withAllowMethodsAll.withAllowOriginAll.withAllowHeadersAll.httpApp[F]
-    val errorHandling: HttpApp[F] => HttpApp[F] = ErrorHandling.httpApp[F]
-    val logging = Logger.httpApp[F](
-      logHeaders = false,
-      logBody = true,
-      redactHeadersWhen = _ => false,
-      logAction = Some(scribe.cats[F].debug(_))
-    )
-    val app: HttpApp[F] =
-      Http4sServerInterpreter[F]()
-        .toRoutes(endpoints)
-        .orNotFound |>
-        logging |>
-        errorHandling |>
-        cors
+    def build[F[_]: Async](
+        name: String,
+        config: HttpServerConfig,
+        observability: Observability[F],
+        endpoints: List[HttpEndpoint[F]]
+    ): Resource[F, Server] =
+        val cors: HttpApp[F] => HttpApp[F]          =
+            CORS.policy.withAllowMethodsAll.withAllowOriginAll.withAllowHeadersAll.httpApp[F]
+        val errorHandling: HttpApp[F] => HttpApp[F] = ErrorHandling.httpApp[F]
+        val logging                                 = Logger.httpApp[F](
+          logHeaders = false,
+          logBody = true,
+          redactHeadersWhen = _ => false,
+          logAction = Some(scribe.cats[F].debug(_))
+        )
+        val app: HttpApp[F]                         =
+            Http4sServerInterpreter[F]()
+                .toRoutes(endpoints)
+                .orNotFound |>
+                logging |>
+                errorHandling |>
+                cors
 
-    NettyServerBuilder[F].withoutSsl.withNioTransport
-      .bindHttp(config.port.value, config.host.toString)
-      .withHttpApp(app)
-      .withoutBanner
-      .resource
+        NettyServerBuilder[F].withoutSsl.withNioTransport
+            .bindHttp(config.port.value, config.host.toString)
+            .withHttpApp(app)
+            .withoutBanner
+            .resource
+    end build
+end HttpServer

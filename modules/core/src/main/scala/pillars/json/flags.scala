@@ -11,15 +11,16 @@ import sttp.tapir.codec.iron.*
 import sttp.tapir.codec.iron.given
 
 object flags:
-  given Encoder[FeatureFlag.Status] = Encoder.encodeString.contramap:
-    case FeatureFlag.Status.Enabled  => "enabled"
-    case FeatureFlag.Status.Disabled => "disabled"
+    given Encoder[FeatureFlag.Status] = Encoder.encodeString.contramap:
+        case FeatureFlag.Status.Enabled  => "enabled"
+        case FeatureFlag.Status.Disabled => "disabled"
 
-  given Decoder[FeatureFlag.Status] = Decoder.decodeString.emap:
-    case "enabled"  => Right(FeatureFlag.Status.Enabled)
-    case "disabled" => Right(FeatureFlag.Status.Disabled)
-    case other      => Left(s"Invalid status $other")
+    given Decoder[FeatureFlag.Status] = Decoder.decodeString.emap:
+        case "enabled"  => Right(FeatureFlag.Status.Enabled)
+        case "disabled" => Right(FeatureFlag.Status.Disabled)
+        case other      => Left(s"Invalid status $other")
 
-  given Schema[FeatureFlag.Status] = Schema.derived
-  given Codec[FeatureFlag]         = Codec.AsObject.derived
-  given Schema[FeatureFlag]        = Schema.derived
+    given Schema[FeatureFlag.Status] = Schema.derived
+    given Codec[FeatureFlag]         = Codec.AsObject.derived
+    given Schema[FeatureFlag]        = Schema.derived
+end flags

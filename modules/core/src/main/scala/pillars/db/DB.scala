@@ -9,13 +9,14 @@ import pillars.config.DatabaseConfig
 import skunk.*
 
 object DB:
-  def init[F[_]: Temporal: Network: Console: Tracer](config: DatabaseConfig): SessionPool[F] =
-    Session.pooled[F](
-      host = config.host.toString,
-      port = config.port.value,
-      database = config.database,
-      user = config.username,
-      password = config.password.some.map(_.value),
-      max = config.poolSize,
-      debug = config.debug
-    )
+    def init[F[_]: Temporal: Network: Console: Tracer](config: DatabaseConfig): SessionPool[F] =
+        Session.pooled[F](
+          host = config.host.toString,
+          port = config.port.value,
+          database = config.database,
+          user = config.username,
+          password = config.password.some.map(_.value),
+          max = config.poolSize,
+          debug = config.debug
+        )
+end DB

@@ -18,5 +18,5 @@ final case class DatabaseConfig(
 )
 
 object DatabaseConfig:
-  given Configuration = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults
-  given Codec[DatabaseConfig] = Codec.AsObject.derivedConfigured
+    given Configuration         = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults
+    given Codec[DatabaseConfig] = Codec.AsObject.derivedConfigured

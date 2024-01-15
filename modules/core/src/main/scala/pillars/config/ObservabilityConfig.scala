@@ -8,4 +8,4 @@ import pillars.model.ServiceName
 final case class ObservabilityConfig(serviceName: ServiceName = ServiceName("pillars"))
 
 object ObservabilityConfig:
-  given Codec[ObservabilityConfig] = Codec.AsObject.derivedConfigured
+    given Codec[ObservabilityConfig] = Codec.AsObject.derivedConfigured

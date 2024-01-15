@@ -19,6 +19,7 @@ case class PillarsConfig(
 )
 
 object PillarsConfig:
-  given Configuration = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults
-  given Decoder[PillarsConfig] = Decoder.derivedConfigured
-  given Encoder[PillarsConfig] = Encoder.AsObject.derivedConfigured
+    given Configuration          = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults
+    given Decoder[PillarsConfig] = Decoder.derivedConfigured
+    given Encoder[PillarsConfig] = Encoder.AsObject.derivedConfigured
+end PillarsConfig
