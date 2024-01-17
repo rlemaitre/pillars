@@ -10,12 +10,9 @@ import pillars.model.*
 case class PillarsConfig(
     name: AppName,
     log: LogConfig = LogConfig(),
-    db: DatabaseConfig,
     api: ApiConfig,
     admin: AdminConfig,
-    observability: ObservabilityConfig = ObservabilityConfig(),
-    featureFlags: FeatureFlagsConfig = FeatureFlagsConfig(),
-    healthChecks: ProbesConfig = ProbesConfig()
+    observability: ObservabilityConfig = ObservabilityConfig()
 )
 
 object PillarsConfig:

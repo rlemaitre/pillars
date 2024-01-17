@@ -8,12 +8,11 @@ import pillars.PillarsError.Code
 import pillars.PillarsError.ErrorNumber
 import pillars.PillarsError.Message
 import pillars.admin.controllers.FlagController.FlagError
-import pillars.admin.endpoints.flags.*
+import pillars.flags.endpoints.*
 import pillars.admin.views.errorView
-import pillars.flags.FlagManager
+import pillars.flags.{FeatureFlag, FlagManager}
 import pillars.http.server.Controller
 import pillars.http.server.Controller.HttpEndpoint
-import pillars.model.FeatureFlag
 import sttp.model.StatusCode
 
 final case class FlagController[F[_]: Functor](manager: FlagManager[F]) extends Controller[F]:

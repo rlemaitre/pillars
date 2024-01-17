@@ -2,65 +2,83 @@ package pillars
 
 import cats.effect.*
 import cats.effect.std.Console
+import cats.syntax.all.*
 import fs2.io.net.Network
 import io.circe.Decoder
 import java.nio.file.Path
+import java.util.ServiceLoader
 import org.typelevel.otel4s.trace.Tracer
 import pillars.admin.AdminServer
-import pillars.admin.controllers.FlagController
 import pillars.admin.controllers.ProbesController
 import pillars.api.ApiServer
 import pillars.config.ConfigReader
 import pillars.config.PillarsConfig
-import pillars.db.DB
-import pillars.flags.FlagManager
 import pillars.http.client.HttpClient
 import pillars.logging.Log
 import pillars.observability.Observability
 import pillars.probes.ProbeManager
+import scala.jdk.CollectionConverters.IterableHasAsScala
+import scala.reflect.ClassTag
 import scribe.Scribe
 import scribe.ScribeImpl
-import skunk.Session
 
 trait Pillars[F[_]]:
     def observability: Observability[F]
     def config: PillarsConfig
-    def pool: Resource[F, Session[F]]
     def apiServer: ApiServer[F]
-    def flags: FlagManager[F]
     def logger: Scribe[F]
     def readConfig[T](using Decoder[T]): F[T]
+    def module[T <: Module[F]: ClassTag]: T
 end Pillars
 
 object Pillars:
     def apply[F[_]: LiftIO: Async: Console: Network](path: Path): Resource[F, Pillars[F]] =
+        val configReader = ConfigReader[F](path)
         for
-            _config        <- Resource.eval(ConfigReader.readConfig[F, PillarsConfig](path))
+            _config        <- Resource.eval(configReader.read[PillarsConfig])
             obs            <- Resource.eval(Observability.init[F](_config.observability))
             given Tracer[F] = obs.tracer
             _              <- Resource.eval(Log.init(_config.log))
-            _pool          <- DB.init[F](_config.db)
-            _flags         <- Resource.eval(FlagManager.init[F](_config.featureFlags))
+            _logger         = ScribeImpl[F](Sync[F])
             client         <- HttpClient.build[F]()
-            probes         <- ProbeManager.build[F](_config.healthChecks, _pool, client)
+            context         = Loader.Context(obs, configReader, _logger, client)
+            _              <- Resource.eval(_logger.info("Loading modules..."))
+            _modules       <- loadModules(context)
+            probes         <- ProbeManager.build[F](_modules)
             _              <- Spawn[F].background(probes.start())
             _              <- Spawn[F].background(
-                                AdminServer[F](_config.admin, obs, List(ProbesController(probes), FlagController(_flags))).start()
+                                AdminServer[F](_config.admin, obs, _modules.adminControllers :+ ProbesController(probes)).start()
                               )
         yield new Pillars[F]:
             override def observability: Observability[F] = obs
 
             override def config: PillarsConfig = _config
 
-            override def pool: Resource[F, Session[F]] = _pool
-
             override def apiServer: ApiServer[F] =
                 ApiServer.init(config.api, observability, logger)
 
-            override def flags: FlagManager[F] = _flags
+            override def logger: Scribe[F] = _logger
 
-            override def logger: Scribe[F] = ScribeImpl[F](Sync[F])
+            override def readConfig[T](using Decoder[T]): F[T] = configReader.read[T]
 
-            override def readConfig[T](using Decoder[T]): F[T] =
-                ConfigReader.readConfig[F, T](path)
+            override def module[T <: Module[F]: ClassTag]: T = _modules.get[T]
+        end for
+    end apply
+
+    private def loadModules[F[_]: Async: Network: Tracer: Console](context: Loader.Context[F])
+        : Resource[F, Modules[F]] =
+        val loaders = ServiceLoader.load(classOf[Loader])
+            .asScala
+            .toList
+        scribe.info(s"Found ${loaders.size} module loaders: ${loaders.map(_.name).mkString(", ")}")
+        loaders
+            .map: loader =>
+                val module = loader.load[F](context)
+                module
+            .sequence
+            .map: modules =>
+                modules.foldLeft(Modules.empty): (acc, module) =>
+                    acc.add(module)
+    end loadModules
+
 end Pillars
