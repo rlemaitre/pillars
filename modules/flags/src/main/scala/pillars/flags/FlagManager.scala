@@ -11,14 +11,22 @@ import fs2.io.net.Network
 import org.typelevel.otel4s.trace.Tracer
 import pillars.Loader
 import pillars.Module
-import pillars.admin.controllers.FlagController
+import pillars.Pillars
 import pillars.http.server.Controller
 import pillars.probes.Probe
 
-trait FlagManager[F[_]] extends Module[F]:
+trait FlagManager[F[_]: Sync] extends Module[F]:
     def isEnabled(flag: FeatureFlag.Name): F[Boolean]
     def getFlag(name: FeatureFlag.Name): F[Option[FeatureFlag]]
     def flags: F[List[FeatureFlag]]
+    def when[A](flag: FeatureFlag.Name)(thunk: => F[A]): F[Unit] =
+        isEnabled(flag).flatMap:
+            case true  => thunk.void
+            case false => Sync[F].unit
+
+    extension (pillars: Pillars[F])
+        def flags: FlagManager[F]                                    = this
+        def when(flag: FeatureFlag.Name)(thunk: => F[Unit]): F[Unit] = this.when(flag)(thunk)
 end FlagManager
 
 object FlagManager:

@@ -1,5 +1,6 @@
 package pillars
 
+import cats.effect.Sync
 import io.circe.Codec
 import io.circe.Decoder
 import io.circe.Encoder
@@ -23,5 +24,9 @@ package object flags:
 
     given Codec[FeatureFlag] = Codec.AsObject.derived
 
-    given Schema[FeatureFlag] = Schema.derived
+    given Schema[FeatureFlag]     = Schema.derived
+    extension[F[_]: Sync](pillars: Pillars[F])
+        def flags: FlagManager[F] = pillars.module[FlagManager[F]]
+        def whenEnabled[A](flag: FeatureFlag.Name)(thunk: => F[A]): F[Unit] =
+            pillars.flags.when(flag)(thunk)
 end flags

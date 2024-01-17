@@ -1,4 +1,4 @@
-package pillars.admin.controllers
+package pillars.flags
 
 import cats.Functor
 import cats.syntax.all.*
@@ -7,10 +7,9 @@ import pillars.PillarsError
 import pillars.PillarsError.Code
 import pillars.PillarsError.ErrorNumber
 import pillars.PillarsError.Message
-import pillars.admin.controllers.FlagController.FlagError
-import pillars.flags.endpoints.*
 import pillars.admin.views.errorView
-import pillars.flags.{FeatureFlag, FlagManager}
+import pillars.flags.endpoints.*
+import pillars.flags.FlagController.FlagError
 import pillars.http.server.Controller
 import pillars.http.server.Controller.HttpEndpoint
 import sttp.model.StatusCode

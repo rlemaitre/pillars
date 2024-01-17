@@ -8,6 +8,7 @@ import io.github.iltotore.iron.*
 import org.typelevel.otel4s.trace.Tracer
 import pillars.Loader
 import pillars.Module
+import pillars.Pillars
 import pillars.http.server.Controller
 import pillars.probes.Component
 import pillars.probes.Component.Name
@@ -27,6 +28,9 @@ final case class DB[F[_]: Async: Network: Tracer: Console](pool: Resource[F, Ses
                 override def check: F[Boolean]    = pool.use(session => session.unique(sql"select true".query(bool)))
 
     override def adminControllers: List[Controller[F]] = Nil
+
+    extension (pillars: Pillars[F])
+        def db: DB[F] = this
 end DB
 
 class DBLoader extends Loader:
