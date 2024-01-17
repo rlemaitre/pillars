@@ -36,14 +36,28 @@ outputStrategy := Some(StdoutOutput)
 lazy val core = Project("pillars-core", file("modules/core"))
     .settings(
       name := "pillars-core",
-      libraryDependencies ++= Dependencies.all
+      libraryDependencies ++= Dependencies.core
     )
+
+lazy val db = Project("pillars-db", file("modules/db"))
+    .settings(
+      name := "pillars-db",
+      libraryDependencies ++= Dependencies.database
+    )
+    .dependsOn(core)
+
+lazy val flags = Project("pillars-flags", file("modules/flags"))
+    .settings(
+      name := "pillars-flags",
+      libraryDependencies ++= Dependencies.flags
+    )
+    .dependsOn(core)
 
 lazy val example = Project("pillars-example", file("modules/example"))
     .settings(
       name := "pillars-example"
     )
-    .dependsOn(core)
+    .dependsOn(core, db, flags)
 
 lazy val docs = Project("pillars-docs", file("modules/docs"))
     .settings(

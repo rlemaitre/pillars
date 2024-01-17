@@ -1,9 +1,10 @@
-package pillars.model
+package pillars.flags
 
 import io.github.iltotore.iron.*
 import io.github.iltotore.iron.constraint.all.*
-import pillars.model.FeatureFlag.Name
-import pillars.model.FeatureFlag.Status
+import pillars.flags.FeatureFlag.Name
+import pillars.flags.FeatureFlag.Status
+
 final case class FeatureFlag(name: Name, status: Status):
     def isEnabled: Boolean = status.isEnabled
 object FeatureFlag:

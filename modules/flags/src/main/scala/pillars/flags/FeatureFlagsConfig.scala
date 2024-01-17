@@ -1,8 +1,6 @@
-package pillars.config
+package pillars.flags
 
 import io.circe.Codec
-import pillars.json.flags.given
-import pillars.model.FeatureFlag
 
 final case class FeatureFlagsConfig(
     enabled: Boolean = true,
