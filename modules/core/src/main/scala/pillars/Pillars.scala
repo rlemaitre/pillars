@@ -13,7 +13,6 @@ import pillars.admin.controllers.ProbesController
 import pillars.api.ApiServer
 import pillars.config.ConfigReader
 import pillars.config.PillarsConfig
-import pillars.http.client.HttpClient
 import pillars.logging.Log
 import pillars.observability.Observability
 import pillars.probes.ProbeManager
@@ -40,8 +39,7 @@ object Pillars:
             given Tracer[F] = obs.tracer
             _              <- Resource.eval(Log.init(_config.log))
             _logger         = ScribeImpl[F](Sync[F])
-            client         <- HttpClient.build[F]()
-            context         = Loader.Context(obs, configReader, _logger, client)
+            context         = Loader.Context(obs, configReader, _logger)
             _              <- Resource.eval(_logger.info("Loading modules..."))
             _modules       <- loadModules(context)
             probes         <- ProbeManager.build[F](_modules)

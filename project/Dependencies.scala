@@ -36,11 +36,15 @@ object Dependencies {
     val http4s: Seq[ModuleID] = Seq(
         "org.http4s" %% "http4s-core" % "0.23.24",
         "org.http4s" %% "http4s-dsl" % "0.23.24",
-        "org.http4s" %% "http4s-netty-server" % "0.5.11",
-        "org.http4s" %% "http4s-netty-client" % "0.5.11",
         "org.http4s" %% "http4s-circe" % "0.23.24"
     )
 
+    val http4sClient: Seq[ModuleID] = Seq(
+        "org.http4s" %% "http4s-netty-client" % "0.5.11",
+    )
+    val http4sServer: Seq[ModuleID] = Seq(
+        "org.http4s" %% "http4s-netty-server" % "0.5.11",
+    )
     val scodec: Seq[ModuleID] = Seq(
         "org.scodec" %% "scodec-bits" % "2.2.2",
         "org.scodec" %% "scodec-core" % "2.2.2"
@@ -83,11 +87,9 @@ object Dependencies {
         "org.tpolecat" %% "skunk-circe" % "1.1.0-M2"
         //    "dev.rolang" %% "dumbo" % "0.0.6" //enable when dumbo uses skunk 1.1.0-M2
     )
-    
-    val flags: Seq[ModuleID] = Seq.empty
 
-    val core: Seq[ModuleID] = 
-        effect ++ module ++ json ++ tapir ++ http4s ++ model ++ commandLine ++ logging ++ observability ++ tests
-    val all: Seq[ModuleID] =
-        effect ++ module ++ json ++ tapir ++ http4s ++ model ++ commandLine ++ logging ++ database ++ observability ++ tests
+    val flags: Seq[ModuleID] = Seq.empty
+    val httpClient: Seq[ModuleID] = http4sClient ++ http4s
+    val core: Seq[ModuleID] =
+        effect ++ module ++ json ++ tapir ++ http4sServer ++ model ++ commandLine ++ logging ++ observability ++ tests
 }
