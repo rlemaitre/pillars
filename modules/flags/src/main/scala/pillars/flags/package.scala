@@ -28,5 +28,5 @@ package object flags:
     extension[F[_]: Sync](pillars: Pillars[F])
         def flags: FlagManager[F] = pillars.module[FlagManager[F]]
         def whenEnabled[A](flag: FeatureFlag.Name)(thunk: => F[A]): F[Unit] =
-            pillars.flags.when(flag)(thunk)
+            pillars.module[FlagManager[F]].when(flag)(thunk)
 end flags

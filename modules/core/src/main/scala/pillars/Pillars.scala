@@ -16,6 +16,9 @@ import scala.jdk.CollectionConverters.IterableHasAsScala
 import scala.reflect.ClassTag
 import scribe.*
 
+/**
+ * The Pillars trait defines the main components of the application.
+ */
 trait Pillars[F[_]]:
     def observability: Observability[F]
     def config: PillarsConfig
@@ -25,7 +28,18 @@ trait Pillars[F[_]]:
     def module[T <: Module[F]: ClassTag]: T
 end Pillars
 
+/**
+ * The Pillars object provides methods to initialize the application.
+ */
 object Pillars:
+    /**
+     * Creates a new instance of Pillars.
+     *
+     * Modules are loaded from the classpath using the ServiceLoader mechanism, and are loaded in topological order
+     *
+     * @param path The path to the configuration file.
+     * @return a resource that will create a new instance of Pillars.
+     */
     def apply[F[_]: LiftIO: Async: Console: Network](path: Path): Resource[F, Pillars[F]] =
         val configReader = Reader[F](path)
         for
@@ -37,6 +51,7 @@ object Pillars:
             context         = Loader.Context(obs, configReader, _logger)
             _              <- Resource.eval(_logger.info("Loading modules..."))
             _modules       <- loadModules(context)
+            _              <- Resource.eval(_logger.debug(s"Loaded ${_modules.size} modules"))
             probes         <- ProbeManager.build[F](_modules)
             _              <- Spawn[F].background(probes.start())
             _              <- Spawn[F].background(
@@ -58,20 +73,24 @@ object Pillars:
         end for
     end apply
 
+    /**
+     * Loads the modules for the application.
+     *
+     * @param context The context for loading the modules.
+     * @return a resource that will instantiate the modules.
+     */
     private def loadModules[F[_]: Async: Network: Tracer: Console](context: Loader.Context[F])
         : Resource[F, Modules[F]] =
         val loaders = ServiceLoader.load(classOf[Loader])
             .asScala
             .toList
         scribe.info(s"Found ${loaders.size} module loaders: ${loaders.map(_.name).mkString(", ")}")
-        loaders
-            .map: loader =>
-                val module = loader.load[F](context)
-                module
-            .sequence
-            .map: modules =>
-                modules.foldLeft(Modules.empty): (acc, module) =>
-                    acc.add(module)
+        loaders.topologicalSort(_.dependsOn) match
+        case Left(value)  => throw IllegalStateException("Circular dependency detected in modules")
+        case Right(value) =>
+            value.foldLeftM(Modules.empty[F]): (acc, loader) =>
+                loader.load(context, acc).map(acc.add)
+        end match
     end loadModules
 
 end Pillars

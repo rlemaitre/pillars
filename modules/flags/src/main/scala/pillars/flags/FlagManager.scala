@@ -12,6 +12,7 @@ import org.typelevel.otel4s.trace.Tracer
 import pillars.Controller
 import pillars.Loader
 import pillars.Module
+import pillars.Modules
 import pillars.Pillars
 import pillars.probes.Probe
 
@@ -43,11 +44,14 @@ class FlagManagerLoader extends Loader:
     override type M[F[_]] = FlagManager[F]
     def name: String = "feature-flags"
 
-    def load[F[_]: Async: Network: Tracer: Console](context: Loader.Context[F]): Resource[F, FlagManager[F]] =
+    def load[F[_]: Async: Network: Tracer: Console](
+        context: Loader.Context[F],
+        modules: Modules[F]
+    ): Resource[F, FlagManager[F]] =
         import context.*
         Resource.eval:
             for
-                _       <- logger.info("Loading DB config")
+                _       <- logger.info("Loading Feature flags module")
                 config  <- configReader.read[FeatureFlagsConfig](name)
                 manager <-
                     if !config.enabled then Sync[F].pure(FlagManager.noop[F])
@@ -67,6 +71,7 @@ class FlagManagerLoader extends Loader:
 
                                     override def adminControllers: List[Controller[F]] = FlagController(this).pure[List]
                     end if
+                _       <- logger.info("Feature flags module loaded")
             yield manager
     end load
 end FlagManagerLoader
