@@ -1,14 +1,17 @@
-package pillars.logging
+package pillars
 
 import cats.Show
 import cats.effect.Sync
 import cats.syntax.all.*
 import io.circe.*
+import io.circe.Codec
+import io.circe.Decoder
+import io.circe.Encoder
+import io.circe.derivation.Configuration
 import io.circe.syntax.*
 import io.github.iltotore.iron.*
 import io.github.iltotore.iron.constraint.all.*
 import java.nio.file.Path
-import pillars.config.LogConfig
 import scribe.Level
 import scribe.Logger
 import scribe.file.PathBuilder
@@ -17,8 +20,8 @@ import scribe.json.ScribeCirceJsonSupport
 import scribe.writer.ConsoleWriter
 import scribe.writer.Writer
 
-object Log:
-    def init[F[_]: Sync](config: LogConfig): F[Unit] =
+object Logging:
+    def init[F[_]: Sync](config: Config): F[Unit] =
         Sync[F]
             .delay(
               Logger.root
@@ -33,13 +36,14 @@ object Log:
             )
             .void
 
-    private def writer(config: LogConfig): Writer =
+    private def writer(config: Config): Writer =
         config.format match
         case Format.Json => ScribeCirceJsonSupport.writer(config.output.writer)
         case _           => config.output.writer
 
     private type BufferSizeConstraint = Positive DescribedAs "Buffer size should be positive"
     opaque type BufferSize <: Int     = Int :| BufferSizeConstraint
+
     object BufferSize extends RefinedTypeOps[Int, BufferSizeConstraint, BufferSize]
 
     enum Format:
@@ -51,6 +55,7 @@ object Log:
         case Enhanced
         case Advanced
         case Strict
+
         def formatter: Formatter = this match
         case Format.Json     => Formatter.default
         case Format.Simple   => Formatter.simple
@@ -61,9 +66,12 @@ object Log:
         case Format.Advanced => Formatter.advanced
         case Format.Strict   => Formatter.strict
     end Format
-    object Format:
-        given Show[Format]    = Show.fromToString
+
+    private object Format:
+        given Show[Format] = Show.fromToString
+
         given Encoder[Format] = Encoder.encodeString.contramap(_.toString.toLowerCase)
+
         given Decoder[Format] = Decoder.decodeString.emap {
             case "json"     => Right(Format.Json)
             case "simple"   => Right(Format.Simple)
@@ -76,6 +84,7 @@ object Log:
             case other      => Left(s"Unknown output format: $other")
         }
     end Format
+
     enum Output:
         case Console
         case File(path: Path)
@@ -85,7 +94,7 @@ object Log:
         case Output.File(path) => scribe.file.FileWriter(PathBuilder.static(path))
     end Output
 
-    object Output:
+    private object Output:
         given Show[Output] = Show.show:
             case Console    => "console"
             case File(path) => s"file($path)"
@@ -93,6 +102,7 @@ object Log:
         given Encoder[Output] = Encoder.instance:
             case Output.File(path) => Json.obj("type" -> "file".asJson, "path" -> path.toString.asJson)
             case Output.Console    => Json.obj("type" -> "console".asJson)
+
         given Decoder[Output] = Decoder.instance: cursor =>
             cursor
                 .downField("type")
@@ -110,4 +120,22 @@ object Log:
                         yield Output.File(path)
                     case other     => Left(DecodingFailure(s"Unknown output type: $other", cursor.history))
     end Output
-end Log
+
+    final case class Config(
+        level: Level = Level.Info,
+        format: Logging.Format = Logging.Format.Enhanced,
+        output: Logging.Output = Logging.Output.Console,
+        excludeHikari: Boolean = false
+    )
+
+    object Config:
+        given Configuration = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults
+
+        given Decoder[Level] = Decoder.decodeString.emap(s => Level.get(s).toRight(s"Invalid log level $s"))
+
+        given Encoder[Level] = Encoder.encodeString.contramap(_.toString)
+
+        given Codec[Config] = Codec.AsObject.derivedConfigured
+    end Config
+
+end Logging

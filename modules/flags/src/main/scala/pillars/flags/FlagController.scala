@@ -3,15 +3,14 @@ package pillars.flags
 import cats.Functor
 import cats.syntax.all.*
 import io.github.iltotore.iron.*
+import pillars.Controller
+import pillars.Controller.HttpEndpoint
 import pillars.PillarsError
 import pillars.PillarsError.Code
 import pillars.PillarsError.ErrorNumber
 import pillars.PillarsError.Message
-import pillars.admin.views.errorView
-import pillars.flags.endpoints.*
 import pillars.flags.FlagController.FlagError
-import pillars.http.server.Controller
-import pillars.http.server.Controller.HttpEndpoint
+import pillars.flags.endpoints.*
 import sttp.model.StatusCode
 
 final case class FlagController[F[_]: Functor](manager: FlagManager[F]) extends Controller[F]:
@@ -22,7 +21,7 @@ final case class FlagController[F[_]: Functor](manager: FlagManager[F]) extends 
                 .getFlag(name)
                 .map:
                     case Some(flag) => Right(flag)
-                    case None       => errorView(FlagError.FlagNotFound(name))
+                    case None       => FlagError.FlagNotFound(name).view
 
     override def endpoints: List[HttpEndpoint[F]] = List(listAll, getOne)
 end FlagController

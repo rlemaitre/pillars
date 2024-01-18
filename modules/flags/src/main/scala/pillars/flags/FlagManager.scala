@@ -9,10 +9,10 @@ import cats.effect.std.Console
 import cats.syntax.all.*
 import fs2.io.net.Network
 import org.typelevel.otel4s.trace.Tracer
+import pillars.Controller
 import pillars.Loader
 import pillars.Module
 import pillars.Pillars
-import pillars.http.server.Controller
 import pillars.probes.Probe
 
 trait FlagManager[F[_]: Sync] extends Module[F]:
@@ -57,13 +57,15 @@ class FlagManagerLoader extends Loader:
                             .of[F, Map[Name, FeatureFlag]](flags)
                             .map: ref =>
                                 new FlagManager[F]:
-                                    def flags: F[List[FeatureFlag]]                             = ref.get.map(_.values.toList)
+                                    def flags: F[List[FeatureFlag]] = ref.get.map(_.values.toList)
+
                                     def getFlag(name: FeatureFlag.Name): F[Option[FeatureFlag]] =
                                         ref.get.map(_.get(name))
-                                    def isEnabled(flag: FeatureFlag.Name): F[Boolean]           =
+
+                                    def isEnabled(flag: FeatureFlag.Name): F[Boolean] =
                                         ref.get.map(_.get(flag).exists(_.isEnabled))
-                                    def adminControllers: List[Controller[F]]                   = FlagController(this).pure[List]
-                                    def probes: List[Probe[F]]                                  = Nil
+
+                                    override def adminControllers: List[Controller[F]] = FlagController(this).pure[List]
                     end if
             yield manager
     end load

@@ -3,17 +3,17 @@ package example
 import cats.effect.IO
 import io.github.iltotore.iron.*
 import io.github.iltotore.iron.constraint.all.*
+import pillars.App.*
 import pillars.Pillars
 import pillars.db.*
 import pillars.flags.*
-import pillars.model.*
 import skunk.*
 import skunk.codec.all.*
 import skunk.implicits.*
 
 object Main extends pillars.EntryPoint:
     def app: pillars.App[IO] = new pillars.App[IO]:
-        def name        = AppName("BookStore")
+        def name        = Name("BookStore")
         def version     = Version("0.0.1")
         def description = Description("A simple bookstore")
 
