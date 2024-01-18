@@ -4,7 +4,6 @@ import cats.effect.Async
 import cats.effect.Resource
 import cats.effect.std.Console
 import fs2.io.net.Network
-import org.http4s.client.Client
 import org.typelevel.otel4s.trace.Tracer
 import pillars.Loader.Context
 import pillars.config.ConfigReader
@@ -22,7 +21,6 @@ object Loader:
     final case class Context[F[_]: Async: Network: Tracer: Console](
         observability: Observability[F],
         configReader: ConfigReader[F],
-        logger: Scribe[F],
-        client: Client[F]
+        logger: Scribe[F]
     )
 end Loader

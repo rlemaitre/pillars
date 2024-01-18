@@ -53,6 +53,13 @@ lazy val flags = Project("pillars-flags", file("modules/flags"))
     )
     .dependsOn(core)
 
+lazy val httpClient = Project("pillars-http-client", file("modules/http-client"))
+    .settings(
+      name := "pillars-http-client",
+      libraryDependencies ++= Dependencies.httpClient
+    )
+    .dependsOn(core)
+
 lazy val example = Project("pillars-example", file("modules/example"))
     .settings(
       name := "pillars-example"
