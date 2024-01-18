@@ -7,14 +7,24 @@
         <code class="language-scala">
 import ... // import your dependencies
 
-case class BookStore(name: AppName, version: Version, description: Description) extends pillars.App[IO]:
-    override type ConfigType = BookstoreConfig
-    override def run(pillars: Pillars[IO]): IO[Unit] = ???
-    override def command: Command[IO[ExitCode]]      = ???
+object Main extends pillars.EntryPoint:
+    def app: pillars.App[IO] = new pillars.App[IO]:
+        def name        = Name("BookStore")
+        def version     = Version("0.0.1")
+        def description = Description("A simple bookstore")
 
-object Main extends pillars.EntryPoint(
-    BookStore(AppName("BookStore"), Version("0.0.1"), Description("A simple bookstore"))
-)
+        def run(pillars: Pillars[IO]): IO[Unit] =
+            import pillars.*
+            for
+                _ <- logger.info(s"📚 Welcome to \${pillars.config.name}!")
+                _ <- pillars.whenEnabled(FeatureFlag.Name("feature-1")):
+                    pillars.db.use: s =>
+                        for
+                            d <- s.unique(sql"select now()".query(timestamptz))
+                            _ <- logger.info(s"The current date is $d.")
+                        yield ()
+                _ <- pillars.apiServer.start(endpoints.all)
+            yield ()
         </code>
     </pre>
 </div>
@@ -31,32 +41,32 @@ object Main extends pillars.EntryPoint(
                 <li class="tab" data-tab="maven">Maven</li>
             </ul>
             <pre class="code tab__pane active sbt">
-                <code class="highlight language-scala">libraryDependencies ++= Seq("com.rlemaitre" %% "pillars" % "0.0.1")</code>
+                <code class="highlight language-scala">libraryDependencies ++= Seq("com.rlemaitre" %% "pillars-core" % "0.0.1")</code>
             </pre>
             <pre class="code tab__pane mill">
-                <code class="highlight language-scala">ivy"com.rlemaitre::pillars:0.0.1"</code>
+                <code class="highlight language-scala">ivy"com.rlemaitre::pillars-core:0.0.1"</code>
             </pre>
             <pre class="code tab__pane scala-cli">
-                <code class="highlight language-scala">//> using dep com.rlemaitre::pillars:0.0.1</code>
+                <code class="highlight language-scala">//> using dep com.rlemaitre::pillars-core:0.0.1</code>
             </pre>
             <pre class="code tab__pane pants">
                 <code class="highlight language-scala">
 scala_artifact(
     group="com.rlemaitre",
-    artifact="pillars",
+    artifact="pillars-core",
     version="0.0.1",
     packages=["pillars.**"],
 )
                 </code>
             </pre>
             <pre class="code tab__pane gradle">
-                <code class="highlight language-gradle">implementation 'com.rlemaitre:pillars:0.0.1'</code>
+                <code class="highlight language-gradle">implementation 'com.rlemaitre:pillars-core:0.0.1'</code>
             </pre>
             <pre class="code tab__pane maven">
                 <code class="highlight language-xml">
 &lt;dependency>
     &lt;groupId>com.rlemaitre&lt;/groupId>
-    &lt;artifactId>pillars&lt;/artifactId>
+    &lt;artifactId>pillars-core&lt;/artifactId>
     &lt;version>0.0.1&lt;/version>
 &lt;/dependency>
                 </code>
@@ -65,24 +75,28 @@ scala_artifact(
     </div>
     <div class="feature">
         <div class="feature__item">
-            <h3 class="section__title">Configuration</h3>
-            <p>I don't know what you're talking about. I am a member of the Imperial Senate on a diplomatic mission to Alderaan-- Red Five standing by. Red Five standing by. I don't know what you're talking about. I am a member of the Imperial Senate on a diplomatic mission to Alderaan--</p>
-        </div>
-        <div class="feature__item">
-            <h3 class="section__title">Database Access</h3>
-            <p>I find your lack of faith disturbing. What?! Hokey religions and ancient weapons are no match for a good blaster at your side, kid. I need your help, Luke. She needs your help. I'm getting too old for this sort of thing.</p>
+            <h3 class="section__title">Modularity</h3>
+            <p>It offers a modular structure, allowing developers to use only the components they need, resulting in efficient and streamlined applications.</p>
         </div>
         <div class="feature__item">
             <h3 class="section__title">Observability</h3>
-            <p>I'm surprised you had the courage to take the responsibility yourself. You don't believe in the Force, do you? She must have hidden the plans in the escape pod. Send a detachment down to retrieve them, and see to it personally, Commander. There'll be no one to stop us this time!</p>
+            <p>Using OpenTelemetry, Pillars includes built-in support for observability, allowing you to monitor and understand the behavior of your application. This can be crucial for identifying and resolving issues quickly.</p>
+        </div>
+        <div class="feature__item">
+            <h3 class="section__title">Performance</h3>
+            <p>Pillars uses <a href="https://netty.io">Netty</a> for HTTP servers and clients, which is known for its high performance and scalability. This can help to ensure that your application remains responsive under heavy load.</p>
         </div>
         <div class="feature__item">
             <h3 class="section__title">Admin Server</h3>
-            <p>You are a part of the Rebel Alliance and a traitor! Take her away! A tremor in the Force. The last time I felt it was in the presence of my old master. Obi-Wan is here. The Force is with him. I suggest you try it again, Luke. This time, let go your conscious self and act on instinct.</p>
+            <p>Pillars includes an admin server feature, providing a separate interface for administrative tasks. This can help to keep your main application server focused on serving user requests.</p>
+        </div>
+        <div class="feature__item">
+            <h3 class="section__title">Database Access</h3>
+            <p>Pillars provides a streamlined interface for interacting with databases. This can help to reduce the complexity of your codebase and make it easier to manage data operations.</p>
         </div>
         <div class="feature__item">
             <h3 class="section__title">Feature Flags</h3>
-            <p>But with the blast shield down, I can't even see! How am I supposed to fight? Leave that to me. Send a distress signal, and inform the Senate that all on board were killed. What!? Still, she's got a lot of spirit. I don't know, what do you think?</p>
+            <p>Pillars supports feature flags, allowing you to toggle features on and off without needing to redeploy your application. This can be particularly useful for testing new features or managing rollouts.</p>
         </div>
     </div>
     <div class="callout">
