@@ -11,7 +11,7 @@ import org.http4s.Uri
 import scala.concurrent.duration.FiniteDuration
 import scala.jdk.DurationConverters.*
 
-package object config:
+object codec:
 
     given Decoder[Host] = Decoder.decodeString.emap(t => Host.fromString(t).toRight("Failed to parse Host"))
 
@@ -31,4 +31,4 @@ package object config:
     given Encoder[FiniteDuration] = Encoder.encodeDuration.contramap(_.toJava)
 
     given Configuration = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults
-end config
+end codec

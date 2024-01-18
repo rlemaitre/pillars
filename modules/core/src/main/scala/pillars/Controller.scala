@@ -1,6 +1,6 @@
-package pillars.http.server
+package pillars
 
-import pillars.http.server.Controller.HttpEndpoint
+import pillars.Controller.HttpEndpoint
 import sttp.capabilities.fs2.Fs2Streams
 import sttp.tapir.server.ServerEndpoint
 

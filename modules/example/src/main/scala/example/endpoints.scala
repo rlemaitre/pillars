@@ -2,7 +2,7 @@ package example
 
 import cats.effect.IO
 import cats.syntax.all.*
-import pillars.http.server.Controller.HttpEndpoint
+import pillars.Controller.HttpEndpoint
 import sttp.tapir.*
 
 object endpoints:

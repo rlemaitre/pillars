@@ -1,19 +1,16 @@
-package pillars.admin
+package pillars
 
-import cats.Applicative
 import cats.effect.Async
 import cats.effect.Resource.ExitCase
 import cats.effect.kernel.Async
 import cats.syntax.all.*
-import pillars.admin.AdminServer.liveness
-import pillars.config.AdminConfig
-import pillars.http.server.Controller
-import pillars.http.server.Controller.HttpEndpoint
-import pillars.http.server.HttpServer
-import pillars.observability.Observability
+import io.circe.Codec
+import pillars.AdminServer.Config
+import pillars.PillarsError.View
+import sttp.tapir.*
 
 final case class AdminServer[F[_]: Async](
-    config: AdminConfig,
+    config: Config,
     obs: Observability[F],
     controllers: List[Controller[F]] = List.empty[Controller[F]]
 ):
@@ -24,7 +21,7 @@ final case class AdminServer[F[_]: Async](
             for
                 _ <- info(s"Starting admin server on ${config.http.host}:${config.http.port}")
                 _ <- HttpServer
-                         .build("admin", config.http, obs, controllers.foldLeft(List(liveness))(_ ++ _.endpoints))
+                         .build("admin", config.http, obs, controllers.foldLeft(List.empty)(_ ++ _.endpoints))
                          .onFinalizeCase:
                              case ExitCase.Errored(e) => error(s"Admin server stopped with error: $e")
                              case _                   => info("Admin server stopped")
@@ -35,5 +32,5 @@ final case class AdminServer[F[_]: Async](
     end start
 end AdminServer
 object AdminServer:
-    private def liveness[F[_]: Applicative]: HttpEndpoint[F] =
-        endpoints.probes.liveness.serverLogicSuccess(_ => "OK".pure[F])
+    val baseEndpoint = endpoint.in("admin").errorOut(PillarsError.View.output)
+    final case class Config(enabled: Boolean, http: HttpServer.Config) derives Codec.AsObject

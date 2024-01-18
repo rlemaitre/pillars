@@ -8,18 +8,13 @@ import io.circe.Decoder
 import java.nio.file.Path
 import java.util.ServiceLoader
 import org.typelevel.otel4s.trace.Tracer
-import pillars.admin.AdminServer
-import pillars.admin.controllers.ProbesController
-import pillars.api.ApiServer
-import pillars.config.ConfigReader
 import pillars.config.PillarsConfig
-import pillars.logging.Log
-import pillars.observability.Observability
+import pillars.config.Reader
 import pillars.probes.ProbeManager
+import pillars.probes.ProbesController
 import scala.jdk.CollectionConverters.IterableHasAsScala
 import scala.reflect.ClassTag
-import scribe.Scribe
-import scribe.ScribeImpl
+import scribe.*
 
 trait Pillars[F[_]]:
     def observability: Observability[F]
@@ -32,12 +27,12 @@ end Pillars
 
 object Pillars:
     def apply[F[_]: LiftIO: Async: Console: Network](path: Path): Resource[F, Pillars[F]] =
-        val configReader = ConfigReader[F](path)
+        val configReader = Reader[F](path)
         for
             _config        <- Resource.eval(configReader.read[PillarsConfig])
             obs            <- Resource.eval(Observability.init[F](_config.observability))
             given Tracer[F] = obs.tracer
-            _              <- Resource.eval(Log.init(_config.log))
+            _              <- Resource.eval(Logging.init(_config.log))
             _logger         = ScribeImpl[F](Sync[F])
             context         = Loader.Context(obs, configReader, _logger)
             _              <- Resource.eval(_logger.info("Loading modules..."))
