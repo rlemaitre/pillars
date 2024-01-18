@@ -1,4 +1,8 @@
-.html linguist-detectable=false
-.css linguist-detectable=false
-.js linguist-detectable=false
-.groovy linguist-detectable=false
+*.html linguist-detectable=false
+*.css linguist-detectable=false
+*.js linguist-detectable=false
+*.groovy linguist-detectable=false
+
+*.adoc linguist-documentation
+
+modules/docs/** linguist-documentation
