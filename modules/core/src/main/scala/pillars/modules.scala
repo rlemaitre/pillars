@@ -18,9 +18,13 @@ end Module
 
 case class Modules[F[_]](private val values: Map[Class[?], Module[F]]):
     def add[K <: Module[F]](value: K): Modules[F] =
-        val clazz = if value.getClass.isAnonymousClass then value.getClass.getInterfaces.head else value.getClass
+        val clazz = if value.getClass.isAnonymousClass then
+            value.getClass.getInterfaces.filterNot(_ == classOf[Module[F]]).head
+        else value.getClass
         Modules(values + (clazz -> value))
+    end add
     def get[K: ClassTag]: K                       = values(summon[ClassTag[K]].runtimeClass).asInstanceOf[K]
+    export values.size
     export values.values as all
     def probes: List[Probe[F]]                    = all.flatMap(_.probes).toList
     def adminControllers: List[Controller[F]]     = all.flatMap(_.adminControllers).toList
@@ -31,8 +35,12 @@ object Modules:
 trait Loader:
     type M[F[_]] <: Module[F]
     def name: String
+    def dependsOn: Set[Loader] = Set.empty
 
-    def load[F[_]: Async: Network: Tracer: Console](context: Loader.Context[F]): Resource[F, M[F]]
+    def load[F[_]: Async: Network: Tracer: Console](
+        context: Loader.Context[F],
+        modules: Modules[F] = Modules.empty
+    ): Resource[F, M[F]]
 end Loader
 
 object Loader:

@@ -6,6 +6,8 @@ import cats.effect.Sync
 import cats.syntax.all.*
 import io.circe.Decoder
 import io.circe.Encoder
+import io.circe.Json
+import io.circe.ParsingFailure
 import io.circe.derivation.Configuration
 import io.circe.yaml.Parser
 import io.github.iltotore.iron.*
@@ -40,29 +42,28 @@ object config:
 
         private val regex: Regex = """\$\{([^}]+)}""".r
 
-        def read[T: Decoder]: F[T] =
+        private def readConfig[T: Decoder]: Resource[F, Either[ParsingFailure, Json]] =
             Resource
                 .fromAutoCloseable(Sync[F].delay(Source.fromFile(path.toFile)))
                 .map(_.getLines().mkString("\n"))
                 .map(regex.replaceAllIn(_, matcher))
-                .use: input =>
-                    Sync[F].fromEither:
-                        Parser.default
-                            .parse(input)
-                            .leftMap: failure =>
-                                ConfigError.ParsingError(failure)
-                            .flatMap(_.as[T])
+                .map: input =>
+                    Parser.default.parse(input)
+
+        def read[T: Decoder]: F[T] =
+            readConfig[T].use: json =>
+                Sync[F].fromEither:
+                    json
+                        .leftMap(ConfigError.ParsingError.apply)
+                        .flatMap(_.as[T])
+        end read
 
         def read[T: Decoder](key: String): F[T] =
-            Resource
-                .fromAutoCloseable(Sync[F].delay(Source.fromFile(path.toFile)))
-                .map(_.getLines().mkString("\n"))
-                .map(regex.replaceAllIn(_, matcher))
-                .use: input =>
-                    Sync[F].fromEither:
-                        Parser.default.parse(input) match
-                        case Left(failure) => Left(ConfigError.ParsingError(failure))
-                        case Right(json)   => json.hcursor.downField(key).as[T].leftMap(ConfigError.ParsingError.apply)
+            readConfig[T].use: parsed =>
+                Sync[F].fromEither:
+                    parsed match
+                    case Left(failure) => Left(ConfigError.ParsingError(failure))
+                    case Right(json)   => json.hcursor.downField(key).as[T].leftMap(ConfigError.ParsingError.apply)
     end Reader
 
     final case class Redacted[T](value: T) extends AnyVal:
