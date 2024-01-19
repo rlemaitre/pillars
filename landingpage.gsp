@@ -101,6 +101,6 @@ scala_artifact(
     </div>
     <div class="callout">
         <p>Read our documentation for how to use Pillars</p>
-        <a href="user-guide/overview.html" class="button--primary">Documentation</a>
+        <a href="user-guide/" class="button--primary">Documentation</a>
     </div>
 </div>

@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="en">
+<head>
+    
+    <!-- sourceuri: contribute/10_contributing.html -->
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <meta content="INDEX, FOLLOW" name="ROBOTS">
+
+    <title>Contributing to Pillars</title>
+
+    <meta content="Pillars" property="og:title">
+    <meta content="Build your backend service in Scala 3 the easy way" property="og:description">
+    <meta content="website" property="og:type">
+    <meta content="Pillars" property="og:site_name">
+    <meta content="Pillars" itemprop="name">
+    <meta content="Build your backend service in Scala 3 the easy way" itemprop="description">
+    <meta content="summary" name="twitter:card">
+    <meta content="@rlemaitre" name="twitter:creator">
+    <meta content="Pillars" name="twitter:title">
+    <meta content="Build your backend service in Scala 3 the easy way" name="twitter:description">
+    <meta property="og:url" content="https://pillars.rlemaitre.com/" />
+    <meta property="og:title" content="Pillars" />
+    <meta property="og:description" content="Build your backend service in Scala 3 the easy way" />
+    <meta property="og:image" content="https://pillars.rlemaitre.com/images/logo.svg" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800,900" rel="stylesheet">
+    <link rel="stylesheet" href="../css/asciidoctor.css">
+    <link rel="stylesheet" href="../css/highlight/github-dark.min.css">
+    <link rel="stylesheet" href="../css/scribbler-global.css">
+    
+        <link rel="stylesheet" href="../css/scribbler-doc.css">
+    
+    <link rel="author" href="..//humans.txt">
+
+    <!-- favicon generated with https://www.favicon-generator.org/ -->
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="icon" type="image/png" href="../favicon.png">
+    <meta name="theme-color" content="#0a1322">
+</head>
+
+<body>
+
+<nav class="header">
+    <a href="../"><img src="../images/logo_without_name.svg" width="64"></a>
+    <h1 class="logo">Pillars <span class="logo__thin">Doc</span></h1>
+    <ul class="menu">
+        <div class="menu__item toggle"><span></span></div>
+
+        <li class="menu__item"><a href="../user-guide/index.html" class="link link--dark"><i class="fa fa-book"></i> User Guide</a></li>
+
+        <li class="menu__item"><a href="../contribute/10_contributing.html" class="link link--dark"><i class="fa fa-book"></i> Contribute</a></li>
+
+        <li class="menu__item"><a href="../api/" class="link link--dark"><i class="fa fa-code"></i> API</a></li>
+        <li class="menu__item"><a href="https://github.com/rlemaitre/pillars/" class="link link--dark"><i class="fa fa-github"></i> Github</a></li>
+        <li class="menu__item"><a href="../" class="link link--dark"><i class="fa fa-home"></i> Home</a></li>
+    </ul>
+</nav>
+
+<div class="wrapper">
+	<aside class="doc__nav">
+		
+        <form action="../search.html">
+            <input aria-label="Search this site…" name="q" autocomplete="off" class="" placeholder="Search this site…" type="search">
+            <button aria-expanded="false" aria-label="Toggle section navigation" class="fa fa-bars" data-toggle="collapse" type="button">
+            </button>
+        </form>
+        
+                        <ul>
+                            <li>
+                                <a class="active" href="../contribute/10_contributing.html">Contributing to Pillars</a>
+                            </li>
+                            <li>
+                                <a class="" href="../contribute/20_code_of_conduct.html">Code of Conduct</a>
+                            </li>
+                        </ul>
+
+	</aside>
+	<article class="doc__content">
+		    <nav aria-label="breadcrumb" class="d-none d-md-block d-print-none">
+        <ol class="breadcrumb spb-1">
+            <!--li aria-current="page" class="breadcrumb-item active">
+                <a href="https://example.docsy.dev/docs/">Documentation</a>
+            </li-->
+
+        </ol>
+    </nav>
+
+
+    <div class="td-content">
+        <p>
+            
+<div class="sect1">
+<h2 id="_contributing_to_pillars">Contributing to Pillars</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>First off, thanks for taking the time to contribute! ❤️</p>
+</div>
+<div class="paragraph">
+<p>All types of contributions are encouraged and valued.
+See the <a href="#toc">[toc]</a> for different ways to help and details about how this project handles them.
+Please make sure to read the relevant section before making your contribution.
+It will make it a lot easier for us maintainers and smooth out the experience for all involved.
+The community looks forward to your contributions. 🎉</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>And if you like the project, but just don&#8217;t have time to contribute, that&#8217;s fine.
+There are other easy ways to support the project and show your appreciation, which we would also be very happy about:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Star the project</p>
+</li>
+<li>
+<p>Tweet about it</p>
+</li>
+<li>
+<p>Refer this project in your project&#8217;s readme</p>
+</li>
+<li>
+<p>Mention the project at local meetups and tell your friends/colleagues</p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="code-of-conduct">Code of Conduct</h3>
+<div class="paragraph">
+<p>This project and everyone participating in it is governed by the
+<a href="https://github.com/rlemaitre/pillarsblob/master/CODE_OF_CONDUCT.md">Pillars Code of Conduct</a>.
+By participating, you are expected to uphold this code.
+Please report unacceptable behavior to <a href="mailto:pillars@rlemaitre.com">pillars@rlemaitre.com</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="i-have-a-question">I Have a Question</h3>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If you want to ask a question, we assume that you have read the available <a href="https://pillars.rlemaitre.com">Documentation</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Before you ask a question, it is best to search for existing <a href="https://github.com/rlemaitre/pillars/issues">Issues</a> that might help you.
+In case you have found a suitable issue and still need clarification, you can write your question in this issue.
+It is also advisable to search the internet for answers first.</p>
+</div>
+<div class="paragraph">
+<p>If you then still feel the need to ask a question and need clarification, we recommend the following:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Open an <a href="https://github.com/rlemaitre/pillars/issues/new">Issue</a>.</p>
+</li>
+<li>
+<p>Provide as much context as you can about what you&#8217;re running into.</p>
+</li>
+<li>
+<p>Provide project and platform versions (scala, sbt, etc), depending on what seems relevant.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>We will then take care of the issue as soon as possible.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="i-want-to-contribute">I Want To Contribute</h3>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+When contributing to this project, you must agree that you have authored 100% of the content, that you have the necessary rights to the content and that the content you contribute may be provided under the project license.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect3">
+<h4 id="reporting-bugs">Reporting Bugs</h4>
+<div class="sect4">
+<h5 id="before-submitting-a-bug-report">Before Submitting a Bug Report</h5>
+<div class="paragraph">
+<p>A good bug report shouldn&#8217;t leave others needing to chase you up for more information.
+Therefore, we ask you to investigate carefully, collect information and describe the issue in detail in your report.
+Please complete the following steps in advance to help us fix any potential bug as fast as possible.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Make sure that you are using the latest version.</p>
+</li>
+<li>
+<p>Determine if your bug is really a bug and not an error on your side e.g. using incompatible environment components/versions (Make sure that you have read the <a href="https://pillars.rlemaitre.com">documentation</a>. If you are looking for support, you might want to check <a href="#i-have-a-question">this section</a>.</p>
+</li>
+<li>
+<p>To see if other users have experienced (and potentially already solved) the same issue you are having, check if there is not already a bug report existing for your bug or error in the <a href="https://github.com/rlemaitre/pillarsissues?q=label%3Abug">bug tracker</a>.</p>
+</li>
+<li>
+<p>Also make sure to search the internet (including Stack Overflow) to see if users outside of the GitHub community have discussed the issue.</p>
+</li>
+<li>
+<p>Collect information about the bug:</p>
+</li>
+<li>
+<p>Stack trace (Traceback)</p>
+</li>
+<li>
+<p>OS, Platform and Version (Windows, Linux, macOS, x86, ARM)</p>
+</li>
+<li>
+<p>Version of the interpreter, compiler, SDK, runtime environment, package manager, depending on what seems relevant.</p>
+</li>
+<li>
+<p>Possibly your input and the output</p>
+</li>
+<li>
+<p>Can you reliably reproduce the issue? And can you also reproduce it with older versions?</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="how-do-i-submit-a-good-bug-report">How Do I Submit a Good Bug Report?</h5>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+You must never report security related issues, vulnerabilities or bugs including sensitive information to the issue tracker, or elsewhere in public.
+Instead, sensitive bugs must be sent by email to <a href="mailto:security@rlemaitre.com">security@rlemaitre.com</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>We use GitHub issues to track bugs and errors.
+If you run into an issue with the project:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Open an <a href="https://github.com/rlemaitre/pillars/issues/new">Issue</a>.
+(Since we can&#8217;t be sure at this point whether it is a bug or not, we ask you not to talk about a bug yet and not to label the issue.)</p>
+</li>
+<li>
+<p>Explain the behavior you would expect and the actual behavior.</p>
+</li>
+<li>
+<p>Please provide as much context as possible and describe the <strong>reproduction steps</strong> that someone else can follow to recreate the issue on their own.
+This usually includes your code.
+For good bug reports you should isolate the problem and create a reduced test case.</p>
+</li>
+<li>
+<p>Provide the information you collected in the previous section.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Once it&#8217;s filed:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The project team will label the issue accordingly.</p>
+</li>
+<li>
+<p>A team member will try to reproduce the issue with your provided steps.
+If there are no reproduction steps or no obvious way to reproduce the issue, the team will ask you for those steps and mark the issue as <code>needs-repro</code>.
+Bugs with the <code>needs-repro</code> tag will not be addressed until they are reproduced.</p>
+</li>
+<li>
+<p>If the team is able to reproduce the issue, it will be marked <code>needs-fix</code>, as well as possibly other tags (such as <code>critical</code>), and the issue will be left to be <a href="#your-first-code-contribution">implemented by someone</a>.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="suggesting-enhancements">Suggesting Enhancements</h4>
+<div class="paragraph">
+<p>This section guides you through submitting an enhancement suggestion for Pillars, <strong>including completely new features and minor improvements to existing functionality</strong>.
+Following these guidelines will help maintainers and the community to understand your suggestion and find related suggestions.</p>
+</div>
+<div class="sect4">
+<h5 id="before-submitting-an-enhancement">Before Submitting an Enhancement</h5>
+<div class="ulist">
+<ul>
+<li>
+<p>Make sure that you are using the latest version.</p>
+</li>
+<li>
+<p>Read the <a href="https://pillars.rlemaitre.com">documentation</a> carefully and find out if the functionality is already covered, maybe by an individual configuration.</p>
+</li>
+<li>
+<p>Perform a <a href="https://github.com/rlemaitre/pillars/issues">search</a> to see if the enhancement has already been suggested.
+If it has, add a comment to the existing issue instead of opening a new one.</p>
+</li>
+<li>
+<p>Find out whether your idea fits with the scope and aims of the project.
+It&#8217;s up to you to make a strong case to convince the project&#8217;s developers of the merits of this feature.
+Keep in mind that we want features that will be useful to the majority of our users and not just a small subset.
+If you&#8217;re just targeting a minority of users, consider writing an add-on/plugin library.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="how-do-i-submit-a-good-enhancement-suggestion">How Do I Submit a Good Enhancement Suggestion?</h5>
+<div class="paragraph">
+<p>Enhancement suggestions are tracked as <a href="https://github.com/rlemaitre/pillars/issues">GitHub issues</a>.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Use a <strong>clear and descriptive title</strong> for the issue to identify the suggestion.</p>
+</li>
+<li>
+<p>Provide a <strong>step-by-step description of the suggested enhancement</strong> in as many details as possible.</p>
+</li>
+<li>
+<p><strong>Describe the current behavior</strong> and <strong>explain which behavior you expected to see instead</strong> and why.
+At this point you can also tell which alternatives do not work for you.</p>
+</li>
+<li>
+<p><strong>Explain why this enhancement would be useful</strong> to most Pillars users.
+You may also want to point out the other projects that solved it better and which could serve as inspiration.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="your-first-code-contribution">Your First Code Contribution</h4>
+<div class="paragraph">
+<p>TBD</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="improving-the-documentation">Improving The Documentation</h4>
+<div class="paragraph">
+<p>TBD</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="style-guides">Style guides</h3>
+<div class="sect3">
+<h4 id="commit-messages">Commit Messages</h4>
+<div class="paragraph">
+<p>TBD</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="join-the-project-team">Join The Project Team</h3>
+<div class="paragraph">
+<p>TBD</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="attribution">Attribution</h3>
+<div class="paragraph">
+<p>This guide is based on the <strong>contributing-gen</strong>.
+<a href="https://github.com/bttger/contributing-gen">Make your own</a>!</p>
+</div>
+</div>
+</div>
+</div>
+        </p>
+
+        <style>
+.feedback--answer {
+    display: inline-block;
+}
+
+.feedback--answer-no {
+    margin-left: 1em;
+}
+
+.feedback--response {
+    display: none;
+    margin-top: 1em;
+}
+
+.feedback--response__visible {
+    display: block;
+}
+</style>
+
+<div class="d-print-none">
+    <h2 class="feedback--title">Feedback</h2>
+    <p class="feedback--question">Was this page helpful?</p>
+    <button class="feedback--answer feedback--answer-yes">Yes</button>
+    <button class="feedback--answer feedback--answer-no">No</button>
+    <p class="feedback--response feedback--response-yes">
+        Glad to hear it! Please <a href="https://github.com/rlemaitre/pillars/issues/new?title=Docs%3A+Feedback+for+%27Contributing+to+Pillars%27%20%F0%9F%91%8D&body=%0A%0A%5BEnter%20feedback%20here%5D%0A%0A%0A---%0A%23page:contribute/10_contributing.adoc">tell us
+    how we can improve</a>.
+    </p>
+    <p class="feedback--response feedback--response-no">
+        Sorry to hear that. Please <a href="https://github.com/rlemaitre/pillars/issues/new?title=Docs%3A+Feedback+for+%27Contributing+to+Pillars%27%20%F0%9F%91%8E&body=%0A%0A%5BEnter%20feedback%20here%5D%0A%0A%0A---%0A%23page:contribute/10_contributing.adoc">tell
+    us how we can improve</a>.
+    </p>
+</div>
+<script>
+    const yesButton = document.querySelector('.feedback--answer-yes');
+    const noButton = document.querySelector('.feedback--answer-no');
+    const yesResponse = document.querySelector('.feedback--response-yes');
+    const noResponse = document.querySelector('.feedback--response-no');
+    const disableButtons = () => {
+        yesButton.disabled = true;
+        noButton.disabled = true;
+    };
+    const sendFeedback = (value) => {
+        if (typeof ga !== 'function') return;
+        const args = {
+            command: 'send',
+            hitType: 'event',
+            category: 'Helpful',
+            action: 'click',
+            label: window.location.pathname,
+            value: value
+        };
+        ga(args.command, args.hitType, args.category, args.action, args.label, args.value);
+    };
+    yesButton.addEventListener('click', () => {
+        yesResponse.classList.add('feedback--response__visible');
+        disableButtons();
+        sendFeedback(1);
+    });
+    noButton.addEventListener('click', () => {
+        noResponse.classList.add('feedback--response__visible');
+        disableButtons();
+        sendFeedback(0);
+    });
+</script>
+
+
+        <br>
+
+        <!--div class="text-muted mt-5 pt-3 border-top">Last modified July 3, 2019: <a
+                href="https://github.com/google/docsy-example/commit/d6aa89c8b24089d7e6741030864eff209465e896">Added
+            links to user guide repo (d6aa89c)</a>
+        </div-->
+    </div>
+
+
+	</article>
+	<aside class="doc__nav pop-out">
+		
+<div class="right__nav">
+
+        <div id="toc" class="toc">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_contributing_to_pillars">Contributing to Pillars</a>
+<ul class="sectlevel2">
+<li><a href="#code-of-conduct">Code of Conduct</a></li>
+<li><a href="#i-have-a-question">I Have a Question</a></li>
+<li><a href="#i-want-to-contribute">I Want To Contribute</a></li>
+<li><a href="#style-guides">Style guides</a></li>
+<li><a href="#join-the-project-team">Join The Project Team</a></li>
+<li><a href="#attribution">Attribution</a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+
+    <ul>
+
+        <li>
+            <a href="https://github.com/rlemaitre/pillars/edit/main/docs/contribute/10_contributing.adoc" target="_blank"><i class="fa fa-edit fa-fw"></i> Improve this doc</a>
+        </li>
+
+
+        <li>
+            <a href="https://github.com/rlemaitre/pillars/issues/new?title=Docs%3A+Feedback+for+%27Contributing+to+Pillars%27&body=%0A%0A%5BEnter%20feedback%20here%5D%0A%0A%0A---%0A%23page:%20https://github.com/rlemaitre/pillars/edit/main/docs/contribute/10_contributing.adoc%0A%23branch:%20main" target="_blank">
+                <i class="fa fa-github"></i> Create an issue
+            </a>
+        </li>
+
+    </ul>
+</div>
+
+	</aside>
+</div>
+<footer class="footer">
+    <div class="row">
+        
+        <a href="https://github.com/rlemaitre/pillars" rel="noopener noreferrer" title="Twitter"><i class="fa fa-github"></i></a>
+        
+        
+        <a href="https://twitter.com/rlemaitre" rel="noopener noreferrer" title="Twitter"><i class="fa fa-twitter"></i></a>
+        
+        
+        
+        
+        <a href="mailto:mailto:pillars@rlemaitre.com" rel="noopener noreferrer" target="_blank" title="Email"><i class="fa fa-envelope"></i></a>
+        
+    </div>
+    <div class="row">built with <a href="https://doctoolchain.org">docToolchain</a> and <a href="https://jbake.org">jBake</a> <br /> theme: Custom based on <a href="https://github.com/amiechen/codrops-scribbler/">Scribbler</a></small></div>
+</footer>
+<script src="../js/highlight.min.js"></script>
+<script src="../js/languages/dockerfile.min.js"></script>
+<script src="../js/languages/gradle.min.js"></script>
+<script src="../js/languages/scala.min.js"></script>
+<script src="../js/languages/sql.min.js"></script>
+<script src="../js/languages/yaml.min.js"></script>
+<script src="../js/languages/xml.min.js"></script>
+<script>hljs.highlightAll();</script>
+<script src="../js/scribbler.js"></script>
+
+</body>
+</html>

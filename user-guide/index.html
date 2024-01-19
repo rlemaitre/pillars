@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     
-    <!-- sourceuri: user-guide/overview.html -->
+    <!-- sourceuri: user-guide/index.html -->
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
@@ -44,14 +44,17 @@
 <body>
 
 <nav class="header">
-    <img src="../images/logo_without_name.svg" width="64">
+    <a href="../"><img src="../images/logo_without_name.svg" width="64"></a>
     <h1 class="logo">Pillars <span class="logo__thin">Doc</span></h1>
     <ul class="menu">
         <div class="menu__item toggle"><span></span></div>
 
-        <li class="menu__item"><a href="../user-guide/overview.html" class="link link--dark"><i class="fa fa-book"></i> User Guide</a></li>
+        <li class="menu__item"><a href="../user-guide/index.html" class="link link--dark"><i class="fa fa-book"></i> User Guide</a></li>
 
-        <li class="menu__item"><a href="" class="link link--dark"><i class="fa fa-github"></i> Github</a></li>
+        <li class="menu__item"><a href="../contribute/10_contributing.html" class="link link--dark"><i class="fa fa-book"></i> Contribute</a></li>
+
+        <li class="menu__item"><a href="../api/" class="link link--dark"><i class="fa fa-code"></i> API</a></li>
+        <li class="menu__item"><a href="https://github.com/rlemaitre/pillars/" class="link link--dark"><i class="fa fa-github"></i> Github</a></li>
         <li class="menu__item"><a href="../" class="link link--dark"><i class="fa fa-home"></i> Home</a></li>
     </ul>
 </nav>
@@ -67,10 +70,47 @@
         
                         <ul>
                             <li>
-                                <a class="active" href="../user-guide/overview.html">Overview</a>
+                                <a class="active" href="../user-guide/index.html">Overview</a>
                             </li>
                             <li>
-                                <a class="" href="../user-guide/configuration.html">Configuration</a>
+                                <a class="" href="../user-guide/10_quick-start.html">Quick Start</a>
+                            </li>
+                            <li>
+                                features
+                        <ul>
+                            <li>
+                                <a class="" href="../user-guide/20_features/10_configuration.html">Configuration</a>
+                            </li>
+                            <li>
+                                <a class="" href="../user-guide/20_features/20_logging.html">Logging</a>
+                            </li>
+                            <li>
+                                <a class="" href="../user-guide/20_features/30_api-server.html">API Server</a>
+                            </li>
+                            <li>
+                                <a class="" href="../user-guide/20_features/40_admin-server.html">Admin Server</a>
+                            </li>
+                            <li>
+                                <a class="" href="../user-guide/20_features/50_observability.html">Observability</a>
+                            </li>
+                        </ul>
+                            </li>
+                            <li>
+                                <a class="" href="../user-guide/30_modules/index.html">Optional Modules</a>
+                        <ul>
+                            <li>
+                                <a class="" href="../user-guide/30_modules/10_db.html">Database Module</a>
+                            </li>
+                            <li>
+                                <a class="" href="../user-guide/30_modules/20_http-client.html">HTTP Client Module</a>
+                            </li>
+                            <li>
+                                <a class="" href="../user-guide/30_modules/30_flags.html">Feature Flags module</a>
+                            </li>
+                            <li>
+                                <a class="" href="../user-guide/30_modules/100_write-your-own-module.html">Write your own module</a>
+                            </li>
+                        </ul>
                             </li>
                         </ul>
 
@@ -89,7 +129,9 @@
     <div class="td-content">
         <p>
             
-<h1 id="_overview" class="sect0">Overview</h1>
+<div class="sect1">
+<h2 id="_overview">Overview</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>This library is a basis for backend applications written in Scala 3 using the TypeLevel stack.</p>
 </div>
@@ -105,9 +147,8 @@ It is a work in progress and is not ready for production use.
 </tr>
 </table>
 </div>
-<div class="sect1">
-<h2 id="_features">Features</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="_features">Features</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -131,10 +172,8 @@ It is a work in progress and is not ready for production use.
 </ul>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_usage">Usage</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="_usage">Usage</h3>
 <div class="paragraph">
 <p>This library is currently available for Scala binary version 3.3.1.</p>
 </div>
@@ -149,10 +188,8 @@ It is a work in progress and is not ready for production use.
 </div>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_dependencies">Dependencies</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="_dependencies">Dependencies</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -207,6 +244,7 @@ It is a work in progress and is not ready for production use.
 </div>
 </div>
 </div>
+</div>
         </p>
 
         <style>
@@ -234,11 +272,11 @@ It is a work in progress and is not ready for production use.
     <button class="feedback--answer feedback--answer-yes">Yes</button>
     <button class="feedback--answer feedback--answer-no">No</button>
     <p class="feedback--response feedback--response-yes">
-        Glad to hear it! Please <a href="https://github.com/rlemaitre/pillars/issues/new?title=Docs%3A+Feedback+for+%27Overview%27%20%F0%9F%91%8D&body=%0A%0A%5BEnter%20feedback%20here%5D%0A%0A%0A---%0A%23page:user-guide/overview.adoc">tell us
+        Glad to hear it! Please <a href="https://github.com/rlemaitre/pillars/issues/new?title=Docs%3A+Feedback+for+%27Overview%27%20%F0%9F%91%8D&body=%0A%0A%5BEnter%20feedback%20here%5D%0A%0A%0A---%0A%23page:user-guide/index.adoc">tell us
     how we can improve</a>.
     </p>
     <p class="feedback--response feedback--response-no">
-        Sorry to hear that. Please <a href="https://github.com/rlemaitre/pillars/issues/new?title=Docs%3A+Feedback+for+%27Overview%27%20%F0%9F%91%8E&body=%0A%0A%5BEnter%20feedback%20here%5D%0A%0A%0A---%0A%23page:user-guide/overview.adoc">tell
+        Sorry to hear that. Please <a href="https://github.com/rlemaitre/pillars/issues/new?title=Docs%3A+Feedback+for+%27Overview%27%20%F0%9F%91%8E&body=%0A%0A%5BEnter%20feedback%20here%5D%0A%0A%0A---%0A%23page:user-guide/index.adoc">tell
     us how we can improve</a>.
     </p>
 </div>
@@ -292,9 +330,9 @@ It is a work in progress and is not ready for production use.
 
         <div id="toc" class="toc">
 <div id="toctitle">Table of Contents</div>
-<ul class="sectlevel0">
-<li><a href="#_overview">Overview</a>
 <ul class="sectlevel1">
+<li><a href="#_overview">Overview</a>
+<ul class="sectlevel2">
 <li><a href="#_features">Features</a></li>
 <li><a href="#_usage">Usage</a></li>
 <li><a href="#_dependencies">Dependencies</a></li>
@@ -307,12 +345,12 @@ It is a work in progress and is not ready for production use.
     <ul>
 
         <li>
-            <a href="https://github.com/rlemaitre/pillars/edit/main/docs/user-guide/overview.adoc" target="_blank"><i class="fa fa-edit fa-fw"></i> Improve this doc</a>
+            <a href="https://github.com/rlemaitre/pillars/edit/main/docs/user-guide/index.adoc" target="_blank"><i class="fa fa-edit fa-fw"></i> Improve this doc</a>
         </li>
 
 
         <li>
-            <a href="https://github.com/rlemaitre/pillars/issues/new?title=Docs%3A+Feedback+for+%27Overview%27&body=%0A%0A%5BEnter%20feedback%20here%5D%0A%0A%0A---%0A%23page:%20https://github.com/rlemaitre/pillars/edit/main/docs/user-guide/overview.adoc%0A%23branch:%20main" target="_blank">
+            <a href="https://github.com/rlemaitre/pillars/issues/new?title=Docs%3A+Feedback+for+%27Overview%27&body=%0A%0A%5BEnter%20feedback%20here%5D%0A%0A%0A---%0A%23page:%20https://github.com/rlemaitre/pillars/edit/main/docs/user-guide/index.adoc%0A%23branch:%20main" target="_blank">
                 <i class="fa fa-github"></i> Create an issue
             </a>
         </li>
