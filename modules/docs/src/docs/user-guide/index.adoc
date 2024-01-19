@@ -1,20 +1,18 @@
-= Overview
+== Overview
 :toc: preamble
 :icons: font
-:jbake-menu: User Guide
 :jbake-type: page
 :jbake-title: Overview
 :jbake-status: published
-:jbake-order: 1
 ifndef::imagesdir[]
-:imagesdir: images
+:imagesdir: ../images
 endif::imagesdir[]
 
 This library is a basis for backend applications written in Scala 3 using the TypeLevel stack.
 
 IMPORTANT: It is a work in progress and is not ready for production use.
 
-== Features
+=== Features
 
 - Admin server
 - Configuration
@@ -23,7 +21,7 @@ IMPORTANT: It is a work in progress and is not ready for production use.
 - Logging
 - OpenTelemetry-based observability
 
-== Usage
+=== Usage
 
 This library is currently available for Scala binary version 3.3.1.
 
@@ -36,7 +34,7 @@ libraryDependencies ++= Seq(
 )
 --
 
-== Dependencies
+=== Dependencies
 
 * link:https://github.com/typelevel/cats[Cats]
 * link:https://github.com/typelevel/cats-collections[Cats collections]

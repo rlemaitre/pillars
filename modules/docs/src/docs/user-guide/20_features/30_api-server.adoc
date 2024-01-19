@@ -1,0 +1,15 @@
+== API Server
+:project-name: Pillars
+:author: {project-name} Team
+:toc: preamble
+:icons: font
+:jbake-type: page
+:jbake-status: published
+
+ifndef::projectRootDir[]
+:projectRootDir: ../../../../../..
+endif::projectRootDir[]
+
+[NOTE]
+This documentation needs to be written.
+You can help us by xref:../../contribute/10_contributing.adoc[contributing to the documentation].

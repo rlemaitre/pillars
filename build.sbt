@@ -1,6 +1,7 @@
 import org.typelevel.scalacoptions.{ScalaVersion, ScalacOptions}
 
 name                             := "pillars"
+ThisBuild / homepage             := Some(url("https://pillars.rlemaitre.com/"))
 ThisBuild / organization         := "com.rlemaitre"
 ThisBuild / organizationName     := "Raphaël Lemaitre"
 ThisBuild / organizationHomepage := Some(url("https://rlemaitre.com/"))
@@ -28,6 +29,7 @@ Compile / scalacOptions ++= ScalacOptions.tokensForVersion(
     ScalacOptions.lint
   ) ++ ScalacOptions.privateWarnOptions ++ ScalacOptions.privateWarnUnusedOptions
 ) ++ Seq("-new-syntax", "-Xmax-inlines=128")
+
 
 enablePlugins(ScalaUnidocPlugin)
 
@@ -74,8 +76,17 @@ lazy val docs = Project("pillars-docs", file("modules/docs"))
 
 lazy val pillars = project
     .in(file("."))
+    .aggregate(core, example, docs, db, flags, httpClient)
     .settings(
-      name            := "pillars",
-      publishArtifact := false
+        name            := "pillars",
+        publishArtifact := false,
+        ScalaUnidoc / unidoc / unidocProjectFilter := inAnyProject -- inProjects(example, docs),
+        ScalaUnidoc / unidoc / target := file("target/microsite/output/api"),
+        ScalaUnidoc / unidoc / scalacOptions ++= Seq(
+            "-project", name.value,
+            "-project-version", version.value,
+            "-project-logo", "modules/docs/src/docs/images/logo.png",
+            //    "-source-links:github://rlemaitre/pillars",
+            "-social-links:github::https://rlemaitre.github.io/pillars",
+        )
     )
-    .aggregate(core, example, docs)

@@ -1,0 +1,13 @@
+== Quick Start
+:toc: preamble
+:icons: font
+:jbake-type: page
+:jbake-title: Quick Start
+:jbake-status: published
+ifndef::imagesdir[]
+:imagesdir: ../images
+endif::imagesdir[]
+
+[NOTE]
+This documentation needs to be written.
+You can help us by xref:../../contribute/10_contributing.adoc[contributing to the documentation].
