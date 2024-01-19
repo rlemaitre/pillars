@@ -1,0 +1,18 @@
+== Database module
+:project-name: Pillars
+:author: {project-name} Team
+:toc: preamble
+:icons: font
+:jbake-type: page
+:jbake-title: Database Module
+:jbake-status: published
+ifndef::imagesdir[]
+:imagesdir: ../../images
+endif::imagesdir[]
+ifndef::projectRootDir[]
+:projectRootDir: ../../../../../..
+endif::projectRootDir[]
+
+[NOTE]
+This documentation needs to be written.
+You can help us by xref:../../contribute/10_contributing.adoc[contributing to the documentation].

@@ -21,6 +21,8 @@
 <%
         }
 %>
+        <li class="menu__item"><a href="${content.rootpath}api/" class="link link--dark"><i class="fa fa-code"></i> API</a></li>
+        <li class="menu__item"><a href="https://github.com/rlemaitre/pillars/" class="link link--dark"><i class="fa fa-github"></i> Github</a></li>
         <li class="menu__item"><a href="" class="link link--dark"><i class="fa fa-github"></i> Github</a></li>
         <li class="menu__item">
             <form action="${content.rootpath}search.html">

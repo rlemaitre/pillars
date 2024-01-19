@@ -1,28 +1,25 @@
-= Configuration
+== Configuration
 :project-name: Pillars
 :author: {project-name} Team
 :toc: preamble
 :icons: font
-:jbake-menu: User Guide
 :jbake-type: page
-:jbake-title: Configuration
 :jbake-status: published
-:jbake-order: 2
 
 ifndef::projectRootDir[]
-:projectRootDir: ../../../
+:projectRootDir: ../../../../../..
 endif::projectRootDir[]
 
 {project-name} is configured using link:https://yaml.org/spec/1.2.2/[YAML v1.2] files.
 
-== {project-name} Configuration
+=== {project-name} Configuration
 
 Pillars configuration is structured as follows:
 
 [source,yaml]
 ----
-include::examples/config.yaml[tag=pillars]
+include::{projectRootDir}/modules/example/src/main/resources/config.yaml[tag=pillars]
 ----
 
-== Application Configuration
+=== Application Configuration
 

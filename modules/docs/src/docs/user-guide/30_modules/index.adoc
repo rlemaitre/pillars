@@ -1,0 +1,44 @@
+== Modules
+:project-name: Pillars
+:author: {project-name} Team
+:toc: preamble
+:icons: font
+:jbake-type: page
+:jbake-title: Optional Modules
+:jbake-status: published
+
+ifndef::projectRootDir[]
+:projectRootDir: ../../../../../
+endif::projectRootDir[]
+
+{project-name} includes several optional modules:
+
+- <<Database>>
+- <<HTTP Client>>
+- <<Feature Flags>>
+
+=== Database
+
+The database module provides a simple abstraction over the database access layer.
+It is based on the skunk library and provides a simple interface to execute queries and transactions.
+
+xref:10_db.adoc[Read more]
+
+=== HTTP Client
+
+The HTTP Client module provides a simple abstraction over the HTTP client layer.
+It is based on the http4s library using Netty and provides a simple interface to execute HTTP requests.
+
+xref:20_http-client.adoc[Read more]
+
+=== Feature Flags
+
+The Feature Flags module provides a simple abstraction over the feature flags layer.
+
+xref:30_flags.adoc[Read more]
+
+=== Write your own module
+
+You can easily write your own module by implementing the `Module` trait.
+
+xref:100_write-your-own-module.adoc[Read more]
