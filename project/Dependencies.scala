@@ -57,7 +57,7 @@ object Dependencies {
         "com.softwaremill.sttp.tapir" %% "tapir-iron" % "1.9.6",
         "com.softwaremill.sttp.tapir" %% "tapir-http4s-client" % "1.9.1" % Test,
         "com.softwaremill.sttp.tapir" %% "tapir-sttp-stub-server" % "1.9.1" % Test,
-        "com.softwaremill.sttp.client3" %% "core" % "3.9.1" % Test
+        "com.softwaremill.sttp.client3" %% "core" % "3.9.2" % Test
         //    "com.softwaremill.sttp.tapir"   %% "tapir-swagger-ui-bundle" % "1.9.1",
     )
 
