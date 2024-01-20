@@ -74,18 +74,18 @@ var documents = [
 
 {
     "id": 9,
-    "uri": "user-guide/30_modules/20_http-client.html",
-    "menu": "user-guide",
-    "title": "HTTP Client Module",
-    "text": " Table of Contents HTTP Client module HTTP Client module This documentation needs to be written. You can help us by contributing to the documentation . "
-},
-
-{
-    "id": 10,
     "uri": "user-guide/30_modules/100_write-your-own-module.html",
     "menu": "user-guide",
     "title": "Write your own module",
     "text": " Table of Contents Write your own module Write your own module This documentation needs to be written. You can help us by contributing to the documentation . "
+},
+
+{
+    "id": 10,
+    "uri": "user-guide/30_modules/20_http-client.html",
+    "menu": "user-guide",
+    "title": "HTTP Client Module",
+    "text": " Table of Contents HTTP Client module HTTP Client module This documentation needs to be written. You can help us by contributing to the documentation . "
 },
 
 {
