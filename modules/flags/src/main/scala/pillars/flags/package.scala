@@ -24,9 +24,9 @@ package object flags:
 
     given Codec[FeatureFlag] = Codec.AsObject.derived
 
-    given Schema[FeatureFlag]     = Schema.derived
-    extension[F[_]: Sync](pillars: Pillars[F])
-        def flags: FlagManager[F] = pillars.module[FlagManager[F]]
+    given Schema[FeatureFlag] = Schema.derived
+    extension [F[_]: Sync](pillars: Pillars[F])
+        def flags: FlagManager[F]                                           = pillars.module[FlagManager[F]]
         def whenEnabled[A](flag: FeatureFlag.Name)(thunk: => F[A]): F[Unit] =
             pillars.module[FlagManager[F]].when(flag)(thunk)
 end flags
