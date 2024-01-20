@@ -1,12 +1,3 @@
----
-name: Pull Request
-about: Submit a pull request to help us improve
-title: ''
-labels: ''
-assignees: ''
-
----
-
 ## Describe the changes
 A clear and concise description of what the changes are.
 
