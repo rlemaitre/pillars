@@ -12,7 +12,11 @@ import io.github.iltotore.iron.*
 import io.github.iltotore.iron.circe.given
 import io.github.iltotore.iron.constraint.all.*
 import org.typelevel.otel4s.trace.Tracer
-import pillars.{Controller, Loader, Module, Modules, Pillars}
+import pillars.Controller
+import pillars.Loader
+import pillars.Module
+import pillars.Modules
+import pillars.Pillars
 import pillars.codec.given
 import pillars.config.*
 import pillars.probes.*
