@@ -2,8 +2,8 @@ import sbt.*
 object Dependencies {
     val effect: Seq[ModuleID] = Seq(
         "org.typelevel" %% "cats-core" % "2.10.0",
-        "org.typelevel" %% "cats-effect" % "3.5.2",
-        "co.fs2" %% "fs2-core" % "3.7.0",
+        "org.typelevel" %% "cats-effect" % "3.5.3",
+        "co.fs2" %% "fs2-core" % "3.9.4",
         "org.typelevel" %% "cats-collections-core" % "0.9.8",
         "org.typelevel" %% "cats-time" % "0.5.1",
         "org.typelevel" %% "mouse" % "1.2.2"
@@ -57,7 +57,7 @@ object Dependencies {
         "com.softwaremill.sttp.tapir" %% "tapir-iron" % "1.9.6",
         "com.softwaremill.sttp.tapir" %% "tapir-http4s-client" % "1.9.6" % Test,
         "com.softwaremill.sttp.tapir" %% "tapir-sttp-stub-server" % "1.9.6" % Test,
-        "com.softwaremill.sttp.client3" %% "core" % "3.9.1" % Test
+        "com.softwaremill.sttp.client3" %% "core" % "3.9.2" % Test
         //    "com.softwaremill.sttp.tapir"   %% "tapir-swagger-ui-bundle" % "1.9.1",
     )
 

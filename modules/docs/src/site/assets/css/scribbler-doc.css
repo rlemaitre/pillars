@@ -1,139 +1,148 @@
 html, body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 /* layout */
 .header {
-  border-bottom: 1px solid var(--code-bg-color);
-  grid-template-columns: 1fr 150px 60% 1fr;
+    border-bottom: 1px solid var(--code-bg-color);
+    grid-template-columns: 1fr 150px 60% 1fr;
+    margin: 1rem 0 0 1rem;
 }
 
 .wrapper {
-  width: 100%;
-  display: flex;
-  flex-grow: 1;
-  justify-content: space-between;
+    width: 100%;
+    display: flex;
+    flex-grow: 1;
+    justify-content: space-between;
+    margin: 1rem 0 0 1rem;
 }
 
 /* logo */
 .logo {
-  margin: 1rem 0 0 1rem;
-  font-weight: 900;
-  color: var(--primary-color);
-  font-size: 1.4em;
-  grid-column: 2;
+    margin: 1rem 0 0 1rem;
+    font-weight: 900;
+    color: var(--primary-color);
+    font-size: 1.4em;
+    grid-column: 2;
 }
 
 .logo__thin {
-  font-weight: 300;
+    font-weight: 300;
 }
 
 /* menu */
 .menu {
-  grid-template-columns: 1fr 180px 60% 1fr;
+    grid-template-columns: 1fr 180px 60% 1fr;
 }
 
 .menu__item {
-  padding: 1.5rem 1rem;
+    padding: 1.5rem 1rem;
 }
 
 /* doc */
 .doc__bg {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 28%;
-  background-color: var(--bg-color);
-  z-index: -1;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 28%;
+    background-color: var(--bg-color);
+    z-index: -1;
 }
 
 .doc__nav {
-  flex-basis: 20%;
-  font-weight: 200;
+    flex-basis: 20%;
+    font-weight: 200;
 }
+
 .pop-out {
-  margin-right: auto;
-  margin-left: 20px;
+    margin-right: auto;
+    margin-left: 20px;
 }
 
 .pop-out ul {
-  margin-left: 0;
+    margin-left: 0;
 }
 
 .pop-out .right__nav {
-  position: fixed;
-  margin-top: 3rem;
-  border: 1px solid var(--code-bg-color);
-  padding: 0.2rem;
+    position: fixed;
+    margin-top: 3rem;
+    /*border: 1px solid var(--code-bg-color);*/
+    padding: 0.2rem;
 }
 
 .doc__nav ul {
-  list-style: none;
-  padding-left: 0;
-  line-height: 1.8;
+    list-style: none;
+    padding-left: 0;
+    line-height: 1.8;
 }
 
 .doc__nav ul.fixed {
-  position: fixed;
-  top: 2rem;
+    position: fixed;
+    top: 2rem;
 }
 
 .doc__nav li:hover {
-  color: var(--primary-color-light);
-  cursor: pointer;
-  transition: color .3s ease-in-out;
+    color: var(--primary-color-light);
+    cursor: pointer;
+    transition: color .3s ease-in-out;
 }
+
 #toctitle {
-  color: var(--primary-color);
-  font-size: 1.2rem;
-  font-weight: 300;
-  margin-bottom: 1rem;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    font-weight: 300;
+    margin-bottom: 1rem;
 }
 
 .doc__nav .selected {
-  color: var(--accent-color);
-  position: relative;
+    color: var(--accent-color);
+    position: relative;
 }
 
 .doc__nav .selected:after {
-  position: absolute;
-  content: "";
-  width: 1rem;
-  height: 1rem;
-  background-color: var(--accent-color);
-  left: -1.5rem;
-  top: 0.3rem;
+    position: absolute;
+    content: "";
+    width: 1rem;
+    height: 1rem;
+    background-color: var(--accent-color);
+    left: -1.5rem;
+    top: 0.3rem;
 }
 
 .doc__content {
-  flex-basis: 80%;
-  padding: 0 0 5rem 1rem;
+    flex-basis: 80%;
+    padding: 0 0 5rem 1rem;
 }
 
 @media (max-width: 750px) {
-  .wrapper {
-    flex-direction: column;
-  }
-  .doc__content {
-    padding-left: 0;
-  }
-  .doc__nav ul {
-    border-bottom: 1px solid var(--code-bg-color);
-    padding-bottom: 0.5rem;
-  }
-  .doc__nav ul.fixed {
-    /* neutralized the fixed menu for mobile*/
-    position: relative;
-    top: 0;
-  }
-  .doc__nav li {
-    display: inline-block;
-    padding-right: 1rem;
-  }
-  .doc__nav .selected:after {
-    display: none;
-  }
+    .wrapper {
+        flex-direction: column;
+    }
+
+    .doc__content {
+        padding-left: 0;
+    }
+
+    .doc__nav ul {
+        /*border-bottom: 1px solid var(--code-bg-color);*/
+        padding-bottom: 0.5rem;
+    }
+
+    .doc__nav ul.fixed {
+        /* neutralized the fixed menu for mobile*/
+        position: relative;
+        top: 0;
+    }
+
+    .doc__nav li {
+        display: inline-block;
+        padding-right: 1rem;
+    }
+
+    .doc__nav .selected:after {
+        display: none;
+    }
 }
