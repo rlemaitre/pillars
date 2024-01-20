@@ -8,3 +8,7 @@ addSbtPlugin("org.scalameta"       % "sbt-scalafmt"     % "2.5.2")
 
 // documentation
 addSbtPlugin("com.github.sbt" % "sbt-unidoc"           % "0.5.0")
+
+addSbtPlugin("org.typelevel" % "sbt-typelevel" % "0.6.4")
+addSbtPlugin("org.typelevel" % "sbt-typelevel-mergify" % "0.6.4")
+

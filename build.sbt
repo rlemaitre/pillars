@@ -1,20 +1,17 @@
 import org.typelevel.scalacoptions.{ScalaVersion, ScalacOptions}
 
 name                             := "pillars"
+ThisBuild / tlBaseVersion        := "0.0"
 ThisBuild / homepage             := Some(url("https://pillars.rlemaitre.com/"))
 ThisBuild / organization         := "com.rlemaitre"
 ThisBuild / organizationName     := "Raphaël Lemaitre"
 ThisBuild / organizationHomepage := Some(url("https://rlemaitre.com/"))
 ThisBuild / startYear            := Some(2023)
 ThisBuild / licenses             := Seq(License.Apache2)
-ThisBuild / developers           := List(
-  Developer(
-    id = "rlemaitre",
-    name = "Raphaël Lemaitre",
-    email = "raphael@rlemaitre.com",
-    url = url("https://rlemaitre.com/")
-  )
+ThisBuild / developers           ++= List(
+    tlGitHubDev("rlemaitre", "Raphaël Lemaitre")
 )
+ThisBuild / tlSonatypeUseLegacyHost := false
 ThisBuild / scalaVersion         := "3.3.1"
 
 javaOptions += "-Dotel.java.global-autoconfigure.enabled=true"
@@ -31,7 +28,28 @@ Compile / scalacOptions ++= ScalacOptions.tokensForVersion(
 ) ++ Seq("-new-syntax", "-Xmax-inlines=128")
 
 
-enablePlugins(ScalaUnidocPlugin)
+enablePlugins(ScalaUnidocPlugin, MergifyPlugin)
+
+ThisBuild / mergifyPrRules := {
+    val authorCondition = MergifyCondition.Or(
+        List(
+            MergifyCondition.Custom("author=scala-steward"),
+            MergifyCondition.Custom("author=scala-steward-dev")
+        )
+    )
+    Seq(
+        MergifyPrRule(
+            "label scala-steward's PRs",
+            List(authorCondition),
+            List(MergifyAction.Label(List("dependency-update")))
+        ),
+        MergifyPrRule(
+            "merge scala-steward's PRs",
+            List(authorCondition) ++ mergifySuccessConditions.value,
+            List(MergifyAction.Merge(Some("merge")))
+        )
+    )
+}
 
 outputStrategy := Some(StdoutOutput)
 
@@ -66,6 +84,7 @@ lazy val example = Project("pillars-example", file("modules/example"))
     .settings(
       name := "pillars-example"
     )
+    .enablePlugins(NoPublishPlugin)
     .dependsOn(core, db, flags)
 
 lazy val docs = Project("pillars-docs", file("modules/docs"))
