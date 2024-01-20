@@ -53,25 +53,28 @@ class FlagManagerLoader extends Loader:
             for
                 _       <- logger.info("Loading Feature flags module")
                 config  <- configReader.read[FeatureFlagsConfig](name)
-                manager <-
-                    if !config.enabled then Sync[F].pure(FlagManager.noop[F])
-                    else
-                        val flags = config.flags.groupBy(_.name).map((name, flags) => name -> flags.head)
-                        Ref
-                            .of[F, Map[Name, FeatureFlag]](flags)
-                            .map: ref =>
-                                new FlagManager[F]:
-                                    def flags: F[List[FeatureFlag]] = ref.get.map(_.values.toList)
-
-                                    def getFlag(name: FeatureFlag.Name): F[Option[FeatureFlag]] =
-                                        ref.get.map(_.get(name))
-
-                                    def isEnabled(flag: FeatureFlag.Name): F[Boolean] =
-                                        ref.get.map(_.get(flag).exists(_.isEnabled))
-
-                                    override def adminControllers: List[Controller[F]] = FlagController(this).pure[List]
-                    end if
+                manager <- createManager(config)
                 _       <- logger.info("Feature flags module loaded")
             yield manager
     end load
+
+    private def createManager[F[_]: Async: Network: Tracer: Console](config: FeatureFlagsConfig): F[FlagManager[F]] =
+        if !config.enabled then Sync[F].pure(FlagManager.noop[F])
+        else
+            val flags = config.flags.groupBy(_.name).map((name, flags) => name -> flags.head)
+            Ref
+                .of[F, Map[Name, FeatureFlag]](flags)
+                .map: ref =>
+                    new FlagManager[F]:
+                        def flags: F[List[FeatureFlag]] = ref.get.map(_.values.toList)
+
+                        def getFlag(name: Name): F[Option[FeatureFlag]] =
+                            ref.get.map(_.get(name))
+
+                        def isEnabled(flag: Name): F[Boolean] =
+                            ref.get.map(_.get(flag).exists(_.isEnabled))
+
+                        override def adminControllers: List[Controller[F]] = FlagController(this).pure[List]
+        end if
+    end createManager
 end FlagManagerLoader
