@@ -38,9 +38,4 @@
         return result
     }
 %>
-        <form action="${content.rootpath}search.html">
-            <input aria-label="Search this site…" name="q" autocomplete="off" class="" placeholder="Search this site…" type="search">
-            <button aria-expanded="false" aria-label="Toggle section navigation" class="fa fa-bars" data-toggle="collapse" type="button">
-            </button>
-        </form>
         <%= printMenu(content, 0, menu) %>
