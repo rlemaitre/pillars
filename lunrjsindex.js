@@ -10,14 +10,6 @@ var documents = [
 
 {
     "id": 1,
-    "uri": "user-guide/20_features/50_observability.html",
-    "menu": "user-guide",
-    "title": "Observability",
-    "text": " Table of Contents Observability Observability This documentation needs to be written. You can help us by contributing to the documentation . "
-},
-
-{
-    "id": 2,
     "uri": "user-guide/20_features/30_api-server.html",
     "menu": "user-guide",
     "title": "API Server",
@@ -25,7 +17,23 @@ var documents = [
 },
 
 {
+    "id": 2,
+    "uri": "user-guide/20_features/50_observability.html",
+    "menu": "user-guide",
+    "title": "Observability",
+    "text": " Table of Contents Observability Observability This documentation needs to be written. You can help us by contributing to the documentation . "
+},
+
+{
     "id": 3,
+    "uri": "user-guide/20_features/40_admin-server.html",
+    "menu": "user-guide",
+    "title": "Admin Server",
+    "text": " Table of Contents Admin Server Admin Server This documentation needs to be written. You can help us by contributing to the documentation . "
+},
+
+{
+    "id": 4,
     "uri": "user-guide/20_features/20_logging.html",
     "menu": "user-guide",
     "title": "Logging",
@@ -33,7 +41,7 @@ var documents = [
 },
 
 {
-    "id": 4,
+    "id": 5,
     "uri": "user-guide/20_features/10_configuration.html",
     "menu": "user-guide",
     "title": "Configuration",
@@ -41,19 +49,11 @@ var documents = [
 },
 
 {
-    "id": 5,
+    "id": 6,
     "uri": "user-guide/30_modules/index.html",
     "menu": "user-guide",
     "title": "Optional Modules",
     "text": " Table of Contents Modules Database HTTP Client Feature Flags Write your own module Modules Pillars includes several optional modules: Database HTTP Client Feature Flags Database The database module provides a simple abstraction over the database access layer. It is based on the skunk library and provides a simple interface to execute queries and transactions. Read more HTTP Client The HTTP Client module provides a simple abstraction over the HTTP client layer. It is based on the http4s library using Netty and provides a simple interface to execute HTTP requests. Read more Feature Flags The Feature Flags module provides a simple abstraction over the feature flags layer. Read more Write your own module You can easily write your own module by implementing the Module trait. Read more "
-},
-
-{
-    "id": 6,
-    "uri": "user-guide/20_features/40_admin-server.html",
-    "menu": "user-guide",
-    "title": "Admin Server",
-    "text": " Table of Contents Admin Server Admin Server This documentation needs to be written. You can help us by contributing to the documentation . "
 },
 
 {
