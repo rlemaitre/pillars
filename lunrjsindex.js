@@ -10,14 +10,6 @@ var documents = [
 
 {
     "id": 1,
-    "uri": "user-guide/20_features/30_api-server.html",
-    "menu": "user-guide",
-    "title": "API Server",
-    "text": " Table of Contents API Server API Server This documentation needs to be written. You can help us by contributing to the documentation . "
-},
-
-{
-    "id": 2,
     "uri": "user-guide/20_features/50_observability.html",
     "menu": "user-guide",
     "title": "Observability",
@@ -25,19 +17,27 @@ var documents = [
 },
 
 {
-    "id": 3,
-    "uri": "user-guide/20_features/40_admin-server.html",
+    "id": 2,
+    "uri": "user-guide/20_features/30_api-server.html",
     "menu": "user-guide",
-    "title": "Admin Server",
-    "text": " Table of Contents Admin Server Admin Server This documentation needs to be written. You can help us by contributing to the documentation . "
+    "title": "API Server",
+    "text": " Table of Contents API Server API Server This documentation needs to be written. You can help us by contributing to the documentation . "
 },
 
 {
-    "id": 4,
+    "id": 3,
     "uri": "user-guide/20_features/20_logging.html",
     "menu": "user-guide",
     "title": "Logging",
     "text": " Table of Contents Logging Logging This documentation needs to be written. You can help us by contributing to the documentation . "
+},
+
+{
+    "id": 4,
+    "uri": "user-guide/20_features/40_admin-server.html",
+    "menu": "user-guide",
+    "title": "Admin Server",
+    "text": " Table of Contents Admin Server Admin Server This documentation needs to be written. You can help us by contributing to the documentation . "
 },
 
 {
@@ -50,18 +50,18 @@ var documents = [
 
 {
     "id": 6,
-    "uri": "user-guide/30_modules/index.html",
-    "menu": "user-guide",
-    "title": "Optional Modules",
-    "text": " Table of Contents Modules Database HTTP Client Feature Flags Write your own module Modules Pillars includes several optional modules: Database HTTP Client Feature Flags Database The database module provides a simple abstraction over the database access layer. It is based on the skunk library and provides a simple interface to execute queries and transactions. Read more HTTP Client The HTTP Client module provides a simple abstraction over the HTTP client layer. It is based on the http4s library using Netty and provides a simple interface to execute HTTP requests. Read more Feature Flags The Feature Flags module provides a simple abstraction over the feature flags layer. Read more Write your own module You can easily write your own module by implementing the Module trait. Read more "
-},
-
-{
-    "id": 7,
     "uri": "user-guide/10_quick-start.html",
     "menu": "user-guide",
     "title": "Quick Start",
     "text": " Table of Contents Quick Start Quick Start This documentation needs to be written. You can help us by contributing to the documentation . "
+},
+
+{
+    "id": 7,
+    "uri": "user-guide/30_modules/index.html",
+    "menu": "user-guide",
+    "title": "Optional Modules",
+    "text": " Table of Contents Modules Database HTTP Client Feature Flags Write your own module Modules Pillars includes several optional modules: Database HTTP Client Feature Flags Database The database module provides a simple abstraction over the database access layer. It is based on the skunk library and provides a simple interface to execute queries and transactions. Read more HTTP Client The HTTP Client module provides a simple abstraction over the HTTP client layer. It is based on the http4s library using Netty and provides a simple interface to execute HTTP requests. Read more Feature Flags The Feature Flags module provides a simple abstraction over the feature flags layer. Read more Write your own module You can easily write your own module by implementing the Module trait. Read more "
 },
 
 {
@@ -82,18 +82,18 @@ var documents = [
 
 {
     "id": 10,
-    "uri": "user-guide/30_modules/10_db.html",
-    "menu": "user-guide",
-    "title": "Database Module",
-    "text": " Table of Contents Database module Database module This documentation needs to be written. You can help us by contributing to the documentation . "
-},
-
-{
-    "id": 11,
     "uri": "user-guide/30_modules/100_write-your-own-module.html",
     "menu": "user-guide",
     "title": "Write your own module",
     "text": " Table of Contents Write your own module Write your own module This documentation needs to be written. You can help us by contributing to the documentation . "
+},
+
+{
+    "id": 11,
+    "uri": "user-guide/30_modules/10_db.html",
+    "menu": "user-guide",
+    "title": "Database Module",
+    "text": " Table of Contents Database module Database module This documentation needs to be written. You can help us by contributing to the documentation . "
 },
 
 {
