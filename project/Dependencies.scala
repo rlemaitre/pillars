@@ -3,7 +3,7 @@ object Dependencies {
     val effect: Seq[ModuleID] = Seq(
         "org.typelevel" %% "cats-core" % "2.10.0",
         "org.typelevel" %% "cats-effect" % "3.5.3",
-        "co.fs2" %% "fs2-core" % "3.7.0",
+        "co.fs2" %% "fs2-core" % "3.9.4",
         "org.typelevel" %% "cats-collections-core" % "0.9.8",
         "org.typelevel" %% "cats-time" % "0.5.1",
         "org.typelevel" %% "mouse" % "1.2.2"
