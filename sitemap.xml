@@ -22,12 +22,12 @@
     </url>
 
     <url>
-    	<loc>http://jbake.org/user-guide/20_features/40_admin-server.html</loc>
+    	<loc>http://jbake.org/user-guide/20_features/10_configuration.html</loc>
     	<lastmod>2024-01-20</lastmod>
     </url>
 
     <url>
-    	<loc>http://jbake.org/user-guide/20_features/10_configuration.html</loc>
+    	<loc>http://jbake.org/user-guide/20_features/40_admin-server.html</loc>
     	<lastmod>2024-01-20</lastmod>
     </url>
 
@@ -52,12 +52,12 @@
     </url>
 
     <url>
-    	<loc>http://jbake.org/user-guide/30_modules/100_write-your-own-module.html</loc>
+    	<loc>http://jbake.org/user-guide/30_modules/10_db.html</loc>
     	<lastmod>2024-01-20</lastmod>
     </url>
 
     <url>
-    	<loc>http://jbake.org/user-guide/30_modules/10_db.html</loc>
+    	<loc>http://jbake.org/user-guide/30_modules/100_write-your-own-module.html</loc>
     	<lastmod>2024-01-20</lastmod>
     </url>
 
