@@ -4,10 +4,101 @@
 :jbake-type: page
 :jbake-title: Quick Start
 :jbake-status: published
+
 ifndef::imagesdir[]
 :imagesdir: ../images
 endif::imagesdir[]
+ifndef::projectRootDir[]
+:projectRootDir: ../../../../..
+endif::projectRootDir[]
 
 [NOTE]
 This documentation needs to be written.
 You can help us by xref:../../contribute/10_contributing.adoc[contributing to the documentation].
+
+=== Installation
+
+This library is currently available for Scala binary version 3.3.1.
+
+To use the latest version, include the following in your `build.sbt`:
+
+[source,sbt,subs="+attributes"]
+--
+libraryDependencies ++= Seq(
+  "com.rlemaitre" %% "pillars-core" % "{project-version}"
+)
+--
+
+You can also add optional modules to your dependencies:
+
+[source,sbt,subs="+attributes"]
+--
+libraryDependencies ++= Seq(
+  "com.rlemaitre" %% "pillars-db" % "{project-version}",
+  "com.rlemaitre" %% "pillars-flags" % "{project-version}",
+  "com.rlemaitre" %% "pillars-http-client" % "{project-version}"
+)
+--
+
+=== Usage
+
+You can find an example project in the `modules/example` directory.
+
+First, you need to create a xref:20_features/10_configuration.adoc[configuration file].
+You can find an example in the `modules/example/src/main/resources/application.conf` file.
+
+
+Then, you can create your entry point by extending the `EntryPoint` trait:
+
+[source,scala,linenums,role="data-noescape"]
+----
+include::{projectRootDir}/modules/example/src/main/scala/example/app.scala[tag=quick-start]
+----
+<1> The `EntryPoint` trait is a simple trait that provides a `main` method and initialize the `Pillars` instance.
+<2> The `pillars.App[IO]` must contain your application logic
+<3> The `run` is the entry point of your application. Here, you have access to the `Pillars` instance.
+
+Then, you can run your application. For example, you can run it with `sbt`:
+
+[source,shell,subs="+attributes"]
+--
+sbt "example/run"
+--
+
+The log should display something like:
+
+[source,console,subs="+attributes"]
+----
+2024.01.21 22:36:19:0000 [io-comp...] [INFO ] pillars.Pillars.apply:52 - Loading modules...
+2024.01.21 22:36:19:0001 [io-comp...] [INFO ] pillars.Pillars.loadModules:87 - Found 2 module loaders: db, feature-flags
+2024.01.21 22:36:19:0002 [io-comp...] [INFO ] pillars.db.db.load:57 - Loading DB module
+2024.01.21 22:36:19:0003 [io-comp...] [INFO ] pillars.db.db.load:68 - DB module loaded
+2024.01.21 22:36:19:0004 [io-comp...] [INFO ] pillars.flags.FlagManager.load:54 - Loading Feature flags module
+2024.01.21 22:36:19:0005 [io-comp...] [INFO ] pillars.flags.FlagManager.load:57 - Feature flags module loaded
+2024.01.21 22:36:19:0000 [io-comp...] [INFO ] pillars.AdminServer.start:22 - Starting admin server on 0.0.0.0:19876
+2024.01.21 22:36:19:0006 [io-comp...] [INFO ] example.app.run:24 - 📚 Welcome to Bookstore!
+2024.01.21 22:36:19:0000 [io-comp...] [INFO ] example.app.run:29 - The current date is 2024-01-21T22:36:19.695572+01:00.
+2024.01.21 22:36:19:0000 [io-comp...] [INFO ] pillars.ApiServer.init:21 - Starting API server on 0.0.0.0:9876
+2024.01.21 22:36:19:0001 [io-comp...] [INFO ] org.http4s.netty.server.NettyServerBuilder - Using NIO EventLoopGroup
+2024.01.21 22:36:19:0001 [io-comp...] [INFO ] org.http4s.netty.server.NettyServerBuilder - Using NIO EventLoopGroup
+2024.01.21 22:36:19:0002 [io-comp...] [INFO ] org.http4s.netty.server.NettyServerBuilder - Started Http4s Netty Server at http://[::]:9876/
+2024.01.21 22:36:19:0002 [io-comp...] [INFO ] org.http4s.netty.server.NettyServerBuilder - Started Http4s Netty Server at http://[::]:19876/
+----
+
+You can now access the API at `http://localhost:9876` and the admin server at `http://localhost:19876`.
+For example, to get the readiness porbe status, you can run:
+
+[source,console,subs="+attributes"]
+----
+$ curl http://localhost:19876/admin/probes/health | jq
+{
+  "status": "pass",
+  "checks": [
+    {
+      "componentId": "db",
+      "componentType": "datastore",
+      "status": "pass"
+    }
+  ]
+}
+----

@@ -9,13 +9,12 @@ end_of_line = lf
 insert_final_newline = true
 charset = utf-8
 trim_trailing_whitespace = true
+indent_style = space
+indent_size = 2
 
 [*.{scala,sbt,sc}]
-indent_style = space
 indent_size = 4
 max_line_length = 120
 
-[*.adoc]
-indent_style = space
-indent_size = 2
+[*.{adoc,md}]
 max_line_length = 120
