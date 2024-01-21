@@ -5,7 +5,7 @@ var documents = [
     "uri": "user-guide/index.html",
     "menu": "user-guide",
     "title": "Overview",
-    "text": " Table of Contents Overview Features Usage Dependencies Overview This library is a basis for backend applications written in Scala 3 using the TypeLevel stack. It is a work in progress and is not ready for production use. Features Admin server Configuration Database access Feature flags Logging OpenTelemetry-based observability Usage This library is currently available for Scala binary version 3.3.1. To use the latest version, include the following in your build.sbt : libraryDependencies ++= Seq( \"com.rlemaitre\" %% \"pillars\" % \"@VERSION@\" ) Dependencies Cats Cats collections Cats time Mouse Ip4s Cats Effect Fs2 Circe and Circe YAML Decline Skunk Scribe Tapir Iron Http4s Otel4s mUnit "
+    "text": " Table of Contents Overview Features Overview This library is an opinionated library that provides a basis for backend applications written in Scala 3 using the TypeLevel stack. It is a work in progress and is not ready for production use. Features {project-name} provides several core features used in backend applications: API server Admin server Configuration Logging OpenTelemetry-based observability It also provides several optional features: Database access HTTP client Feature flags "
 },
 
 {
@@ -34,14 +34,6 @@ var documents = [
 
 {
     "id": 4,
-    "uri": "user-guide/20_features/10_configuration.html",
-    "menu": "user-guide",
-    "title": "Configuration",
-    "text": " Table of Contents Configuration Pillars Configuration Application Configuration Configuration Pillars is configured using YAML v1.2 files. Pillars Configuration Pillars configuration is structured as follows: name: Bookstore log: level: info format: enhanced output: type: console db: host: localhost port: 5432 database: bookstore username: postgres password: postgres pool-size: 10 debug: false probe: timeout: PT5s interval: PT10s failure-count: 3 api: enabled: true http: host: 0.0.0.0 port: 9876 auth-token: max-connections: 1024 probe: timeout: PT5s interval: PT10s failure-count: 3 admin: enabled: true http: host: 0.0.0.0 port: 19876 max-connections: 32 observability: enabled: true service-name: bookstore feature-flags: enabled: true flags: - name: feature-1 status: enabled - name: feature-2 status: disabled Application Configuration "
-},
-
-{
-    "id": 5,
     "uri": "user-guide/20_features/40_admin-server.html",
     "menu": "user-guide",
     "title": "Admin Server",
@@ -49,11 +41,19 @@ var documents = [
 },
 
 {
+    "id": 5,
+    "uri": "user-guide/20_features/10_configuration.html",
+    "menu": "user-guide",
+    "title": "Configuration",
+    "text": " Table of Contents Configuration Pillars Configuration Application Configuration Configuration Pillars is configured using YAML v1.2 files. Pillars Configuration Pillars configuration is structured as follows: name: Bookstore log: level: info format: enhanced output: type: console db: host: localhost port: 5432 database: bookstore username: postgres password: postgres pool-size: 10 debug: false probe: timeout: PT5s interval: PT10s failure-count: 3 api: enabled: true http: host: 0.0.0.0 port: 9876 auth-token: max-connections: 1024 probe: timeout: PT5s interval: PT10s failure-count: 3 admin: enabled: true http: host: 0.0.0.0 port: 19876 max-connections: 32 observability: enabled: true service-name: bookstore feature-flags: enabled: true flags: - name: feature-1 status: enabled - name: feature-2 status: disabled Application Configuration "
+},
+
+{
     "id": 6,
     "uri": "user-guide/10_quick-start.html",
     "menu": "user-guide",
     "title": "Quick Start",
-    "text": " Table of Contents Quick Start Quick Start This documentation needs to be written. You can help us by contributing to the documentation . "
+    "text": " Table of Contents Quick Start Installation Usage Quick Start This documentation needs to be written. You can help us by contributing to the documentation . Installation This library is currently available for Scala binary version 3.3.1. To use the latest version, include the following in your build.sbt : libraryDependencies ++= Seq( \"com.rlemaitre\" %% \"pillars-core\" % \"{project-version}\" ) You can also add optional modules to your dependencies: libraryDependencies ++= Seq( \"com.rlemaitre\" %% \"pillars-db\" % \"{project-version}\", \"com.rlemaitre\" %% \"pillars-flags\" % \"{project-version}\", \"com.rlemaitre\" %% \"pillars-http-client\" % \"{project-version}\" ) Usage You can find an example project in the modules/example directory. First, you need to create a configuration file . You can find an example in the modules/example/src/main/resources/application.conf file. Then, you can create your entry point by extending the EntryPoint trait: object Main extends pillars.EntryPoint: // (1) def app: pillars.App[IO] = new pillars.App[IO]: // (2) def name = Name(\"BookStore\") def version = Version(\"0.0.1\") def description = Description(\"A simple bookstore\") def run(pillars: Pillars[IO]): IO[Unit] = // (3) import pillars.* for _ &lt;- logger.info(s\"📚 Welcome to ${pillars.config.name}!\") _ &lt;- pillars.whenEnabled(FeatureFlag.Name(\"feature-1\")): pillars.db.use: s =&gt; for d &lt;- s.unique(sql\"select now()\".query(timestamptz)) _ &lt;- logger.info(s\"The current date is $d.\") yield () _ &lt;- pillars.apiServer.start(endpoints.all) yield () end for end run end Main 1 The EntryPoint trait is a simple trait that provides a main method and initialize the Pillars instance. 2 The pillars.App[IO] must contain your application logic 3 The run is the entry point of your application. Here, you have access to the Pillars instance. Then, you can run your application. For example, you can run it with sbt : sbt \"example/run\" The log should display something like: 2024.01.21 22:36:19:0000 [io-comp...] [INFO ] pillars.Pillars.apply:52 - Loading modules... 2024.01.21 22:36:19:0001 [io-comp...] [INFO ] pillars.Pillars.loadModules:87 - Found 2 module loaders: db, feature-flags 2024.01.21 22:36:19:0002 [io-comp...] [INFO ] pillars.db.db.load:57 - Loading DB module 2024.01.21 22:36:19:0003 [io-comp...] [INFO ] pillars.db.db.load:68 - DB module loaded 2024.01.21 22:36:19:0004 [io-comp...] [INFO ] pillars.flags.FlagManager.load:54 - Loading Feature flags module 2024.01.21 22:36:19:0005 [io-comp...] [INFO ] pillars.flags.FlagManager.load:57 - Feature flags module loaded 2024.01.21 22:36:19:0000 [io-comp...] [INFO ] pillars.AdminServer.start:22 - Starting admin server on 0.0.0.0:19876 2024.01.21 22:36:19:0006 [io-comp...] [INFO ] example.app.run:24 - 📚 Welcome to Bookstore! 2024.01.21 22:36:19:0000 [io-comp...] [INFO ] example.app.run:29 - The current date is 2024-01-21T22:36:19.695572+01:00. 2024.01.21 22:36:19:0000 [io-comp...] [INFO ] pillars.ApiServer.init:21 - Starting API server on 0.0.0.0:9876 2024.01.21 22:36:19:0001 [io-comp...] [INFO ] org.http4s.netty.server.NettyServerBuilder - Using NIO EventLoopGroup 2024.01.21 22:36:19:0001 [io-comp...] [INFO ] org.http4s.netty.server.NettyServerBuilder - Using NIO EventLoopGroup 2024.01.21 22:36:19:0002 [io-comp...] [INFO ] org.http4s.netty.server.NettyServerBuilder - Started Http4s Netty Server at http://[::]:9876/ 2024.01.21 22:36:19:0002 [io-comp...] [INFO ] org.http4s.netty.server.NettyServerBuilder - Started Http4s Netty Server at http://[::]:19876/ You can now access the API at http://localhost:9876 and the admin server at http://localhost:19876 . For example, to get the readiness porbe status, you can run: $ curl http://localhost:19876/admin/probes/health | jq { \"status\": \"pass\", \"checks\": [ { \"componentId\": \"db\", \"componentType\": \"datastore\", \"status\": \"pass\" } ] } "
 },
 
 {

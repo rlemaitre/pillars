@@ -28,7 +28,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800,900" rel="stylesheet">
     <link rel="stylesheet" href="../css/asciidoctor.css">
-    <link rel="stylesheet" href="../css/highlight/github-dark.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
     <link rel="stylesheet" href="../css/scribbler-global.css">
     
         <link rel="stylesheet" href="../css/scribbler-doc.css">
@@ -77,7 +77,7 @@
                                 <a class="active" href="../user-guide/10_quick-start.html">Quick Start</a>
                             </li>
                             <li>
-                                features
+                                Features
                         <ul>
                             <li>
                                 <a class="" href="../user-guide/20_features/10_configuration.html">Configuration</a>
@@ -145,6 +145,136 @@ You can help us by <a href="../../contribute/10_contributing.html">contributing 
 </td>
 </tr>
 </table>
+</div>
+<div class="sect2">
+<h3 id="_installation">Installation</h3>
+<div class="paragraph">
+<p>This library is currently available for Scala binary version 3.3.1.</p>
+</div>
+<div class="paragraph">
+<p>To use the latest version, include the following in your <code>build.sbt</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="sbt">libraryDependencies ++= Seq(
+  "com.rlemaitre" %% "pillars-core" % "{project-version}"
+)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can also add optional modules to your dependencies:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="sbt">libraryDependencies ++= Seq(
+  "com.rlemaitre" %% "pillars-db" % "{project-version}",
+  "com.rlemaitre" %% "pillars-flags" % "{project-version}",
+  "com.rlemaitre" %% "pillars-http-client" % "{project-version}"
+)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_usage">Usage</h3>
+<div class="paragraph">
+<p>You can find an example project in the <code>modules/example</code> directory.</p>
+</div>
+<div class="paragraph">
+<p>First, you need to create a <a href="20_features/10_configuration.html">configuration file</a>.
+You can find an example in the <code>modules/example/src/main/resources/application.conf</code> file.</p>
+</div>
+<div class="paragraph">
+<p>Then, you can create your entry point by extending the <code>EntryPoint</code> trait:</p>
+</div>
+<div class="listingblock data-noescape">
+<div class="content">
+<pre class="prettyprint highlight linenums"><code data-lang="scala">object Main extends pillars.EntryPoint: // <i class="conum" data-value="1"></i><b>(1)</b>
+    def app: pillars.App[IO] = new pillars.App[IO]: // <i class="conum" data-value="2"></i><b>(2)</b>
+        def name        = Name("BookStore")
+        def version     = Version("0.0.1")
+        def description = Description("A simple bookstore")
+
+        def run(pillars: Pillars[IO]): IO[Unit] = // <i class="conum" data-value="3"></i><b>(3)</b>
+            import pillars.*
+            for
+                _ &lt;- logger.info(s"📚 Welcome to ${pillars.config.name}!")
+                _ &lt;- pillars.whenEnabled(FeatureFlag.Name("feature-1")):
+                         pillars.db.use: s =&gt;
+                             for
+                                 d &lt;- s.unique(sql"select now()".query(timestamptz))
+                                 _ &lt;- logger.info(s"The current date is $d.")
+                             yield ()
+                _ &lt;- pillars.apiServer.start(endpoints.all)
+            yield ()
+            end for
+        end run
+end Main</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The <code>EntryPoint</code> trait is a simple trait that provides a <code>main</code> method and initialize the <code>Pillars</code> instance.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The <code>pillars.App[IO]</code> must contain your application logic</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The <code>run</code> is the entry point of your application. Here, you have access to the <code>Pillars</code> instance.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Then, you can run your application. For example, you can run it with <code>sbt</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="shell">sbt "example/run"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The log should display something like:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="console">2024.01.21 22:36:19:0000 [io-comp...] [INFO ] pillars.Pillars.apply:52 - Loading modules...
+2024.01.21 22:36:19:0001 [io-comp...] [INFO ] pillars.Pillars.loadModules:87 - Found 2 module loaders: db, feature-flags
+2024.01.21 22:36:19:0002 [io-comp...] [INFO ] pillars.db.db.load:57 - Loading DB module
+2024.01.21 22:36:19:0003 [io-comp...] [INFO ] pillars.db.db.load:68 - DB module loaded
+2024.01.21 22:36:19:0004 [io-comp...] [INFO ] pillars.flags.FlagManager.load:54 - Loading Feature flags module
+2024.01.21 22:36:19:0005 [io-comp...] [INFO ] pillars.flags.FlagManager.load:57 - Feature flags module loaded
+2024.01.21 22:36:19:0000 [io-comp...] [INFO ] pillars.AdminServer.start:22 - Starting admin server on 0.0.0.0:19876
+2024.01.21 22:36:19:0006 [io-comp...] [INFO ] example.app.run:24 - 📚 Welcome to Bookstore!
+2024.01.21 22:36:19:0000 [io-comp...] [INFO ] example.app.run:29 - The current date is 2024-01-21T22:36:19.695572+01:00.
+2024.01.21 22:36:19:0000 [io-comp...] [INFO ] pillars.ApiServer.init:21 - Starting API server on 0.0.0.0:9876
+2024.01.21 22:36:19:0001 [io-comp...] [INFO ] org.http4s.netty.server.NettyServerBuilder - Using NIO EventLoopGroup
+2024.01.21 22:36:19:0001 [io-comp...] [INFO ] org.http4s.netty.server.NettyServerBuilder - Using NIO EventLoopGroup
+2024.01.21 22:36:19:0002 [io-comp...] [INFO ] org.http4s.netty.server.NettyServerBuilder - Started Http4s Netty Server at http://[::]:9876/
+2024.01.21 22:36:19:0002 [io-comp...] [INFO ] org.http4s.netty.server.NettyServerBuilder - Started Http4s Netty Server at http://[::]:19876/</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can now access the API at <code><a href="http://localhost:9876" class="bare">http://localhost:9876</a></code> and the admin server at <code><a href="http://localhost:19876" class="bare">http://localhost:19876</a></code>.
+For example, to get the readiness porbe status, you can run:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="console">$ curl http://localhost:19876/admin/probes/health | jq
+{
+  "status": "pass",
+  "checks": [
+    {
+      "componentId": "db",
+      "componentType": "datastore",
+      "status": "pass"
+    }
+  ]
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -234,7 +364,12 @@ You can help us by <a href="../../contribute/10_contributing.html">contributing 
         <div id="toc" class="toc">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_quick_start">Quick Start</a></li>
+<li><a href="#_quick_start">Quick Start</a>
+<ul class="sectlevel2">
+<li><a href="#_installation">Installation</a></li>
+<li><a href="#_usage">Usage</a></li>
+</ul>
+</li>
 </ul>
 </div>
 
@@ -273,13 +408,13 @@ You can help us by <a href="../../contribute/10_contributing.html">contributing 
     </div>
     <div class="row">built with <a href="https://doctoolchain.org">docToolchain</a> and <a href="https://jbake.org">jBake</a> <br /> theme: Custom based on <a href="https://github.com/amiechen/codrops-scribbler/">Scribbler</a></small></div>
 </footer>
-<script src="../js/highlight.min.js"></script>
-<script src="../js/languages/dockerfile.min.js"></script>
-<script src="../js/languages/gradle.min.js"></script>
-<script src="../js/languages/scala.min.js"></script>
-<script src="../js/languages/sql.min.js"></script>
-<script src="../js/languages/yaml.min.js"></script>
-<script src="../js/languages/xml.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/gradle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/scala.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/sql.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/xml.min.js"></script>
 <script>hljs.highlightAll();</script>
 <script src="../js/scribbler.js"></script>
 
