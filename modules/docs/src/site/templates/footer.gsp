@@ -18,12 +18,12 @@
     </div>
     <div class="row">${config.site_footerText}</div>
 </footer>
-<script src="${content.rootpath}js/highlight.min.js"></script>
-<script src="${content.rootpath}js/languages/dockerfile.min.js"></script>
-<script src="${content.rootpath}js/languages/gradle.min.js"></script>
-<script src="${content.rootpath}js/languages/scala.min.js"></script>
-<script src="${content.rootpath}js/languages/sql.min.js"></script>
-<script src="${content.rootpath}js/languages/yaml.min.js"></script>
-<script src="${content.rootpath}js/languages/xml.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/gradle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/scala.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/sql.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/xml.min.js"></script>
 <script>hljs.highlightAll();</script>
 <script src="${content.rootpath}js/scribbler.js"></script>

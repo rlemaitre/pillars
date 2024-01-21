@@ -11,13 +11,14 @@ import skunk.*
 import skunk.codec.all.*
 import skunk.implicits.*
 
-object Main extends pillars.EntryPoint:
-    def app: pillars.App[IO] = new pillars.App[IO]:
+// tag::quick-start[]
+object Main extends pillars.EntryPoint: // // <1>
+    def app: pillars.App[IO] = new pillars.App[IO]: // // <2>
         def name        = Name("BookStore")
         def version     = Version("0.0.1")
         def description = Description("A simple bookstore")
 
-        def run(pillars: Pillars[IO]): IO[Unit] =
+        def run(pillars: Pillars[IO]): IO[Unit] = // // <3>
             import pillars.*
             for
                 _ <- logger.info(s"📚 Welcome to ${pillars.config.name}!")
@@ -32,3 +33,4 @@ object Main extends pillars.EntryPoint:
             end for
         end run
 end Main
+// end::quick-start[]

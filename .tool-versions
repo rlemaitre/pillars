@@ -1,4 +1,4 @@
-java zulu-21.28.85
+java temurin-17.0.9+9
 sbt 1.9.6
 adr-tools 3.0.0
 postgres 16.1
