@@ -15,3 +15,55 @@ endif::projectRootDir[]
 [NOTE]
 This documentation needs to be written.
 You can help us by xref:../../contribute/10_contributing.adoc[contributing to the documentation].
+
+Feature flags are a way to enable or disable features in your application.
+They are useful for many reasons, including:
+
+* Allowing you to test features in production before releasing them to all users.
+* Allowing you to do a gradual rollout of a feature to a percentage of users.
+
+Currently, feature flags are only read from the configuration file and cannot be changed at runtime.
+This means that you will need to restart your application to change the value of a feature flag.
+In the future, we plan to add support for changing feature flags at runtime and storing them in a database.
+
+=== Creating a feature flag
+
+Feature flags are defined in the `feature-flags` section of the configuration file.
+
+[source,yaml]
+--
+feature-flags:
+  enabled: true ##<1>
+  flags:
+    - name: feature-1 ##<2>
+      status: enabled ##<3>
+    - name: feature-2
+      status: disabled
+--
+<1> Whether feature flags are enabled or not.
+If this is set to `false`, all feature flags will be disabled.
+<2> The name of the feature flag.
+<3> The status of the feature flag.
+Possible values are `enabled` and `disabled`.
+
+=== Using a feature flag
+
+Feature flags can be used in your application by using the `flags` module on `Pillars`.
+
+[source,scala,linenums,role="data-noescape"]
+--
+import pillars.flags.* ////<1>
+
+val flag = flag"feature-1" ////<2>
+for
+    enabled <- pillars.flags.isEnabled(flag) ////<3>
+    _       <- IO.whenA(enabled)(IO.println("Feature 1 is enabled")) ////<4>
+    // or
+    _       <- pillars.whenEnabled(flag"feature-2")(IO.println("Feature 2 is enabled")) ////<5>
+yield ()
+--
+<1> Import the `flags` module to enable the `flag` string interpolator and the `flags` property on `Pillars`.
+<2> Create a `Flag` instance by using the `flag` string interpolator.
+<3> Check if the feature flag is enabled.
+<4> If the feature flag is enabled, perform the action you want.
+<5> Use the `pillars.whenEnabled` method to perform an action if the feature flag is enabled.

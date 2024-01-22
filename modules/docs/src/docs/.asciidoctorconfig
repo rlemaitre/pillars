@@ -1,4 +1,5 @@
 :project-name: Pillars
 :project-version: 0.0.1
 :source-highlighter: rouge
+:rouge-style: base16.monokai.dark
 :icons: font
