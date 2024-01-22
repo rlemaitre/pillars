@@ -6,6 +6,7 @@ import io.circe.Decoder
 import io.circe.Encoder
 import io.github.iltotore.iron.*
 import io.github.iltotore.iron.circe.given
+import org.typelevel.literally.Literally
 import sttp.tapir.Schema
 import sttp.tapir.codec.iron.*
 import sttp.tapir.codec.iron.given
@@ -29,4 +30,12 @@ package object flags:
         def flags: FlagManager[F]                                           = pillars.module[FlagManager[F]]
         def whenEnabled[A](flag: FeatureFlag.Name)(thunk: => F[A]): F[Unit] =
             pillars.module[FlagManager[F]].when(flag)(thunk)
+
+    extension (inline ctx: StringContext)
+        inline def flag(inline args: Any*): FeatureFlag.Name =
+            ${ FlagLiteral('ctx, 'args) }
+    object FlagLiteral extends Literally[FeatureFlag.Name]:
+        override inline def validate(s: String)(using Quotes) =
+            if FeatureFlag.Name.rtc.test(s) then Right('{ FeatureFlag.Name.applyUnsafe(${ Expr(s) }) })
+            else Left(FeatureFlag.Name.rtc.message)
 end flags
