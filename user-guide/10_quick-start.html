@@ -28,6 +28,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800,900" rel="stylesheet">
     <link rel="stylesheet" href="../css/asciidoctor.css">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
     <link rel="stylesheet" href="../css/scribbler-global.css">
     
@@ -198,7 +199,7 @@ You can find an example in the <code>modules/example/src/main/resources/applicat
             import pillars.*
             for
                 _ &lt;- logger.info(s"📚 Welcome to ${pillars.config.name}!")
-                _ &lt;- pillars.whenEnabled(FeatureFlag.Name("feature-1")):
+                _ &lt;- pillars.whenEnabled(flag"feature-1"):
                          pillars.db.use: s =&gt;
                              for
                                  d &lt;- s.unique(sql"select now()".query(timestamptz))
