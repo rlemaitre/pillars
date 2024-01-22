@@ -83,8 +83,8 @@ object Dependencies {
     )
 
     val database: Seq[ModuleID] = Seq(
-        "org.tpolecat" %% "skunk-core" % "1.1.0-M2",
-        "org.tpolecat" %% "skunk-circe" % "1.1.0-M2"
+        "org.tpolecat" %% "skunk-core" % "1.1.0-M3",
+        "org.tpolecat" %% "skunk-circe" % "1.1.0-M3"
         //    "dev.rolang" %% "dumbo" % "0.0.6" //enable when dumbo uses skunk 1.1.0-M2
     )
 
