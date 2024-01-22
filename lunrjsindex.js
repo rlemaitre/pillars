@@ -34,18 +34,18 @@ var documents = [
 
 {
     "id": 4,
-    "uri": "user-guide/20_features/10_configuration.html",
-    "menu": "user-guide",
-    "title": "Configuration",
-    "text": " Table of Contents Configuration Pillars Configuration Application Configuration Configuration Pillars is configured using YAML v1.2 files. Pillars Configuration Pillars configuration is structured as follows: name: Bookstore log: level: info format: enhanced output: type: console db: host: localhost port: 5432 database: bookstore username: postgres password: postgres pool-size: 10 debug: false probe: timeout: PT5s interval: PT10s failure-count: 3 api: enabled: true http: host: 0.0.0.0 port: 9876 auth-token: max-connections: 1024 probe: timeout: PT5s interval: PT10s failure-count: 3 admin: enabled: true http: host: 0.0.0.0 port: 19876 max-connections: 32 observability: enabled: true service-name: bookstore feature-flags: enabled: true flags: - name: feature-1 status: enabled - name: feature-2 status: disabled Application Configuration "
-},
-
-{
-    "id": 5,
     "uri": "user-guide/20_features/40_admin-server.html",
     "menu": "user-guide",
     "title": "Admin Server",
     "text": " Table of Contents Admin Server Admin Server This documentation needs to be written. You can help us by contributing to the documentation . "
+},
+
+{
+    "id": 5,
+    "uri": "user-guide/20_features/10_configuration.html",
+    "menu": "user-guide",
+    "title": "Configuration",
+    "text": " Table of Contents Configuration Pillars Configuration Application Configuration Configuration Pillars is configured using YAML v1.2 files. Pillars Configuration Pillars configuration is structured as follows: name: Bookstore log: level: info format: enhanced output: type: console db: host: localhost port: 5432 database: bookstore username: postgres password: postgres pool-size: 10 debug: false probe: timeout: PT5s interval: PT10s failure-count: 3 api: enabled: true http: host: 0.0.0.0 port: 9876 auth-token: max-connections: 1024 probe: timeout: PT5s interval: PT10s failure-count: 3 admin: enabled: true http: host: 0.0.0.0 port: 19876 max-connections: 32 observability: enabled: true service-name: bookstore feature-flags: enabled: true flags: - name: feature-1 status: enabled - name: feature-2 status: disabled Application Configuration "
 },
 
 {
@@ -74,18 +74,18 @@ var documents = [
 
 {
     "id": 9,
-    "uri": "user-guide/30_modules/100_write-your-own-module.html",
-    "menu": "user-guide",
-    "title": "Write your own module",
-    "text": " Table of Contents Write your own module Write your own module This documentation needs to be written. You can help us by contributing to the documentation . "
-},
-
-{
-    "id": 10,
     "uri": "user-guide/30_modules/20_http-client.html",
     "menu": "user-guide",
     "title": "HTTP Client Module",
     "text": " Table of Contents HTTP Client module HTTP Client module This documentation needs to be written. You can help us by contributing to the documentation . "
+},
+
+{
+    "id": 10,
+    "uri": "user-guide/30_modules/100_write-your-own-module.html",
+    "menu": "user-guide",
+    "title": "Write your own module",
+    "text": " Table of Contents Write your own module Write your own module This documentation needs to be written. You can help us by contributing to the documentation . "
 },
 
 {

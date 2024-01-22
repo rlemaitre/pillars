@@ -83,7 +83,7 @@ object Main extends pillars.EntryPoint:
             import pillars.*
             for
                 _ <- logger.info(s"📚 Welcome to ${pillars.config.name}!")
-                _ <- pillars.whenEnabled(FeatureFlag.Name("feature-1")):
+                _ <- pillars.whenEnabled(flag"feature-1"):
                     pillars.db.use: s =>
                         for
                             d <- s.unique(sql"select now()".query(timestamptz))
