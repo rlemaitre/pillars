@@ -38,4 +38,8 @@ package object flags:
         override inline def validate(s: String)(using Quotes) =
             if FeatureFlag.Name.rtc.test(s) then Right('{ FeatureFlag.Name.applyUnsafe(${ Expr(s) }) })
             else Left(FeatureFlag.Name.rtc.message)
+
+    extension (flag: FeatureFlag.Name)
+        def whenEnabled[F[_], A](thunk: => F[A])(using pillars: Pillars[F]): F[Unit] =
+            pillars.module[FlagManager[F]].when(flag)(thunk)
 end flags
