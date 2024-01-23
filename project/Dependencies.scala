@@ -77,7 +77,7 @@ object Dependencies {
     )
 
     val observability: Seq[ModuleID] = Seq(
-        "org.typelevel" %% "otel4s-java" % "0.3.0",
+        "org.typelevel" %% "otel4s-java" % "0.4.0",
         "io.opentelemetry" % "opentelemetry-exporter-otlp" % "1.34.1" % Runtime,
         "io.opentelemetry" % "opentelemetry-sdk-extension-autoconfigure" % "1.34.1" % Runtime
     )
