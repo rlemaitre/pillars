@@ -195,11 +195,11 @@ You can find an example in the <code>modules/example/src/main/resources/applicat
         def version     = Version("0.0.1")
         def description = Description("A simple bookstore")
 
-        def run(pillars: Pillars[IO]): IO[Unit] = // <i class="conum" data-value="3"></i><b>(3)</b>
+        def run(using pillars: Pillars[IO]): IO[Unit] = // <i class="conum" data-value="3"></i><b>(3)</b>
             import pillars.*
             for
                 _ &lt;- logger.info(s"📚 Welcome to ${pillars.config.name}!")
-                _ &lt;- pillars.whenEnabled(flag"feature-1"):
+                _ &lt;- flag"feature-1".whenEnabled:
                          pillars.db.use: s =&gt;
                              for
                                  d &lt;- s.unique(sql"select now()".query(timestamptz))

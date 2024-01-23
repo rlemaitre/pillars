@@ -216,6 +216,8 @@ for
     _       &lt;- IO.whenA(enabled)(IO.println("Feature 1 is enabled")) //<i class="conum" data-value="4"></i><b>(4)</b>
     // or
     _       &lt;- pillars.whenEnabled(flag"feature-2")(IO.println("Feature 2 is enabled")) //<i class="conum" data-value="5"></i><b>(5)</b>
+    // or
+    _       &lt;- flag"feature-3".whenEnabled(IO.println("Feature 3 is enabled")) //<i class="conum" data-value="6"></i><b>(6)</b>
 yield ()</code></pre>
 </div>
 </div>
@@ -240,6 +242,10 @@ yield ()</code></pre>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
 <td>Use the <code>pillars.whenEnabled</code> method to perform an action if the feature flag is enabled.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>Use the <code>whenEnabled</code> method on the <code>FeatureFlag.Name</code> instance to perform an action if the feature flag is enabled.</td>
 </tr>
 </table>
 </div>
