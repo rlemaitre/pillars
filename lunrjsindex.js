@@ -10,14 +10,6 @@ var documents = [
 
 {
     "id": 1,
-    "uri": "user-guide/20_features/50_observability.html",
-    "menu": "user-guide",
-    "title": "Observability",
-    "text": " Table of Contents Observability Observability This documentation needs to be written. You can help us by contributing to the documentation . "
-},
-
-{
-    "id": 2,
     "uri": "user-guide/20_features/30_api-server.html",
     "menu": "user-guide",
     "title": "API Server",
@@ -25,11 +17,19 @@ var documents = [
 },
 
 {
-    "id": 3,
+    "id": 2,
     "uri": "user-guide/20_features/20_logging.html",
     "menu": "user-guide",
     "title": "Logging",
     "text": " Table of Contents Logging Logging This documentation needs to be written. You can help us by contributing to the documentation . "
+},
+
+{
+    "id": 3,
+    "uri": "user-guide/20_features/50_observability.html",
+    "menu": "user-guide",
+    "title": "Observability",
+    "text": " Table of Contents Observability Observability This documentation needs to be written. You can help us by contributing to the documentation . "
 },
 
 {
@@ -50,18 +50,18 @@ var documents = [
 
 {
     "id": 6,
-    "uri": "user-guide/10_quick-start.html",
-    "menu": "user-guide",
-    "title": "Quick Start",
-    "text": " Table of Contents Quick Start Installation Usage Quick Start This documentation needs to be written. You can help us by contributing to the documentation . Installation This library is currently available for Scala binary version 3.3.1. To use the latest version, include the following in your build.sbt : libraryDependencies ++= Seq( \"com.rlemaitre\" %% \"pillars-core\" % \"{project-version}\" ) You can also add optional modules to your dependencies: libraryDependencies ++= Seq( \"com.rlemaitre\" %% \"pillars-db\" % \"{project-version}\", \"com.rlemaitre\" %% \"pillars-flags\" % \"{project-version}\", \"com.rlemaitre\" %% \"pillars-http-client\" % \"{project-version}\" ) Usage You can find an example project in the modules/example directory. First, you need to create a configuration file . You can find an example in the modules/example/src/main/resources/application.conf file. Then, you can create your entry point by extending the EntryPoint trait: object Main extends pillars.EntryPoint: // (1) def app: pillars.App[IO] = new pillars.App[IO]: // (2) def name = Name(\"BookStore\") def version = Version(\"0.0.1\") def description = Description(\"A simple bookstore\") def run(pillars: Pillars[IO]): IO[Unit] = // (3) import pillars.* for _ &lt;- logger.info(s\"📚 Welcome to ${pillars.config.name}!\") _ &lt;- pillars.whenEnabled(flag\"feature-1\"): pillars.db.use: s =&gt; for d &lt;- s.unique(sql\"select now()\".query(timestamptz)) _ &lt;- logger.info(s\"The current date is $d.\") yield () _ &lt;- pillars.apiServer.start(endpoints.all) yield () end for end run end Main 1 The EntryPoint trait is a simple trait that provides a main method and initialize the Pillars instance. 2 The pillars.App[IO] must contain your application logic 3 The run is the entry point of your application. Here, you have access to the Pillars instance. Then, you can run your application. For example, you can run it with sbt : sbt \"example/run\" The log should display something like: 2024.01.21 22:36:19:0000 [io-comp...] [INFO ] pillars.Pillars.apply:52 - Loading modules... 2024.01.21 22:36:19:0001 [io-comp...] [INFO ] pillars.Pillars.loadModules:87 - Found 2 module loaders: db, feature-flags 2024.01.21 22:36:19:0002 [io-comp...] [INFO ] pillars.db.db.load:57 - Loading DB module 2024.01.21 22:36:19:0003 [io-comp...] [INFO ] pillars.db.db.load:68 - DB module loaded 2024.01.21 22:36:19:0004 [io-comp...] [INFO ] pillars.flags.FlagManager.load:54 - Loading Feature flags module 2024.01.21 22:36:19:0005 [io-comp...] [INFO ] pillars.flags.FlagManager.load:57 - Feature flags module loaded 2024.01.21 22:36:19:0000 [io-comp...] [INFO ] pillars.AdminServer.start:22 - Starting admin server on 0.0.0.0:19876 2024.01.21 22:36:19:0006 [io-comp...] [INFO ] example.app.run:24 - 📚 Welcome to Bookstore! 2024.01.21 22:36:19:0000 [io-comp...] [INFO ] example.app.run:29 - The current date is 2024-01-21T22:36:19.695572+01:00. 2024.01.21 22:36:19:0000 [io-comp...] [INFO ] pillars.ApiServer.init:21 - Starting API server on 0.0.0.0:9876 2024.01.21 22:36:19:0001 [io-comp...] [INFO ] org.http4s.netty.server.NettyServerBuilder - Using NIO EventLoopGroup 2024.01.21 22:36:19:0001 [io-comp...] [INFO ] org.http4s.netty.server.NettyServerBuilder - Using NIO EventLoopGroup 2024.01.21 22:36:19:0002 [io-comp...] [INFO ] org.http4s.netty.server.NettyServerBuilder - Started Http4s Netty Server at http://[::]:9876/ 2024.01.21 22:36:19:0002 [io-comp...] [INFO ] org.http4s.netty.server.NettyServerBuilder - Started Http4s Netty Server at http://[::]:19876/ You can now access the API at http://localhost:9876 and the admin server at http://localhost:19876 . For example, to get the readiness porbe status, you can run: $ curl http://localhost:19876/admin/probes/health | jq { \"status\": \"pass\", \"checks\": [ { \"componentId\": \"db\", \"componentType\": \"datastore\", \"status\": \"pass\" } ] } "
-},
-
-{
-    "id": 7,
     "uri": "user-guide/30_modules/index.html",
     "menu": "user-guide",
     "title": "Optional Modules",
     "text": " Table of Contents Modules Database HTTP Client Feature Flags Write your own module Modules Pillars includes several optional modules: Database HTTP Client Feature Flags Database The database module provides a simple abstraction over the database access layer. It is based on the skunk library and provides a simple interface to execute queries and transactions. Read more HTTP Client The HTTP Client module provides a simple abstraction over the HTTP client layer. It is based on the http4s library using Netty and provides a simple interface to execute HTTP requests. Read more Feature Flags The Feature Flags module provides a simple abstraction over the feature flags layer. Read more Write your own module You can easily write your own module by implementing the Module trait. Read more "
+},
+
+{
+    "id": 7,
+    "uri": "user-guide/10_quick-start.html",
+    "menu": "user-guide",
+    "title": "Quick Start",
+    "text": " Table of Contents Quick Start Installation Usage Quick Start This documentation needs to be written. You can help us by contributing to the documentation . Installation This library is currently available for Scala binary version 3.3.1. To use the latest version, include the following in your build.sbt : libraryDependencies ++= Seq( \"com.rlemaitre\" %% \"pillars-core\" % \"{project-version}\" ) You can also add optional modules to your dependencies: libraryDependencies ++= Seq( \"com.rlemaitre\" %% \"pillars-db\" % \"{project-version}\", \"com.rlemaitre\" %% \"pillars-flags\" % \"{project-version}\", \"com.rlemaitre\" %% \"pillars-http-client\" % \"{project-version}\" ) Usage You can find an example project in the modules/example directory. First, you need to create a configuration file . You can find an example in the modules/example/src/main/resources/application.conf file. Then, you can create your entry point by extending the EntryPoint trait: object Main extends pillars.EntryPoint: // (1) def app: pillars.App[IO] = new pillars.App[IO]: // (2) def name = Name(\"BookStore\") def version = Version(\"0.0.1\") def description = Description(\"A simple bookstore\") def run(pillars: Pillars[IO]): IO[Unit] = // (3) import pillars.* for _ &lt;- logger.info(s\"📚 Welcome to ${pillars.config.name}!\") _ &lt;- pillars.whenEnabled(flag\"feature-1\"): pillars.db.use: s =&gt; for d &lt;- s.unique(sql\"select now()\".query(timestamptz)) _ &lt;- logger.info(s\"The current date is $d.\") yield () _ &lt;- pillars.apiServer.start(endpoints.all) yield () end for end run end Main 1 The EntryPoint trait is a simple trait that provides a main method and initialize the Pillars instance. 2 The pillars.App[IO] must contain your application logic 3 The run is the entry point of your application. Here, you have access to the Pillars instance. Then, you can run your application. For example, you can run it with sbt : sbt \"example/run\" The log should display something like: 2024.01.21 22:36:19:0000 [io-comp...] [INFO ] pillars.Pillars.apply:52 - Loading modules... 2024.01.21 22:36:19:0001 [io-comp...] [INFO ] pillars.Pillars.loadModules:87 - Found 2 module loaders: db, feature-flags 2024.01.21 22:36:19:0002 [io-comp...] [INFO ] pillars.db.db.load:57 - Loading DB module 2024.01.21 22:36:19:0003 [io-comp...] [INFO ] pillars.db.db.load:68 - DB module loaded 2024.01.21 22:36:19:0004 [io-comp...] [INFO ] pillars.flags.FlagManager.load:54 - Loading Feature flags module 2024.01.21 22:36:19:0005 [io-comp...] [INFO ] pillars.flags.FlagManager.load:57 - Feature flags module loaded 2024.01.21 22:36:19:0000 [io-comp...] [INFO ] pillars.AdminServer.start:22 - Starting admin server on 0.0.0.0:19876 2024.01.21 22:36:19:0006 [io-comp...] [INFO ] example.app.run:24 - 📚 Welcome to Bookstore! 2024.01.21 22:36:19:0000 [io-comp...] [INFO ] example.app.run:29 - The current date is 2024-01-21T22:36:19.695572+01:00. 2024.01.21 22:36:19:0000 [io-comp...] [INFO ] pillars.ApiServer.init:21 - Starting API server on 0.0.0.0:9876 2024.01.21 22:36:19:0001 [io-comp...] [INFO ] org.http4s.netty.server.NettyServerBuilder - Using NIO EventLoopGroup 2024.01.21 22:36:19:0001 [io-comp...] [INFO ] org.http4s.netty.server.NettyServerBuilder - Using NIO EventLoopGroup 2024.01.21 22:36:19:0002 [io-comp...] [INFO ] org.http4s.netty.server.NettyServerBuilder - Started Http4s Netty Server at http://[::]:9876/ 2024.01.21 22:36:19:0002 [io-comp...] [INFO ] org.http4s.netty.server.NettyServerBuilder - Started Http4s Netty Server at http://[::]:19876/ You can now access the API at http://localhost:9876 and the admin server at http://localhost:19876 . For example, to get the readiness porbe status, you can run: $ curl http://localhost:19876/admin/probes/health | jq { \"status\": \"pass\", \"checks\": [ { \"componentId\": \"db\", \"componentType\": \"datastore\", \"status\": \"pass\" } ] } "
 },
 
 {
