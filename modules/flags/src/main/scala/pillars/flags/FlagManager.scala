@@ -58,7 +58,8 @@ class FlagManagerLoader extends Loader:
             yield manager
     end load
 
-    private def createManager[F[_]: Async: Network: Tracer: Console](config: FeatureFlagsConfig): F[FlagManager[F]] =
+    private[flags] def createManager[F[_]: Async: Network: Tracer: Console](config: FeatureFlagsConfig)
+        : F[FlagManager[F]] =
         if !config.enabled then Sync[F].pure(FlagManager.noop[F])
         else
             val flags = config.flags.groupBy(_.name).map((name, flags) => name -> flags.head)

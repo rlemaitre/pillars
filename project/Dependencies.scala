@@ -86,12 +86,12 @@ object Dependencies {
         "org.tpolecat" %% "skunk-core" % "1.1.0-M3",
         "org.tpolecat" %% "skunk-circe" % "1.1.0-M3"
         //    "dev.rolang" %% "dumbo" % "0.0.6" //enable when dumbo uses skunk 1.1.0-M2
-    )
+    ) ++ tests
 
     val flags: Seq[ModuleID] = Seq(
       "org.typelevel" %% "literally" % "1.1.0"
-    )
-    val httpClient: Seq[ModuleID] = http4sClient ++ http4s
+    ) ++ tests
+    val httpClient: Seq[ModuleID] = http4sClient ++ http4s ++ tests
     val core: Seq[ModuleID] =
         effect ++ module ++ json ++ tapir ++ http4sServer ++ model ++ commandLine ++ logging ++ observability ++ tests
 }

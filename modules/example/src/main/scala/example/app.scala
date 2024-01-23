@@ -18,11 +18,11 @@ object Main extends pillars.EntryPoint: // // <1>
         def version     = Version("0.0.1")
         def description = Description("A simple bookstore")
 
-        def run(pillars: Pillars[IO]): IO[Unit] = // // <3>
+        def run(using pillars: Pillars[IO]): IO[Unit] = // // <3>
             import pillars.*
             for
                 _ <- logger.info(s"📚 Welcome to ${pillars.config.name}!")
-                _ <- pillars.whenEnabled(flag"feature-1"):
+                _ <- flag"feature-1".whenEnabled:
                          pillars.db.use: s =>
                              for
                                  d <- s.unique(sql"select now()".query(timestamptz))

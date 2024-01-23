@@ -60,6 +60,8 @@ for
     _       <- IO.whenA(enabled)(IO.println("Feature 1 is enabled")) ////<4>
     // or
     _       <- pillars.whenEnabled(flag"feature-2")(IO.println("Feature 2 is enabled")) ////<5>
+    // or
+    _       <- flag"feature-3".whenEnabled(IO.println("Feature 3 is enabled")) ////<6>
 yield ()
 --
 <1> Import the `flags` module to enable the `flag` string interpolator and the `flags` property on `Pillars`.
@@ -67,3 +69,4 @@ yield ()
 <3> Check if the feature flag is enabled.
 <4> If the feature flag is enabled, perform the action you want.
 <5> Use the `pillars.whenEnabled` method to perform an action if the feature flag is enabled.
+<6> Use the `whenEnabled` method on the `FeatureFlag.Name` instance to perform an action if the feature flag is enabled.

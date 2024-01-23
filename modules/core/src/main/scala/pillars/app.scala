@@ -1,8 +1,7 @@
 package pillars
 
-import cats.effect.ExitCode
-import cats.effect.IO
-import cats.effect.IOApp
+import cats.effect.*
+import cats.effect.std.Console
 import com.monovore.decline.Command
 import com.monovore.decline.Opts
 import io.github.iltotore.iron.*
@@ -18,7 +17,7 @@ trait App[F[_]]:
     def version: Version
     def description: Description
     def probes: List[Probe[F]] = Nil
-    def run(pillars: Pillars[F]): F[Unit]
+    def run(using pillars: Pillars[F]): F[Unit]
 end App
 
 object App:
@@ -46,8 +45,8 @@ trait EntryPoint extends IOApp:
           args,
           sys.env
         ) match
-        case Left(help)        => IO(System.err.println(help)).as(ExitCode.Error)
+        case Left(help)        => Console[IO].errorln(help).as(ExitCode.Error)
         case Right(configPath) =>
             Pillars(configPath).use: pillars =>
-                app.run(pillars).as(ExitCode.Success)
+                app.run(using pillars).as(ExitCode.Success)
 end EntryPoint

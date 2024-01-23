@@ -30,7 +30,6 @@ Compile / scalacOptions ++= ScalacOptions.tokensForVersion(
   ) ++ ScalacOptions.privateWarnOptions ++ ScalacOptions.privateWarnUnusedOptions
 ) ++ Seq("-new-syntax", "-Xmax-inlines=128")
 
-
 enablePlugins(ScalaUnidocPlugin)
 
 outputStrategy := Some(StdoutOutput)
@@ -64,7 +63,8 @@ lazy val httpClient = Project("pillars-http-client", file("modules/http-client")
 
 lazy val example = Project("pillars-example", file("modules/example"))
     .settings(
-      name := "pillars-example"
+      name := "pillars-example",
+      libraryDependencies ++= Dependencies.tests
     )
     .dependsOn(core, db, flags)
 
@@ -78,15 +78,18 @@ lazy val pillars = project
     .in(file("."))
     .aggregate(core, example, docs, db, flags, httpClient)
     .settings(
-        name            := "pillars",
-        publishArtifact := false,
-        ScalaUnidoc / unidoc / unidocProjectFilter := inAnyProject -- inProjects(example, docs),
-        ScalaUnidoc / unidoc / target := file("target/microsite/output/api"),
-        ScalaUnidoc / unidoc / scalacOptions ++= Seq(
-            "-project", name.value,
-            "-project-version", version.value,
-            "-project-logo", "modules/docs/src/docs/images/logo.png",
-            //    "-source-links:github://rlemaitre/pillars",
-            "-social-links:github::https://rlemaitre.github.io/pillars",
-        )
+      name                                       := "pillars",
+      publishArtifact                            := false,
+      ScalaUnidoc / unidoc / unidocProjectFilter := inAnyProject -- inProjects(example, docs),
+      ScalaUnidoc / unidoc / target              := file("target/microsite/output/api"),
+      ScalaUnidoc / unidoc / scalacOptions ++= Seq(
+        "-project",
+        name.value,
+        "-project-version",
+        version.value,
+        "-project-logo",
+        "modules/docs/src/docs/images/logo.png",
+        //    "-source-links:github://rlemaitre/pillars",
+        "-social-links:github::https://rlemaitre.github.io/pillars"
+      )
     )
