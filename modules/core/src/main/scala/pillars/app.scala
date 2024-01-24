@@ -17,7 +17,7 @@ trait App[F[_]]:
     def version: Version
     def description: Description
     def probes: List[Probe[F]] = Nil
-    def run(using pillars: Pillars[F]): F[Unit]
+    def run(using p: Pillars[F]): F[Unit]
 end App
 
 object App:
