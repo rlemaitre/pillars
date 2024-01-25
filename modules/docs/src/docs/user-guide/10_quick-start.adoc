@@ -56,7 +56,10 @@ include::{projectRootDir}/modules/example/src/main/scala/example/app.scala[tag=q
 ----
 <1> The `EntryPoint` trait is a simple trait that provides a `main` method and initialize the `Pillars` instance.
 <2> The `pillars.App[IO]` must contain your application logic
-<3> The `run` is the entry point of your application. Here, you have access to the `Pillars` instance.
+<3> `infos` defines some metadata about your application.
+It is used by the admin server to display information about your application.
+See
+<4> The `run` is the entry point of your application. Here, you have access to the `Pillars` instance.
 
 Then, you can run your application. For example, you can run it with `sbt`:
 
@@ -101,4 +104,43 @@ $ curl http://localhost:19876/admin/probes/health | jq
     }
   ]
 }
+----
+
+=== Application Metadata
+
+The `infos` property of the `App[F]` trait defines some metadata about your application.
+You have two ways of defining it:
+
+* You can directly create an instance of `AppInfo`:
+[source,scala,linenums,role="data-noescape"]
+----
+val infos = AppInfo(
+  name = App.Name("Bookstore"),
+  version = App.Version("1.0.0"),
+  description = App.Description("A simple bookstore")
+)
+----
+* Or, if you are using the link:https://github.com/sbt/sbt-buildinfo[sbt-buildinfo] plugin, you can use the `BuildInfo` object.
+In your `build.sbt`, add the following lines to your project definition:
+[source,scala,linenums,role="data-noescape"]
+----
+include::{projectRootDir}/build.sbt[tag=example]
+----
+<1> Enable the `BuildInfo` plugin
+<2> Define the name of your application
+<3> Define the description of your application
+<4> Tell buildinfo to generate the `BuildInfo` object including at least `name`, `description` and `version` properties.
+In this specific case, `version` is defined by the link:https://github.com/sbt/sbt-dynver[sbt-dynver] plugin.
+<5> Configure BuildInfo to implement the `pillars.BuildInfo` trait.
+It is required to use the `BuildInfo` object in your application.
+<6> Specify in which package will be generated the `BuildInfo` object.
+
+Then, you can use the `BuildInfo` object in your application:
+[source,scala,linenums,role="data-noescape"]
+----
+import example.build.BuildInfo
+
+val app = new App[IO]:
+  override val infos = BuildInfo.toAppInfo
+  override def run(pillars: Pillars[IO]): IO[Unit] = ???
 ----

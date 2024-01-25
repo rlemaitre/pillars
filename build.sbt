@@ -7,6 +7,7 @@ ThisBuild / organizationName     := "Raphaël Lemaitre"
 ThisBuild / organizationHomepage := Some(url("https://rlemaitre.com/"))
 ThisBuild / startYear            := Some(2023)
 ThisBuild / licenses             := Seq(License.Apache2)
+ThisBuild / versionScheme        := Some("semver-spec")
 ThisBuild / developers           := List(
   Developer(
     id = "rlemaitre",
@@ -35,39 +36,61 @@ enablePlugins(ScalaUnidocPlugin)
 outputStrategy := Some(StdoutOutput)
 
 lazy val core = Project("pillars-core", file("modules/core"))
+    .enablePlugins(BuildInfoPlugin)
     .settings(
-      name := "pillars-core",
-      libraryDependencies ++= Dependencies.core
+      name             := "pillars-core",
+      description      := "pillars-core is a scala 3 library providing base services for writing backend applications",
+      libraryDependencies ++= Dependencies.core,
+      buildInfoKeys    := Seq[BuildInfoKey](name, version, description),
+      buildInfoPackage := "pillars.build"
     )
 
 lazy val db = Project("pillars-db", file("modules/db"))
+    .enablePlugins(BuildInfoPlugin)
     .settings(
-      name := "pillars-db",
-      libraryDependencies ++= Dependencies.database
+      name             := "pillars-db",
+      description      := "pillars-db is a scala 3 library providing database services for writing backend applications",
+      libraryDependencies ++= Dependencies.database,
+      buildInfoKeys    := Seq[BuildInfoKey](name, version, description),
+      buildInfoPackage := "pillars.db.build"
     )
     .dependsOn(core)
 
 lazy val flags = Project("pillars-flags", file("modules/flags"))
+    .enablePlugins(BuildInfoPlugin)
     .settings(
-      name := "pillars-flags",
-      libraryDependencies ++= Dependencies.flags
+      name             := "pillars-flags",
+      description      := "pillars-flag is a scala 3 library providing feature flag services for writing backend applications",
+      libraryDependencies ++= Dependencies.flags,
+      buildInfoKeys    := Seq[BuildInfoKey](name, version, description),
+      buildInfoPackage := "pillars.flags.build"
     )
     .dependsOn(core)
 
 lazy val httpClient = Project("pillars-http-client", file("modules/http-client"))
+    .enablePlugins(BuildInfoPlugin)
     .settings(
-      name := "pillars-http-client",
-      libraryDependencies ++= Dependencies.httpClient
+      name             := "pillars-http-client",
+      description      := "pillars-http-client is a scala 3 library providing http client services for writing backend applications",
+      libraryDependencies ++= Dependencies.httpClient,
+      buildInfoKeys    := Seq[BuildInfoKey](name, version, description),
+      buildInfoPackage := "pillars.httpclient.build"
     )
     .dependsOn(core)
 
+// tag::example[]
 lazy val example = Project("pillars-example", file("modules/example"))
+    .enablePlugins(BuildInfoPlugin) // //<1>
     .settings(
-      name := "pillars-example",
-      libraryDependencies ++= Dependencies.tests
+      name             := "pillars-example",                                            // //<2>
+      description      := "pillars-example is an example of application using pillars", // //<3>
+      libraryDependencies ++= Dependencies.tests,
+      buildInfoKeys    := Seq[BuildInfoKey](name, version, description),                // //<4>
+      buildInfoOptions := Seq(BuildInfoOption.Traits("pillars.BuildInfo")),             // //<5>
+      buildInfoPackage := "example.build"                                               // //<6>
     )
     .dependsOn(core, db, flags, httpClient)
-
+// end::example[]
 lazy val docs = Project("pillars-docs", file("modules/docs"))
     .settings(
       name := "pillars-docs"

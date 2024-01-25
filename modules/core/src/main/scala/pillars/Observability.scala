@@ -12,7 +12,11 @@ import org.typelevel.otel4s.java.OtelJava
 import org.typelevel.otel4s.metrics.Meter
 import org.typelevel.otel4s.trace.Tracer
 
-final case class Observability[F[_]](tracer: Tracer[F], metrics: Meter[F])
+final case class Observability[F[_]](tracer: Tracer[F], metrics: Meter[F]):
+    export metrics.*
+    export tracer.span
+    export tracer.spanBuilder
+end Observability
 object Observability:
     def noop[F[_]: LiftIO: Async]: F[Observability[F]] = Observability(Tracer.noop[F], Meter.noop[F]).pure[F]
 
