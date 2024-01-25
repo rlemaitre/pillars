@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
     
-    <!-- sourceuri: user-guide/30_modules/index.html -->
+    <!-- sourceuri: user-guide/20_features/40_api-server.html -->
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
     <meta content="INDEX, FOLLOW" name="ROBOTS">
 
-    <title>Optional Modules</title>
+    <title>API Server</title>
 
     <meta content="Pillars" property="og:title">
     <meta content="Build your backend service in Scala 3 the easy way" property="og:description">
@@ -90,7 +90,7 @@
                                 <a class="" href="../../user-guide/20_features/30_probes.html">Probes</a>
                             </li>
                             <li>
-                                <a class="" href="../../user-guide/20_features/40_api-server.html">API Server</a>
+                                <a class="active" href="../../user-guide/20_features/40_api-server.html">API Server</a>
                             </li>
                             <li>
                                 <a class="" href="../../user-guide/20_features/50_observability.html">Observability</a>
@@ -101,7 +101,7 @@
                         </ul>
                             </li>
                             <li>
-                                <a class="active" href="../../user-guide/30_modules/index.html">Optional Modules</a>
+                                <a class="" href="../../user-guide/30_modules/index.html">Optional Modules</a>
                         <ul>
                             <li>
                                 <a class="" href="../../user-guide/30_modules/10_db.html">Database Module</a>
@@ -135,61 +135,20 @@
         <p>
             
 <div class="sect1">
-<h2 id="_modules">Modules</h2>
+<h2 id="_api_server">API Server</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>Pillars includes several optional modules:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="#_database">Database</a></p>
-</li>
-<li>
-<p><a href="#_http_client">HTTP Client</a></p>
-</li>
-<li>
-<p><a href="#_feature_flags">Feature Flags</a></p>
-</li>
-</ul>
-</div>
-<div class="sect2">
-<h3 id="_database">Database</h3>
-<div class="paragraph">
-<p>The database module provides a simple abstraction over the database access layer.
-It is based on the skunk library and provides a simple interface to execute queries and transactions.</p>
-</div>
-<div class="paragraph">
-<p><a href="10_db.html">Read more</a></p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_http_client">HTTP Client</h3>
-<div class="paragraph">
-<p>The HTTP Client module provides a simple abstraction over the HTTP client layer.
-It is based on the http4s library using Netty and provides a simple interface to execute HTTP requests.</p>
-</div>
-<div class="paragraph">
-<p><a href="20_http-client.html">Read more</a></p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_feature_flags">Feature Flags</h3>
-<div class="paragraph">
-<p>The Feature Flags module provides a simple abstraction over the feature flags layer.</p>
-</div>
-<div class="paragraph">
-<p><a href="30_flags.html">Read more</a></p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_write_your_own_module">Write your own module</h3>
-<div class="paragraph">
-<p>You can easily write your own module by implementing the <code>Module</code> trait.</p>
-</div>
-<div class="paragraph">
-<p><a href="100_write-your-own-module.html">Read more</a></p>
-</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This documentation needs to be written.
+You can help us by <a href="../../contribute/10_contributing.html">contributing to the documentation</a>.
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
@@ -220,11 +179,11 @@ It is based on the http4s library using Netty and provides a simple interface to
     <button class="feedback--answer feedback--answer-yes">Yes</button>
     <button class="feedback--answer feedback--answer-no">No</button>
     <p class="feedback--response feedback--response-yes">
-        Glad to hear it! Please <a href="https://github.com/rlemaitre/pillars/issues/new?title=Docs%3A+Feedback+for+%27Optional+Modules%27%20%F0%9F%91%8D&body=%0A%0A%5BEnter%20feedback%20here%5D%0A%0A%0A---%0A%23page:user-guide/30_modules/index.adoc">tell us
+        Glad to hear it! Please <a href="https://github.com/rlemaitre/pillars/issues/new?title=Docs%3A+Feedback+for+%27API+Server%27%20%F0%9F%91%8D&body=%0A%0A%5BEnter%20feedback%20here%5D%0A%0A%0A---%0A%23page:user-guide/20_features/40_api-server.adoc">tell us
     how we can improve</a>.
     </p>
     <p class="feedback--response feedback--response-no">
-        Sorry to hear that. Please <a href="https://github.com/rlemaitre/pillars/issues/new?title=Docs%3A+Feedback+for+%27Optional+Modules%27%20%F0%9F%91%8E&body=%0A%0A%5BEnter%20feedback%20here%5D%0A%0A%0A---%0A%23page:user-guide/30_modules/index.adoc">tell
+        Sorry to hear that. Please <a href="https://github.com/rlemaitre/pillars/issues/new?title=Docs%3A+Feedback+for+%27API+Server%27%20%F0%9F%91%8E&body=%0A%0A%5BEnter%20feedback%20here%5D%0A%0A%0A---%0A%23page:user-guide/20_features/40_api-server.adoc">tell
     us how we can improve</a>.
     </p>
 </div>
@@ -279,14 +238,7 @@ It is based on the http4s library using Netty and provides a simple interface to
         <div id="toc" class="toc">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_modules">Modules</a>
-<ul class="sectlevel2">
-<li><a href="#_database">Database</a></li>
-<li><a href="#_http_client">HTTP Client</a></li>
-<li><a href="#_feature_flags">Feature Flags</a></li>
-<li><a href="#_write_your_own_module">Write your own module</a></li>
-</ul>
-</li>
+<li><a href="#_api_server">API Server</a></li>
 </ul>
 </div>
 
@@ -294,12 +246,12 @@ It is based on the http4s library using Netty and provides a simple interface to
     <ul>
 
         <li>
-            <a href="https://github.com/rlemaitre/pillars/edit/main/docs/user-guide/30_modules/index.adoc" target="_blank"><i class="fa fa-edit fa-fw"></i> Improve this doc</a>
+            <a href="https://github.com/rlemaitre/pillars/edit/main/docs/user-guide/20_features/40_api-server.adoc" target="_blank"><i class="fa fa-edit fa-fw"></i> Improve this doc</a>
         </li>
 
 
         <li>
-            <a href="https://github.com/rlemaitre/pillars/issues/new?title=Docs%3A+Feedback+for+%27Optional+Modules%27&body=%0A%0A%5BEnter%20feedback%20here%5D%0A%0A%0A---%0A%23page:%20https://github.com/rlemaitre/pillars/edit/main/docs/user-guide/30_modules/index.adoc%0A%23branch:%20main" target="_blank">
+            <a href="https://github.com/rlemaitre/pillars/issues/new?title=Docs%3A+Feedback+for+%27API+Server%27&body=%0A%0A%5BEnter%20feedback%20here%5D%0A%0A%0A---%0A%23page:%20https://github.com/rlemaitre/pillars/edit/main/docs/user-guide/20_features/40_api-server.adoc%0A%23branch:%20main" target="_blank">
                 <i class="fa fa-github"></i> Create an issue
             </a>
         </li>

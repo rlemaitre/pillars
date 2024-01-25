@@ -87,13 +87,16 @@
                                 <a class="" href="../user-guide/20_features/20_logging.html">Logging</a>
                             </li>
                             <li>
-                                <a class="" href="../user-guide/20_features/30_api-server.html">API Server</a>
+                                <a class="" href="../user-guide/20_features/30_probes.html">Probes</a>
                             </li>
                             <li>
-                                <a class="" href="../user-guide/20_features/40_admin-server.html">Admin Server</a>
+                                <a class="" href="../user-guide/20_features/40_api-server.html">API Server</a>
                             </li>
                             <li>
                                 <a class="" href="../user-guide/20_features/50_observability.html">Observability</a>
+                            </li>
+                            <li>
+                                <a class="" href="../user-guide/20_features/60_admin-server.html">Admin Server</a>
                             </li>
                         </ul>
                             </li>
@@ -189,27 +192,29 @@ You can find an example in the <code>modules/example/src/main/resources/applicat
 </div>
 <div class="listingblock data-noescape">
 <div class="content">
-<pre class="prettyprint highlight linenums"><code data-lang="scala">object Main extends pillars.EntryPoint: // <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="prettyprint highlight linenums"><code data-lang="scala">object app extends pillars.EntryPoint: // <i class="conum" data-value="1"></i><b>(1)</b>
     def app: pillars.App[IO] = new pillars.App[IO]: // <i class="conum" data-value="2"></i><b>(2)</b>
         def name        = Name("BookStore")
         def version     = Version("0.0.1")
         def description = Description("A simple bookstore")
 
-        def run(using pillars: Pillars[IO]): IO[Unit] = // <i class="conum" data-value="3"></i><b>(3)</b>
-            import pillars.*
+        def run(using p: Pillars[IO]): IO[Unit] = // <i class="conum" data-value="3"></i><b>(3)</b>
+            import p.*
             for
-                _ &lt;- logger.info(s"📚 Welcome to ${pillars.config.name}!")
+                _ &lt;- logger.info(s"📚 Welcome to ${config.name}!")
                 _ &lt;- flag"feature-1".whenEnabled:
-                         pillars.db.use: s =&gt;
+                         DB[IO].use: session =&gt;
                              for
-                                 d &lt;- s.unique(sql"select now()".query(timestamptz))
-                                 _ &lt;- logger.info(s"The current date is $d.")
+                                 date &lt;- session.unique(sql"select now()".query(timestamptz))
+                                 _    &lt;- logger.info(s"The current date is $date.")
                              yield ()
-                _ &lt;- pillars.apiServer.start(endpoints.all)
+                _ &lt;- HttpClient[IO].get("https://pillars.rlemaitre.com"): response =&gt;
+                         logger.info(s"Response: ${response.status}")
+                _ &lt;- apiServer.start(endpoints.all)
             yield ()
             end for
         end run
-end Main</code></pre>
+end app</code></pre>
 </div>
 </div>
 <div class="colist arabic">

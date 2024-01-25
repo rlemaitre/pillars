@@ -87,13 +87,16 @@
                                 <a class="" href="../../user-guide/20_features/20_logging.html">Logging</a>
                             </li>
                             <li>
-                                <a class="" href="../../user-guide/20_features/30_api-server.html">API Server</a>
+                                <a class="" href="../../user-guide/20_features/30_probes.html">Probes</a>
                             </li>
                             <li>
-                                <a class="" href="../../user-guide/20_features/40_admin-server.html">Admin Server</a>
+                                <a class="" href="../../user-guide/20_features/40_api-server.html">API Server</a>
                             </li>
                             <li>
                                 <a class="" href="../../user-guide/20_features/50_observability.html">Observability</a>
+                            </li>
+                            <li>
+                                <a class="" href="../../user-guide/20_features/60_admin-server.html">Admin Server</a>
                             </li>
                         </ul>
                             </li>
@@ -134,18 +137,90 @@
 <div class="sect1">
 <h2 id="_database_module">Database module</h2>
 <div class="sectionbody">
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-This documentation needs to be written.
-You can help us by <a href="../../contribute/10_contributing.html">contributing to the documentation</a>.
-</td>
-</tr>
-</table>
+<div class="paragraph">
+<p>The <code>DB</code> module provides database connectivity and operations for the Pillars application.
+It uses the Skunk library for interacting with PostgreSQL databases.</p>
+</div>
+<div class="sect2">
+<h3 id="_database_configuration">Database Configuration</h3>
+<div class="paragraph">
+<p>The database configuration is defined in the <code>DatabaseConfig</code> case class.
+It includes the following fields:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>host</code>: The host of the database.</p>
+</li>
+<li>
+<p><code>port</code>: The port of the database.</p>
+</li>
+<li>
+<p><code>database</code>: The name of the database.</p>
+</li>
+<li>
+<p><code>username</code>: The username for the database.</p>
+</li>
+<li>
+<p><code>password</code>: The password for the database.</p>
+</li>
+<li>
+<p><code>poolSize</code>: The size of the connection pool.</p>
+</li>
+<li>
+<p><code>debug</code>: A flag indicating whether to enable debug mode.</p>
+</li>
+<li>
+<p><code>probe</code>: The configuration for the database probe.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The configuration is read from the application&#8217;s configuration file under the <code>db</code> section.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_using_the_db_module">Using the DB Module</h3>
+<div class="paragraph">
+<p>To use the <code>DB</code> module, you need to import it and then access it through the <code>Pillars</code> instance:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight linenums"><code data-lang="scala">import pillars.db.*
+
+val dbModule = pillarsInstance.db</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can then use the <code>dbModule</code> to perform database operations.</p>
+</div>
+<div class="paragraph">
+<p>You can also use directly <code>DB[F]</code> to perform database operations:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight linenums"><code data-lang="scala">import pillars.db.*
+import skunk.*
+
+def foo[F[_]](using Pillars[F]) =
+    DB[F].use: session =&gt;
+        session.unique(sql"SELECT 1".query[Int])</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_probe">Probe</h3>
+<div class="paragraph">
+<p>The <code>DB</code> module provides a <a href="../20_features/30_probes.html">probe</a> for health checks.</p>
+</div>
+<div class="listingblock data-noescape">
+<div class="content">
+<pre class="prettyprint highlight linenums"><code data-lang="scala">val isHealthy: F[Boolean] = dbModule.probes.head.check</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will return a boolean indicating whether the database is healthy or not.</p>
+</div>
 </div>
 </div>
 </div>
@@ -235,7 +310,13 @@ You can help us by <a href="../../contribute/10_contributing.html">contributing 
         <div id="toc" class="toc">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_database_module">Database module</a></li>
+<li><a href="#_database_module">Database module</a>
+<ul class="sectlevel2">
+<li><a href="#_database_configuration">Database Configuration</a></li>
+<li><a href="#_using_the_db_module">Using the DB Module</a></li>
+<li><a href="#_probe">Probe</a></li>
+</ul>
+</li>
 </ul>
 </div>
 

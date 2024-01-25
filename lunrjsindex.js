@@ -10,14 +10,30 @@ var documents = [
 
 {
     "id": 1,
-    "uri": "user-guide/20_features/30_api-server.html",
+    "uri": "user-guide/20_features/60_admin-server.html",
+    "menu": "user-guide",
+    "title": "Admin Server",
+    "text": " Table of Contents Admin Server Admin Server This documentation needs to be written. You can help us by contributing to the documentation . "
+},
+
+{
+    "id": 2,
+    "uri": "user-guide/20_features/40_api-server.html",
     "menu": "user-guide",
     "title": "API Server",
     "text": " Table of Contents API Server API Server This documentation needs to be written. You can help us by contributing to the documentation . "
 },
 
 {
-    "id": 2,
+    "id": 3,
+    "uri": "user-guide/20_features/30_probes.html",
+    "menu": "user-guide",
+    "title": "Probes",
+    "text": " Table of Contents Probes Probes This documentation needs to be written. You can help us by contributing to the documentation . "
+},
+
+{
+    "id": 4,
     "uri": "user-guide/20_features/20_logging.html",
     "menu": "user-guide",
     "title": "Logging",
@@ -25,7 +41,7 @@ var documents = [
 },
 
 {
-    "id": 3,
+    "id": 5,
     "uri": "user-guide/20_features/50_observability.html",
     "menu": "user-guide",
     "title": "Observability",
@@ -33,7 +49,7 @@ var documents = [
 },
 
 {
-    "id": 4,
+    "id": 6,
     "uri": "user-guide/20_features/10_configuration.html",
     "menu": "user-guide",
     "title": "Configuration",
@@ -41,23 +57,15 @@ var documents = [
 },
 
 {
-    "id": 5,
-    "uri": "user-guide/20_features/40_admin-server.html",
-    "menu": "user-guide",
-    "title": "Admin Server",
-    "text": " Table of Contents Admin Server Admin Server This documentation needs to be written. You can help us by contributing to the documentation . "
-},
-
-{
-    "id": 6,
+    "id": 7,
     "uri": "user-guide/10_quick-start.html",
     "menu": "user-guide",
     "title": "Quick Start",
-    "text": " Table of Contents Quick Start Installation Usage Quick Start This documentation needs to be written. You can help us by contributing to the documentation . Installation This library is currently available for Scala binary version 3.3.1. To use the latest version, include the following in your build.sbt : libraryDependencies ++= Seq( \"com.rlemaitre\" %% \"pillars-core\" % \"{project-version}\" ) You can also add optional modules to your dependencies: libraryDependencies ++= Seq( \"com.rlemaitre\" %% \"pillars-db\" % \"{project-version}\", \"com.rlemaitre\" %% \"pillars-flags\" % \"{project-version}\", \"com.rlemaitre\" %% \"pillars-http-client\" % \"{project-version}\" ) Usage You can find an example project in the modules/example directory. First, you need to create a configuration file . You can find an example in the modules/example/src/main/resources/application.conf file. Then, you can create your entry point by extending the EntryPoint trait: object Main extends pillars.EntryPoint: // (1) def app: pillars.App[IO] = new pillars.App[IO]: // (2) def name = Name(\"BookStore\") def version = Version(\"0.0.1\") def description = Description(\"A simple bookstore\") def run(using pillars: Pillars[IO]): IO[Unit] = // (3) import pillars.* for _ &lt;- logger.info(s\"📚 Welcome to ${pillars.config.name}!\") _ &lt;- flag\"feature-1\".whenEnabled: pillars.db.use: s =&gt; for d &lt;- s.unique(sql\"select now()\".query(timestamptz)) _ &lt;- logger.info(s\"The current date is $d.\") yield () _ &lt;- pillars.apiServer.start(endpoints.all) yield () end for end run end Main 1 The EntryPoint trait is a simple trait that provides a main method and initialize the Pillars instance. 2 The pillars.App[IO] must contain your application logic 3 The run is the entry point of your application. Here, you have access to the Pillars instance. Then, you can run your application. For example, you can run it with sbt : sbt \"example/run\" The log should display something like: 2024.01.21 22:36:19:0000 [io-comp...] [INFO ] pillars.Pillars.apply:52 - Loading modules... 2024.01.21 22:36:19:0001 [io-comp...] [INFO ] pillars.Pillars.loadModules:87 - Found 2 module loaders: db, feature-flags 2024.01.21 22:36:19:0002 [io-comp...] [INFO ] pillars.db.db.load:57 - Loading DB module 2024.01.21 22:36:19:0003 [io-comp...] [INFO ] pillars.db.db.load:68 - DB module loaded 2024.01.21 22:36:19:0004 [io-comp...] [INFO ] pillars.flags.FlagManager.load:54 - Loading Feature flags module 2024.01.21 22:36:19:0005 [io-comp...] [INFO ] pillars.flags.FlagManager.load:57 - Feature flags module loaded 2024.01.21 22:36:19:0000 [io-comp...] [INFO ] pillars.AdminServer.start:22 - Starting admin server on 0.0.0.0:19876 2024.01.21 22:36:19:0006 [io-comp...] [INFO ] example.app.run:24 - 📚 Welcome to Bookstore! 2024.01.21 22:36:19:0000 [io-comp...] [INFO ] example.app.run:29 - The current date is 2024-01-21T22:36:19.695572+01:00. 2024.01.21 22:36:19:0000 [io-comp...] [INFO ] pillars.ApiServer.init:21 - Starting API server on 0.0.0.0:9876 2024.01.21 22:36:19:0001 [io-comp...] [INFO ] org.http4s.netty.server.NettyServerBuilder - Using NIO EventLoopGroup 2024.01.21 22:36:19:0001 [io-comp...] [INFO ] org.http4s.netty.server.NettyServerBuilder - Using NIO EventLoopGroup 2024.01.21 22:36:19:0002 [io-comp...] [INFO ] org.http4s.netty.server.NettyServerBuilder - Started Http4s Netty Server at http://[::]:9876/ 2024.01.21 22:36:19:0002 [io-comp...] [INFO ] org.http4s.netty.server.NettyServerBuilder - Started Http4s Netty Server at http://[::]:19876/ You can now access the API at http://localhost:9876 and the admin server at http://localhost:19876 . For example, to get the readiness porbe status, you can run: $ curl http://localhost:19876/admin/probes/health | jq { \"status\": \"pass\", \"checks\": [ { \"componentId\": \"db\", \"componentType\": \"datastore\", \"status\": \"pass\" } ] } "
+    "text": " Table of Contents Quick Start Installation Usage Quick Start This documentation needs to be written. You can help us by contributing to the documentation . Installation This library is currently available for Scala binary version 3.3.1. To use the latest version, include the following in your build.sbt : libraryDependencies ++= Seq( \"com.rlemaitre\" %% \"pillars-core\" % \"{project-version}\" ) You can also add optional modules to your dependencies: libraryDependencies ++= Seq( \"com.rlemaitre\" %% \"pillars-db\" % \"{project-version}\", \"com.rlemaitre\" %% \"pillars-flags\" % \"{project-version}\", \"com.rlemaitre\" %% \"pillars-http-client\" % \"{project-version}\" ) Usage You can find an example project in the modules/example directory. First, you need to create a configuration file . You can find an example in the modules/example/src/main/resources/application.conf file. Then, you can create your entry point by extending the EntryPoint trait: object app extends pillars.EntryPoint: // (1) def app: pillars.App[IO] = new pillars.App[IO]: // (2) def name = Name(\"BookStore\") def version = Version(\"0.0.1\") def description = Description(\"A simple bookstore\") def run(using p: Pillars[IO]): IO[Unit] = // (3) import p.* for _ &lt;- logger.info(s\"📚 Welcome to ${config.name}!\") _ &lt;- flag\"feature-1\".whenEnabled: DB[IO].use: session =&gt; for date &lt;- session.unique(sql\"select now()\".query(timestamptz)) _ &lt;- logger.info(s\"The current date is $date.\") yield () _ &lt;- HttpClient[IO].get(\"https://pillars.rlemaitre.com\"): response =&gt; logger.info(s\"Response: ${response.status}\") _ &lt;- apiServer.start(endpoints.all) yield () end for end run end app 1 The EntryPoint trait is a simple trait that provides a main method and initialize the Pillars instance. 2 The pillars.App[IO] must contain your application logic 3 The run is the entry point of your application. Here, you have access to the Pillars instance. Then, you can run your application. For example, you can run it with sbt : sbt \"example/run\" The log should display something like: 2024.01.21 22:36:19:0000 [io-comp...] [INFO ] pillars.Pillars.apply:52 - Loading modules... 2024.01.21 22:36:19:0001 [io-comp...] [INFO ] pillars.Pillars.loadModules:87 - Found 2 module loaders: db, feature-flags 2024.01.21 22:36:19:0002 [io-comp...] [INFO ] pillars.db.db.load:57 - Loading DB module 2024.01.21 22:36:19:0003 [io-comp...] [INFO ] pillars.db.db.load:68 - DB module loaded 2024.01.21 22:36:19:0004 [io-comp...] [INFO ] pillars.flags.FlagManager.load:54 - Loading Feature flags module 2024.01.21 22:36:19:0005 [io-comp...] [INFO ] pillars.flags.FlagManager.load:57 - Feature flags module loaded 2024.01.21 22:36:19:0000 [io-comp...] [INFO ] pillars.AdminServer.start:22 - Starting admin server on 0.0.0.0:19876 2024.01.21 22:36:19:0006 [io-comp...] [INFO ] example.app.run:24 - 📚 Welcome to Bookstore! 2024.01.21 22:36:19:0000 [io-comp...] [INFO ] example.app.run:29 - The current date is 2024-01-21T22:36:19.695572+01:00. 2024.01.21 22:36:19:0000 [io-comp...] [INFO ] pillars.ApiServer.init:21 - Starting API server on 0.0.0.0:9876 2024.01.21 22:36:19:0001 [io-comp...] [INFO ] org.http4s.netty.server.NettyServerBuilder - Using NIO EventLoopGroup 2024.01.21 22:36:19:0001 [io-comp...] [INFO ] org.http4s.netty.server.NettyServerBuilder - Using NIO EventLoopGroup 2024.01.21 22:36:19:0002 [io-comp...] [INFO ] org.http4s.netty.server.NettyServerBuilder - Started Http4s Netty Server at http://[::]:9876/ 2024.01.21 22:36:19:0002 [io-comp...] [INFO ] org.http4s.netty.server.NettyServerBuilder - Started Http4s Netty Server at http://[::]:19876/ You can now access the API at http://localhost:9876 and the admin server at http://localhost:19876 . For example, to get the readiness porbe status, you can run: $ curl http://localhost:19876/admin/probes/health | jq { \"status\": \"pass\", \"checks\": [ { \"componentId\": \"db\", \"componentType\": \"datastore\", \"status\": \"pass\" } ] } "
 },
 
 {
-    "id": 7,
+    "id": 8,
     "uri": "user-guide/30_modules/index.html",
     "menu": "user-guide",
     "title": "Optional Modules",
@@ -65,23 +73,23 @@ var documents = [
 },
 
 {
-    "id": 8,
+    "id": 9,
     "uri": "user-guide/30_modules/30_flags.html",
     "menu": "user-guide",
     "title": "Feature Flags module",
-    "text": " Table of Contents Feature Flags module Creating a feature flag Using a feature flag Feature Flags module This documentation needs to be written. You can help us by contributing to the documentation . Feature flags are a way to enable or disable features in your application. They are useful for many reasons, including: Allowing you to test features in production before releasing them to all users. Allowing you to do a gradual rollout of a feature to a percentage of users. Currently, feature flags are only read from the configuration file and cannot be changed at runtime. This means that you will need to restart your application to change the value of a feature flag. In the future, we plan to add support for changing feature flags at runtime and storing them in a database. Creating a feature flag Feature flags are defined in the feature-flags section of the configuration file. feature-flags: enabled: true # (1) flags: - name: feature-1 # (2) status: enabled # (3) - name: feature-2 status: disabled 1 Whether feature flags are enabled or not. If this is set to false , all feature flags will be disabled. 2 The name of the feature flag. 3 The status of the feature flag. Possible values are enabled and disabled . Using a feature flag Feature flags can be used in your application by using the flags module on Pillars . import pillars.flags.* // (1) val flag = flag\"feature-1\" // (2) for enabled &lt;- pillars.flags.isEnabled(flag) // (3) _ &lt;- IO.whenA(enabled)(IO.println(\"Feature 1 is enabled\")) // (4) // or _ &lt;- pillars.whenEnabled(flag\"feature-2\")(IO.println(\"Feature 2 is enabled\")) // (5) // or _ &lt;- flag\"feature-3\".whenEnabled(IO.println(\"Feature 3 is enabled\")) // (6) yield () 1 Import the flags module to enable the flag string interpolator and the flags property on Pillars . 2 Create a Flag instance by using the flag string interpolator. 3 Check if the feature flag is enabled. 4 If the feature flag is enabled, perform the action you want. 5 Use the pillars.whenEnabled method to perform an action if the feature flag is enabled. 6 Use the whenEnabled method on the FeatureFlag.Name instance to perform an action if the feature flag is enabled. "
-},
-
-{
-    "id": 9,
-    "uri": "user-guide/30_modules/20_http-client.html",
-    "menu": "user-guide",
-    "title": "HTTP Client Module",
-    "text": " Table of Contents HTTP Client module HTTP Client module This documentation needs to be written. You can help us by contributing to the documentation . "
+    "text": " Table of Contents Feature Flags module Creating a feature flag Using a feature flag Feature Flags module Feature flags are a way to enable or disable features in your application. They are useful for many reasons, including: Allowing you to test features in production before releasing them to all users. Allowing you to do a gradual rollout of a feature to a percentage of users. Currently, feature flags are only read from the configuration file and cannot be changed at runtime. This means that you will need to restart your application to change the value of a feature flag. In the future, we plan to add support for changing feature flags at runtime and storing them in a database. Creating a feature flag Feature flags are defined in the feature-flags section of the configuration file. feature-flags: enabled: true # (1) flags: - name: feature-1 # (2) status: enabled # (3) - name: feature-2 status: disabled 1 Whether feature flags are enabled or not. If this is set to false , all feature flags will be disabled. 2 The name of the feature flag. 3 The status of the feature flag. Possible values are enabled and disabled . Using a feature flag Feature flags can be used in your application by using the flags module on Pillars . import pillars.flags.* // (1) val flag = flag\"feature-1\" // (2) for enabled &lt;- pillars.flags.isEnabled(flag) // (3) _ &lt;- IO.whenA(enabled)(IO.println(\"Feature 1 is enabled\")) // (4) // or _ &lt;- pillars.whenEnabled(flag\"feature-2\")(IO.println(\"Feature 2 is enabled\")) // (5) // or _ &lt;- flag\"feature-3\".whenEnabled(IO.println(\"Feature 3 is enabled\")) // (6) yield () 1 Import the flags module to enable the flag string interpolator and the flags property on Pillars . 2 Create a Flag instance by using the flag string interpolator. 3 Check if the feature flag is enabled. 4 If the feature flag is enabled, perform the action you want. 5 Use the pillars.whenEnabled method to perform an action if the feature flag is enabled. 6 Use the whenEnabled method on the FeatureFlag.Name instance to perform an action if the feature flag is enabled. "
 },
 
 {
     "id": 10,
+    "uri": "user-guide/30_modules/20_http-client.html",
+    "menu": "user-guide",
+    "title": "HTTP Client Module",
+    "text": " Table of Contents HTTP Client module HTTP Client Configuration Using the HttpClient Module HTTP Operations HTTP Client module The HttpClient module provides HTTP client functionality for the Pillars application. It uses the http4s library for creating HTTP requests and handling HTTP responses. HTTP Client Configuration The HTTP client configuration is defined in the Config case class. It includes the following field: followRedirect : A flag indicating whether to follow redirects. The configuration is read from the application&#8217;s configuration file under the http-client section. Using the HttpClient Module To use the HttpClient module, you need to import it and then access it through the Pillars instance: import pillars.httpclient.* val httpClientModule = pillarsInstance.httpClient You can also use directly Client[F] You can then use the httpClientModule to perform HTTP operations. HTTP Operations The HttpClient module provides methods for sending HTTP requests and receiving HTTP responses. You can use the httpClient extension method on Pillars to get an instance of Client[F] : import org.http4s.client.Client val client: Client[F] = pillars.httpClient This Client[F] instance can be used to send HTTP requests by using the same methods as org.http4s.client.Client[F] . "
+},
+
+{
+    "id": 11,
     "uri": "user-guide/30_modules/100_write-your-own-module.html",
     "menu": "user-guide",
     "title": "Write your own module",
@@ -89,15 +97,15 @@ var documents = [
 },
 
 {
-    "id": 11,
+    "id": 12,
     "uri": "user-guide/30_modules/10_db.html",
     "menu": "user-guide",
     "title": "Database Module",
-    "text": " Table of Contents Database module Database module This documentation needs to be written. You can help us by contributing to the documentation . "
+    "text": " Table of Contents Database module Database Configuration Using the DB Module Probe Database module The DB module provides database connectivity and operations for the Pillars application. It uses the Skunk library for interacting with PostgreSQL databases. Database Configuration The database configuration is defined in the DatabaseConfig case class. It includes the following fields: host : The host of the database. port : The port of the database. database : The name of the database. username : The username for the database. password : The password for the database. poolSize : The size of the connection pool. debug : A flag indicating whether to enable debug mode. probe : The configuration for the database probe. The configuration is read from the application&#8217;s configuration file under the db section. Using the DB Module To use the DB module, you need to import it and then access it through the Pillars instance: import pillars.db.* val dbModule = pillarsInstance.db You can then use the dbModule to perform database operations. You can also use directly DB[F] to perform database operations: import pillars.db.* import skunk.* def foo[F[_]](using Pillars[F]) = DB[F].use: session =&gt; session.unique(sql\"SELECT 1\".query[Int]) Probe The DB module provides a probe for health checks. val isHealthy: F[Boolean] = dbModule.probes.head.check This will return a boolean indicating whether the database is healthy or not. "
 },
 
 {
-    "id": 12,
+    "id": 13,
     "uri": "contribute/20_code_of_conduct.html",
     "menu": "contribute",
     "title": "Code of Conduct",
@@ -105,7 +113,7 @@ var documents = [
 },
 
 {
-    "id": 13,
+    "id": 14,
     "uri": "contribute/10_contributing.html",
     "menu": "contribute",
     "title": "Contributing to Pillars",
@@ -113,7 +121,7 @@ var documents = [
 },
 
 {
-    "id": 14,
+    "id": 15,
     "uri": "search.html",
     "menu": "-",
     "title": "search",
@@ -121,7 +129,7 @@ var documents = [
 },
 
 {
-    "id": 15,
+    "id": 16,
     "uri": "lunrjsindex.html",
     "menu": "-",
     "title": "null",

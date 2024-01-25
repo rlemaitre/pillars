@@ -87,13 +87,16 @@
                                 <a class="" href="../../user-guide/20_features/20_logging.html">Logging</a>
                             </li>
                             <li>
-                                <a class="" href="../../user-guide/20_features/30_api-server.html">API Server</a>
+                                <a class="" href="../../user-guide/20_features/30_probes.html">Probes</a>
                             </li>
                             <li>
-                                <a class="" href="../../user-guide/20_features/40_admin-server.html">Admin Server</a>
+                                <a class="" href="../../user-guide/20_features/40_api-server.html">API Server</a>
                             </li>
                             <li>
                                 <a class="" href="../../user-guide/20_features/50_observability.html">Observability</a>
+                            </li>
+                            <li>
+                                <a class="" href="../../user-guide/20_features/60_admin-server.html">Admin Server</a>
                             </li>
                         </ul>
                             </li>
@@ -134,18 +137,60 @@
 <div class="sect1">
 <h2 id="_http_client_module">HTTP Client module</h2>
 <div class="sectionbody">
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-This documentation needs to be written.
-You can help us by <a href="../../contribute/10_contributing.html">contributing to the documentation</a>.
-</td>
-</tr>
-</table>
+<div class="paragraph">
+<p>The <code>HttpClient</code> module provides HTTP client functionality for the Pillars application.
+It uses the http4s library for creating HTTP requests and handling HTTP responses.</p>
+</div>
+<div class="sect2">
+<h3 id="_http_client_configuration">HTTP Client Configuration</h3>
+<div class="paragraph">
+<p>The HTTP client configuration is defined in the <code>Config</code> case class.
+It includes the following field:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>followRedirect</code>: A flag indicating whether to follow redirects.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The configuration is read from the application&#8217;s configuration file under the <code>http-client</code> section.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_using_the_httpclient_module">Using the HttpClient Module</h3>
+<div class="paragraph">
+<p>To use the <code>HttpClient</code> module, you need to import it and then access it through the <code>Pillars</code> instance:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight linenums"><code data-lang="scala">import pillars.httpclient.*
+
+val httpClientModule = pillarsInstance.httpClient</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can also use directly <code>Client[F]</code>
+You can then use the <code>httpClientModule</code> to perform HTTP operations.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_http_operations">HTTP Operations</h3>
+<div class="paragraph">
+<p>The <code>HttpClient</code> module provides methods for sending HTTP requests and receiving HTTP responses.
+You can use the <code>httpClient</code> extension method on <code>Pillars</code> to get an instance of <code>Client[F]</code>:</p>
+</div>
+<div class="listingblock data-noescape">
+<div class="content">
+<pre class="prettyprint highlight linenums"><code data-lang="scala">import org.http4s.client.Client
+
+val client: Client[F] = pillars.httpClient</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This <code>Client[F]</code> instance can be used to send HTTP requests by using the same methods as <code>org.http4s.client.Client[F]</code>.</p>
+</div>
 </div>
 </div>
 </div>
@@ -235,7 +280,13 @@ You can help us by <a href="../../contribute/10_contributing.html">contributing 
         <div id="toc" class="toc">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_http_client_module">HTTP Client module</a></li>
+<li><a href="#_http_client_module">HTTP Client module</a>
+<ul class="sectlevel2">
+<li><a href="#_http_client_configuration">HTTP Client Configuration</a></li>
+<li><a href="#_using_the_httpclient_module">Using the HttpClient Module</a></li>
+<li><a href="#_http_operations">HTTP Operations</a></li>
+</ul>
+</li>
 </ul>
 </div>
 
