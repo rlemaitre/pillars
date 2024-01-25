@@ -7,12 +7,13 @@ import pillars.*
 import pillars.App.*
 import pillars.db.*
 import pillars.flags.*
+import pillars.httpclient.*
 import skunk.*
 import skunk.codec.all.*
 import skunk.implicits.*
 
 // tag::quick-start[]
-object Main extends pillars.EntryPoint: // // <1>
+object app extends pillars.EntryPoint: // // <1>
     def app: pillars.App[IO] = new pillars.App[IO]: // // <2>
         def name        = Name("BookStore")
         def version     = Version("0.0.1")
@@ -28,9 +29,11 @@ object Main extends pillars.EntryPoint: // // <1>
                                  date <- session.unique(sql"select now()".query(timestamptz))
                                  _    <- logger.info(s"The current date is $date.")
                              yield ()
+                _ <- HttpClient[IO].get("https://pillars.rlemaitre.com"): response =>
+                         logger.info(s"Response: ${response.status}")
                 _ <- apiServer.start(endpoints.all)
             yield ()
             end for
         end run
-end Main
+end app
 // end::quick-start[]

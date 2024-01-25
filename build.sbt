@@ -66,7 +66,7 @@ lazy val example = Project("pillars-example", file("modules/example"))
       name := "pillars-example",
       libraryDependencies ++= Dependencies.tests
     )
-    .dependsOn(core, db, flags)
+    .dependsOn(core, db, flags, httpClient)
 
 lazy val docs = Project("pillars-docs", file("modules/docs"))
     .settings(

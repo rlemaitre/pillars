@@ -13,6 +13,43 @@ ifndef::projectRootDir[]
 :projectRootDir: ../../../../../..
 endif::projectRootDir[]
 
-[NOTE]
-This documentation needs to be written.
-You can help us by xref:../../contribute/10_contributing.adoc[contributing to the documentation].
+The `HttpClient` module provides HTTP client functionality for the Pillars application.
+It uses the http4s library for creating HTTP requests and handling HTTP responses.
+
+=== HTTP Client Configuration
+
+The HTTP client configuration is defined in the `Config` case class.
+It includes the following field:
+
+* `followRedirect`: A flag indicating whether to follow redirects.
+
+The configuration is read from the application's configuration file under the `http-client` section.
+
+=== Using the HttpClient Module
+
+To use the `HttpClient` module, you need to import it and then access it through the `Pillars` instance:
+
+[source,scala,linenums]
+--
+import pillars.httpclient.*
+
+val httpClientModule = pillarsInstance.httpClient
+--
+
+You can also use directly `Client[F]`
+You can then use the `httpClientModule` to perform HTTP operations.
+
+=== HTTP Operations
+
+The `HttpClient` module provides methods for sending HTTP requests and receiving HTTP responses.
+You can use the `httpClient` extension method on `Pillars` to get an instance of `Client[F]`:
+
+[source,scala,linenums,role="data-noescape"]
+--
+import org.http4s.client.Client
+
+val client: Client[F] = pillars.httpClient
+--
+
+This `Client[F]` instance can be used to send HTTP requests by using the same methods as `org.http4s.client.Client[F]`.
+
