@@ -194,11 +194,9 @@ You can find an example in the <code>modules/example/src/main/resources/applicat
 <div class="content">
 <pre class="prettyprint highlight linenums"><code data-lang="scala">object app extends pillars.EntryPoint: // <i class="conum" data-value="1"></i><b>(1)</b>
     def app: pillars.App[IO] = new pillars.App[IO]: // <i class="conum" data-value="2"></i><b>(2)</b>
-        def name        = Name("BookStore")
-        def version     = Version("0.0.1")
-        def description = Description("A simple bookstore")
+        def infos: AppInfo = BuildInfo.toAppInfo // <i class="conum" data-value="3"></i><b>(3)</b>
 
-        def run(using p: Pillars[IO]): IO[Unit] = // <i class="conum" data-value="3"></i><b>(3)</b>
+        def run(using p: Pillars[IO]): IO[Unit] = // <i class="conum" data-value="4"></i><b>(4)</b>
             import p.*
             for
                 _ &lt;- logger.info(s"📚 Welcome to ${config.name}!")
@@ -229,6 +227,12 @@ end app</code></pre>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
+<td><code>infos</code> defines some metadata about your application.
+It is used by the admin server to display information about your application.
+See</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
 <td>The <code>run</code> is the entry point of your application. Here, you have access to the <code>Pillars</code> instance.</td>
 </tr>
 </table>
@@ -279,6 +283,94 @@ For example, to get the readiness porbe status, you can run:</p>
     }
   ]
 }</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_application_metadata">Application Metadata</h3>
+<div class="paragraph">
+<p>The <code>infos</code> property of the <code>App[F]</code> trait defines some metadata about your application.
+You have two ways of defining it:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>You can directly create an instance of <code>AppInfo</code>:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>val infos = AppInfo(
+  name = App.Name("Bookstore"),
+  version = App.Version("1.0.0"),
+  description = App.Description("A simple bookstore")
+)</pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Or, if you are using the <a href="https://github.com/sbt/sbt-buildinfo">sbt-buildinfo</a> plugin, you can use the <code>BuildInfo</code> object.
+In your <code>build.sbt</code>, add the following lines to your project definition:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>lazy val example = Project("pillars-example", file("modules/example"))
+    .enablePlugins(BuildInfoPlugin) // <i class="conum" data-value="1"></i><b>(1)</b>
+    .settings(
+      name             := "pillars-example",                                            // <i class="conum" data-value="2"></i><b>(2)</b>
+      description      := "pillars-example is an example of application using pillars", // <i class="conum" data-value="3"></i><b>(3)</b>
+      libraryDependencies ++= Dependencies.tests,
+      buildInfoKeys    := Seq[BuildInfoKey](name, version, description),                // <i class="conum" data-value="4"></i><b>(4)</b>
+      buildInfoOptions := Seq(BuildInfoOption.Traits("pillars.BuildInfo")),             // <i class="conum" data-value="5"></i><b>(5)</b>
+      buildInfoPackage := "example.build"                                               // <i class="conum" data-value="6"></i><b>(6)</b>
+    )
+    .dependsOn(core, db, flags, httpClient)</pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Enable the <code>BuildInfo</code> plugin</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Define the name of your application</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Define the description of your application</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Tell buildinfo to generate the <code>BuildInfo</code> object including at least <code>name</code>, <code>description</code> and <code>version</code> properties.
+In this specific case, <code>version</code> is defined by the <a href="https://github.com/sbt/sbt-dynver">sbt-dynver</a> plugin.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Configure BuildInfo to implement the <code>pillars.BuildInfo</code> trait.
+It is required to use the <code>BuildInfo</code> object in your application.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>Specify in which package will be generated the <code>BuildInfo</code> object.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Then, you can use the <code>BuildInfo</code> object in your application:</p>
+</div>
+<div class="listingblock data-noescape">
+<div class="content">
+<pre class="prettyprint highlight linenums"><code data-lang="scala">import example.build.BuildInfo
+
+val app = new App[IO]:
+  override val infos = BuildInfo.toAppInfo
+  override def run(pillars: Pillars[IO]): IO[Unit] = ???</code></pre>
 </div>
 </div>
 </div>
@@ -374,6 +466,7 @@ For example, to get the readiness porbe status, you can run:</p>
 <ul class="sectlevel2">
 <li><a href="#_installation">Installation</a></li>
 <li><a href="#_usage">Usage</a></li>
+<li><a href="#_application_metadata">Application Metadata</a></li>
 </ul>
 </li>
 </ul>
