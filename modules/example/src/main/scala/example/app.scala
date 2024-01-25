@@ -1,36 +1,39 @@
 package example
 
-import cats.effect.IO
+import cats.effect.*
 import io.github.iltotore.iron.*
 import io.github.iltotore.iron.constraint.all.*
+import pillars.*
 import pillars.App.*
-import pillars.Pillars
 import pillars.db.*
 import pillars.flags.*
+import pillars.httpclient.*
 import skunk.*
 import skunk.codec.all.*
 import skunk.implicits.*
 
 // tag::quick-start[]
-object Main extends pillars.EntryPoint: // // <1>
+object app extends pillars.EntryPoint: // // <1>
     def app: pillars.App[IO] = new pillars.App[IO]: // // <2>
         def name        = Name("BookStore")
         def version     = Version("0.0.1")
         def description = Description("A simple bookstore")
 
-        def run(using pillars: Pillars[IO]): IO[Unit] = // // <3>
-            import pillars.*
+        def run(using p: Pillars[IO]): IO[Unit] = // // <3>
+            import p.*
             for
-                _ <- logger.info(s"📚 Welcome to ${pillars.config.name}!")
+                _ <- logger.info(s"📚 Welcome to ${config.name}!")
                 _ <- flag"feature-1".whenEnabled:
-                         pillars.db.use: s =>
+                         DB[IO].use: session =>
                              for
-                                 d <- s.unique(sql"select now()".query(timestamptz))
-                                 _ <- logger.info(s"The current date is $d.")
+                                 date <- session.unique(sql"select now()".query(timestamptz))
+                                 _    <- logger.info(s"The current date is $date.")
                              yield ()
-                _ <- pillars.apiServer.start(endpoints.all)
+                _ <- HttpClient[IO].get("https://pillars.rlemaitre.com"): response =>
+                         logger.info(s"Response: ${response.status}")
+                _ <- apiServer.start(endpoints.all)
             yield ()
             end for
         end run
-end Main
+end app
 // end::quick-start[]

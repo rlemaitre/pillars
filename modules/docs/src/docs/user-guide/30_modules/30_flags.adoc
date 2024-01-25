@@ -12,10 +12,6 @@ ifndef::projectRootDir[]
 :projectRootDir: ../../../../../..
 endif::projectRootDir[]
 
-[NOTE]
-This documentation needs to be written.
-You can help us by xref:../../contribute/10_contributing.adoc[contributing to the documentation].
-
 Feature flags are a way to enable or disable features in your application.
 They are useful for many reasons, including:
 

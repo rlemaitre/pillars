@@ -20,9 +20,12 @@ class Loader extends pillars.Loader:
         NettyClientBuilder[F].withHttp2.withNioTransport.resource.map(HttpClient.apply)
 end Loader
 
-final case class HttpClient[F[_]: Async](nettyClient: org.http4s.client.Client[F])
-    extends pillars.Module[F]
+final case class HttpClient[F[_]: Async](client: org.http4s.client.Client[F])
+    extends pillars.Module[F]:
+    export client.*
 
+object HttpClient:
+    def apply[F[_]](using p: Pillars[F]): Client[F] = p.module[HttpClient[F]].client
 final case class Config(followRedirect: Boolean)
-extension [F[_]: Async](pillars: Pillars[F])
-    def httpClient: Client[F] = pillars.module[HttpClient[F]].nettyClient
+extension [F[_]](p: Pillars[F])
+    def httpClient: Client[F] = p.module[HttpClient[F]].client

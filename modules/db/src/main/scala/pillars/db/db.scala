@@ -1,7 +1,6 @@
 package pillars.db
 
-import cats.effect.Async
-import cats.effect.Resource
+import cats.effect.*
 import cats.effect.std.Console
 import cats.syntax.all.*
 import com.comcast.ip4s.*
@@ -24,24 +23,24 @@ import skunk.*
 import skunk.codec.all.*
 import skunk.implicits.*
 
-extension [F[_]](pillars: Pillars[F])
-    def db: DB[F] = pillars.module[DB[F]]
+extension [F[_]](p: Pillars[F])
+    def db: DB[F] = p.module[DB[F]]
 
 final case class DB[F[_]: Async: Network: Tracer: Console](pool: Resource[F, Session[F]]) extends Module[F]:
     export pool.*
 
-    override def probes: List[Probe[F]] =
-        List:
-            new Probe[F]:
-                override def component: Component = Component(Component.Name("db"), Component.Type.Datastore)
-
-                override def check: F[Boolean] = pool.use(session => session.unique(sql"select true".query(bool)))
-
+    override def probes: List[Probe[F]]                =
+        val probe = new Probe[F]:
+            override def component: Component = Component(Component.Name("db"), Component.Type.Datastore)
+            override def check: F[Boolean]    = pool.use(session => session.unique(sql"select true".query(bool)))
+        probe.pure[List]
+    end probes
     override def adminControllers: List[Controller[F]] = Nil
 
-    extension (pillars: Pillars[F])
-        def db: DB[F] = this
 end DB
+
+object DB:
+    def apply[F[_]](using p: Pillars[F]): DB[F] = p.module[DB[F]]
 
 class DBLoader extends Loader:
     override type M[F[_]] = DB[F]

@@ -54,22 +54,16 @@ object Pillars:
             _              <- Resource.eval(_logger.debug(s"Loaded ${_modules.size} modules"))
             probes         <- ProbeManager.build[F](_modules)
             _              <- Spawn[F].background(probes.start())
-            _              <- Spawn[F].background(
-                                AdminServer[F](_config.admin, obs, _modules.adminControllers :+ ProbesController(probes)).start()
-                              )
+            _              <- Spawn[F].background:
+                                  AdminServer[F](_config.admin, obs, _modules.adminControllers :+ ProbesController(probes)).start()
         yield new Pillars[F]:
-            override def observability: Observability[F] = obs
-
-            override def config: PillarsConfig = _config
-
-            override def apiServer: ApiServer[F] =
+            override def observability: Observability[F]       = obs
+            override def config: PillarsConfig                 = _config
+            override def apiServer: ApiServer[F]               =
                 ApiServer.init(config.api, observability, logger)
-
-            override def logger: Scribe[F] = _logger
-
+            override def logger: Scribe[F]                     = _logger
             override def readConfig[T](using Decoder[T]): F[T] = configReader.read[T]
-
-            override def module[T <: Module[F]: ClassTag]: T = _modules.get[T]
+            override def module[T <: Module[F]: ClassTag]: T   = _modules.get[T]
         end for
     end apply
 

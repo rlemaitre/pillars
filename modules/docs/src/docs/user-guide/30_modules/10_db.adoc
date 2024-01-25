@@ -13,6 +13,58 @@ ifndef::projectRootDir[]
 :projectRootDir: ../../../../../..
 endif::projectRootDir[]
 
-[NOTE]
-This documentation needs to be written.
-You can help us by xref:../../contribute/10_contributing.adoc[contributing to the documentation].
+The `DB` module provides database connectivity and operations for the Pillars application.
+It uses the Skunk library for interacting with PostgreSQL databases.
+
+=== Database Configuration
+
+The database configuration is defined in the `DatabaseConfig` case class.
+It includes the following fields:
+
+* `host`: The host of the database.
+* `port`: The port of the database.
+* `database`: The name of the database.
+* `username`: The username for the database.
+* `password`: The password for the database.
+* `poolSize`: The size of the connection pool.
+* `debug`: A flag indicating whether to enable debug mode.
+* `probe`: The configuration for the database probe.
+
+The configuration is read from the application's configuration file under the `db` section.
+
+=== Using the DB Module
+
+To use the `DB` module, you need to import it and then access it through the `Pillars` instance:
+
+[source,scala,linenums]
+--
+import pillars.db.*
+
+val dbModule = pillarsInstance.db
+--
+
+You can then use the `dbModule` to perform database operations.
+
+You can also use directly `DB[F]` to perform database operations:
+
+[source,scala,linenums]
+--
+import pillars.db.*
+import skunk.*
+
+def foo[F[_]](using Pillars[F]) =
+    DB[F].use: session =>
+        session.unique(sql"SELECT 1".query[Int])
+--
+
+=== Probe
+
+The `DB` module provides a xref:../20_features/30_probes.adoc[probe] for health checks.
+
+[source,scala,linenums,role="data-noescape"]
+--
+val isHealthy: F[Boolean] = dbModule.probes.head.check
+--
+
+This will return a boolean indicating whether the database is healthy or not.
+
