@@ -14,7 +14,6 @@ import pillars.Loader
 import pillars.Module
 import pillars.Modules
 import pillars.Pillars
-import pillars.probes.Probe
 
 trait FlagManager[F[_]: Sync] extends Module[F]:
     def isEnabled(flag: FeatureFlag.Name): F[Boolean]
@@ -36,8 +35,6 @@ object FlagManager:
             override def isEnabled(flag: Name): F[Boolean]                       = false.pure[F]
             override def getFlag(name: FeatureFlag.Name): F[Option[FeatureFlag]] = None.pure[F]
             override def flags: F[List[FeatureFlag]]                             = List.empty.pure[F]
-            override def adminControllers: List[Controller[F]]                   = Nil
-            override def probes: List[Probe[F]]                                  = Nil
 end FlagManager
 
 class FlagManagerLoader extends Loader:

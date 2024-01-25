@@ -13,9 +13,7 @@ import pillars.App.Version
 import pillars.probes.Probe
 
 trait App[F[_]]:
-    def name: Name
-    def version: Version
-    def description: Description
+    def infos: AppInfo
     def probes: List[Probe[F]] = Nil
     def run(using p: Pillars[F]): F[Unit]
 end App
@@ -37,11 +35,21 @@ object App:
     object Description extends RefinedTypeOps[String, DescriptionConstraint, Description]
 end App
 
+case class AppInfo(name: App.Name, version: App.Version, description: App.Description)
+trait BuildInfo:
+    def name: String
+    def version: String
+    def description: String
+    def toAppInfo: AppInfo = AppInfo(Name(name.assume), Version(version.assume), Description(description.assume))
+end BuildInfo
+
 trait EntryPoint extends IOApp:
 
     def app: App[IO]
     override final def run(args: List[String]): IO[ExitCode] =
-        Command(app.name, app.description)(Opts.option[Path]("config", "Path to the configuration file")).parse(
+        Command(app.infos.name, app.infos.description)(
+          Opts.option[Path]("config", "Path to the configuration file")
+        ).parse(
           args,
           sys.env
         ) match

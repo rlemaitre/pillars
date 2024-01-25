@@ -11,7 +11,6 @@ import io.github.iltotore.iron.*
 import io.github.iltotore.iron.circe.given
 import io.github.iltotore.iron.constraint.all.*
 import org.typelevel.otel4s.trace.Tracer
-import pillars.Controller
 import pillars.Loader
 import pillars.Module
 import pillars.Modules
@@ -29,14 +28,12 @@ extension [F[_]](p: Pillars[F])
 final case class DB[F[_]: Async: Network: Tracer: Console](pool: Resource[F, Session[F]]) extends Module[F]:
     export pool.*
 
-    override def probes: List[Probe[F]]                =
+    override def probes: List[Probe[F]] =
         val probe = new Probe[F]:
             override def component: Component = Component(Component.Name("db"), Component.Type.Datastore)
             override def check: F[Boolean]    = pool.use(session => session.unique(sql"select true".query(bool)))
         probe.pure[List]
     end probes
-    override def adminControllers: List[Controller[F]] = Nil
-
 end DB
 
 object DB:

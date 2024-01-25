@@ -24,10 +24,6 @@ api:
     port: 9876
     auth-token:
     max-connections: 1024
-  probe:
-    timeout: PT5s
-    interval: PT10s
-    failure-count: 3
 admin:
   enabled: true
   http:
@@ -47,7 +43,6 @@ feature-flags:
 # end::pillars[]
 # tag::app[]
 app:
-  enabled: true
   users:
     init: true
 # end::app[]
