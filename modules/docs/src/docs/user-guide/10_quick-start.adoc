@@ -111,7 +111,8 @@ $ curl http://localhost:19876/admin/probes/health | jq
 The `infos` property of the `App[F]` trait defines some metadata about your application.
 You have two ways of defining it:
 
-* You can directly create an instance of `AppInfo`:
+You can directly create an instance of `AppInfo`:
+
 [source,scala,linenums,role="data-noescape"]
 ----
 val infos = AppInfo(
@@ -120,8 +121,10 @@ val infos = AppInfo(
   description = App.Description("A simple bookstore")
 )
 ----
-* Or, if you are using the link:https://github.com/sbt/sbt-buildinfo[sbt-buildinfo] plugin, you can use the `BuildInfo` object.
+
+Or, if you are using the link:https://github.com/sbt/sbt-buildinfo[sbt-buildinfo] plugin, you can use the `BuildInfo` object.
 In your `build.sbt`, add the following lines to your project definition:
+
 [source,scala,linenums,role="data-noescape"]
 ----
 include::{projectRootDir}/build.sbt[tag=example]
@@ -136,6 +139,7 @@ It is required to use the `BuildInfo` object in your application.
 <6> Specify in which package will be generated the `BuildInfo` object.
 
 Then, you can use the `BuildInfo` object in your application:
+
 [source,scala,linenums,role="data-noescape"]
 ----
 import example.build.BuildInfo
