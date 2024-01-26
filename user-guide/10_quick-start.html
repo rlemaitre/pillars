@@ -292,33 +292,25 @@ For example, to get the readiness porbe status, you can run:</p>
 <p>The <code>infos</code> property of the <code>App[F]</code> trait defines some metadata about your application.
 You have two ways of defining it:</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
+<div class="paragraph">
 <p>You can directly create an instance of <code>AppInfo</code>:</p>
-</li>
-</ul>
 </div>
-<div class="listingblock">
+<div class="listingblock data-noescape">
 <div class="content">
-<pre>val infos = AppInfo(
+<pre class="prettyprint highlight linenums"><code data-lang="scala">val infos = AppInfo(
   name = App.Name("Bookstore"),
   version = App.Version("1.0.0"),
   description = App.Description("A simple bookstore")
-)</pre>
+)</code></pre>
 </div>
 </div>
-<div class="ulist">
-<ul>
-<li>
+<div class="paragraph">
 <p>Or, if you are using the <a href="https://github.com/sbt/sbt-buildinfo">sbt-buildinfo</a> plugin, you can use the <code>BuildInfo</code> object.
 In your <code>build.sbt</code>, add the following lines to your project definition:</p>
-</li>
-</ul>
 </div>
-<div class="listingblock">
+<div class="listingblock data-noescape">
 <div class="content">
-<pre>lazy val example = Project("pillars-example", file("modules/example"))
+<pre class="prettyprint highlight linenums"><code data-lang="scala">lazy val example = Project("pillars-example", file("modules/example"))
     .enablePlugins(BuildInfoPlugin) // <i class="conum" data-value="1"></i><b>(1)</b>
     .settings(
       name             := "pillars-example",                                            // <i class="conum" data-value="2"></i><b>(2)</b>
@@ -328,7 +320,7 @@ In your <code>build.sbt</code>, add the following lines to your project definiti
       buildInfoOptions := Seq(BuildInfoOption.Traits("pillars.BuildInfo")),             // <i class="conum" data-value="5"></i><b>(5)</b>
       buildInfoPackage := "example.build"                                               // <i class="conum" data-value="6"></i><b>(6)</b>
     )
-    .dependsOn(core, db, flags, httpClient)</pre>
+    .dependsOn(core, db, flags, httpClient)</code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -454,6 +446,22 @@ val app = new App[IO]:
     </div>
 
 
+    <script src="https://giscus.app/client.js"
+            data-repo="rlemaitre/pillars"
+            data-repo-id="R_kgDOK-Le0g"
+            data-category="Comments"
+            data-category-id="DIC_kwDOK-Le0s4Ccs4S"
+            data-mapping="pathname"
+            data-strict="0"
+            data-reactions-enabled="1"
+            data-emit-metadata="0"
+            data-input-position="top"
+            data-theme="light"
+            data-lang="en"
+            data-loading="lazy"
+            crossorigin="anonymous"
+            async>
+    </script>
 	</article>
 	<aside class="doc__nav pop-out">
 		
