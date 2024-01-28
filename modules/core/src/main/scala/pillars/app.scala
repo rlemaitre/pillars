@@ -14,7 +14,8 @@ import pillars.probes.Probe
 
 trait App[F[_]]:
     def infos: AppInfo
-    def probes: List[Probe[F]] = Nil
+    def probes: List[Probe[F]]                = Nil
+    def adminControllers: List[Controller[F]] = Nil
     def run(using p: Pillars[F]): F[Unit]
 end App
 
