@@ -18,14 +18,6 @@ var documents = [
 
 {
     "id": 2,
-    "uri": "user-guide/30_modules/30_flags.html",
-    "menu": "user-guide",
-    "title": "Feature Flags module",
-    "text": " Table of Contents Feature Flags module Creating a feature flag Using a feature flag Feature Flags module Feature flags are a way to enable or disable features in your application. They are useful for many reasons, including: Allowing you to test features in production before releasing them to all users. Allowing you to do a gradual rollout of a feature to a percentage of users. Currently, feature flags are only read from the configuration file and cannot be changed at runtime. This means that you will need to restart your application to change the value of a feature flag. In the future, we plan to add support for changing feature flags at runtime and storing them in a database. Creating a feature flag Feature flags are defined in the feature-flags section of the configuration file. feature-flags: enabled: true # (1) flags: - name: feature-1 # (2) status: enabled # (3) - name: feature-2 status: disabled 1 Whether feature flags are enabled or not. If this is set to false , all feature flags will be disabled. 2 The name of the feature flag. 3 The status of the feature flag. Possible values are enabled and disabled . Using a feature flag Feature flags can be used in your application by using the flags module on Pillars . import pillars.flags.* // (1) val flag = flag\"feature-1\" // (2) for enabled &lt;- pillars.flags.isEnabled(flag) // (3) _ &lt;- IO.whenA(enabled)(IO.println(\"Feature 1 is enabled\")) // (4) // or _ &lt;- pillars.whenEnabled(flag\"feature-2\")(IO.println(\"Feature 2 is enabled\")) // (5) // or _ &lt;- flag\"feature-3\".whenEnabled(IO.println(\"Feature 3 is enabled\")) // (6) yield () 1 Import the flags module to enable the flag string interpolator and the flags property on Pillars . 2 Create a Flag instance by using the flag string interpolator. 3 Check if the feature flag is enabled. 4 If the feature flag is enabled, perform the action you want. 5 Use the pillars.whenEnabled method to perform an action if the feature flag is enabled. 6 Use the whenEnabled method on the FeatureFlag.Name instance to perform an action if the feature flag is enabled. "
-},
-
-{
-    "id": 3,
     "uri": "user-guide/30_modules/index.html",
     "menu": "user-guide",
     "title": "Optional Modules",
@@ -33,19 +25,27 @@ var documents = [
 },
 
 {
-    "id": 4,
-    "uri": "user-guide/30_modules/10_db.html",
+    "id": 3,
+    "uri": "user-guide/30_modules/30_flags.html",
     "menu": "user-guide",
-    "title": "Database Module",
-    "text": " Table of Contents Database module Database Configuration Using the DB Module Probe Database module The DB module provides database connectivity and operations for the Pillars application. It uses the Skunk library for interacting with PostgreSQL databases. Database Configuration The database configuration is defined in the DatabaseConfig case class. It includes the following fields: host : The host of the database. port : The port of the database. database : The name of the database. username : The username for the database. password : The password for the database. poolSize : The size of the connection pool. debug : A flag indicating whether to enable debug mode. probe : The configuration for the database probe. The configuration is read from the application&#8217;s configuration file under the db section. Using the DB Module To use the DB module, you need to import it and then access it through the Pillars instance: import pillars.db.* val dbModule = pillarsInstance.db You can then use the dbModule to perform database operations. You can also use directly DB[F] to perform database operations: import pillars.db.* import skunk.* def foo[F[_]](using Pillars[F]) = DB[F].use: session =&gt; session.unique(sql\"SELECT 1\".query[Int]) Probe The DB module provides a probe for health checks. val isHealthy: F[Boolean] = dbModule.probes.head.check This will return a boolean indicating whether the database is healthy or not. "
+    "title": "Feature Flags module",
+    "text": " Table of Contents Feature Flags module Creating a feature flag Using a feature flag Feature Flags module Feature flags are a way to enable or disable features in your application. They are useful for many reasons, including: Allowing you to test features in production before releasing them to all users. Allowing you to do a gradual rollout of a feature to a percentage of users. Currently, feature flags are only read from the configuration file and cannot be changed at runtime. This means that you will need to restart your application to change the value of a feature flag. In the future, we plan to add support for changing feature flags at runtime and storing them in a database. Creating a feature flag Feature flags are defined in the feature-flags section of the configuration file. feature-flags: enabled: true # (1) flags: - name: feature-1 # (2) status: enabled # (3) - name: feature-2 status: disabled 1 Whether feature flags are enabled or not. If this is set to false , all feature flags will be disabled. 2 The name of the feature flag. 3 The status of the feature flag. Possible values are enabled and disabled . Using a feature flag Feature flags can be used in your application by using the flags module on Pillars . import pillars.flags.* // (1) val flag = flag\"feature-1\" // (2) for enabled &lt;- pillars.flags.isEnabled(flag) // (3) _ &lt;- IO.whenA(enabled)(IO.println(\"Feature 1 is enabled\")) // (4) // or _ &lt;- pillars.whenEnabled(flag\"feature-2\")(IO.println(\"Feature 2 is enabled\")) // (5) // or _ &lt;- flag\"feature-3\".whenEnabled(IO.println(\"Feature 3 is enabled\")) // (6) yield () 1 Import the flags module to enable the flag string interpolator and the flags property on Pillars . 2 Create a Flag instance by using the flag string interpolator. 3 Check if the feature flag is enabled. 4 If the feature flag is enabled, perform the action you want. 5 Use the pillars.whenEnabled method to perform an action if the feature flag is enabled. 6 Use the whenEnabled method on the FeatureFlag.Name instance to perform an action if the feature flag is enabled. "
 },
 
 {
-    "id": 5,
+    "id": 4,
     "uri": "user-guide/30_modules/20_http-client.html",
     "menu": "user-guide",
     "title": "HTTP Client Module",
     "text": " Table of Contents HTTP Client module HTTP Client Configuration Using the HttpClient Module HTTP Operations HTTP Client module The HttpClient module provides HTTP client functionality for the Pillars application. It uses the http4s library for creating HTTP requests and handling HTTP responses. HTTP Client Configuration The HTTP client configuration is defined in the Config case class. It includes the following field: followRedirect : A flag indicating whether to follow redirects. The configuration is read from the application&#8217;s configuration file under the http-client section. Using the HttpClient Module To use the HttpClient module, you need to import it and then access it through the Pillars instance: import pillars.httpclient.* val httpClientModule = pillarsInstance.httpClient You can also use directly Client[F] You can then use the httpClientModule to perform HTTP operations. HTTP Operations The HttpClient module provides methods for sending HTTP requests and receiving HTTP responses. You can use the httpClient extension method on Pillars to get an instance of Client[F] : import org.http4s.client.Client val client: Client[F] = pillars.httpClient This Client[F] instance can be used to send HTTP requests by using the same methods as org.http4s.client.Client[F] . "
+},
+
+{
+    "id": 5,
+    "uri": "user-guide/30_modules/10_db.html",
+    "menu": "user-guide",
+    "title": "Database Module",
+    "text": " Table of Contents Database module Database Configuration Using the DB Module Probe Database module The DB module provides database connectivity and operations for the Pillars application. It uses the Skunk library for interacting with PostgreSQL databases. Database Configuration The database configuration is defined in the DatabaseConfig case class. It includes the following fields: host : The host of the database. port : The port of the database. database : The name of the database. username : The username for the database. password : The password for the database. poolSize : The size of the connection pool. debug : A flag indicating whether to enable debug mode. probe : The configuration for the database probe. The configuration is read from the application&#8217;s configuration file under the db section. Using the DB Module To use the DB module, you need to import it and then access it through the Pillars instance: import pillars.db.* val dbModule = pillarsInstance.db You can then use the dbModule to perform database operations. You can also use directly DB[F] to perform database operations: import pillars.db.* import skunk.* def foo[F[_]](using Pillars[F]) = DB[F].use: session =&gt; session.unique(sql\"SELECT 1\".query[Int]) Probe The DB module provides a probe for health checks. val isHealthy: F[Boolean] = dbModule.probes.head.check This will return a boolean indicating whether the database is healthy or not. "
 },
 
 {
@@ -58,18 +58,18 @@ var documents = [
 
 {
     "id": 7,
-    "uri": "user-guide/20_features/20_logging.html",
-    "menu": "user-guide",
-    "title": "Logging",
-    "text": " Table of Contents Logging Logging This documentation needs to be written. You can help us by contributing to the documentation . "
-},
-
-{
-    "id": 8,
     "uri": "user-guide/20_features/50_observability.html",
     "menu": "user-guide",
     "title": "Observability",
     "text": " Table of Contents Observability Observability This documentation needs to be written. You can help us by contributing to the documentation . "
+},
+
+{
+    "id": 8,
+    "uri": "user-guide/20_features/20_logging.html",
+    "menu": "user-guide",
+    "title": "Logging",
+    "text": " Table of Contents Logging Logging This documentation needs to be written. You can help us by contributing to the documentation . "
 },
 
 {
@@ -85,7 +85,7 @@ var documents = [
     "uri": "user-guide/20_features/10_configuration.html",
     "menu": "user-guide",
     "title": "Configuration",
-    "text": " Table of Contents Configuration Pillars Configuration Application Configuration Configuration Pillars is configured using YAML v1.2 files. Pillars Configuration Pillars configuration is structured as follows: name: Bookstore log: level: info format: enhanced output: type: console db: host: localhost port: 5432 database: bookstore username: postgres password: postgres pool-size: 10 debug: false probe: timeout: PT5s interval: PT10s failure-count: 3 api: enabled: true http: host: 0.0.0.0 port: 9876 auth-token: max-connections: 1024 admin: enabled: true http: host: 0.0.0.0 port: 19876 max-connections: 32 observability: enabled: true service-name: bookstore feature-flags: enabled: true flags: - name: feature-1 status: enabled - name: feature-2 status: disabled Application Configuration "
+    "text": " Table of Contents Configuration Pillars Configuration Application Configuration Configuration Pillars is configured using YAML v1.2 files. Pillars Configuration Pillars configuration is structured as follows: name: Bookstore log: level: info format: enhanced output: type: console db: host: localhost port: 5432 database: bookstore username: postgres password: postgres pool-size: 10 debug: false probe: timeout: PT5s interval: PT10s failure-count: 3 api: enabled: true http: host: 0.0.0.0 port: 9876 enable-logging: true admin: enabled: true http: host: 0.0.0.0 port: 19876 max-connections: 32 observability: enabled: true service-name: bookstore feature-flags: enabled: true flags: - name: feature-1 status: enabled - name: feature-2 status: disabled If you are using the EntryPoint trait, the path to this file must be given to the application using the --config command line option. The config must contain the following keys: name : the name of the application api : the API server configuration admin : the admin server configuration observability : the observability configuration The logging configuration is optional and can be omitted if you are happy with the default configuration. The db and feature-flags sections are needed only if you include the db and feature-flags modules respectively. API Configuration The API configuration is structured as follows: api: enabled: true http: host: 0.0.0.0 port: 9876 enable-logging: true It contains the following keys: enabled : whether the API server is enabled or not http : the HTTP server configuration: host : the host to bind to. Default is 0.0.0.0 , i.e. all interfaces. port : the port to bind to. Default is 9876 . enable-logging : whether to enable HTTP access logging or not. Default is false . Admin Configuration The admin configuration is structured as follows: admin: enabled: true http: host: 0.0.0.0 port: 19876 max-connections: 32 It contains the following keys: enabled : whether the admin server is enabled or not http : the HTTP server configuration: host : the host to bind to. Default is 0.0.0.0 , i.e. all interfaces. port : the port to bind to. Default is 9877 . Observability Configuration The observability configuration is structured as follows: observability: enabled: true service-name: bookstore It contains the following keys: enabled : whether observability is enabled or not service-name : the name of the service. Default is pillars . Logging Configuration The logging configuration is structured as follows: log: level: info format: enhanced output: type: console It contains the following keys: level : the log level. Possible values are trace , debug , info , warn , error . Default is info . format : the log format. Possible values are json , simple , colored , classic , compact , enhanced , advanced , strict . For more details, refer to the scribe documentation . Default is enhanced . output : the log output. type : the log output type. Possible values are console or file . Default is console . path : the path to the log file. It is used only if output.type is file . Database Configuration The database configuration is structured as follows: db: host: localhost port: 5432 database: bookstore username: postgres password: postgres pool-size: 10 debug: false probe: timeout: PT5s interval: PT10s failure-count: 3 It contains the following keys: host : the database host. Default is localhost . port : the database port. Default is 5432 . database : the database name. user : the database user. password : the database password. pool-size : the database connection pool size. Default is 32 . debug : whether to enable database debug logging or not. Default is false . probe : the database probe configuration: timeout : the probe timeout. Default is 5s . interval : the probe interval. Default is 10s . failure-count : the number of consecutive failures before the database is considered down. Default is 3 . Feature Flags Configuration The feature flags configuration is structured as follows: feature-flags: enabled: true flags: - name: feature-1 status: enabled - name: feature-2 status: disabled It contains the following keys: enabled : whether feature flags are enabled or not flags : the feature flags definition: name : the name of the feature flag status : the status of the feature flag. Possible values are enabled or disabled . Application Configuration You can define the configuration of your application in the same file as the Pillars configuration. It must be under the app key. In order to read the configuration, you need to use the configReader method of the Pillars instance. object app extends pillars.EntryPoint: def app: pillars.App[IO] = new pillars.App[IO]: def infos: AppInfo = BuildInfo.toAppInfo def run(using p: Pillars[IO]): IO[Unit] = import p.* for config &lt;- configReader[BookstoreConfig] _ &lt;- IO.println(s\"Config: $config\") yield () The configuration class must be a case class and there must be at least a circe Decoder defined for it. package example import io.circe.Codec case class BookstoreConfig(enabled: Boolean = true, users: UsersConfig = UsersConfig()) object BookstoreConfig: given Codec[BookstoreConfig] = Codec.AsObject.derived case class UsersConfig(init: Boolean = false) object UsersConfig: given Codec[UsersConfig] = Codec.AsObject.derived "
 },
 
 {
