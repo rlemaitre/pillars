@@ -137,18 +137,63 @@
 <div class="sect1">
 <h2 id="_probes">Probes</h2>
 <div class="sectionbody">
-<div class="admonitionblock note">
+<div class="paragraph">
+<p>Probes allow you to monitor the health of your application and the underlying infrastructure.
+Probes are used to determine if a container is ready to accept traffic or if it should be restarted.</p>
+</div>
+<div class="sect2">
+<h3 id="_liveness_probe">Liveness Probe</h3>
+<div class="paragraph">
+<p>A liveness probe checks if the container is still running.
+If the liveness probe fails, the container is restarted.</p>
+</div>
+<div class="paragraph">
+<p>Pillars defines a default liveness probe.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_readiness_probe">Readiness Probe</h3>
+<div class="paragraph">
+<p>A readiness probe checks if the container is ready to accept traffic.
+If the readiness probe fails, the container is not added to the load balancer.
+The pillars readiness probe aggregates all probes defined in the application.</p>
+</div>
+<div class="paragraph">
+<p>Pillars defines by default a database probe that is enabled if you include the <a href="../30_modules/10_db.html">db module</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_custom_probes">Custom Probes</h3>
+<div class="paragraph">
+<p>You can define custom probes by implementing the <code>Probe</code> trait.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="scala">    trait Probe[F[_]]:
+        def component: Component //<i class="conum" data-value="1"></i><b>(1)</b>
+        def check: F[Boolean]    //<i class="conum" data-value="2"></i><b>(2)</b>
+        def config: ProbeConfig = ProbeConfig() //<i class="conum" data-value="3"></i><b>(3)</b>
+    end Probe</code></pre>
+</div>
+</div>
+<div class="colist arabic">
 <table>
 <tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-This documentation needs to be written.
-You can help us by <a href="../../contribute/10_contributing.html">contributing to the documentation</a>.
-</td>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The probe component.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The check function.
+If the check function returns <code>true</code>, the probe is considered successful.
+If is returns <code>false</code> or throws an exception, the probe is considered failed.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The probe configuration.</td>
 </tr>
 </table>
+</div>
 </div>
 </div>
 </div>
@@ -254,7 +299,13 @@ You can help us by <a href="../../contribute/10_contributing.html">contributing 
         <div id="toc" class="toc">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_probes">Probes</a></li>
+<li><a href="#_probes">Probes</a>
+<ul class="sectlevel2">
+<li><a href="#_liveness_probe">Liveness Probe</a></li>
+<li><a href="#_readiness_probe">Readiness Probe</a></li>
+<li><a href="#_custom_probes">Custom Probes</a></li>
+</ul>
+</li>
 </ul>
 </div>
 
