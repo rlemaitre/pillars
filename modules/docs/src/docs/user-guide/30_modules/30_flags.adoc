@@ -66,3 +66,21 @@ yield ()
 <4> If the feature flag is enabled, perform the action you want.
 <5> Use the `pillars.whenEnabled` method to perform an action if the feature flag is enabled.
 <6> Use the `whenEnabled` method on the `FeatureFlag.Name` instance to perform an action if the feature flag is enabled.
+
+=== Endpoints
+
+Feature flags are exposed on the xref:../20_features/60_admin-server.adoc[admin server].
+The defined endpoints are:
+
+* `GET /flags` - Get all feature flags.
+* `GET /flags/+{name}+` - Get a specific feature flag.
+
+Feature flags are returned in the following format:
+
+[source,json]
+--
+{
+  "name": "feature-1",
+  "status": "enabled"
+}
+--

@@ -10,6 +10,27 @@ ifndef::projectRootDir[]
 :projectRootDir: ../../../../../..
 endif::projectRootDir[]
 
-[NOTE]
-This documentation needs to be written.
-You can help us by xref:../../contribute/10_contributing.adoc[contributing to the documentation].
+Pillars provides an administration server that can be used to manage the Pillars server.
+The administration endpoints are separated from the xref:40_api-server.adoc[API server] in order to ease security management.
+As it uses a different port, it can be protected by a firewall or use authentication on an ingress (such as link:https://www.nginx.com/[nginx] or link:https://caddyserver.com/[caddy]).
+
+=== Configuration
+
+The configuration is described in the xref:10_configuration.adoc#admin-configuration[Configuration] section.
+
+=== Endpoints
+
+By default, the administration server is available on port `19876` and exposes the following endpoints:
+
+* `GET /probes/healthz`: the liveness probe.
+It always returns `200 OK` and can be used to check if the server is running.
+* `GET /probes/health`: the readiness probe.
+It returns `200 OK` if the server is ready to handle requests and all probes are successful.
+See the xref:30_probes.adoc[Probes] section for more details.
+
+Modules can add their own endpoints to the administration server.
+See the xref:../30_modules/30_flags.adoc[Flags] section for the feature flags endpoints.
+
+=== Defining administration endpoints
+
+You can define administration endpoints easily by defining an `adminControllers` property in your `App`.
