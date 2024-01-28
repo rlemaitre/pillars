@@ -34,18 +34,18 @@ var documents = [
 
 {
     "id": 4,
-    "uri": "user-guide/30_modules/20_http-client.html",
-    "menu": "user-guide",
-    "title": "HTTP Client Module",
-    "text": " Table of Contents HTTP Client module HTTP Client Configuration Using the HttpClient Module HTTP Operations HTTP Client module The HttpClient module provides HTTP client functionality for the Pillars application. It uses the http4s library for creating HTTP requests and handling HTTP responses. HTTP Client Configuration The HTTP client configuration is defined in the Config case class. It includes the following field: followRedirect : A flag indicating whether to follow redirects. The configuration is read from the application&#8217;s configuration file under the http-client section. Using the HttpClient Module To use the HttpClient module, you need to import it and then access it through the Pillars instance: import pillars.httpclient.* val httpClientModule = pillarsInstance.httpClient You can also use directly Client[F] You can then use the httpClientModule to perform HTTP operations. HTTP Operations The HttpClient module provides methods for sending HTTP requests and receiving HTTP responses. You can use the httpClient extension method on Pillars to get an instance of Client[F] : import org.http4s.client.Client val client: Client[F] = pillars.httpClient This Client[F] instance can be used to send HTTP requests by using the same methods as org.http4s.client.Client[F] . "
-},
-
-{
-    "id": 5,
     "uri": "user-guide/30_modules/10_db.html",
     "menu": "user-guide",
     "title": "Database Module",
     "text": " Table of Contents Database module Database Configuration Using the DB Module Probe Database module The DB module provides database connectivity and operations for the Pillars application. It uses the Skunk library for interacting with PostgreSQL databases. Database Configuration The database configuration is defined in the DatabaseConfig case class. It includes the following fields: host : The host of the database. port : The port of the database. database : The name of the database. username : The username for the database. password : The password for the database. poolSize : The size of the connection pool. debug : A flag indicating whether to enable debug mode. probe : The configuration for the database probe. The configuration is read from the application&#8217;s configuration file under the db section. Using the DB Module To use the DB module, you need to import it and then access it through the Pillars instance: import pillars.db.* val dbModule = pillarsInstance.db You can then use the dbModule to perform database operations. You can also use directly DB[F] to perform database operations: import pillars.db.* import skunk.* def foo[F[_]](using Pillars[F]) = DB[F].use: session =&gt; session.unique(sql\"SELECT 1\".query[Int]) Probe The DB module provides a probe for health checks. val isHealthy: F[Boolean] = dbModule.probes.head.check This will return a boolean indicating whether the database is healthy or not. "
+},
+
+{
+    "id": 5,
+    "uri": "user-guide/30_modules/20_http-client.html",
+    "menu": "user-guide",
+    "title": "HTTP Client Module",
+    "text": " Table of Contents HTTP Client module HTTP Client Configuration Using the HttpClient Module HTTP Operations HTTP Client module The HttpClient module provides HTTP client functionality for the Pillars application. It uses the http4s library for creating HTTP requests and handling HTTP responses. HTTP Client Configuration The HTTP client configuration is defined in the Config case class. It includes the following field: followRedirect : A flag indicating whether to follow redirects. The configuration is read from the application&#8217;s configuration file under the http-client section. Using the HttpClient Module To use the HttpClient module, you need to import it and then access it through the Pillars instance: import pillars.httpclient.* val httpClientModule = pillarsInstance.httpClient You can also use directly Client[F] You can then use the httpClientModule to perform HTTP operations. HTTP Operations The HttpClient module provides methods for sending HTTP requests and receiving HTTP responses. You can use the httpClient extension method on Pillars to get an instance of Client[F] : import org.http4s.client.Client val client: Client[F] = pillars.httpClient This Client[F] instance can be used to send HTTP requests by using the same methods as org.http4s.client.Client[F] . "
 },
 
 {
@@ -58,14 +58,6 @@ var documents = [
 
 {
     "id": 7,
-    "uri": "user-guide/20_features/20_logging.html",
-    "menu": "user-guide",
-    "title": "Logging",
-    "text": " Table of Contents Logging Configuration Logging in your code Logging Logging is a very important part of any application. It allows you to see what is happening in your application and to debug it. Pillars uses the scribe library for logging. Configuration The logging configuration is described in the Configuration section. Logging in your code To log something in your code, you can use the logger defined on the Pillars instance. def run(using p: Pillars[IO]): IO[Unit] = import p.* for _ &lt;- logger.info(s\"📚 Welcome to ${config.name}!\") _ &lt;- logger.debug(s\"📚 The configuration is: $config\") yield () As the logger is configured before the application starts, you can use it in any part of your code with the classic scribe usage. import scribe.warn import scribe.cats.io.info def foo: IO[Unit] = info(\"Hello from foo!\") def bar: Unit = warn(\"Hello from bar!\") "
-},
-
-{
-    "id": 8,
     "uri": "user-guide/20_features/50_observability.html",
     "menu": "user-guide",
     "title": "Observability",
@@ -73,7 +65,7 @@ var documents = [
 },
 
 {
-    "id": 9,
+    "id": 8,
     "uri": "user-guide/20_features/40_api-server.html",
     "menu": "user-guide",
     "title": "API Server",
@@ -81,27 +73,35 @@ var documents = [
 },
 
 {
+    "id": 9,
+    "uri": "user-guide/20_features/20_logging.html",
+    "menu": "user-guide",
+    "title": "Logging",
+    "text": " Table of Contents Logging Configuration Logging in your code Logging Logging is a very important part of any application. It allows you to see what is happening in your application and to debug it. Pillars uses the scribe library for logging. Configuration The logging configuration is described in the Configuration section. Logging in your code To log something in your code, you can use the logger defined on the Pillars instance. def run(using p: Pillars[IO]): IO[Unit] = import p.* for _ &lt;- logger.info(s\"📚 Welcome to ${config.name}!\") _ &lt;- logger.debug(s\"📚 The configuration is: $config\") yield () As the logger is configured before the application starts, you can use it in any part of your code with the classic scribe usage. import scribe.warn import scribe.cats.io.info def foo: IO[Unit] = info(\"Hello from foo!\") def bar: Unit = warn(\"Hello from bar!\") "
+},
+
+{
     "id": 10,
     "uri": "user-guide/20_features/10_configuration.html",
     "menu": "user-guide",
     "title": "Configuration",
-    "text": " Table of Contents Configuration Pillars Configuration Application Configuration Configuration Pillars is configured using YAML v1.2 files. Pillars Configuration Pillars configuration is structured as follows: name: Bookstore log: level: info format: enhanced output: type: console db: host: localhost port: 5432 database: bookstore username: postgres password: postgres pool-size: 10 debug: false probe: timeout: PT5s interval: PT10s failure-count: 3 api: enabled: true http: host: 0.0.0.0 port: 9876 enable-logging: true admin: enabled: true http: host: 0.0.0.0 port: 19876 max-connections: 32 observability: enabled: true service-name: bookstore feature-flags: enabled: true flags: - name: feature-1 status: enabled - name: feature-2 status: disabled If you are using the EntryPoint trait, the path to this file must be given to the application using the --config command line option. The config must contain the following keys: name : the name of the application api : the API server configuration admin : the admin server configuration observability : the observability configuration The logging configuration is optional and can be omitted if you are happy with the default configuration. The db and feature-flags sections are needed only if you include the db and feature-flags modules respectively. API Configuration The API configuration is structured as follows: api: enabled: true http: host: 0.0.0.0 port: 9876 enable-logging: true It contains the following keys: enabled : whether the API server is enabled or not http : the HTTP server configuration: host : the host to bind to. Default is 0.0.0.0 , i.e. all interfaces. port : the port to bind to. Default is 9876 . enable-logging : whether to enable HTTP access logging or not. Default is false . Admin Configuration The admin configuration is structured as follows: admin: enabled: true http: host: 0.0.0.0 port: 19876 max-connections: 32 It contains the following keys: enabled : whether the admin server is enabled or not http : the HTTP server configuration: host : the host to bind to. Default is 0.0.0.0 , i.e. all interfaces. port : the port to bind to. Default is 9877 . Observability Configuration The observability configuration is structured as follows: observability: enabled: true service-name: bookstore It contains the following keys: enabled : whether observability is enabled or not service-name : the name of the service.Default is pillars . Logging Configuration The logging configuration is structured as follows: log: level: info format: enhanced output: type: console It contains the following keys: level : the log level. Possible values are trace , debug , info , warn , error . Default is info . format : the log format. Possible values are json , simple , colored , classic , compact , enhanced , advanced , strict . For more details, refer to the scribe documentation . Default is enhanced . output : the log output. type : the log output type. Possible values are console or file . Default is console . path : the path to the log file. It is used only if output.type is file . Database Configuration The database configuration is structured as follows: db: host: localhost port: 5432 database: bookstore username: postgres password: postgres pool-size: 10 debug: false probe: timeout: PT5s interval: PT10s failure-count: 3 It contains the following keys: host : the database host. Default is localhost . port : the database port. Default is 5432 . database : the database name. user : the database user. password : the database password. pool-size : the database connection pool size. Default is 32 . debug : whether to enable database debug logging or not. Default is false . probe : the database probe configuration: timeout : the probe timeout. Default is 5s . interval : the probe interval. Default is 10s . failure-count : the number of consecutive failures before the database is considered down. Default is 3 . Feature Flags Configuration The feature flags configuration is structured as follows: feature-flags: enabled: true flags: - name: feature-1 status: enabled - name: feature-2 status: disabled It contains the following keys: enabled : whether feature flags are enabled or not flags : the feature flags definition: name : the name of the feature flag status : the status of the feature flag. Possible values are enabled or disabled . Application Configuration You can define the configuration of your application in the same file as the Pillars configuration. It must be under the app key. In order to read the configuration, you need to use the configReader method of the Pillars instance. object app extends pillars.EntryPoint: def app: pillars.App[IO] = new pillars.App[IO]: def infos: AppInfo = BuildInfo.toAppInfo def run(using p: Pillars[IO]): IO[Unit] = import p.* for config &lt;- configReader[BookstoreConfig] _ &lt;- IO.println(s\"Config: $config\") yield () The configuration class must be a case class and there must be at least a circe Decoder defined for it. package example import io.circe.Codec case class BookstoreConfig(enabled: Boolean = true, users: UsersConfig = UsersConfig()) object BookstoreConfig: given Codec[BookstoreConfig] = Codec.AsObject.derived case class UsersConfig(init: Boolean = false) object UsersConfig: given Codec[UsersConfig] = Codec.AsObject.derived "
+    "text": " Table of Contents Configuration Pillars Configuration Application Configuration Configuration Pillars is configured using YAML v1.2 files. Pillars Configuration Pillars configuration is structured as follows: name: Bookstore log: level: info format: enhanced output: type: console db: host: localhost port: 5432 database: bookstore username: postgres password: postgres pool-size: 10 debug: false probe: timeout: PT5s interval: PT10s failure-count: 3 api: enabled: true http: host: 0.0.0.0 port: 9876 enable-logging: true admin: enabled: true http: host: 0.0.0.0 port: 19876 max-connections: 32 observability: enabled: true service-name: bookstore feature-flags: enabled: true flags: - name: feature-1 status: enabled - name: feature-2 status: disabled If you are using the EntryPoint trait, the path to this file must be given to the application using the --config command line option. The config must contain the following keys: name : the name of the application api : the API server configuration admin : the admin server configuration observability : the observability configuration The logging configuration is optional and can be omitted if you are happy with the default configuration. The db and feature-flags sections are needed only if you include the db and feature-flags modules respectively. API Configuration The API configuration is structured as follows: api: enabled: true http: host: 0.0.0.0 port: 9876 enable-logging: true It contains the following keys: enabled : whether the API server is enabled or not http : the HTTP server configuration: host : the host to bind to. Default is 0.0.0.0 , i.e. all interfaces. port : the port to bind to. Default is 9876 . enable-logging : whether to enable HTTP access logging or not. Default is false . Admin Configuration The admin configuration is structured as follows: admin: enabled: true http: host: 0.0.0.0 port: 19876 max-connections: 32 It contains the following keys: enabled : whether the admin server is enabled or not http : the HTTP server configuration: host : the host to bind to. Default is 0.0.0.0 , i.e. all interfaces. port : the port to bind to. Default is 19876 . Observability Configuration The observability configuration is structured as follows: observability: enabled: true service-name: bookstore It contains the following keys: enabled : whether observability is enabled or not service-name : the name of the service.Default is pillars . Logging Configuration The logging configuration is structured as follows: log: level: info format: enhanced output: type: console It contains the following keys: level : the log level. Possible values are trace , debug , info , warn , error . Default is info . format : the log format. Possible values are json , simple , colored , classic , compact , enhanced , advanced , strict . For more details, refer to the scribe documentation . Default is enhanced . output : the log output. type : the log output type. Possible values are console or file . Default is console . path : the path to the log file. It is used only if output.type is file . Database Configuration The database configuration is structured as follows: db: host: localhost port: 5432 database: bookstore username: postgres password: postgres pool-size: 10 debug: false probe: timeout: PT5s interval: PT10s failure-count: 3 It contains the following keys: host : the database host. Default is localhost . port : the database port. Default is 5432 . database : the database name. user : the database user. password : the database password. pool-size : the database connection pool size. Default is 32 . debug : whether to enable database debug logging or not. Default is false . probe : the database probe configuration: timeout : the probe timeout. Default is 5s . interval : the probe interval. Default is 10s . failure-count : the number of consecutive failures before the database is considered down. Default is 3 . Feature Flags Configuration The feature flags configuration is structured as follows: feature-flags: enabled: true flags: - name: feature-1 status: enabled - name: feature-2 status: disabled It contains the following keys: enabled : whether feature flags are enabled or not flags : the feature flags definition: name : the name of the feature flag status : the status of the feature flag. Possible values are enabled or disabled . Application Configuration You can define the configuration of your application in the same file as the Pillars configuration. It must be under the app key. In order to read the configuration, you need to use the configReader method of the Pillars instance. object app extends pillars.EntryPoint: def app: pillars.App[IO] = new pillars.App[IO]: def infos: AppInfo = BuildInfo.toAppInfo def run(using p: Pillars[IO]): IO[Unit] = import p.* for config &lt;- configReader[BookstoreConfig] _ &lt;- IO.println(s\"Config: $config\") yield () The configuration class must be a case class and there must be at least a circe Decoder defined for it. package example import io.circe.Codec case class BookstoreConfig(enabled: Boolean = true, users: UsersConfig = UsersConfig()) object BookstoreConfig: given Codec[BookstoreConfig] = Codec.AsObject.derived case class UsersConfig(init: Boolean = false) object UsersConfig: given Codec[UsersConfig] = Codec.AsObject.derived "
 },
 
 {
     "id": 11,
-    "uri": "user-guide/20_features/30_probes.html",
-    "menu": "user-guide",
-    "title": "Probes",
-    "text": " Table of Contents Probes Probes This documentation needs to be written. You can help us by contributing to the documentation . "
-},
-
-{
-    "id": 12,
     "uri": "user-guide/20_features/60_admin-server.html",
     "menu": "user-guide",
     "title": "Admin Server",
     "text": " Table of Contents Admin Server Admin Server This documentation needs to be written. You can help us by contributing to the documentation . "
+},
+
+{
+    "id": 12,
+    "uri": "user-guide/20_features/30_probes.html",
+    "menu": "user-guide",
+    "title": "Probes",
+    "text": " Table of Contents Probes Probes This documentation needs to be written. You can help us by contributing to the documentation . "
 },
 
 {
