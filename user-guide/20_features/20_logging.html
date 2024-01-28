@@ -137,18 +137,49 @@
 <div class="sect1">
 <h2 id="_logging">Logging</h2>
 <div class="sectionbody">
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-This documentation needs to be written.
-You can help us by <a href="../../contribute/10_contributing.html">contributing to the documentation</a>.
-</td>
-</tr>
-</table>
+<div class="paragraph">
+<p>Logging is a very important part of any application.
+It allows you to see what is happening in your application and to debug it.
+Pillars uses the <a href="https://github.com/outr/scribe">scribe</a> library for logging.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_configuration">Configuration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The logging configuration is described in the <a href="10_configuration.html#logging-configuration">Configuration</a> section.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_logging_in_your_code">Logging in your code</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To log something in your code, you can use the <code>logger</code> defined on the <code>Pillars</code> instance.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="scala">        def run(using p: Pillars[IO]): IO[Unit] =
+            import p.*
+            for
+                _ &lt;- logger.info(s"📚 Welcome to ${config.name}!")
+                _ &lt;- logger.debug(s"📚 The configuration is: $config")
+            yield ()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As the logger is configured before the application starts, you can use it in any part of your code with the classic scribe usage.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="scala">import scribe.warn
+import scribe.cats.io.info
+
+def foo: IO[Unit] = info("Hello from foo!")
+
+def bar: Unit = warn("Hello from bar!")</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -255,6 +286,8 @@ You can help us by <a href="../../contribute/10_contributing.html">contributing 
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#_logging">Logging</a></li>
+<li><a href="#_configuration">Configuration</a></li>
+<li><a href="#_logging_in_your_code">Logging in your code</a></li>
 </ul>
 </div>
 
