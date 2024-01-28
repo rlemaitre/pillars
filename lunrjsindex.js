@@ -29,7 +29,7 @@ var documents = [
     "uri": "user-guide/30_modules/30_flags.html",
     "menu": "user-guide",
     "title": "Feature Flags module",
-    "text": " Table of Contents Feature Flags module Creating a feature flag Using a feature flag Feature Flags module Feature flags are a way to enable or disable features in your application. They are useful for many reasons, including: Allowing you to test features in production before releasing them to all users. Allowing you to do a gradual rollout of a feature to a percentage of users. Currently, feature flags are only read from the configuration file and cannot be changed at runtime. This means that you will need to restart your application to change the value of a feature flag. In the future, we plan to add support for changing feature flags at runtime and storing them in a database. Creating a feature flag Feature flags are defined in the feature-flags section of the configuration file. feature-flags: enabled: true # (1) flags: - name: feature-1 # (2) status: enabled # (3) - name: feature-2 status: disabled 1 Whether feature flags are enabled or not. If this is set to false , all feature flags will be disabled. 2 The name of the feature flag. 3 The status of the feature flag. Possible values are enabled and disabled . Using a feature flag Feature flags can be used in your application by using the flags module on Pillars . import pillars.flags.* // (1) val flag = flag\"feature-1\" // (2) for enabled &lt;- pillars.flags.isEnabled(flag) // (3) _ &lt;- IO.whenA(enabled)(IO.println(\"Feature 1 is enabled\")) // (4) // or _ &lt;- pillars.whenEnabled(flag\"feature-2\")(IO.println(\"Feature 2 is enabled\")) // (5) // or _ &lt;- flag\"feature-3\".whenEnabled(IO.println(\"Feature 3 is enabled\")) // (6) yield () 1 Import the flags module to enable the flag string interpolator and the flags property on Pillars . 2 Create a Flag instance by using the flag string interpolator. 3 Check if the feature flag is enabled. 4 If the feature flag is enabled, perform the action you want. 5 Use the pillars.whenEnabled method to perform an action if the feature flag is enabled. 6 Use the whenEnabled method on the FeatureFlag.Name instance to perform an action if the feature flag is enabled. "
+    "text": " Table of Contents Feature Flags module Creating a feature flag Using a feature flag Endpoints Feature Flags module Feature flags are a way to enable or disable features in your application. They are useful for many reasons, including: Allowing you to test features in production before releasing them to all users. Allowing you to do a gradual rollout of a feature to a percentage of users. Currently, feature flags are only read from the configuration file and cannot be changed at runtime. This means that you will need to restart your application to change the value of a feature flag. In the future, we plan to add support for changing feature flags at runtime and storing them in a database. Creating a feature flag Feature flags are defined in the feature-flags section of the configuration file. feature-flags: enabled: true # (1) flags: - name: feature-1 # (2) status: enabled # (3) - name: feature-2 status: disabled 1 Whether feature flags are enabled or not. If this is set to false , all feature flags will be disabled. 2 The name of the feature flag. 3 The status of the feature flag. Possible values are enabled and disabled . Using a feature flag Feature flags can be used in your application by using the flags module on Pillars . import pillars.flags.* // (1) val flag = flag\"feature-1\" // (2) for enabled &lt;- pillars.flags.isEnabled(flag) // (3) _ &lt;- IO.whenA(enabled)(IO.println(\"Feature 1 is enabled\")) // (4) // or _ &lt;- pillars.whenEnabled(flag\"feature-2\")(IO.println(\"Feature 2 is enabled\")) // (5) // or _ &lt;- flag\"feature-3\".whenEnabled(IO.println(\"Feature 3 is enabled\")) // (6) yield () 1 Import the flags module to enable the flag string interpolator and the flags property on Pillars . 2 Create a Flag instance by using the flag string interpolator. 3 Check if the feature flag is enabled. 4 If the feature flag is enabled, perform the action you want. 5 Use the pillars.whenEnabled method to perform an action if the feature flag is enabled. 6 Use the whenEnabled method on the FeatureFlag.Name instance to perform an action if the feature flag is enabled. Endpoints Feature flags are exposed on the admin server . The defined endpoints are: GET /flags - Get all feature flags. GET /flags/+{name}+ - Get a specific feature flag. Feature flags are returned in the following format: { \"name\": \"feature-1\", \"status\": \"enabled\" } "
 },
 
 {
@@ -58,6 +58,14 @@ var documents = [
 
 {
     "id": 7,
+    "uri": "user-guide/20_features/20_logging.html",
+    "menu": "user-guide",
+    "title": "Logging",
+    "text": " Table of Contents Logging Configuration Logging in your code Logging Logging is a very important part of any application. It allows you to see what is happening in your application and to debug it. Pillars uses the scribe library for logging. Configuration The logging configuration is described in the Configuration section. Logging in your code To log something in your code, you can use the logger defined on the Pillars instance. def run(using p: Pillars[IO]): IO[Unit] = import p.* for _ &lt;- logger.info(s\"📚 Welcome to ${config.name}!\") _ &lt;- logger.debug(s\"📚 The configuration is: $config\") yield () As the logger is configured before the application starts, you can use it in any part of your code with the classic scribe usage. import scribe.warn import scribe.cats.io.info def foo: IO[Unit] = info(\"Hello from foo!\") def bar: Unit = warn(\"Hello from bar!\") "
+},
+
+{
+    "id": 8,
     "uri": "user-guide/20_features/50_observability.html",
     "menu": "user-guide",
     "title": "Observability",
@@ -65,19 +73,11 @@ var documents = [
 },
 
 {
-    "id": 8,
+    "id": 9,
     "uri": "user-guide/20_features/40_api-server.html",
     "menu": "user-guide",
     "title": "API Server",
     "text": " Table of Contents API Server API Server This documentation needs to be written. You can help us by contributing to the documentation . "
-},
-
-{
-    "id": 9,
-    "uri": "user-guide/20_features/20_logging.html",
-    "menu": "user-guide",
-    "title": "Logging",
-    "text": " Table of Contents Logging Configuration Logging in your code Logging Logging is a very important part of any application. It allows you to see what is happening in your application and to debug it. Pillars uses the scribe library for logging. Configuration The logging configuration is described in the Configuration section. Logging in your code To log something in your code, you can use the logger defined on the Pillars instance. def run(using p: Pillars[IO]): IO[Unit] = import p.* for _ &lt;- logger.info(s\"📚 Welcome to ${config.name}!\") _ &lt;- logger.debug(s\"📚 The configuration is: $config\") yield () As the logger is configured before the application starts, you can use it in any part of your code with the classic scribe usage. import scribe.warn import scribe.cats.io.info def foo: IO[Unit] = info(\"Hello from foo!\") def bar: Unit = warn(\"Hello from bar!\") "
 },
 
 {
@@ -90,18 +90,18 @@ var documents = [
 
 {
     "id": 11,
-    "uri": "user-guide/20_features/60_admin-server.html",
-    "menu": "user-guide",
-    "title": "Admin Server",
-    "text": " Table of Contents Admin Server Admin Server This documentation needs to be written. You can help us by contributing to the documentation . "
-},
-
-{
-    "id": 12,
     "uri": "user-guide/20_features/30_probes.html",
     "menu": "user-guide",
     "title": "Probes",
     "text": " Table of Contents Probes Probes This documentation needs to be written. You can help us by contributing to the documentation . "
+},
+
+{
+    "id": 12,
+    "uri": "user-guide/20_features/60_admin-server.html",
+    "menu": "user-guide",
+    "title": "Admin Server",
+    "text": " Table of Contents Admin Server Configuration Endpoints Defining administration endpoints Admin Server Pillars provides an administration server that can be used to manage the Pillars server. The administration endpoints are separated from the API server in order to ease security management. As it uses a different port, it can be protected by a firewall or use authentication on an ingress (such as nginx or caddy ). Configuration The configuration is described in the Configuration section. Endpoints By default, the administration server is available on port 19876 and exposes the following endpoints: GET /probes/healthz : the liveness probe. It always returns 200 OK and can be used to check if the server is running. GET /probes/health : the readiness probe. It returns 200 OK if the server is ready to handle requests and all probes are successful. See the Probes section for more details. Modules can add their own endpoints to the administration server. See the Flags section for the feature flags endpoints. Defining administration endpoints You can define administration endpoints easily by defining an adminControllers property in your App . "
 },
 
 {
