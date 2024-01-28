@@ -21,5 +21,157 @@ Pillars configuration is structured as follows:
 include::{projectRootDir}/modules/example/src/main/resources/config.yaml[tag=pillars]
 ----
 
+[NOTE]
+If you are using the `EntryPoint` trait, the path to this file must be given to the application using the `--config` command line option.
+
+The config *must* contain the following keys:
+
+* `name`: the name of the application
+* `api`: the API server configuration
+* `admin`: the admin server configuration
+* `observability`: the observability configuration
+
+The logging configuration is optional and can be omitted if you are happy with the default configuration.
+
+The `db` and `feature-flags` sections are needed only if you include the `db` and `feature-flags` modules respectively.
+
+==== API Configuration
+
+The API configuration is structured as follows:
+
+[source,yaml]
+----
+include::{projectRootDir}/modules/example/src/main/resources/config.yaml[tag=api]
+----
+
+It contains the following keys:
+
+* `enabled`: whether the API server is enabled or not
+* `http`: the HTTP server configuration:
+** `host`: the host to bind to. Default is `0.0.0.0`, i.e. all interfaces.
+** `port`: the port to bind to. Default is `9876`.
+** `enable-logging`: whether to enable HTTP access logging or not. Default is `false`.
+
+==== Admin Configuration
+
+The admin configuration is structured as follows:
+
+[source,yaml]
+----
+include::{projectRootDir}/modules/example/src/main/resources/config.yaml[tag=admin]
+----
+
+It contains the following keys:
+
+* `enabled`: whether the admin server is enabled or not
+* `http`: the HTTP server configuration:
+** `host`: the host to bind to. Default is `0.0.0.0`, i.e. all interfaces.
+** `port`: the port to bind to. Default is `9877`.
+
+==== Observability Configuration
+
+The observability configuration is structured as follows:
+
+[source,yaml]
+----
+include::{projectRootDir}/modules/example/src/main/resources/config.yaml[tag=observability]
+----
+
+It contains the following keys:
+
+* `enabled`: whether observability is enabled or not
+* `service-name`: the name of the service. Default is `pillars`.
+
+==== Logging Configuration
+
+The logging configuration is structured as follows:
+
+[source,yaml]
+----
+include::{projectRootDir}/modules/example/src/main/resources/config.yaml[tag=log]
+----
+
+It contains the following keys:
+
+* `level`: the log level.
+Possible values are `trace`, `debug`, `info`, `warn`, `error`.
+Default is `info`.
+* `format`: the log format.
+Possible values are `json`, `simple`, `colored`, `classic`, `compact`, `enhanced`, `advanced`, `strict`.
+For more details, refer to the link:https://github.com/outr/scribe/wiki[scribe documentation].
+Default is `enhanced`.
+* `output`: the log output.
+** `type`: the log output type.
+Possible values are `console` or `file`.
+Default is `console`.
+** `path`: the path to the log file.
+It is used only if `output.type` is `file`.
+
+==== Database Configuration
+
+The database configuration is structured as follows:
+
+[source,yaml]
+----
+include::{projectRootDir}/modules/example/src/main/resources/config.yaml[tag=db]
+----
+
+It contains the following keys:
+
+* `host`: the database host. Default is `localhost`.
+* `port`: the database port. Default is `5432`.
+* `database`: the database name.
+* `user`: the database user.
+* `password`: the database password.
+* `pool-size`: the database connection pool size. Default is `32`.
+* `debug`: whether to enable database debug logging or not. Default is `false`.
+* `probe`: the database probe configuration:
+** `timeout`: the probe timeout. Default is `5s`.
+** `interval`: the probe interval. Default is `10s`.
+** `failure-count`: the number of consecutive failures before the database is considered down. Default is `3`.
+
+==== Feature Flags Configuration
+
+The feature flags configuration is structured as follows:
+
+[source,yaml]
+----
+include::{projectRootDir}/modules/example/src/main/resources/config.yaml[tag=feature-flags]
+----
+
+It contains the following keys:
+
+* `enabled`: whether feature flags are enabled or not
+* `flags`: the feature flags definition:
+** `name`: the name of the feature flag
+** `status`: the status of the feature flag. Possible values are `enabled` or `disabled`.
+
+
 === Application Configuration
 
+You can define the configuration of your application in the same file as the Pillars configuration.
+It *must* be under the `app` key.
+
+In order to read the configuration, you need to use the `configReader` method of the `Pillars` instance.
+
+[source,scala]
+----
+object app extends pillars.EntryPoint:
+    def app: pillars.App[IO] = new pillars.App[IO]:
+        def infos: AppInfo = BuildInfo.toAppInfo
+
+        def run(using p: Pillars[IO]): IO[Unit] =
+            import p.*
+            for
+                config <- configReader[BookstoreConfig]
+                _ <- IO.println(s"Config: $config")
+            yield ()
+
+----
+
+The configuration class must be a case class and there must be at least a circe `Decoder` defined for it.
+
+[source,scala]
+----
+include::{projectRootDir}/modules/example/src/main/scala/example/config.scala[]
+----

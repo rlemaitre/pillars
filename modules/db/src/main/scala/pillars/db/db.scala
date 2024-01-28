@@ -74,7 +74,7 @@ final case class DatabaseConfig(
     username: DatabaseUser,
     password: Secret[DatabasePassword],
     poolSize: PoolSize = PoolSize(32),
-    debug: Boolean,
+    debug: Boolean = false,
     probe: ProbeConfig
 )
 

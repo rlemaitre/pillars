@@ -21,12 +21,15 @@ object Observability:
     def noop[F[_]: LiftIO: Async]: F[Observability[F]] = Observability(Tracer.noop[F], Meter.noop[F]).pure[F]
 
     def init[F[_]: LiftIO: Async](config: Config): F[Observability[F]] =
-        for
-            otel4s  <- OtelJava.global
-            tracer  <- otel4s.tracerProvider.get(config.serviceName)
-            metrics <- otel4s.meterProvider.get(config.serviceName)
-        yield Observability(tracer, metrics)
-    final case class Config(serviceName: ServiceName = ServiceName("pillars"))
+        if config.enabled then
+            for
+                otel4s  <- OtelJava.global
+                tracer  <- otel4s.tracerProvider.get(config.serviceName)
+                metrics <- otel4s.meterProvider.get(config.serviceName)
+            yield Observability(tracer, metrics)
+        else
+            noop
+    final case class Config(enabled: Boolean, serviceName: ServiceName = ServiceName("pillars"))
 
     object Config:
         given Configuration = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults

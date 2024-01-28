@@ -3,6 +3,7 @@ package pillars
 import cats.effect.Async
 import cats.effect.Resource.ExitCase
 import cats.syntax.all.*
+import com.comcast.ip4s.*
 import io.circe.Codec
 import io.github.iltotore.iron.*
 import pillars.Controller.HttpEndpoint
@@ -31,5 +32,7 @@ object ApiServer:
         final override def code: Code = Code("API")
     end Error
 
-    final case class Config(enabled: Boolean, http: HttpServer.Config) derives Codec.AsObject
+    final case class Config(enabled: Boolean, http: HttpServer.Config = defaultHttp) derives Codec.AsObject
+
+    private val defaultHttp = HttpServer.Config(host = host"0.0.0.0", port = port"9876", enableLogging = false)
 end ApiServer
