@@ -10,6 +10,36 @@ ifndef::projectRootDir[]
 :projectRootDir: ../../../../../..
 endif::projectRootDir[]
 
-[NOTE]
-This documentation needs to be written.
-You can help us by xref:../../contribute/10_contributing.adoc[contributing to the documentation].
+Logging is a very important part of any application.
+It allows you to see what is happening in your application and to debug it.
+Pillars uses the link:https://github.com/outr/scribe[scribe] library for logging.
+
+== Configuration
+
+The logging configuration is described in the xref:10_configuration.adoc#logging-configuration[Configuration] section.
+
+== Logging in your code
+
+To log something in your code, you can use the `logger` defined on the `Pillars` instance.
+
+[source,scala]
+----
+        def run(using p: Pillars[IO]): IO[Unit] =
+            import p.*
+            for
+                _ <- logger.info(s"📚 Welcome to ${config.name}!")
+                _ <- logger.debug(s"📚 The configuration is: $config")
+            yield ()
+----
+
+As the logger is configured before the application starts, you can use it in any part of your code with the classic scribe usage.
+
+[source,scala]
+----
+import scribe.warn
+import scribe.cats.io.info
+
+def foo: IO[Unit] = info("Hello from foo!")
+
+def bar: Unit = warn("Hello from bar!")
+----

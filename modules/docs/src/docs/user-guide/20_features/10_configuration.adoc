@@ -35,6 +35,7 @@ The logging configuration is optional and can be omitted if you are happy with t
 
 The `db` and `feature-flags` sections are needed only if you include the `db` and `feature-flags` modules respectively.
 
+[#api-configuration]
 ==== API Configuration
 
 The API configuration is structured as follows:
@@ -52,6 +53,7 @@ It contains the following keys:
 ** `port`: the port to bind to. Default is `9876`.
 ** `enable-logging`: whether to enable HTTP access logging or not. Default is `false`.
 
+[#admin-configuration]
 ==== Admin Configuration
 
 The admin configuration is structured as follows:
@@ -68,6 +70,7 @@ It contains the following keys:
 ** `host`: the host to bind to. Default is `0.0.0.0`, i.e. all interfaces.
 ** `port`: the port to bind to. Default is `9877`.
 
+[#observability-configuration]
 ==== Observability Configuration
 
 The observability configuration is structured as follows:
@@ -80,8 +83,9 @@ include::{projectRootDir}/modules/example/src/main/resources/config.yaml[tag=obs
 It contains the following keys:
 
 * `enabled`: whether observability is enabled or not
-* `service-name`: the name of the service. Default is `pillars`.
+* `service-name`: the name of the service.Default is `pillars`.
 
+[#logging-configuration]
 ==== Logging Configuration
 
 The logging configuration is structured as follows:
@@ -107,6 +111,7 @@ Default is `console`.
 ** `path`: the path to the log file.
 It is used only if `output.type` is `file`.
 
+[#db-configuration]
 ==== Database Configuration
 
 The database configuration is structured as follows:
@@ -130,6 +135,7 @@ It contains the following keys:
 ** `interval`: the probe interval. Default is `10s`.
 ** `failure-count`: the number of consecutive failures before the database is considered down. Default is `3`.
 
+[#feature-flags-configuration]
 ==== Feature Flags Configuration
 
 The feature flags configuration is structured as follows:
