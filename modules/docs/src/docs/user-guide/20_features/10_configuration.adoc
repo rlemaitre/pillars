@@ -68,7 +68,7 @@ It contains the following keys:
 * `enabled`: whether the admin server is enabled or not
 * `http`: the HTTP server configuration:
 ** `host`: the host to bind to. Default is `0.0.0.0`, i.e. all interfaces.
-** `port`: the port to bind to. Default is `9877`.
+** `port`: the port to bind to. Default is `19876`.
 
 [#observability-configuration]
 ==== Observability Configuration
