@@ -1,10 +1,13 @@
 # tag::pillars[]
 name: Bookstore
+# tag::log[]
 log:
   level: info
   format: enhanced
   output:
     type: console
+# end::log[]
+# tag::db[]
 db:
   host: localhost
   port: 5432
@@ -17,22 +20,29 @@ db:
     timeout: PT5s
     interval: PT10s
     failure-count: 3
+# end::db[]
+# tag::api[]
 api:
   enabled: true
   http:
     host: 0.0.0.0
     port: 9876
-    auth-token:
-    max-connections: 1024
+    enable-logging: true
+# end::api[]
+# tag::admin[]
 admin:
   enabled: true
   http:
     host: 0.0.0.0
     port: 19876
     max-connections: 32
+# end::admin[]
+# tag::observability[]
 observability:
   enabled: true
   service-name: bookstore
+# end::observability[]
+# tag::feature-flags[]
 feature-flags:
   enabled: true
   flags:
@@ -40,6 +50,7 @@ feature-flags:
       status: enabled
     - name: feature-2
       status: disabled
+# end::feature-flags[]
 # end::pillars[]
 # tag::app[]
 app:

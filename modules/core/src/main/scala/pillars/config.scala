@@ -27,7 +27,7 @@ object config:
         log: Logging.Config = Logging.Config(),
         api: ApiServer.Config,
         admin: AdminServer.Config,
-        observability: Observability.Config = Observability.Config()
+        observability: Observability.Config
     )
 
     object PillarsConfig:

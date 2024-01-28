@@ -47,14 +47,15 @@ object HttpServer:
             .resource
     end build
     final case class Config(
-        host: Host = host"0.0.0.0",
-        port: Port = port"9876",
-        enableLogging: Boolean = false
+        host: Host,
+        port: Port,
+        enableLogging: Boolean
     )
 
     object Config:
         given Configuration = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults
 
         given Codec[Config] = Codec.AsObject.derivedConfigured
+
     end Config
 end HttpServer
