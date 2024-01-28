@@ -10,6 +10,34 @@ ifndef::projectRootDir[]
 :projectRootDir: ../../../../../..
 endif::projectRootDir[]
 
-[NOTE]
-This documentation needs to be written.
-You can help us by xref:../../contribute/10_contributing.adoc[contributing to the documentation].
+Probes allow you to monitor the health of your application and the underlying infrastructure.
+Probes are used to determine if a container is ready to accept traffic or if it should be restarted.
+
+=== Liveness Probe
+
+A liveness probe checks if the container is still running.
+If the liveness probe fails, the container is restarted.
+
+Pillars defines a default liveness probe.
+
+=== Readiness Probe
+
+A readiness probe checks if the container is ready to accept traffic.
+If the readiness probe fails, the container is not added to the load balancer.
+The pillars readiness probe aggregates all probes defined in the application.
+
+Pillars defines by default a database probe that is enabled if you include the xref:../30_modules/10_db.adoc[db module].
+
+=== Custom Probes
+
+You can define custom probes by implementing the `Probe` trait.
+
+[source,scala]
+----
+include::{projectRootDir}/modules/core/src/main/scala/pillars/probes.scala[tag=probe]
+----
+<1> The probe component.
+<2> The check function.
+If the check function returns `true`, the probe is considered successful.
+If is returns `false` or throws an exception, the probe is considered failed.
+<3> The probe configuration.

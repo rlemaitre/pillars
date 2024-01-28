@@ -39,11 +39,13 @@ object probes:
             case System, Datastore, Component
     end Component
 
+    // tag::probe[]
     trait Probe[F[_]]:
-        def component: Component
-        def check: F[Boolean]
-        def config: ProbeConfig = ProbeConfig()
+        def component: Component //// <1>
+        def check: F[Boolean]    //// <2>
+        def config: ProbeConfig = ProbeConfig() //// <3>
     end Probe
+    // end::probe[]
 
     trait ProbeManager[F[_]]:
         def status: F[Map[Component, Status]]
