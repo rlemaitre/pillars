@@ -318,7 +318,8 @@ In your <code>build.sbt</code>, add the following lines to your project definiti
       libraryDependencies ++= Dependencies.tests,
       buildInfoKeys    := Seq[BuildInfoKey](name, version, description),                // <i class="conum" data-value="4"></i><b>(4)</b>
       buildInfoOptions := Seq(BuildInfoOption.Traits("pillars.BuildInfo")),             // <i class="conum" data-value="5"></i><b>(5)</b>
-      buildInfoPackage := "example.build"                                               // <i class="conum" data-value="6"></i><b>(6)</b>
+      buildInfoPackage := "example.build",                                              // <i class="conum" data-value="6"></i><b>(6)</b>
+      publish / skip   := true
     )
     .dependsOn(core, db, flags, httpClient)</code></pre>
 </div>
