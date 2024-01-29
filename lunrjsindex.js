@@ -34,18 +34,18 @@ var documents = [
 
 {
     "id": 4,
-    "uri": "user-guide/30_modules/10_db.html",
-    "menu": "user-guide",
-    "title": "Database Module",
-    "text": " Table of Contents Database module Database Configuration Using the DB Module Probe Database module The DB module provides database connectivity and operations for the Pillars application. It uses the Skunk library for interacting with PostgreSQL databases. Database Configuration The database configuration is defined in the DatabaseConfig case class. It includes the following fields: host : The host of the database. port : The port of the database. database : The name of the database. username : The username for the database. password : The password for the database. poolSize : The size of the connection pool. debug : A flag indicating whether to enable debug mode. probe : The configuration for the database probe. The configuration is read from the application&#8217;s configuration file under the db section. Using the DB Module To use the DB module, you need to import it and then access it through the Pillars instance: import pillars.db.* val dbModule = pillarsInstance.db You can then use the dbModule to perform database operations. You can also use directly DB[F] to perform database operations: import pillars.db.* import skunk.* def foo[F[_]](using Pillars[F]) = DB[F].use: session =&gt; session.unique(sql\"SELECT 1\".query[Int]) Probe The DB module provides a probe for health checks. val isHealthy: F[Boolean] = dbModule.probes.head.check This will return a boolean indicating whether the database is healthy or not. "
-},
-
-{
-    "id": 5,
     "uri": "user-guide/30_modules/20_http-client.html",
     "menu": "user-guide",
     "title": "HTTP Client Module",
     "text": " Table of Contents HTTP Client module HTTP Client Configuration Using the HttpClient Module HTTP Operations HTTP Client module The HttpClient module provides HTTP client functionality for the Pillars application. It uses the http4s library for creating HTTP requests and handling HTTP responses. HTTP Client Configuration The HTTP client configuration is defined in the Config case class. It includes the following field: followRedirect : A flag indicating whether to follow redirects. The configuration is read from the application&#8217;s configuration file under the http-client section. Using the HttpClient Module To use the HttpClient module, you need to import it and then access it through the Pillars instance: import pillars.httpclient.* val httpClientModule = pillarsInstance.httpClient You can also use directly Client[F] You can then use the httpClientModule to perform HTTP operations. HTTP Operations The HttpClient module provides methods for sending HTTP requests and receiving HTTP responses. You can use the httpClient extension method on Pillars to get an instance of Client[F] : import org.http4s.client.Client val client: Client[F] = pillars.httpClient This Client[F] instance can be used to send HTTP requests by using the same methods as org.http4s.client.Client[F] . "
+},
+
+{
+    "id": 5,
+    "uri": "user-guide/30_modules/10_db.html",
+    "menu": "user-guide",
+    "title": "Database Module",
+    "text": " Table of Contents Database module Database Configuration Using the DB Module Probe Database module The DB module provides database connectivity and operations for the Pillars application. It uses the Skunk library for interacting with PostgreSQL databases. Database Configuration The database configuration is defined in the DatabaseConfig case class. It includes the following fields: host : The host of the database. port : The port of the database. database : The name of the database. username : The username for the database. password : The password for the database. poolSize : The size of the connection pool. debug : A flag indicating whether to enable debug mode. probe : The configuration for the database probe. The configuration is read from the application&#8217;s configuration file under the db section. Using the DB Module To use the DB module, you need to import it and then access it through the Pillars instance: import pillars.db.* val dbModule = pillarsInstance.db You can then use the dbModule to perform database operations. You can also use directly DB[F] to perform database operations: import pillars.db.* import skunk.* def foo[F[_]](using Pillars[F]) = DB[F].use: session =&gt; session.unique(sql\"SELECT 1\".query[Int]) Probe The DB module provides a probe for health checks. val isHealthy: F[Boolean] = dbModule.probes.head.check This will return a boolean indicating whether the database is healthy or not. "
 },
 
 {
