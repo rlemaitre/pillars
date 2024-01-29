@@ -1,14 +1,27 @@
 import org.typelevel.scalacoptions.{ScalaVersion, ScalacOptions}
 
-name                             := "pillars"
-ThisBuild / homepage             := Some(url("https://pillars.rlemaitre.com/"))
-ThisBuild / organization         := "com.rlemaitre"
-ThisBuild / organizationName     := "Raphaël Lemaitre"
-ThisBuild / organizationHomepage := Some(url("https://rlemaitre.com/"))
-ThisBuild / startYear            := Some(2023)
-ThisBuild / licenses             := Seq(License.Apache2)
-ThisBuild / versionScheme        := Some("semver-spec")
-ThisBuild / developers           := List(
+name                               := "pillars"
+inThisBuild(List(
+  organization := "com.rlemaitre",
+  homepage     := Some(url("https://github.com/sbt/sbt-ci-release")),
+  licenses     := Seq(License.Apache2),
+  developers   := List(
+    Developer(
+      id = "rlemaitre",
+      name = "Raphaël Lemaitre",
+      email = "raphael@rlemaitre.com",
+      url = url("https://rlemaitre.com/")
+    )
+  )
+))
+ThisBuild / homepage               := Some(url("https://pillars.rlemaitre.com/"))
+ThisBuild / organization           := "com.rlemaitre"
+ThisBuild / organizationName       := "Raphaël Lemaitre"
+ThisBuild / organizationHomepage   := Some(url("https://rlemaitre.com/"))
+ThisBuild / startYear              := Some(2023)
+ThisBuild / licenses               := Seq(License.Apache2)
+ThisBuild / versionScheme          := Some("semver-spec")
+ThisBuild / developers             := List(
   Developer(
     id = "rlemaitre",
     name = "Raphaël Lemaitre",
@@ -16,7 +29,9 @@ ThisBuild / developers           := List(
     url = url("https://rlemaitre.com/")
   )
 )
-ThisBuild / scalaVersion         := "3.3.1"
+ThisBuild / sonatypeCredentialHost := "s01.oss.sonatype.org"
+sonatypeRepository                 := "https://s01.oss.sonatype.org/service/local"
+ThisBuild / scalaVersion           := "3.3.1"
 
 javaOptions += "-Dotel.java.global-autoconfigure.enabled=true"
 
@@ -87,13 +102,15 @@ lazy val example = Project("pillars-example", file("modules/example"))
       libraryDependencies ++= Dependencies.tests,
       buildInfoKeys    := Seq[BuildInfoKey](name, version, description),                // //<4>
       buildInfoOptions := Seq(BuildInfoOption.Traits("pillars.BuildInfo")),             // //<5>
-      buildInfoPackage := "example.build"                                               // //<6>
+      buildInfoPackage := "example.build",                                              // //<6>
+      publish / skip   := true
     )
     .dependsOn(core, db, flags, httpClient)
 // end::example[]
 lazy val docs = Project("pillars-docs", file("modules/docs"))
     .settings(
-      name := "pillars-docs"
+      name           := "pillars-docs",
+      publish / skip := true
     )
     .dependsOn(core)
 
