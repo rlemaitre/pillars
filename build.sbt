@@ -3,7 +3,7 @@ import org.typelevel.scalacoptions.{ScalaVersion, ScalacOptions}
 name                               := "pillars"
 inThisBuild(List(
   organization := "com.rlemaitre",
-  homepage     := Some(url("https://github.com/sbt/sbt-ci-release")),
+  homepage     := Some(url("https://pillars.rlemaitre.com/")),
   licenses     := Seq(License.Apache2),
   developers   := List(
     Developer(
