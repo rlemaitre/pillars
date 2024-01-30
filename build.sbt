@@ -32,16 +32,26 @@ inThisBuild(
         scalacOptions ++= ScalacOptions.tokensForVersion(
             ScalaVersion.V3_3_0,
             Set(
-                ScalacOptions.sourceFuture,
                 ScalacOptions.deprecation,
                 ScalacOptions.feature,
                 ScalacOptions.fatalWarnings,
                 ScalacOptions.lint
             ) ++ ScalacOptions.privateWarnOptions ++ ScalacOptions.privateWarnUnusedOptions
-        ) ++ Seq("-new-syntax", "-Xmax-inlines=128")
+        ) ++ Seq("-new-syntax")
     )
 )
 javaOptions += "-Dotel.java.global-autoconfigure.enabled=true"
+
+Compile / scalacOptions ++= ScalacOptions.tokensForVersion(
+    ScalaVersion.V3_3_0,
+    Set(
+        ScalacOptions.sourceFuture,
+        ScalacOptions.deprecation,
+        ScalacOptions.feature,
+        ScalacOptions.fatalWarnings,
+        ScalacOptions.lint
+    ) ++ ScalacOptions.privateWarnOptions ++ ScalacOptions.privateWarnUnusedOptions
+) ++ Seq("-new-syntax", "-Xmax-inlines=128")
 
 enablePlugins(ScalaUnidocPlugin)
 
