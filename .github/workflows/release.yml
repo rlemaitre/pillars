@@ -14,7 +14,6 @@ jobs:
         with:
           distribution: adopt
           java-version: 19
-          cache: sbt
       - run: sbt ci-release
         env:
           PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
