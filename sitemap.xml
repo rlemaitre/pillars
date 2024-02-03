@@ -7,6 +7,11 @@
     </url>
 
     <url>
+    	<loc>http://jbake.org/user-guide/20_features/50_observability.html</loc>
+    	<lastmod>2024-02-03</lastmod>
+    </url>
+
+    <url>
     	<loc>http://jbake.org/user-guide/20_features/40_api-server.html</loc>
     	<lastmod>2024-02-03</lastmod>
     </url>
@@ -17,7 +22,7 @@
     </url>
 
     <url>
-    	<loc>http://jbake.org/user-guide/20_features/50_observability.html</loc>
+    	<loc>http://jbake.org/user-guide/20_features/60_admin-server.html</loc>
     	<lastmod>2024-02-03</lastmod>
     </url>
 
@@ -28,11 +33,6 @@
 
     <url>
     	<loc>http://jbake.org/user-guide/30_modules/20_http-client.html</loc>
-    	<lastmod>2024-02-03</lastmod>
-    </url>
-
-    <url>
-    	<loc>http://jbake.org/user-guide/20_features/60_admin-server.html</loc>
     	<lastmod>2024-02-03</lastmod>
     </url>
 
@@ -52,17 +52,17 @@
     </url>
 
     <url>
-    	<loc>http://jbake.org/user-guide/30_modules/index.html</loc>
-    	<lastmod>2024-02-03</lastmod>
-    </url>
-
-    <url>
     	<loc>http://jbake.org/user-guide/30_modules/10_db.html</loc>
     	<lastmod>2024-02-03</lastmod>
     </url>
 
     <url>
     	<loc>http://jbake.org/user-guide/index.html</loc>
+    	<lastmod>2024-02-03</lastmod>
+    </url>
+
+    <url>
+    	<loc>http://jbake.org/user-guide/30_modules/index.html</loc>
     	<lastmod>2024-02-03</lastmod>
     </url>
 
