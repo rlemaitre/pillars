@@ -41,33 +41,33 @@ object Main extends pillars.EntryPoint:
                 <li class="tab" data-tab="maven">Maven</li>
             </ul>
             <pre class="code tab__pane active sbt">
-                <code class="highlight language-scala">libraryDependencies ++= Seq("com.rlemaitre" %% "pillars-core" % "0.0.1")</code>
+                <code class="highlight language-scala">libraryDependencies ++= Seq("com.rlemaitre" %% "pillars-core" % "${config.site_version}")</code>
             </pre>
             <pre class="code tab__pane mill">
-                <code class="highlight language-scala">ivy"com.rlemaitre::pillars-core:0.0.1"</code>
+                <code class="highlight language-scala">ivy"com.rlemaitre::pillars-core:${config.site_version}"</code>
             </pre>
             <pre class="code tab__pane scala-cli">
-                <code class="highlight language-scala">//> using dep com.rlemaitre::pillars-core:0.0.1</code>
+                <code class="highlight language-scala">//> using dep com.rlemaitre::pillars-core:${config.site_version}</code>
             </pre>
             <pre class="code tab__pane pants">
                 <code class="highlight language-scala">
 scala_artifact(
     group="com.rlemaitre",
     artifact="pillars-core",
-    version="0.0.1",
+    version="${config.site_version}",
     packages=["pillars.**"],
 )
                 </code>
             </pre>
             <pre class="code tab__pane gradle">
-                <code class="highlight language-gradle">implementation 'com.rlemaitre:pillars-core:0.0.1'</code>
+                <code class="highlight language-gradle">implementation 'com.rlemaitre:pillars-core:${config.site_version}'</code>
             </pre>
             <pre class="code tab__pane maven">
                 <code class="highlight language-xml">
 &lt;dependency>
     &lt;groupId>com.rlemaitre&lt;/groupId>
     &lt;artifactId>pillars-core&lt;/artifactId>
-    &lt;version>0.0.1&lt;/version>
+    &lt;version>${config.site_version}&lt;/version>
 &lt;/dependency>
                 </code>
             </pre>
