@@ -4,8 +4,8 @@
         "enable": true,
         "initial_value": "feat",
         "infer_type_from_branch": true,
-        "append_emoji_to_label": true,
-        "append_emoji_to_commit": true,
+        "append_emoji_to_label": false,
+        "append_emoji_to_commit": false,
         "options": [
             {
                 "value": "feat",
