@@ -25,7 +25,7 @@ To use the latest version, include the following in your `build.sbt`:
 [source,sbt,subs="+attributes"]
 --
 libraryDependencies ++= Seq(
-  "com.rlemaitre" %% "pillars-core" % "{project-version}"
+  "com.rlemaitre" %% "pillars-core" % "{site_version}"
 )
 --
 
@@ -34,9 +34,9 @@ You can also add optional modules to your dependencies:
 [source,sbt,subs="+attributes"]
 --
 libraryDependencies ++= Seq(
-  "com.rlemaitre" %% "pillars-db" % "{project-version}",
-  "com.rlemaitre" %% "pillars-flags" % "{project-version}",
-  "com.rlemaitre" %% "pillars-http-client" % "{project-version}"
+  "com.rlemaitre" %% "pillars-db" % "{site_version}",
+  "com.rlemaitre" %% "pillars-flags" % "{site_version}",
+  "com.rlemaitre" %% "pillars-http-client" % "{site_version}"
 )
 --
 

@@ -24,6 +24,12 @@ jobs:
           token: ${{ github.token }}
           tag: ${{ github.ref_name }}
 
+      - name: Update version in docs
+        if: ${{ github.ref_type == 'tag' }}
+        run: |
+          VERSION=${GITHUB_REF_NAME#v}
+          sed -i '' -e "s/\"version\": \'.*\'/\"version\": \"${VERSION}\"/" docToolchainConfig.groovy
+
       - name: Create Release
         if: ${{ github.ref_type == 'tag' }}
         uses: ncipollo/release-action@v1.12.0
@@ -37,11 +43,11 @@ jobs:
 
       - name: Commit CHANGELOG.md
         if: ${{ github.ref_type == 'tag' }}
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           branch: main
           commit_message: 'docs: update CHANGELOG.md for ${{ github.ref_name }} [skip ci]'
-          file_pattern: CHANGELOG.md
+          file_pattern: 'CHANGELOG.md docToolchainConfig.groovy'
 
       - name: Publish to sonatype
         run: sbt ci-release
