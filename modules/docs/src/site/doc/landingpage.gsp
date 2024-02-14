@@ -7,6 +7,27 @@
         <code class="language-scala">
 import ... // import your dependencies
 
+object app extends pillars.EntryPoint:
+  def app: pillars.App[IO] = new pillars.App[IO]: // define your app
+    def infos: AppInfo = BuildInfo.toAppInfo // automatic description from your build
+
+    def run(using p: Pillars[IO]): IO[Unit] = // enjoy!
+      import p.*
+      for
+        _ <- logger.info(s"📚 Welcome to ${config.name}!")
+        _ <- flag"feature-1".whenEnabled:
+                DB[IO].use: session =>
+                  for
+                    date <- session.unique(sql"select now()".query(timestamptz))
+                    _    <- logger.info(s"The current date is $date.")
+                  yield ()
+        _ <- HttpClient[IO].get("https://pillars.rlemaitre.com"): response =>
+                  logger.info(s"Response: ${response.status}")
+        _ <- apiServer.start(endpoints.all)
+      yield ()
+      end for
+    end run
+end app
 object Main extends pillars.EntryPoint:
     def app: pillars.App[IO] = new pillars.App[IO]:
         def name        = Name("BookStore")
