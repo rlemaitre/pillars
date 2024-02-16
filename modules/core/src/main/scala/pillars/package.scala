@@ -1,4 +1,12 @@
 package object pillars:
+    /**
+     * Type alias for a Pillars[F] context bound.
+     *
+     * @tparam F The effect type.
+     * @tparam A The type of the value that is being computed.
+     */
+    type Run[F[_], A] = Pillars[F] ?=> A
+
     extension [T](items: Iterable[T])
         /**
          * Extension method for Iterable[T] to perform topological sorting.

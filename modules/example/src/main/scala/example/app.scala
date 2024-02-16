@@ -13,22 +13,21 @@ import skunk.implicits.*
 
 // tag::quick-start[]
 object app extends pillars.EntryPoint: // // <1>
-    def app: pillars.App[IO] = new pillars.App[IO]: // // <2>
+    def app: pillars.App[IO] = new: // // <2>
         def infos: AppInfo = BuildInfo.toAppInfo // // <3>
 
-        def run(using p: Pillars[IO]): IO[Unit] = // // <4>
-            import p.*
+        def run: Run[IO, IO[Unit]] = // // <4>
             for
-                _ <- logger.info(s"📚 Welcome to ${config.name}!")
+                _ <- Logger[IO].info(s"📚 Welcome to ${Config[IO].name}!")
                 _ <- flag"feature-1".whenEnabled:
                          DB[IO].use: session =>
                              for
                                  date <- session.unique(sql"select now()".query(timestamptz))
-                                 _    <- logger.info(s"The current date is $date.")
+                                 _    <- Logger[IO].info(s"The current date is $date.")
                              yield ()
                 _ <- HttpClient[IO].get("https://pillars.rlemaitre.com"): response =>
-                         logger.info(s"Response: ${response.status}")
-                _ <- apiServer.start(endpoints.all)
+                         Logger[IO].info(s"Response: ${response.status}")
+                _ <- ApiServer[IO].start(endpoints.all)
             yield ()
             end for
         end run

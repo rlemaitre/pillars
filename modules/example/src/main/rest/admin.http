@@ -1,0 +1,17 @@
+@host = http://localhost:19876
+###
+# @name: List all flags
+#
+GET {{ host }}/admin/flags/
+
+###
+# @name: Get flag by id
+
+@featureId = feature-1
+
+GET {{ host }}/admin/flags/{{featureId}}
+
+###
+#
+
+GET {{ host }}/admin/probes/health

@@ -5,7 +5,7 @@ import cats.effect.Resource
 import cats.effect.std.Console
 import fs2.io.net.Network
 import org.typelevel.otel4s.trace.Tracer
-import pillars.config.Reader
+import pillars.Config.Reader
 import pillars.probes.Probe
 import scala.reflect.ClassTag
 import scribe.Scribe

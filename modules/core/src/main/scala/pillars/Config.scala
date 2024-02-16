@@ -21,7 +21,8 @@ import scala.io.Source
 import scala.util.matching.Regex
 import scodec.bits.ByteVector
 
-object config:
+object Config:
+    def apply[F[_]]: Run[F, PillarsConfig] = summon[Pillars[F]].config
     case class PillarsConfig(
         name: App.Name,
         log: Logging.Config = Logging.Config(),
@@ -98,4 +99,4 @@ object config:
         case ConfigError.MissingEnvironmentVariable(name) => Message(s"Missing environment variable $name".assume)
         case ConfigError.ParsingError(cause)              => Message(s"Failed to parse configuration: ${cause.getMessage}".assume)
     end ConfigError
-end config
+end Config

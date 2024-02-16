@@ -16,7 +16,7 @@ trait App[F[_]]:
     def infos: AppInfo
     def probes: List[Probe[F]]                = Nil
     def adminControllers: List[Controller[F]] = Nil
-    def run(using p: Pillars[F]): F[Unit]
+    def run: Run[F, F[Unit]]
 end App
 
 object App:
@@ -50,12 +50,10 @@ trait EntryPoint extends IOApp:
     override final def run(args: List[String]): IO[ExitCode] =
         Command(app.infos.name, app.infos.description)(
           Opts.option[Path]("config", "Path to the configuration file")
-        ).parse(
-          args,
-          sys.env
-        ) match
+        ).parse(args, sys.env) match
         case Left(help)        => Console[IO].errorln(help).as(ExitCode.Error)
         case Right(configPath) =>
             Pillars(configPath).use: pillars =>
-                app.run(using pillars).as(ExitCode.Success)
+                given Pillars[IO] = pillars
+                app.run.as(ExitCode.Success)
 end EntryPoint
