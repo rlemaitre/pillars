@@ -14,17 +14,21 @@ import io.github.iltotore.iron.constraint.all.*
 import java.nio.file.Path
 import scribe.Level
 import scribe.Logger
+import scribe.Scribe
 import scribe.file.PathBuilder
 import scribe.format.Formatter
 import scribe.json.ScribeCirceJsonSupport
 import scribe.writer.ConsoleWriter
 import scribe.writer.Writer
 
+object Logger:
+    def apply[F[_]: Pillars]: Run[F, Scribe[F]] = summon[Pillars[F]].logger
+
 object Logging:
     def init[F[_]: Sync](config: Config): F[Unit] =
         Sync[F]
             .delay(
-              Logger.root
+              scribe.Logger.root
                   .clearHandlers()
                   .clearModifiers()
                   .withHandler(

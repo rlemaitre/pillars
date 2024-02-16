@@ -8,8 +8,8 @@ import io.circe.Decoder
 import java.nio.file.Path
 import java.util.ServiceLoader
 import org.typelevel.otel4s.trace.Tracer
-import pillars.config.PillarsConfig
-import pillars.config.Reader
+import pillars.Config.PillarsConfig
+import pillars.Config.Reader
 import pillars.probes.ProbeManager
 import pillars.probes.ProbesController
 import scala.jdk.CollectionConverters.IterableHasAsScala
@@ -20,11 +20,40 @@ import scribe.*
  * The Pillars trait defines the main components of the application.
  */
 trait Pillars[F[_]]:
+    /**
+     * Component for observability. It allows you to create spans and metrics.
+     */
     def observability: Observability[F]
+
+    /**
+     * The configuration for the application.
+     */
     def config: PillarsConfig
+
+    /**
+     * The API server for the application.
+     *
+     * It has to be manually started by calling the `start` method in the application.
+     */
     def apiServer: ApiServer[F]
+
+    /**
+     * The logger for the application.
+     */
     def logger: Scribe[F]
+
+    /**
+     * Reads a configuration from the configuration.
+     *
+     * @return the configuration.
+     */
     def readConfig[T](using Decoder[T]): F[T]
+
+    /**
+     * Gets a module from the application.
+     *
+     * @return the module.
+     */
     def module[T <: Module[F]: ClassTag]: T
 end Pillars
 

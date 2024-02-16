@@ -11,12 +11,12 @@ import io.github.iltotore.iron.*
 import io.github.iltotore.iron.circe.given
 import io.github.iltotore.iron.constraint.all.*
 import org.typelevel.otel4s.trace.Tracer
+import pillars.Config.*
 import pillars.Loader
 import pillars.Module
 import pillars.Modules
 import pillars.Pillars
 import pillars.codec.given
-import pillars.config.*
 import pillars.probes.*
 import skunk.*
 import skunk.codec.all.*

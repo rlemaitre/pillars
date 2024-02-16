@@ -26,6 +26,6 @@ final case class HttpClient[F[_]: Async](client: org.http4s.client.Client[F])
 
 object HttpClient:
     def apply[F[_]](using p: Pillars[F]): Client[F] = p.module[HttpClient[F]].client
-final case class Config(followRedirect: Boolean)
+private[httpclient] final case class Config(followRedirect: Boolean)
 extension [F[_]](p: Pillars[F])
     def httpClient: Client[F] = p.module[HttpClient[F]].client
