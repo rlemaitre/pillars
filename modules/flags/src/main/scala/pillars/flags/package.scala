@@ -11,16 +11,16 @@ import sttp.tapir.codec.iron.*
 import sttp.tapir.codec.iron.given
 
 package object flags:
-    given Encoder[FeatureFlag.Status] = Encoder.encodeString.contramap:
-        case FeatureFlag.Status.Enabled  => "enabled"
-        case FeatureFlag.Status.Disabled => "disabled"
+    given Encoder[Status] = Encoder.encodeString.contramap:
+        case Status.Enabled  => "enabled"
+        case Status.Disabled => "disabled"
 
-    given Decoder[FeatureFlag.Status] = Decoder.decodeString.emap:
-        case "enabled"  => Right(FeatureFlag.Status.Enabled)
-        case "disabled" => Right(FeatureFlag.Status.Disabled)
+    given Decoder[Status] = Decoder.decodeString.emap:
+        case "enabled"  => Right(Status.Enabled)
+        case "disabled" => Right(Status.Disabled)
         case other      => Left(s"Invalid status $other")
 
-    given Schema[FeatureFlag.Status] = Schema.derived
+    given Schema[Status] = Schema.derived
 
     given Codec[FeatureFlag] = Codec.AsObject.derived
 
@@ -28,19 +28,18 @@ package object flags:
     extension [F[_]](p: Pillars[F])
         def flags: FlagManager[F] = p.module(FlagManager.Key)
 
-        def whenEnabled[A](flag: FeatureFlag.Name)(thunk: => F[A]): F[Unit] =
+        def whenEnabled[A](flag: Flag)(thunk: => F[A]): F[Unit] =
             p.module[FlagManager[F]](FlagManager.Key).when(flag)(thunk)
     end extension
 
     extension (inline ctx: StringContext)
-        inline def flag(inline args: Any*): FeatureFlag.Name =
-            ${ FlagLiteral('ctx, 'args) }
-    object FlagLiteral extends Literally[FeatureFlag.Name]:
-        override inline def validate(s: String)(using Quotes) =
-            if FeatureFlag.Name.rtc.test(s) then Right('{ FeatureFlag.Name.applyUnsafe(${ Expr(s) }) })
-            else Left(FeatureFlag.Name.rtc.message)
+        inline def flag(inline args: Any*): Flag = ${ FlagLiteral('ctx, 'args) }
+    object FlagLiteral extends Literally[Flag]:
+        override def validate(s: String)(using Quotes): Either[String, Expr[Flag]] =
+            if Flag.rtc.test(s) then Right('{ Flag.applyUnsafe(${ Expr(s) }) })
+            else Left(Flag.rtc.message)
 
-    extension (flag: FeatureFlag.Name)
+    extension (flag: Flag)
         def whenEnabled[F[_], A](using p: Pillars[F])(thunk: => F[A]): F[Unit] =
             p.module[FlagManager[F]](FlagManager.Key).when(flag)(thunk)
 end flags
