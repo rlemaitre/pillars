@@ -23,11 +23,12 @@ import skunk.codec.all.*
 import skunk.implicits.*
 
 extension [F[_]](p: Pillars[F])
-    def db: DB[F] = p.module[DB[F]]
+    def db: DB[F] = p.module[DB[F]](DB.Key)
 
 final case class DB[F[_]: Async: Network: Tracer: Console](pool: Resource[F, Session[F]]) extends Module[F]:
     export pool.*
 
+    override def key: Module.Key        = DB.Key
     override def probes: List[Probe[F]] =
         val probe = new Probe[F]:
             override def component: Component = Component(Component.Name("db"), Component.Type.Datastore)
@@ -37,7 +38,8 @@ final case class DB[F[_]: Async: Network: Tracer: Console](pool: Resource[F, Ses
 end DB
 
 object DB:
-    def apply[F[_]](using p: Pillars[F]): DB[F] = p.module[DB[F]]
+    case object Key extends Module.Key
+    def apply[F[_]](using p: Pillars[F]): DB[F] = p.module[DB[F]](DB.Key)
 
 class DBLoader extends Loader:
     override type M[F[_]] = DB[F]

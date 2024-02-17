@@ -26,9 +26,11 @@ package object flags:
 
     given Schema[FeatureFlag] = Schema.derived
     extension [F[_]](p: Pillars[F])
-        def flags: FlagManager[F]                                           = p.module[FlagManager[F]]
+        def flags: FlagManager[F] = p.module(FlagManager.Key)
+
         def whenEnabled[A](flag: FeatureFlag.Name)(thunk: => F[A]): F[Unit] =
-            p.module[FlagManager[F]].when(flag)(thunk)
+            p.module[FlagManager[F]](FlagManager.Key).when(flag)(thunk)
+    end extension
 
     extension (inline ctx: StringContext)
         inline def flag(inline args: Any*): FeatureFlag.Name =
@@ -40,5 +42,5 @@ package object flags:
 
     extension (flag: FeatureFlag.Name)
         def whenEnabled[F[_], A](using p: Pillars[F])(thunk: => F[A]): F[Unit] =
-            p.module[FlagManager[F]].when(flag)(thunk)
+            p.module[FlagManager[F]](FlagManager.Key).when(flag)(thunk)
 end flags

@@ -13,7 +13,6 @@ import pillars.Config.Reader
 import pillars.probes.ProbeManager
 import pillars.probes.ProbesController
 import scala.jdk.CollectionConverters.IterableHasAsScala
-import scala.reflect.ClassTag
 import scribe.*
 
 /**
@@ -54,7 +53,7 @@ trait Pillars[F[_]]:
      *
      * @return the module.
      */
-    def module[T <: Module[F]: ClassTag]: T
+    def module[T](key: Module.Key): T
 end Pillars
 
 /**
@@ -92,7 +91,7 @@ object Pillars:
                 ApiServer.init(config.api, observability, logger)
             override def logger: Scribe[F]                     = _logger
             override def readConfig[T](using Decoder[T]): F[T] = configReader.read[T]
-            override def module[T <: Module[F]: ClassTag]: T   = _modules.get[T]
+            override def module[T](key: Module.Key): T         = _modules.get(key)
         end for
     end apply
 
