@@ -26,8 +26,12 @@ object app extends pillars.EntryPoint: // // <1>
                                  _    <- Logger[IO].info(s"The current date is $date.")
                              yield ()
                 _ <- HttpClient[IO].get("https://pillars.rlemaitre.com"): response =>
-                         Logger[IO].info(s"Response: ${response.status}")
-                _ <- ApiServer[IO].start(endpoints.all)
+                         for
+                             _    <- Logger[IO].info(s"Response: ${response.status}")
+                             size <- response.body.compile.count
+                             _    <- Logger[IO].info(s"Body: $size bytes")
+                         yield ()
+                _ <- ApiServer[IO].start(TodoController().endpoints)
             yield ()
             end for
         end run

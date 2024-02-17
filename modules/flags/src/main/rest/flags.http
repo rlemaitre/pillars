@@ -1,4 +1,5 @@
 @host = http://localhost:19876
+
 ###
 # @name: List all flags
 #
@@ -7,16 +8,16 @@ GET {{ host }}/admin/flags/
 ###
 # @name: Get flag by id
 
-@featureId = feature-1
+@featureId = feature-2
 
 GET {{ host }}/admin/flags/{{featureId}}
 
 ###
-# Liveness probe
+# @name: Update flag by id
 
-GET {{ host }}/admin/probes/healthz
+PUT {{ host }}/admin/flags/{{featureId}}
+Content-Type: application/json
 
-###
-# Readiness probe
-
-GET {{ host }}/admin/probes/health
+{
+  "status": "enabled"
+}

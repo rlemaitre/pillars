@@ -26,7 +26,7 @@ package object flags:
 
     given Schema[FeatureFlag] = Schema.derived
     extension [F[_]](p: Pillars[F])
-        def flags: FlagManager[F]                               = p.module(FlagManager.Key)
+        def flags: FlagManager[F] = p.module(FlagManager.Key)
 
         def whenEnabled[A](flag: Flag)(thunk: => F[A]): F[Unit] =
             p.module[FlagManager[F]](FlagManager.Key).when(flag)(thunk)

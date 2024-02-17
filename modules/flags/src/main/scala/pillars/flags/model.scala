@@ -7,7 +7,7 @@ final case class FeatureFlag(name: Flag, status: Status):
     def isEnabled: Boolean = status.isEnabled
 
 private type FlagConstraint = Not[Blank] DescribedAs "Name must not be blank"
-opaque type Flag <: String = String :| FlagConstraint
+opaque type Flag <: String  = String :| FlagConstraint
 
 object Flag extends RefinedTypeOps[String, FlagConstraint, Flag]
 
@@ -15,8 +15,6 @@ enum Status:
     case Enabled, Disabled
 
     def isEnabled: Boolean = this match
-        case Enabled => true
-        case Disabled => false
+    case Enabled  => true
+    case Disabled => false
 end Status
-
-

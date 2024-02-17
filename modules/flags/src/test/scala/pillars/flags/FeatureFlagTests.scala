@@ -29,7 +29,7 @@ class FeatureFlagTests extends CatsEffectSuite:
         assertEquals(decoded, Right(Status.Disabled))
 
     test("Decoder should fail on invalid status string"):
-        val status                              = "invalid"
+        val status                  = "invalid"
         val decoded: Result[Status] = Json.fromString(status).as[Status]
         assertEquals(decoded.isLeft, true)
 end FeatureFlagTests

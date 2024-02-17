@@ -21,7 +21,6 @@ trait FlagManager[F[_]: Sync] extends Module[F]:
     override def key: Module.Key =
         FlagManager.Key
 
-    def when[A](flag: FeatureFlag.Name)(thunk: => F[A]): F[Unit] =
     private[flags] def setStatus(flag: Flag, status: Status): F[Option[FeatureFlag]]
     def when[A](flag: Flag)(thunk: => F[A]): F[Unit] =
         isEnabled(flag).flatMap:
@@ -40,7 +39,7 @@ object FlagManager:
         new FlagManager[F]:
             def isEnabled(flag: Flag): F[Boolean]                    = false.pure[F]
             def getFlag(name: Flag): F[Option[FeatureFlag]]          = None.pure[F]
-            def flags: F[List[FeatureFlag]]                                 = List.empty.pure[F]
+            def flags: F[List[FeatureFlag]]                          = List.empty.pure[F]
             private[flags] def setStatus(flag: Flag, status: Status) = None.pure[F]
 end FlagManager
 

@@ -8,8 +8,8 @@ import pillars.flags.*
 
 class FlagManagerTests extends CatsEffectSuite:
 
-    val flag1                      = FeatureFlag(flag"flag1", Status.Enabled)
-    val flag2                      = FeatureFlag(flag"flag2", Status.Disabled)
+    val flag1               = FeatureFlag(flag"flag1", Status.Enabled)
+    val flag2               = FeatureFlag(flag"flag2", Status.Disabled)
     val config: FlagsConfig = FlagsConfig(flags = List(flag1, flag2))
 
     test("FlagManager should return the correct flag"):
@@ -71,7 +71,7 @@ class FlagManagerTests extends CatsEffectSuite:
             yield called
         assertIO(performed, false)
 
-    test("FlagManager should correctly modify the flag status"):
+    test("FlagManager should correctly modify an existing flag"):
         given Tracer[IO] = Tracer.noop[IO]
         val modified     =
             for
@@ -80,5 +80,15 @@ class FlagManagerTests extends CatsEffectSuite:
                 flag    <- manager.getFlag(flag"flag1")
             yield flag
         assertIO(modified, flag1.copy(status = Status.Disabled).some)
+
+    test("FlagManager should correctly return None if flag is not found"):
+        given Tracer[IO] = Tracer.noop[IO]
+        val modified     =
+            for
+                manager <- FlagManagerLoader().createManager[IO](config)
+                _       <- manager.setStatus(flag"undefined", Status.Disabled)
+                flag    <- manager.getFlag(flag"undefined")
+            yield flag
+        assertIO(modified, none)
 
 end FlagManagerTests
