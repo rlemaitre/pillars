@@ -9,10 +9,6 @@ object Dependencies {
         "org.typelevel" %% "mouse" % "1.2.2"
     )
 
-    val module: Seq[ModuleID] = Seq(
-        "io.github.classgraph" % "classgraph" % "4.8.165",
-        "com.outr" %% "moduload" % "1.1.7"
-    )
     val model: Seq[ModuleID] = Seq(
         "com.comcast" %% "ip4s-core" % "3.4.0",
         "io.github.iltotore" %% "iron" % "2.4.0",
@@ -93,5 +89,5 @@ object Dependencies {
     ) ++ tests
     val httpClient: Seq[ModuleID] = http4sClient ++ http4s ++ tests
     val core: Seq[ModuleID] =
-        effect ++ module ++ json ++ tapir ++ http4sServer ++ model ++ commandLine ++ logging ++ observability ++ tests
+        effect ++ json ++ tapir ++ http4sServer ++ model ++ commandLine ++ logging ++ observability ++ tests
 }
