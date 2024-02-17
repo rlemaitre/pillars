@@ -26,6 +26,14 @@ var documents = [
 
 {
     "id": 3,
+    "uri": "user-guide/20_features/20_logging.html",
+    "menu": "user-guide",
+    "title": "Logging",
+    "text": " Table of Contents Logging Configuration Logging in your code Logging Logging is a very important part of any application. It allows you to see what is happening in your application and to debug it. Pillars uses the scribe library for logging. Configuration The logging configuration is described in the Configuration section. Logging in your code To log something in your code, you can use the logger defined on the Pillars instance. def run(using p: Pillars[IO]): IO[Unit] = import p.* for _ &lt;- logger.info(s\"📚 Welcome to ${config.name}!\") _ &lt;- logger.debug(s\"📚 The configuration is: $config\") yield () As the logger is configured before the application starts, you can use it in any part of your code with the classic scribe usage. import scribe.warn import scribe.cats.io.info def foo: IO[Unit] = info(\"Hello from foo!\") def bar: Unit = warn(\"Hello from bar!\") "
+},
+
+{
+    "id": 4,
     "uri": "user-guide/20_features/60_admin-server.html",
     "menu": "user-guide",
     "title": "Admin Server",
@@ -33,19 +41,11 @@ var documents = [
 },
 
 {
-    "id": 4,
+    "id": 5,
     "uri": "user-guide/20_features/30_probes.html",
     "menu": "user-guide",
     "title": "Probes",
     "text": " Table of Contents Probes Liveness Probe Readiness Probe Custom Probes Probes Probes allow you to monitor the health of your application and the underlying infrastructure. Probes are used to determine if a container is ready to accept traffic or if it should be restarted. Liveness Probe A liveness probe checks if the container is still running. If the liveness probe fails, the container is restarted. Pillars defines a default liveness probe. Readiness Probe A readiness probe checks if the container is ready to accept traffic. If the readiness probe fails, the container is not added to the load balancer. The pillars readiness probe aggregates all probes defined in the application. Pillars defines by default a database probe that is enabled if you include the db module . Custom Probes You can define custom probes by implementing the Probe trait. trait Probe[F[_]]: def component: Component // (1) def check: F[Boolean] // (2) def config: ProbeConfig = ProbeConfig() // (3) end Probe 1 The probe component. 2 The check function. If the check function returns true , the probe is considered successful. If is returns false or throws an exception, the probe is considered failed. 3 The probe configuration. "
-},
-
-{
-    "id": 5,
-    "uri": "user-guide/20_features/20_logging.html",
-    "menu": "user-guide",
-    "title": "Logging",
-    "text": " Table of Contents Logging Configuration Logging in your code Logging Logging is a very important part of any application. It allows you to see what is happening in your application and to debug it. Pillars uses the scribe library for logging. Configuration The logging configuration is described in the Configuration section. Logging in your code To log something in your code, you can use the logger defined on the Pillars instance. def run(using p: Pillars[IO]): IO[Unit] = import p.* for _ &lt;- logger.info(s\"📚 Welcome to ${config.name}!\") _ &lt;- logger.debug(s\"📚 The configuration is: $config\") yield () As the logger is configured before the application starts, you can use it in any part of your code with the classic scribe usage. import scribe.warn import scribe.cats.io.info def foo: IO[Unit] = info(\"Hello from foo!\") def bar: Unit = warn(\"Hello from bar!\") "
 },
 
 {
@@ -106,18 +106,18 @@ var documents = [
 
 {
     "id": 13,
-    "uri": "user-guide/index.html",
-    "menu": "user-guide",
-    "title": "Overview",
-    "text": " Table of Contents Overview Features Overview This library is an opinionated library that provides a basis for backend applications written in Scala 3 using the TypeLevel stack. It is a work in progress and is not ready for production use. Features {project-name} provides several core features used in backend applications: API server Admin server Configuration Logging Health checks OpenTelemetry-based observability It also provides several optional features: Database access HTTP client Feature flags "
-},
-
-{
-    "id": 14,
     "uri": "user-guide/30_modules/10_db.html",
     "menu": "user-guide",
     "title": "Database Module",
     "text": " Table of Contents Database module Database Configuration Using the DB Module Probe Database module The DB module provides database connectivity and operations for the Pillars application. It uses the Skunk library for interacting with PostgreSQL databases. Database Configuration The database configuration is defined in the DatabaseConfig case class. It includes the following fields: host : The host of the database. port : The port of the database. database : The name of the database. username : The username for the database. password : The password for the database. poolSize : The size of the connection pool. debug : A flag indicating whether to enable debug mode. probe : The configuration for the database probe. The configuration is read from the application&#8217;s configuration file under the db section. Using the DB Module To use the DB module, you need to import it and then access it through the Pillars instance: import pillars.db.* val dbModule = pillarsInstance.db You can then use the dbModule to perform database operations. You can also use directly DB[F] to perform database operations: import pillars.db.* import skunk.* def foo[F[_]](using Pillars[F]) = DB[F].use: session =&gt; session.unique(sql\"SELECT 1\".query[Int]) Probe The DB module provides a probe for health checks. val isHealthy: F[Boolean] = dbModule.probes.head.check This will return a boolean indicating whether the database is healthy or not. "
+},
+
+{
+    "id": 14,
+    "uri": "user-guide/index.html",
+    "menu": "user-guide",
+    "title": "Overview",
+    "text": " Table of Contents Overview Features Overview This library is an opinionated library that provides a basis for backend applications written in Scala 3 using the TypeLevel stack. It is a work in progress and is not ready for production use. Features {project-name} provides several core features used in backend applications: API server Admin server Configuration Logging Health checks OpenTelemetry-based observability It also provides several optional features: Database access HTTP client Feature flags "
 },
 
 {
