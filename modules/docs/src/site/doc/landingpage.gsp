@@ -8,44 +8,25 @@
 import ... // import your dependencies
 
 object app extends pillars.EntryPoint:
-  def app: pillars.App[IO] = new pillars.App[IO]: // define your app
+  def app: pillars.App[IO] = new: // define your app
     def infos: AppInfo = BuildInfo.toAppInfo // automatic description from your build
 
-    def run(using p: Pillars[IO]): IO[Unit] = // enjoy!
-      import p.*
+    def run: Run[IO, IO[Unit]] = // enjoy!
       for
-        _ <- logger.info(s"📚 Welcome to ${config.name}!")
+        _ <- Logger[IO].info(s"📚 Welcome to \${Config[IO].name}!")
         _ <- flag"feature-1".whenEnabled:
-                DB[IO].use: session =>
-                  for
-                    date <- session.unique(sql"select now()".query(timestamptz))
-                    _    <- logger.info(s"The current date is $date.")
-                  yield ()
+              DB[IO].use: session =>
+                for
+                  date <- session.unique(sql"select now()".query(timestamptz))
+                  _    <- Logger[IO].info(s"The current date is \$date.")
+                yield ()
         _ <- HttpClient[IO].get("https://pillars.rlemaitre.com"): response =>
-                  logger.info(s"Response: ${response.status}")
-        _ <- apiServer.start(endpoints.all)
+              Logger[IO].info(s"Response: \${response.status}")
+        _ <- ApiServer[IO].start(endpoints.all)
       yield ()
       end for
     end run
 end app
-object Main extends pillars.EntryPoint:
-    def app: pillars.App[IO] = new pillars.App[IO]:
-        def name        = Name("BookStore")
-        def version     = Version("0.0.1")
-        def description = Description("A simple bookstore")
-
-        def run(pillars: Pillars[IO]): IO[Unit] =
-            import pillars.*
-            for
-                _ <- logger.info(s"📚 Welcome to \${pillars.config.name}!")
-                _ <- pillars.whenEnabled(flag"feature-1"):
-                    pillars.db.use: s =>
-                        for
-                            d <- s.unique(sql"select now()".query(timestamptz))
-                            _ <- logger.info(s"The current date is \$d.")
-                        yield ()
-                _ <- pillars.apiServer.start(endpoints.all)
-            yield ()
         </code>
     </pre>
 </div>
