@@ -70,17 +70,75 @@ yield ()
 === Endpoints
 
 Feature flags are exposed on the xref:../20_features/60_admin-server.adoc[admin server].
-The defined endpoints are:
 
-* `GET /flags` - Get all feature flags.
-* `GET /flags/+{name}+` - Get a specific feature flag.
+==== Get all feature flags
 
-Feature flags are returned in the following format:
+The `GET /admin/flags` endpoint returns all feature flags.
+
+[source,shell]
+----
+curl -X GET http://localhost:19876/admin/flags
+----
+
+The response is a JSON array of feature flags.
+
+[source,json]
+--
+[
+  {
+    "name": "feature-1",
+    "status": "enabled"
+  },
+  {
+    "name": "feature-2",
+    "status": "disabled"
+  }
+]
+--
+
+==== Get a specific feature flag
+
+The `GET /admin/flags/+{name}+` endpoint returns a specific feature flag.
+
+[source,shell]
+----
+curl -X GET http://localhost:19876/admin/flags/feature-1
+----
+
+The response is a JSON object with the name and status of the feature flag.
 
 [source,json]
 --
 {
   "name": "feature-1",
   "status": "enabled"
+}
+--
+
+==== Update a specific feature flag
+
+The `PUT /admin/flags/+{name}+` endpoint updates a specific feature flag.
+
+[source,shell]
+----
+curl -X PUT -H "Content-Type: application/json" -d '{"status": "disabled"}' http://localhost:19876/admin/flags/feature-1
+----
+
+The request body should be a JSON object with the new status of the feature flag.
+
+[source,json]
+--
+{
+  "status": "disabled"
+}
+--
+
+The response is a JSON object with the name and status of the feature flag.
+
+[source,json]
+--
+{
+  "name": "feature-1",
+  "status": "disabled"
 }
 --
