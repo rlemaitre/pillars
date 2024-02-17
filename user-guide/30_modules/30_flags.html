@@ -243,21 +243,48 @@ yield ()</code></pre>
 <div class="sect2">
 <h3 id="_endpoints">Endpoints</h3>
 <div class="paragraph">
-<p>Feature flags are exposed on the <a href="../20_features/60_admin-server.html">admin server</a>.
-The defined endpoints are:</p>
+<p>Feature flags are exposed on the <a href="../20_features/60_admin-server.html">admin server</a>.</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>GET /flags</code> - Get all feature flags.</p>
-</li>
-<li>
-<p><code>GET /flags/+{name}+</code> - Get a specific feature flag.</p>
-</li>
-</ul>
+<div class="sect3">
+<h4 id="_get_all_feature_flags">Get all feature flags</h4>
+<div class="paragraph">
+<p>The <code>GET /admin/flags</code> endpoint returns all feature flags.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="shell">curl -X GET http://localhost:19876/admin/flags</code></pre>
+</div>
 </div>
 <div class="paragraph">
-<p>Feature flags are returned in the following format:</p>
+<p>The response is a JSON array of feature flags.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="json">[
+  {
+    "name": "feature-1",
+    "status": "enabled"
+  },
+  {
+    "name": "feature-2",
+    "status": "disabled"
+  }
+]</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_get_a_specific_feature_flag">Get a specific feature flag</h4>
+<div class="paragraph">
+<p>The <code>GET /admin/flags/+{name}+</code> endpoint returns a specific feature flag.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="shell">curl -X GET http://localhost:19876/admin/flags/feature-1</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The response is a JSON object with the name and status of the feature flag.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -265,6 +292,39 @@ The defined endpoints are:</p>
   "name": "feature-1",
   "status": "enabled"
 }</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_update_a_specific_feature_flag">Update a specific feature flag</h4>
+<div class="paragraph">
+<p>The <code>PUT /admin/flags/+{name}+</code> endpoint updates a specific feature flag.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="shell">curl -X PUT -H "Content-Type: application/json" -d '{"status": "disabled"}' http://localhost:19876/admin/flags/feature-1</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The request body should be a JSON object with the new status of the feature flag.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="json">{
+  "status": "disabled"
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The response is a JSON object with the name and status of the feature flag.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="json">{
+  "name": "feature-1",
+  "status": "disabled"
+}</code></pre>
+</div>
 </div>
 </div>
 </div>

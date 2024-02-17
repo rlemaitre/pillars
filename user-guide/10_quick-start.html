@@ -206,8 +206,12 @@ You can find an example in the <code>modules/example/src/main/resources/applicat
                                  _    &lt;- Logger[IO].info(s"The current date is $date.")
                              yield ()
                 _ &lt;- HttpClient[IO].get("https://pillars.rlemaitre.com"): response =&gt;
-                         Logger[IO].info(s"Response: ${response.status}")
-                _ &lt;- ApiServer[IO].start(endpoints.all)
+                         for
+                             _    &lt;- Logger[IO].info(s"Response: ${response.status}")
+                             size &lt;- response.body.compile.count
+                             _    &lt;- Logger[IO].info(s"Body: $size bytes")
+                         yield ()
+                _ &lt;- ApiServer[IO].start(TodoController().endpoints)
             yield ()
             end for
         end run
