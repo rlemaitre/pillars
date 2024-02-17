@@ -7,6 +7,7 @@ import fs2.io.net.Network
 import org.http4s.client.Client
 import org.http4s.netty.client.NettyClientBuilder
 import org.typelevel.otel4s.trace.Tracer
+import pillars.Module
 import pillars.Modules
 import pillars.Pillars
 
@@ -24,8 +25,12 @@ final case class HttpClient[F[_]: Async](client: org.http4s.client.Client[F])
     extends pillars.Module[F]:
     export client.*
 
+    override def key: Module.Key = HttpClient.Key
+end HttpClient
+
 object HttpClient:
-    def apply[F[_]](using p: Pillars[F]): Client[F] = p.module[HttpClient[F]].client
+    def apply[F[_]](using p: Pillars[F]): Client[F] = p.module[HttpClient[F]](Key).client
+    case object Key extends Module.Key
 private[httpclient] final case class Config(followRedirect: Boolean)
 extension [F[_]](p: Pillars[F])
-    def httpClient: Client[F] = p.module[HttpClient[F]].client
+    def httpClient: Client[F] = p.module[HttpClient[F]](HttpClient.Key).client

@@ -7,23 +7,22 @@ import fs2.io.net.Network
 import org.typelevel.otel4s.trace.Tracer
 import pillars.Config.Reader
 import pillars.probes.Probe
-import scala.reflect.ClassTag
 import scribe.Scribe
 
 trait Module[F[_]]:
     def probes: List[Probe[F]] = Nil
 
     def adminControllers: List[Controller[F]] = Nil
+
+    def key: Module.Key
 end Module
 
-case class Modules[F[_]](private val values: Map[Class[?], Module[F]]):
-    def add[K <: Module[F]](value: K): Modules[F] =
-        val clazz = if value.getClass.isAnonymousClass then
-            value.getClass.getInterfaces.filterNot(_ == classOf[Module[F]]).head
-        else value.getClass
-        Modules(values + (clazz -> value))
-    end add
-    def get[K: ClassTag]: K                       = values(summon[ClassTag[K]].runtimeClass).asInstanceOf[K]
+object Module:
+    trait Key
+
+case class Modules[F[_]](private val values: Map[Module.Key, Module[F]]):
+    def add[K <: Module[F]](value: K): Modules[F] = Modules(values + (value.key -> value))
+    def get[K](key: Module.Key): K                = values(key).asInstanceOf[K]
     export values.size
     export values.values as all
     def probes: List[Probe[F]]                    = all.flatMap(_.probes).toList

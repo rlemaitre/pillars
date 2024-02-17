@@ -19,22 +19,29 @@ trait FlagManager[F[_]: Sync] extends Module[F]:
     def isEnabled(flag: FeatureFlag.Name): F[Boolean]
     def getFlag(name: FeatureFlag.Name): F[Option[FeatureFlag]]
     def flags: F[List[FeatureFlag]]
+    override def key: Module.Key =
+        FlagManager.Key
+
     def when[A](flag: FeatureFlag.Name)(thunk: => F[A]): F[Unit] =
         isEnabled(flag).flatMap:
             case true  => thunk.void
             case false => Sync[F].unit
 
     extension (pillars: Pillars[F])
-        def flags: FlagManager[F]                                    = this
+        def flags: FlagManager[F] = this
+
         def when(flag: FeatureFlag.Name)(thunk: => F[Unit]): F[Unit] = this.when(flag)(thunk)
+    end extension
 end FlagManager
 
 object FlagManager:
+    case object Key extends Module.Key
     def noop[F[_]: Sync]: FlagManager[F] =
         new FlagManager[F]:
             override def isEnabled(flag: Name): F[Boolean]                       = false.pure[F]
             override def getFlag(name: FeatureFlag.Name): F[Option[FeatureFlag]] = None.pure[F]
             override def flags: F[List[FeatureFlag]]                             = List.empty.pure[F]
+
 end FlagManager
 
 class FlagManagerLoader extends Loader:

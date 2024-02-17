@@ -14,4 +14,9 @@ GET {{ host }}/admin/flags/{{featureId}}
 ###
 #
 
+GET {{ host }}/admin/probes/healthz
+
+###
+#
+
 GET {{ host }}/admin/probes/health
