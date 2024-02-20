@@ -1,56 +1,57 @@
-import org.typelevel.scalacoptions.{ScalaVersion, ScalacOptions}
+import org.typelevel.scalacoptions.ScalacOptions
+import org.typelevel.scalacoptions.ScalaVersion
 
-ThisBuild / versionScheme          := Some("semver-spec")
+ThisBuild / versionScheme := Some("semver-spec")
 inThisBuild(
-    List(
-        scalaVersion := "3.3.1",
-        organization := "com.rlemaitre",
-        homepage := Some(url("https://pillars.rlemaitre.com/")),
-        sonatypeCredentialHost := "s01.oss.sonatype.org",
-        sonatypeRepository := "https://s01.oss.sonatype.org/service/local",
-        pgpPublicRing := file("/tmp/public.asc"),
-        pgpSecretRing := file("/tmp/secret.asc"),
-        pgpPassphrase := sys.env.get("PGP_PASSWORD").map(_.toArray),
-        scmInfo := Some(
-            ScmInfo(
-                url("https://github.com/rlemaitre/pillars/"),
-                "scm:git:git@github.com:rlemaitre/pillars.git"
-            )
-        ),
-        developers := List(
-            Developer(
-                "rlemaitre",
-                "Raphaël Lemaitre",
-                "raphael@rlemaitre.com",
-                url("https://github.com/rlemaitre")
-            )
-        ),
-        startYear := Some(2023),
-        licenses += ("Apache-2.0", url(
-            "http://www.apache.org/licenses/LICENSE-2.0"
-        )),
-        scalacOptions ++= ScalacOptions.tokensForVersion(
-            ScalaVersion.V3_3_0,
-            Set(
-                ScalacOptions.deprecation,
-                ScalacOptions.feature,
-                ScalacOptions.fatalWarnings,
-                ScalacOptions.lint
-            ) ++ ScalacOptions.privateWarnOptions ++ ScalacOptions.privateWarnUnusedOptions
-        ) ++ Seq("-new-syntax")
-    )
-)
-javaOptions += "-Dotel.java.global-autoconfigure.enabled=true"
-
-Compile / scalacOptions ++= ScalacOptions.tokensForVersion(
-    ScalaVersion.V3_3_0,
-    Set(
-        ScalacOptions.sourceFuture,
+  List(
+    scalaVersion           := "3.3.1",
+    organization           := "com.rlemaitre",
+    homepage               := Some(url("https://pillars.rlemaitre.com/")),
+    sonatypeCredentialHost := "s01.oss.sonatype.org",
+    sonatypeRepository     := "https://s01.oss.sonatype.org/service/local",
+    pgpPublicRing          := file("/tmp/public.asc"),
+    pgpSecretRing          := file("/tmp/secret.asc"),
+    pgpPassphrase          := sys.env.get("PGP_PASSWORD").map(_.toArray),
+    scmInfo                := Some(
+      ScmInfo(
+        url("https://github.com/rlemaitre/pillars/"),
+        "scm:git:git@github.com:rlemaitre/pillars.git"
+      )
+    ),
+    developers             := List(
+      Developer(
+        "rlemaitre",
+        "Raphaël Lemaitre",
+        "raphael@rlemaitre.com",
+        url("https://github.com/rlemaitre")
+      )
+    ),
+    startYear              := Some(2023),
+    licenses += ("Apache-2.0", url(
+      "http://www.apache.org/licenses/LICENSE-2.0"
+    )),
+    scalacOptions ++= ScalacOptions.tokensForVersion(
+      ScalaVersion.V3_3_0,
+      Set(
         ScalacOptions.deprecation,
         ScalacOptions.feature,
         ScalacOptions.fatalWarnings,
         ScalacOptions.lint
-    ) ++ ScalacOptions.privateWarnOptions ++ ScalacOptions.privateWarnUnusedOptions
+      ) ++ ScalacOptions.privateWarnOptions ++ ScalacOptions.privateWarnUnusedOptions
+    ) ++ Seq("-new-syntax")
+  )
+)
+javaOptions += "-Dotel.java.global-autoconfigure.enabled=true"
+
+Compile / scalacOptions ++= ScalacOptions.tokensForVersion(
+  ScalaVersion.V3_3_0,
+  Set(
+    ScalacOptions.sourceFuture,
+    ScalacOptions.deprecation,
+    ScalacOptions.feature,
+    ScalacOptions.fatalWarnings,
+    ScalacOptions.lint
+  ) ++ ScalacOptions.privateWarnOptions ++ ScalacOptions.privateWarnUnusedOptions
 ) ++ Seq("-new-syntax", "-Xmax-inlines=128")
 
 enablePlugins(ScalaUnidocPlugin)
