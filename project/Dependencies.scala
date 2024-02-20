@@ -10,7 +10,7 @@ object Dependencies {
     )
 
     val model: Seq[ModuleID] = Seq(
-        "com.comcast" %% "ip4s-core" % "3.4.0",
+        "com.comcast" %% "ip4s-core" % "3.5.0",
         "io.github.iltotore" %% "iron" % "2.4.0",
         "io.github.iltotore" %% "iron-cats" % "2.4.0",
         "io.github.iltotore" %% "iron-circe" % "2.4.0",
@@ -36,10 +36,10 @@ object Dependencies {
     )
 
     val http4sClient: Seq[ModuleID] = Seq(
-        "org.http4s" %% "http4s-netty-client" % "0.5.12",
+        "org.http4s" %% "http4s-netty-client" % "0.5.13",
     )
     val http4sServer: Seq[ModuleID] = Seq(
-        "org.http4s" %% "http4s-netty-server" % "0.5.12",
+        "org.http4s" %% "http4s-netty-server" % "0.5.13",
     )
     val scodec: Seq[ModuleID] = Seq(
         "org.scodec" %% "scodec-bits" % "2.2.2",
@@ -47,13 +47,13 @@ object Dependencies {
     )
 
     private val tapir = Seq(
-        "com.softwaremill.sttp.tapir" %% "tapir-http4s-server" % "1.9.8",
-        "com.softwaremill.sttp.tapir" %% "tapir-json-circe" % "1.9.8",
-        "com.softwaremill.sttp.tapir" %% "tapir-opentelemetry-metrics" % "1.9.8",
-        "com.softwaremill.sttp.tapir" %% "tapir-iron" % "1.9.8",
-        "com.softwaremill.sttp.tapir" %% "tapir-http4s-client" % "1.9.8" % Test,
-        "com.softwaremill.sttp.tapir" %% "tapir-sttp-stub-server" % "1.9.8" % Test,
-        "com.softwaremill.sttp.client3" %% "core" % "3.9.2" % Test
+        "com.softwaremill.sttp.tapir" %% "tapir-http4s-server" % "1.9.9",
+        "com.softwaremill.sttp.tapir" %% "tapir-json-circe" % "1.9.9",
+        "com.softwaremill.sttp.tapir" %% "tapir-opentelemetry-metrics" % "1.9.9",
+        "com.softwaremill.sttp.tapir" %% "tapir-iron" % "1.9.9",
+        "com.softwaremill.sttp.tapir" %% "tapir-http4s-client" % "1.9.9" % Test,
+        "com.softwaremill.sttp.tapir" %% "tapir-sttp-stub-server" % "1.9.9" % Test,
+        "com.softwaremill.sttp.client3" %% "core" % "3.9.3" % Test
         //    "com.softwaremill.sttp.tapir"   %% "tapir-swagger-ui-bundle" % "1.9.1",
     )
 
@@ -74,8 +74,8 @@ object Dependencies {
 
     val observability: Seq[ModuleID] = Seq(
         "org.typelevel" %% "otel4s-java" % "0.4.0",
-        "io.opentelemetry" % "opentelemetry-exporter-otlp" % "1.34.1" % Runtime,
-        "io.opentelemetry" % "opentelemetry-sdk-extension-autoconfigure" % "1.34.1" % Runtime
+        "io.opentelemetry" % "opentelemetry-exporter-otlp" % "1.35.0" % Runtime,
+        "io.opentelemetry" % "opentelemetry-sdk-extension-autoconfigure" % "1.35.0" % Runtime
     )
 
     val database: Seq[ModuleID] = Seq(
