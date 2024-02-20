@@ -42,6 +42,14 @@ var documents = [
 
 {
     "id": 5,
+    "uri": "user-guide/20_features/40_api-server.html",
+    "menu": "user-guide",
+    "title": "API Server",
+    "text": " Table of Contents API Server API Server This documentation needs to be written. You can help us by contributing to the documentation . "
+},
+
+{
+    "id": 6,
     "uri": "user-guide/20_features/30_probes.html",
     "menu": "user-guide",
     "title": "Probes",
@@ -49,19 +57,11 @@ var documents = [
 },
 
 {
-    "id": 6,
+    "id": 7,
     "uri": "user-guide/20_features/50_observability.html",
     "menu": "user-guide",
     "title": "Observability",
     "text": " Table of Contents Observability Observability This documentation needs to be written. You can help us by contributing to the documentation . "
-},
-
-{
-    "id": 7,
-    "uri": "user-guide/20_features/40_api-server.html",
-    "menu": "user-guide",
-    "title": "API Server",
-    "text": " Table of Contents API Server API Server This documentation needs to be written. You can help us by contributing to the documentation . "
 },
 
 {
@@ -98,18 +98,18 @@ var documents = [
 
 {
     "id": 12,
-    "uri": "user-guide/30_modules/100_write-your-own-module.html",
-    "menu": "user-guide",
-    "title": "Write your own module",
-    "text": " Table of Contents Write your own module Write your own module This documentation needs to be written. You can help us by contributing to the documentation . "
-},
-
-{
-    "id": 13,
     "uri": "user-guide/30_modules/10_db.html",
     "menu": "user-guide",
     "title": "Database Module",
     "text": " Table of Contents Database module Database Configuration Using the DB Module Probe Database module The DB module provides database connectivity and operations for the Pillars application. It uses the Skunk library for interacting with PostgreSQL databases. Database Configuration The database configuration is defined in the DatabaseConfig case class. It includes the following fields: host : The host of the database. port : The port of the database. database : The name of the database. username : The username for the database. password : The password for the database. poolSize : The size of the connection pool. debug : A flag indicating whether to enable debug mode. probe : The configuration for the database probe. The configuration is read from the application&#8217;s configuration file under the db section. Using the DB Module To use the DB module, you need to import it and then access it through the Pillars instance: import pillars.db.* val dbModule = pillarsInstance.db You can then use the dbModule to perform database operations. You can also use directly DB[F] to perform database operations: import pillars.db.* import skunk.* def foo[F[_]](using Pillars[F]) = DB[F].use: session =&gt; session.unique(sql\"SELECT 1\".query[Int]) Probe The DB module provides a probe for health checks. val isHealthy: F[Boolean] = dbModule.probes.head.check This will return a boolean indicating whether the database is healthy or not. "
+},
+
+{
+    "id": 13,
+    "uri": "user-guide/30_modules/100_write-your-own-module.html",
+    "menu": "user-guide",
+    "title": "Write your own module",
+    "text": " Table of Contents Write your own module Write your own module This documentation needs to be written. You can help us by contributing to the documentation . "
 },
 
 {
