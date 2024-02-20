@@ -39,7 +39,7 @@ object Dependencies {
         "org.http4s" %% "http4s-netty-client" % "0.5.13",
     )
     val http4sServer: Seq[ModuleID] = Seq(
-        "org.http4s" %% "http4s-netty-server" % "0.5.12",
+        "org.http4s" %% "http4s-netty-server" % "0.5.13",
     )
     val scodec: Seq[ModuleID] = Seq(
         "org.scodec" %% "scodec-bits" % "2.2.2",
