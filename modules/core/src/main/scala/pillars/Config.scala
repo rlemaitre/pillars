@@ -1,9 +1,12 @@
 package pillars
 
 import cats.Show
+import cats.effect.Async
 import cats.effect.Resource
 import cats.effect.Sync
 import cats.syntax.all.*
+import fs2.io.file.Files
+import fs2.io.file.Path
 import io.circe.Decoder
 import io.circe.Encoder
 import io.circe.Json
@@ -12,12 +15,10 @@ import io.circe.derivation.Configuration
 import io.circe.yaml.Parser
 import io.github.iltotore.iron.*
 import io.github.iltotore.iron.circe.given
-import java.nio.file.Path
 import pillars.AdminServer.Config
 import pillars.PillarsError.Code
 import pillars.PillarsError.ErrorNumber
 import pillars.PillarsError.Message
-import scala.io.Source
 import scala.util.matching.Regex
 import scodec.bits.ByteVector
 
@@ -37,21 +38,21 @@ object Config:
         given Encoder[PillarsConfig] = Encoder.AsObject.derivedConfigured
     end PillarsConfig
 
-    case class Reader[F[_]](path: Path)(using Sync[F]):
+    case class Reader[F[_]](path: Path):
         private def matcher(regMatch: Regex.Match): String = sys.env
             .getOrElse(regMatch.group(1), throw ConfigError.MissingEnvironmentVariable(regMatch.group(1)))
 
         private val regex: Regex = """\$\{([^}]+)}""".r
 
-        private def readConfig[T: Decoder]: Resource[F, Either[ParsingFailure, Json]] =
-            Resource
-                .fromAutoCloseable(Sync[F].delay(Source.fromFile(path.toFile)))
-                .map(_.getLines().mkString("\n"))
+        private def readConfig[T: Decoder](using Async[F], Files[F]): Resource[F, Either[ParsingFailure, Json]] =
+            Resource.eval(Files[F].readUtf8(path)
                 .map(regex.replaceAllIn(_, matcher))
                 .map: input =>
                     Parser.default.parse(input)
+                .compile
+                .onlyOrError)
 
-        def read[T: Decoder]: F[T] =
+        def read[T: Decoder](using Async[F], Files[F]): F[T] =
             readConfig[T].use: json =>
                 Sync[F].fromEither:
                     json
@@ -59,7 +60,7 @@ object Config:
                         .flatMap(_.as[T])
         end read
 
-        def read[T: Decoder](key: String): F[T] =
+        def read[T: Decoder](key: String)(using Async[F], Files[F]): F[T] =
             readConfig[T].use: parsed =>
                 Sync[F].fromEither:
                     parsed match

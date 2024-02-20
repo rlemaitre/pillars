@@ -4,6 +4,7 @@ import cats.effect.*
 import cats.effect.std.Console
 import cats.syntax.all.*
 import com.comcast.ip4s.*
+import fs2.io.file.Files
 import fs2.io.net.Network
 import io.circe.Codec
 import io.circe.derivation.Configuration
@@ -51,6 +52,7 @@ class DBLoader extends Loader:
         modules: Modules[F]
     ): Resource[F, DB[F]] =
         import context.*
+        given Files[F] = Files.forAsync[F]
         for
             _       <- Resource.eval(logger.info("Loading DB module"))
             config  <- Resource.eval(configReader.read[DatabaseConfig]("db"))

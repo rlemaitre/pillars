@@ -3,6 +3,7 @@ package pillars
 import cats.Show
 import cats.effect.Sync
 import cats.syntax.all.*
+import fs2.io.file.Path
 import io.circe.*
 import io.circe.Codec
 import io.circe.Decoder
@@ -11,7 +12,6 @@ import io.circe.derivation.Configuration
 import io.circe.syntax.*
 import io.github.iltotore.iron.*
 import io.github.iltotore.iron.constraint.all.*
-import java.nio.file.Path
 import scribe.Level
 import scribe.Logger
 import scribe.Scribe
@@ -95,7 +95,7 @@ object Logging:
 
         def writer: Writer = this match
         case Output.Console    => ConsoleWriter
-        case Output.File(path) => scribe.file.FileWriter(PathBuilder.static(path))
+        case Output.File(path) => scribe.file.FileWriter(PathBuilder.static(path.toNioPath))
     end Output
 
     private object Output:
@@ -118,7 +118,7 @@ object Logging:
                             p    <- cursor.downField("path").as[String]
                             path <- Either.cond(
                                       p.nonEmpty,
-                                      Path.of(p),
+                                      Path(p),
                                       DecodingFailure("Missing path for file output", cursor.history)
                                     )
                         yield Output.File(path)

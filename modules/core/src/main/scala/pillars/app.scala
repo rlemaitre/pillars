@@ -1,12 +1,14 @@
 package pillars
 
+import cats.data.Validated
 import cats.effect.*
 import cats.effect.std.Console
+import com.monovore.decline.Argument
 import com.monovore.decline.Command
 import com.monovore.decline.Opts
+import fs2.io.file.Path
 import io.github.iltotore.iron.*
 import io.github.iltotore.iron.constraint.all.*
-import java.nio.file.Path
 import pillars.App.Description
 import pillars.App.Name
 import pillars.App.Version
@@ -45,6 +47,9 @@ trait BuildInfo:
 end BuildInfo
 
 trait EntryPoint extends IOApp:
+    given Argument[Path] with
+        def read(string: String) = Validated.valid(Path(string))
+        def defaultMetavar       = "path"
 
     def app: App[IO]
     override final def run(args: List[String]): IO[ExitCode] =

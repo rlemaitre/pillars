@@ -3,9 +3,9 @@ package pillars
 import cats.effect.*
 import cats.effect.std.Console
 import cats.syntax.all.*
+import fs2.io.file.Path
 import fs2.io.net.Network
 import io.circe.Decoder
-import java.nio.file.Path
 import java.util.ServiceLoader
 import org.typelevel.otel4s.trace.Tracer
 import pillars.Config.PillarsConfig
