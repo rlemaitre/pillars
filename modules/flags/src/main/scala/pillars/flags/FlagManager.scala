@@ -6,6 +6,7 @@ import cats.effect.Resource
 import cats.effect.Sync
 import cats.effect.std.Console
 import cats.syntax.all.*
+import fs2.io.file.Files
 import fs2.io.net.Network
 import org.typelevel.otel4s.trace.Tracer
 import pillars.Controller
@@ -52,6 +53,7 @@ class FlagManagerLoader extends Loader:
         modules: Modules[F]
     ): Resource[F, FlagManager[F]] =
         import context.*
+        given Files[F] = Files.forAsync[F]
         Resource.eval:
             for
                 _       <- logger.info("Loading Feature flags module")

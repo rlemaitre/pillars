@@ -3,18 +3,18 @@ package pillars
 import cats.syntax.all.*
 import com.comcast.ip4s.Host
 import com.comcast.ip4s.Port
+import fs2.io.file.Path
 import io.circe.Codec
 import io.circe.Decoder
 import io.circe.Encoder
 import io.circe.derivation.Configuration
-import java.nio.file.Path
 import org.http4s.Uri
 import scala.concurrent.duration.FiniteDuration
 import scala.jdk.DurationConverters.*
 
 object codec:
 
-    given Decoder[Path] = Decoder.decodeString.emap(t => Right(Path.of(t)))
+    given Decoder[Path] = Decoder.decodeString.emap(t => Right(Path(t)))
 
     given Encoder[Path] = Encoder.encodeString.contramap(_.toString)
 
