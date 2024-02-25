@@ -6,7 +6,7 @@ object Dependencies {
       "co.fs2"        %% "fs2-core"              % "3.9.4",
       "org.typelevel" %% "cats-collections-core" % "0.9.8",
       "org.typelevel" %% "cats-time"             % "0.5.1",
-      "org.typelevel" %% "mouse"                 % "1.2.2"
+      "org.typelevel" %% "mouse"                 % "1.2.3"
     )
 
     val model: Seq[ModuleID] = Seq(
