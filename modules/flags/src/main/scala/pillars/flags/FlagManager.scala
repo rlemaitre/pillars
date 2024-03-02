@@ -19,8 +19,6 @@ trait FlagManager[F[_]: Sync] extends Module[F]:
     def isEnabled(flag: Flag): F[Boolean]
     def getFlag(name: Flag): F[Option[FeatureFlag]]
     def flags: F[List[FeatureFlag]]
-    override def key: Module.Key =
-        FlagManager.Key
 
     private[flags] def setStatus(flag: Flag, status: Status): F[Option[FeatureFlag]]
     def when[A](flag: Flag)(thunk: => F[A]): F[Unit] =
@@ -35,7 +33,9 @@ trait FlagManager[F[_]: Sync] extends Module[F]:
 end FlagManager
 
 object FlagManager:
-    case object Key extends Module.Key
+    case object Key extends Module.Key:
+        def name: String = "feature-flags"
+    end Key
     def noop[F[_]: Sync]: FlagManager[F] =
         new FlagManager[F]:
             def isEnabled(flag: Flag): F[Boolean]                    = false.pure[F]
@@ -46,7 +46,8 @@ end FlagManager
 
 class FlagManagerLoader extends Loader:
     override type M[F[_]] = FlagManager[F]
-    def name: String = "feature-flags"
+
+    override def key: Module.Key = FlagManager.Key
 
     def load[F[_]: Async: Network: Tracer: Console](
         context: Loader.Context[F],
@@ -57,7 +58,7 @@ class FlagManagerLoader extends Loader:
         Resource.eval:
             for
                 _       <- logger.info("Loading Feature flags module")
-                config  <- configReader.read[FlagsConfig](name)
+                config  <- configReader.read[FlagsConfig](key.name)
                 manager <- createManager(config)
                 _       <- logger.info("Feature flags module loaded")
             yield manager

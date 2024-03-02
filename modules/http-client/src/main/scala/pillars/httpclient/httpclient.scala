@@ -13,7 +13,9 @@ import pillars.Pillars
 
 class Loader extends pillars.Loader:
     override type M[F[_]] = HttpClient[F]
-    override def name: String = "http-client"
+
+    override def key: Module.Key = HttpClient.Key
+
     override def load[F[_]: Async: Network: Tracer: Console](
         context: pillars.Loader.Context[F],
         modules: Modules[F]
@@ -25,12 +27,12 @@ final case class HttpClient[F[_]: Async](client: org.http4s.client.Client[F])
     extends pillars.Module[F]:
     export client.*
 
-    override def key: Module.Key = HttpClient.Key
 end HttpClient
 
 object HttpClient:
     def apply[F[_]](using p: Pillars[F]): Client[F] = p.module[HttpClient[F]](Key).client
-    case object Key extends Module.Key
+    case object Key extends Module.Key:
+        override def name: String = "http-client"
 private[httpclient] final case class Config(followRedirect: Boolean)
 extension [F[_]](p: Pillars[F])
     def httpClient: Client[F] = p.module[HttpClient[F]](HttpClient.Key).client

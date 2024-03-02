@@ -105,13 +105,15 @@ object Pillars:
         : Resource[F, Modules[F]] =
         val loaders = ServiceLoader.load(classOf[Loader])
             .asScala
-            .toList
-        scribe.info(s"Found ${loaders.size} module loaders: ${loaders.map(_.name).mkString(", ")}")
+            .groupBy(_.key)
+            .map((key, value) => key -> value.head)
+        scribe.info(s"Found ${loaders.size} module loaders: ${loaders.keys.map(_.name).mkString(", ")}")
         loaders.topologicalSort(_.dependsOn) match
         case Left(value)  => throw IllegalStateException("Circular dependency detected in modules")
         case Right(value) =>
-            value.foldLeftM(Modules.empty[F]): (acc, loader) =>
-                loader.load(context, acc).map(acc.add)
+            value.foldLeftM(Modules.empty[F]):
+                case (acc, (key, loader)) =>
+                    loader.load(context, acc).map(acc.add(key))
         end match
     end loadModules
 
