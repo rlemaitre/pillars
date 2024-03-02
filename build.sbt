@@ -4,7 +4,7 @@ import org.typelevel.scalacoptions.ScalaVersion
 ThisBuild / versionScheme := Some("semver-spec")
 inThisBuild(
   List(
-    scalaVersion           := "3.3.1",
+    scalaVersion           := "3.3.3",
     organization           := "com.rlemaitre",
     homepage               := Some(url("https://pillars.rlemaitre.com/")),
     sonatypeCredentialHost := "s01.oss.sonatype.org",
