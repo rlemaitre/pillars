@@ -107,6 +107,9 @@
                                 <a class="active" href="../../user-guide/30_modules/10_db.html">Database Module</a>
                             </li>
                             <li>
+                                <a class="" href="../../user-guide/30_modules/15_db-migration.html">DB Migration Module</a>
+                            </li>
+                            <li>
                                 <a class="" href="../../user-guide/30_modules/20_http-client.html">HTTP Client Module</a>
                             </li>
                             <li>
@@ -163,6 +166,11 @@ It includes the following fields:</p>
 </li>
 <li>
 <p><code>password</code>: The password for the database.</p>
+</li>
+<li>
+<p><code>ssl</code>: The SSL mode for the database.
+Accepted values are <code>none</code>, <code>trusted</code> and <code>system</code>.
+See <a href="https://typelevel.org/skunk/reference/Sessions.html">Skunk documentation</a> for more information.</p>
 </li>
 <li>
 <p><code>poolSize</code>: The size of the connection pool.</p>

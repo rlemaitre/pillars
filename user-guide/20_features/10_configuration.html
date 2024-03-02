@@ -107,6 +107,9 @@
                                 <a class="" href="../../user-guide/30_modules/10_db.html">Database Module</a>
                             </li>
                             <li>
+                                <a class="" href="../../user-guide/30_modules/15_db-migration.html">DB Migration Module</a>
+                            </li>
+                            <li>
                                 <a class="" href="../../user-guide/30_modules/20_http-client.html">HTTP Client Module</a>
                             </li>
                             <li>
@@ -156,7 +159,7 @@ log:
 db:
   host: localhost
   port: 5432
-  database: bookstore
+  database: pillars_example
   username: postgres
   password: postgres
   pool-size: 10
@@ -165,6 +168,9 @@ db:
     timeout: PT5s
     interval: PT10s
     failure-count: 3
+db-migration:
+  log-after: PT5s
+  validate-on-migrate: true
 api:
   enabled: true
   http:
@@ -392,7 +398,7 @@ It is used only if <code>output.type</code> is <code>file</code>.</p>
 <pre class="prettyprint highlight"><code data-lang="yaml">db:
   host: localhost
   port: 5432
-  database: bookstore
+  database: pillars_example
   username: postgres
   password: postgres
   pool-size: 10
