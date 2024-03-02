@@ -27,11 +27,6 @@
     </url>
 
     <url>
-    	<loc>http://jbake.org/user-guide/20_features/30_probes.html</loc>
-    	<lastmod>2024-03-02</lastmod>
-    </url>
-
-    <url>
     	<loc>http://jbake.org/user-guide/20_features/50_observability.html</loc>
     	<lastmod>2024-03-02</lastmod>
     </url>
@@ -42,12 +37,12 @@
     </url>
 
     <url>
-    	<loc>http://jbake.org/user-guide/20_features/10_configuration.html</loc>
+    	<loc>http://jbake.org/user-guide/20_features/30_probes.html</loc>
     	<lastmod>2024-03-02</lastmod>
     </url>
 
     <url>
-    	<loc>http://jbake.org/user-guide/30_modules/15_db-migration.html</loc>
+    	<loc>http://jbake.org/user-guide/20_features/10_configuration.html</loc>
     	<lastmod>2024-03-02</lastmod>
     </url>
 
@@ -62,12 +57,12 @@
     </url>
 
     <url>
-    	<loc>http://jbake.org/user-guide/30_modules/index.html</loc>
+    	<loc>http://jbake.org/user-guide/30_modules/15_db-migration.html</loc>
     	<lastmod>2024-03-02</lastmod>
     </url>
 
     <url>
-    	<loc>http://jbake.org/user-guide/30_modules/10_db.html</loc>
+    	<loc>http://jbake.org/user-guide/30_modules/index.html</loc>
     	<lastmod>2024-03-02</lastmod>
     </url>
 
@@ -78,6 +73,11 @@
 
     <url>
     	<loc>http://jbake.org/user-guide/index.html</loc>
+    	<lastmod>2024-03-02</lastmod>
+    </url>
+
+    <url>
+    	<loc>http://jbake.org/user-guide/30_modules/10_db.html</loc>
     	<lastmod>2024-03-02</lastmod>
     </url>
 
