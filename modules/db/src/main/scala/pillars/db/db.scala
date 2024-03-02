@@ -7,6 +7,8 @@ import com.comcast.ip4s.*
 import fs2.io.file.Files
 import fs2.io.net.Network
 import io.circe.Codec
+import io.circe.Decoder as CirceDecoder
+import io.circe.Encoder as CirceEncoder
 import io.circe.derivation.Configuration
 import io.github.iltotore.iron.*
 import io.github.iltotore.iron.circe.given
@@ -29,7 +31,6 @@ extension [F[_]](p: Pillars[F])
 final case class DB[F[_]: Async: Network: Tracer: Console](pool: Resource[F, Session[F]]) extends Module[F]:
     export pool.*
 
-    override def key: Module.Key        = DB.Key
     override def probes: List[Probe[F]] =
         val probe = new Probe[F]:
             override def component: Component = Component(Component.Name("db"), Component.Type.Datastore)
@@ -39,13 +40,13 @@ final case class DB[F[_]: Async: Network: Tracer: Console](pool: Resource[F, Ses
 end DB
 
 object DB:
-    case object Key extends Module.Key
+    case object Key extends Module.Key:
+        override val name: String = "db"
     def apply[F[_]](using p: Pillars[F]): DB[F] = p.module[DB[F]](DB.Key)
 
 class DBLoader extends Loader:
     override type M[F[_]] = DB[F]
-
-    override def name: String = "db"
+    override val key: Module.Key = DB.Key
 
     def load[F[_]: Async: Network: Tracer: Console](
         context: Loader.Context[F],
@@ -77,6 +78,10 @@ final case class DatabaseConfig(
     database: DatabaseName,
     username: DatabaseUser,
     password: Secret[DatabasePassword],
+    ssl: SSL = SSL.None,
+    systemSchema: DatabaseSchema = DatabaseSchema.public,
+    appSchema: DatabaseSchema = DatabaseSchema.public,
+    // TODO: Add system and application schemas (default = public)
     poolSize: PoolSize = PoolSize(32),
     debug: Boolean = false,
     probe: ProbeConfig
@@ -86,6 +91,19 @@ object DatabaseConfig:
     given Configuration         = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults
     given Codec[DatabaseConfig] = Codec.AsObject.derivedConfigured
 
+    given CirceDecoder[SSL] = CirceDecoder.decodeString.emap {
+        case "none"    => Right(SSL.None)
+        case "trusted" => Right(SSL.Trusted)
+        case "system"  => Right(SSL.System)
+        case other     => Left(s"Invalid SSL mode: $other")
+    }
+    given CirceEncoder[SSL] = CirceEncoder.encodeString.contramap {
+        case SSL.None    => "none"
+        case SSL.Trusted => "trusted"
+        case SSL.System  => "system"
+    }
+end DatabaseConfig
+
 private type DatabaseNameConstraint = Not[Blank] DescribedAs "Database name must not be blank"
 opaque type DatabaseName <: String  = String :| DatabaseNameConstraint
 
@@ -94,7 +112,15 @@ object DatabaseName extends RefinedTypeOps[String, DatabaseNameConstraint, Datab
 private type DatabaseSchemaConstraint = Not[Blank] DescribedAs "Database schema must not be blank"
 opaque type DatabaseSchema <: String  = String :| DatabaseSchemaConstraint
 
-object DatabaseSchema extends RefinedTypeOps[String, DatabaseSchemaConstraint, DatabaseSchema]
+object DatabaseSchema extends RefinedTypeOps[String, DatabaseSchemaConstraint, DatabaseSchema]:
+    val public: DatabaseSchema  = DatabaseSchema("public")
+    val pillars: DatabaseSchema = DatabaseSchema("pillars")
+
+private type DatabaseTableConstraint =
+    (Not[Blank] & Match["""^[a-zA-Z_][0-9a-zA-Z$_]{0,63}$"""]) DescribedAs "Database table must be at most 64 characters (letter, digit, dollar sign or underscore) long and start with a letter or an underscore"
+opaque type DatabaseTable <: String  = String :| DatabaseTableConstraint
+
+object DatabaseTable extends RefinedTypeOps[String, DatabaseTableConstraint, DatabaseTable]
 
 private type DatabaseUserConstraint = Not[Blank] DescribedAs "Database user must not be blank"
 opaque type DatabaseUser <: String  = String :| DatabaseUserConstraint

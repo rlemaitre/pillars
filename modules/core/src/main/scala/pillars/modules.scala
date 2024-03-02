@@ -14,27 +14,32 @@ trait Module[F[_]]:
 
     def adminControllers: List[Controller[F]] = Nil
 
-    def key: Module.Key
 end Module
 
 object Module:
-    trait Key
+    trait Key:
+        def name: String
+
+        override def toString: String = s"Key($name)"
+    end Key
+end Module
 
 case class Modules[F[_]](private val values: Map[Module.Key, Module[F]]):
-    def add[K <: Module[F]](value: K): Modules[F] = Modules(values + (value.key -> value))
-    def get[K](key: Module.Key): K                = values(key).asInstanceOf[K]
+    def add[K <: Module[F]](key: Module.Key)(value: K): Modules[F] = Modules(values + (key -> value))
+    def get[K](key: Module.Key): K                                 = values(key).asInstanceOf[K]
     export values.size
     export values.values as all
-    def probes: List[Probe[F]]                    = all.flatMap(_.probes).toList
-    def adminControllers: List[Controller[F]]     = all.flatMap(_.adminControllers).toList
+    def probes: List[Probe[F]]                                     = all.flatMap(_.probes).toList
+    def adminControllers: List[Controller[F]]                      = all.flatMap(_.adminControllers).toList
 end Modules
 object Modules:
     def empty[F[_]]: Modules[F] = Modules(Map.empty)
 
 trait Loader:
     type M[F[_]] <: Module[F]
-    def name: String
-    def dependsOn: Set[Loader] = Set.empty
+    def key: Module.Key
+
+    def dependsOn: Set[Module.Key] = Set.empty
 
     def load[F[_]: Async: Network: Tracer: Console](
         context: Loader.Context[F],

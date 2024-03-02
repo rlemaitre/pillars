@@ -5,6 +5,7 @@ import example.build.BuildInfo
 import io.github.iltotore.iron.*
 import pillars.*
 import pillars.db.*
+import pillars.db.migrations.DBMigration
 import pillars.flags.*
 import pillars.httpclient.*
 import skunk.*
@@ -19,6 +20,7 @@ object app extends pillars.EntryPoint: // // <1>
         def run: Run[IO, IO[Unit]] = // // <4>
             for
                 _ <- Logger[IO].info(s"📚 Welcome to ${Config[IO].name}!")
+                _ <- DBMigration[IO].migrate("db/migrations") // // <5>
                 _ <- flag"feature-1".whenEnabled:
                          DB[IO].use: session =>
                              for

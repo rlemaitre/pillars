@@ -1,0 +1,50 @@
+== DB Migration module
+:project-name: Pillars
+:author: {project-name} Team
+:toc: preamble
+:icons: font
+:jbake-type: page
+:jbake-title: DB Migration Module
+:jbake-status: published
+ifndef::imagesdir[]
+:imagesdir: ../../images
+endif::imagesdir[]
+ifndef::projectRootDir[]
+:projectRootDir: ../../../../../..
+endif::projectRootDir[]
+
+The DB Migration module is a standalone module that is used to manage the database schema and data.
+It depends on the `DB` module.
+
+=== Configuration
+
+The configuration of the DB Migration module is done in the `application.yml` file, in a `db-migration` section.
+Parameters are:
+
+- `log-after`: (duration) the time after which the migration log will be printed.
+It must be declared in the ISO-8601 format.
+Default is `PT5s` (five seconds).
+See link:https://github.com/rolang/dumbo[Dumbo] for more information.
+- `validate-on-migrate`: (boolean) whether to validate the schema after migration.
+
+[source,yaml]
+----
+db-migration:
+  log-after: PT5s
+  validate-on-migrate: true
+----
+
+=== Usage
+
+In order to use the DB Migration module, you need to add it as a dependency to your project.
+
+The migrations are written in SQL and are located in the `src/main/resources/db/migration` directory of your project.
+
+The migration files must be named in the following format: `V\{version}__{description}.sql`, where:
+
+- `\{version}` is the version of the migration, and
+- `{description}` is a description of the migration.
+
+The migration files are executed in the order of their version.
+
+To execute the migrations, you can use the `migrate` method of the `DBMigration[F]` class.

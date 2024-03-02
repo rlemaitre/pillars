@@ -11,7 +11,7 @@ log:
 db:
   host: localhost
   port: 5432
-  database: bookstore
+  database: pillars_example
   username: postgres
   password: postgres
   pool-size: 10
@@ -21,6 +21,11 @@ db:
     interval: PT10s
     failure-count: 3
 # end::db[]
+# tag::db-migration[]
+db-migration:
+  log-after: PT5s
+  validate-on-migrate: true
+# end::db-migration[]
 # tag::api[]
 api:
   enabled: true

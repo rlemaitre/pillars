@@ -26,9 +26,13 @@ It includes the following fields:
 * `database`: The name of the database.
 * `username`: The username for the database.
 * `password`: The password for the database.
+* `ssl`: The SSL mode for the database.
+Accepted values are `none`, `trusted` and `system`.
+See link:https://typelevel.org/skunk/reference/Sessions.html[Skunk documentation] for more information.
 * `poolSize`: The size of the connection pool.
 * `debug`: A flag indicating whether to enable debug mode.
 * `probe`: The configuration for the database probe.
+
 
 The configuration is read from the application's configuration file under the `db` section.
 

@@ -79,6 +79,17 @@ lazy val db = Project("pillars-db", file("modules/db"))
     )
     .dependsOn(core)
 
+lazy val dbMigrations = Project("pillars-db-migration", file("modules/db-migration"))
+    .enablePlugins(BuildInfoPlugin)
+    .settings(
+      name             := "pillars-db-migration",
+      description      := "pillars-db is a scala 3 library providing database migrations",
+      libraryDependencies ++= Dependencies.migrations,
+      buildInfoKeys    := Seq[BuildInfoKey](name, version, description),
+      buildInfoPackage := "pillars.db.migrations.build"
+    )
+    .dependsOn(core, db)
+
 lazy val flags = Project("pillars-flags", file("modules/flags"))
     .enablePlugins(BuildInfoPlugin)
     .settings(
@@ -113,7 +124,7 @@ lazy val example = Project("pillars-example", file("modules/example"))
       buildInfoPackage := "example.build",                                              // //<6>
       publish / skip   := true
     )
-    .dependsOn(core, db, flags, httpClient)
+    .dependsOn(core, db, flags, httpClient, dbMigrations)
 // end::example[]
 lazy val docs = Project("pillars-docs", file("modules/docs"))
     .settings(

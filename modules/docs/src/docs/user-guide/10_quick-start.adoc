@@ -35,6 +35,7 @@ You can also add optional modules to your dependencies:
 --
 libraryDependencies ++= Seq(
   "com.rlemaitre" %% "pillars-db" % "{site_version}",
+  "com.rlemaitre" %% "pillars-db-migration" % "{site_version}",
   "com.rlemaitre" %% "pillars-flags" % "{site_version}",
   "com.rlemaitre" %% "pillars-http-client" % "{site_version}"
 )
