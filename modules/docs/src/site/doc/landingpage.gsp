@@ -14,6 +14,7 @@ object app extends pillars.EntryPoint:
     def run: Run[IO, IO[Unit]] = // enjoy!
       for
         _ <- Logger[IO].info(s"📚 Welcome to \${Config[IO].name}!")
+        _ <- DBMigration[IO].migrate("db/migrations")
         _ <- flag"feature-1".whenEnabled:
               DB[IO].use: session =>
                 for
