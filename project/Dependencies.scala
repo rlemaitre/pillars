@@ -11,10 +11,10 @@ object Dependencies {
 
     val model: Seq[ModuleID] = Seq(
       "com.comcast"        %% "ip4s-core"    % "3.5.0",
-      "io.github.iltotore" %% "iron"         % "2.4.0",
-      "io.github.iltotore" %% "iron-cats"    % "2.4.0",
-      "io.github.iltotore" %% "iron-circe"   % "2.4.0",
-      "io.github.iltotore" %% "iron-decline" % "2.4.0"
+      "io.github.iltotore" %% "iron"         % "2.5.0",
+      "io.github.iltotore" %% "iron-cats"    % "2.5.0",
+      "io.github.iltotore" %% "iron-circe"   % "2.5.0",
+      "io.github.iltotore" %% "iron-decline" % "2.5.0"
     )
 
     val commandLine: Seq[ModuleID] = Seq(
@@ -66,10 +66,15 @@ object Dependencies {
     )
 
     val tests: Seq[ModuleID] = Seq(
-      "org.scalameta"      %% "munit"               % "0.7.29" % Test,
-      "org.typelevel"      %% "munit-cats-effect-3" % "1.0.7"  % Test,
-      "org.scalameta"      %% "munit-scalacheck"    % "0.7.29" % Test,
-      "io.github.iltotore" %% "iron-scalacheck"     % "2.4.0"  % Test
+      "org.scalameta"      %% "munit"               % "1.0.0-M11" % Test,
+      "org.typelevel"      %% "munit-cats-effect" % "2.0.0-M4"  % Test,
+      "org.scalameta"      %% "munit-scalacheck"    % "1.0.0-M11" % Test,
+      "io.github.iltotore" %% "iron-scalacheck"     % "2.5.0"  % Test
+    )
+
+    val testContainers: Seq[ModuleID] = Seq(
+      "com.dimafeng" %% "testcontainers-scala-munit"      % "0.41.3" % Test,
+      "com.dimafeng" %% "testcontainers-scala-postgresql" % "0.41.3" % Test
     )
 
     val observability: Seq[ModuleID] = Seq(
@@ -85,7 +90,7 @@ object Dependencies {
 
     val migrations: Seq[ModuleID] = Seq(
       "dev.rolang" %% "dumbo" % "0.1.0"
-    ) ++ tests
+    ) ++ tests ++ testContainers
 
     val flags: Seq[ModuleID]      = Seq(
       "org.typelevel" %% "literally" % "1.1.0"
