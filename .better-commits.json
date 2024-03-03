@@ -81,6 +81,10 @@
                 "label": "db"
             },
             {
+                "value": "db-migration",
+                "label": "db-migration"
+            },
+            {
                 "value": "flags",
                 "label": "flags"
             },
