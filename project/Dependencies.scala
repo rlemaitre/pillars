@@ -51,7 +51,7 @@ object Dependencies {
       "com.softwaremill.sttp.tapir"   %% "tapir-json-circe"            % "1.9.10",
       "com.softwaremill.sttp.tapir"   %% "tapir-opentelemetry-metrics" % "1.9.10",
       "com.softwaremill.sttp.tapir"   %% "tapir-iron"                  % "1.9.10",
-      "com.softwaremill.sttp.tapir"   %% "tapir-http4s-client"         % "1.9.10" % Test,
+      "com.softwaremill.sttp.tapir"   %% "tapir-http4s-client"         % "1.9.11" % Test,
       "com.softwaremill.sttp.tapir"   %% "tapir-sttp-stub-server"      % "1.9.10" % Test,
       "com.softwaremill.sttp.client3" %% "core"                        % "3.9.3"  % Test
       //    "com.softwaremill.sttp.tapir"   %% "tapir-swagger-ui-bundle" % "1.9.1",
@@ -66,10 +66,10 @@ object Dependencies {
     )
 
     val tests: Seq[ModuleID] = Seq(
-      "org.scalameta"      %% "munit"               % "1.0.0-M11" % Test,
+      "org.scalameta"      %% "munit"             % "1.0.0-M11" % Test,
       "org.typelevel"      %% "munit-cats-effect" % "2.0.0-M4"  % Test,
-      "org.scalameta"      %% "munit-scalacheck"    % "1.0.0-M11" % Test,
-      "io.github.iltotore" %% "iron-scalacheck"     % "2.5.0"  % Test
+      "org.scalameta"      %% "munit-scalacheck"  % "1.0.0-M11" % Test,
+      "io.github.iltotore" %% "iron-scalacheck"   % "2.5.0"     % Test
     )
 
     val testContainers: Seq[ModuleID] = Seq(
