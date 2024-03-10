@@ -79,6 +79,17 @@ lazy val db = Project("pillars-db", file("modules/db"))
     )
     .dependsOn(core)
 
+lazy val dbDoobie = Project("pillars-db-doobie", file("modules/db-doobie"))
+    .enablePlugins(BuildInfoPlugin)
+    .settings(
+      name             := "pillars-db-doobie",
+      description      := "pillars-db-doobie is a scala 3 library providing database services for writing backend applications using doobie",
+      libraryDependencies ++= Dependencies.doobie,
+      buildInfoKeys    := Seq[BuildInfoKey](name, version, description),
+      buildInfoPackage := "pillars.doobie.build"
+    )
+    .dependsOn(core)
+
 lazy val dbMigrations = Project("pillars-db-migration", file("modules/db-migration"))
     .enablePlugins(BuildInfoPlugin)
     .settings(
