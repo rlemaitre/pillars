@@ -141,13 +141,41 @@
 <h2 id="_database_module">Database module</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The <code>DB</code> module provides database connectivity and operations for the Pillars application.
-It uses the Skunk library for interacting with PostgreSQL databases.</p>
+<p>The <code>DB</code> modules provide database connectivity and operations for the Pillars application.
+There are two database modules:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>db</code>: the main database module using Skunk for interacting with PostgreSQL databases</p>
+</li>
+<li>
+<p><code>db-doobie</code>: a Doobie-based database module for interacting with databases using JDBC drivers</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Use only one of these two modules in your application.
+Using both modules in the same application will result in a conflict.
+</td>
+</tr>
+</table>
 </div>
 <div class="sect2">
 <h3 id="_database_configuration">Database Configuration</h3>
 <div class="paragraph">
-<p>The database configuration is defined in the <code>DatabaseConfig</code> case class.
+<p>The configuration is read from the application&#8217;s configuration file under the <code>db</code> section.</p>
+</div>
+<div class="sect3">
+<h4 id="_skunk">Skunk</h4>
+<div class="paragraph">
+<p>The database configuration is defined in the <code>pillars.db.DatabaseConfig</code> case class.
 It includes the following fields:</p>
 </div>
 <div class="ulist">
@@ -168,12 +196,18 @@ It includes the following fields:</p>
 <p><code>password</code>: The password for the database.</p>
 </li>
 <li>
+<p><code>system-schema</code>: The schema for pillars configuration in the database.</p>
+</li>
+<li>
+<p><code>app-schema</code>: The schema for the application in the database.</p>
+</li>
+<li>
 <p><code>ssl</code>: The SSL mode for the database.
 Accepted values are <code>none</code>, <code>trusted</code> and <code>system</code>.
 See <a href="https://typelevel.org/skunk/reference/Sessions.html">Skunk documentation</a> for more information.</p>
 </li>
 <li>
-<p><code>poolSize</code>: The size of the connection pool.</p>
+<p><code>pool-size</code>: The size of the connection pool.</p>
 </li>
 <li>
 <p><code>debug</code>: A flag indicating whether to enable debug mode.</p>
@@ -183,8 +217,61 @@ See <a href="https://typelevel.org/skunk/reference/Sessions.html">Skunk document
 </li>
 </ul>
 </div>
+</div>
+<div class="sect3">
+<h4 id="_doobie">Doobie</h4>
 <div class="paragraph">
-<p>The configuration is read from the application&#8217;s configuration file under the <code>db</code> section.</p>
+<p>The database configuration is defined in the <code>pillars.db_doobie.DatabaseConfig</code> case class.
+It includes the following fields:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>driver-class-name</code>: The JDBC driver class name.</p>
+</li>
+<li>
+<p><code>url</code>: The JDBC URL of the database.</p>
+</li>
+<li>
+<p><code>username</code>: The username for the database.</p>
+</li>
+<li>
+<p><code>password</code>: The password for the database.</p>
+</li>
+<li>
+<p><code>system-schema</code>: The schema for pillars configuration in the database.</p>
+</li>
+<li>
+<p><code>app-schema</code>: The schema for the application in the database.</p>
+</li>
+<li>
+<p><code>pool-size</code>: The size of the connection pool.</p>
+</li>
+<li>
+<p><code>debug</code>: A flag indicating whether to enable debug mode.</p>
+</li>
+<li>
+<p><code>probe</code>: The configuration for the database probe.</p>
+</li>
+<li>
+<p><code>statement-cache</code>: Configuration of the statement cache.
+It contains the following fields:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>enabled</code>: A flag indicating whether to enable the statement cache.</p>
+</li>
+<li>
+<p><code>size</code>: The size of the statement cache.</p>
+</li>
+<li>
+<p><code>sql-limit</code>: The maximum length of the SQL string to be cached.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -194,9 +281,7 @@ See <a href="https://typelevel.org/skunk/reference/Sessions.html">Skunk document
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight linenums"><code data-lang="scala">import pillars.db.*
-
-val dbModule = pillarsInstance.db</code></pre>
+<pre class="prettyprint highlight linenums"><code data-lang="scala">val dbModule = pillarsInstance.db</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -204,6 +289,9 @@ val dbModule = pillarsInstance.db</code></pre>
 </div>
 <div class="paragraph">
 <p>You can also use directly <code>DB[F]</code> to perform database operations:</p>
+</div>
+<div class="paragraph">
+<p>For Skunk:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -213,6 +301,19 @@ import skunk.*
 def foo[F[_]](using Pillars[F]) =
     DB[F].use: session =&gt;
         session.unique(sql"SELECT 1".query[Int])</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For Doobie:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight linenums"><code data-lang="scala">import pillars.db_doobie.*
+import doobie.*
+
+def foo[F[_]](using Pillars[F]) =
+    DB[F].use: xa =&gt;
+        sql"SELECT 1".query[Int].unique.transact(xa)</code></pre>
 </div>
 </div>
 </div>
