@@ -88,6 +88,11 @@ object Dependencies {
       "org.tpolecat" %% "skunk-circe" % "1.0.0-M4"
     ) ++ tests
 
+    val doobie: Seq[ModuleID] = Seq(
+      "org.tpolecat" %% "doobie-core"   % "1.0.0-RC4",
+      "org.tpolecat" %% "doobie-hikari" % "1.0.0-RC4" // HikariCP transactor.
+    ) ++ tests
+
     val migrations: Seq[ModuleID] = Seq(
       "dev.rolang" %% "dumbo" % "0.1.0"
     ) ++ tests ++ testContainers
