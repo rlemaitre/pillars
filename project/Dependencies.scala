@@ -93,6 +93,10 @@ object Dependencies {
       "org.tpolecat" %% "doobie-hikari" % "1.0.0-RC4" // HikariCP transactor.
     ) ++ tests
 
+    val rediculous: Seq[ModuleID] = Seq(
+      "io.chrisdavenport" %% "rediculous" % "0.5.1"
+    ) ++ tests
+
     val migrations: Seq[ModuleID] = Seq(
       "dev.rolang" %% "dumbo" % "0.1.0"
     ) ++ tests ++ testContainers
