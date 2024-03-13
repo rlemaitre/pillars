@@ -76,7 +76,8 @@ object Dependencies {
 
     val testContainers: Seq[ModuleID] = Seq(
       "com.dimafeng" %% "testcontainers-scala-munit"      % "0.41.3" % Test,
-      "com.dimafeng" %% "testcontainers-scala-postgresql" % "0.41.3" % Test
+      "com.dimafeng" %% "testcontainers-scala-postgresql" % "0.41.3" % Test,
+      "com.dimafeng" %% "testcontainers-scala-rabbitmq"   % "0.41.3" % Test
     )
 
     val observability: Seq[ModuleID] = Seq(
@@ -97,7 +98,7 @@ object Dependencies {
 
     val fs2Rabbit: Seq[ModuleID] = Seq(
       "dev.profunktor" %% "fs2-rabbit" % "5.1.0"
-    ) ++ tests
+    ) ++ tests ++ testContainers
 
     val migrations: Seq[ModuleID] = Seq(
       "dev.rolang" %% "dumbo" % "0.1.0"

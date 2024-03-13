@@ -33,7 +33,7 @@ import scala.language.postfixOps
 extension [F[_]](p: Pillars[F])
     def rabbit: RabbitMQ[F] = p.module[RabbitMQ[F]](RabbitMQ.Key)
 
-final case class RabbitMQ[F[_]: Async: Network: Tracer: Console](client: RabbitClient[F]) extends Module[F]:
+final case class RabbitMQ[F[_]: Async](client: RabbitClient[F]) extends Module[F]:
     export client.*
 
     override def probes: List[Probe[F]] =
@@ -47,13 +47,19 @@ end RabbitMQ
 object RabbitMQ:
     case object Key extends Module.Key:
         override val name: String = "rabbitmq"
+
     def apply[F[_]](using p: Pillars[F]): RabbitMQ[F] = p.module[RabbitMQ[F]](RabbitMQ.Key)
+
+    def apply[F[_]: Async](config: RabbitMQConfig): Resource[F, RabbitMQ[F]] =
+        RabbitClient.default[F](config.convert).resource.map(apply)
+
+end RabbitMQ
 
 class RabbitMQLoader extends Loader:
     override type M[F[_]] = RabbitMQ[F]
     override val key: Module.Key = RabbitMQ.Key
 
-    def load[F[_]: Async: Network: Tracer: Console](
+    override def load[F[_]: Async: Network: Tracer: Console](
         context: Loader.Context[F],
         modules: Modules[F]
     ): Resource[F, RabbitMQ[F]] =
@@ -62,9 +68,9 @@ class RabbitMQLoader extends Loader:
         for
             _      <- Resource.eval(logger.info("Loading RabbitMQ module"))
             config <- Resource.eval(configReader.read[RabbitMQConfig]("rabbitmq"))
-            client <- RabbitClient.default[F](config.convert).resource
+            client <- RabbitMQ[F](config)
             _      <- Resource.eval(logger.info("RabbitMQ module loaded"))
-        yield RabbitMQ(client)
+        yield client
         end for
     end load
 end RabbitMQLoader
