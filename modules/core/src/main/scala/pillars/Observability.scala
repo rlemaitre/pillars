@@ -13,7 +13,7 @@ import org.typelevel.otel4s.metrics.Meter
 import org.typelevel.otel4s.trace.Tracer
 import sttp.tapir.server.interceptor.EndpointInterceptor
 import sttp.tapir.server.interceptor.Interceptor
-import sttp.tapir.server.metrics.otel4s.TapirMetrics
+import sttp.tapir.server.metrics.otel4s.Otel4sMetrics
 
 final case class Observability[F[_]](tracer: Tracer[F], metrics: Meter[F], interceptor: Interceptor[F]):
     export metrics.*
@@ -31,7 +31,7 @@ object Observability:
                 otel4s       <- OtelJava.global
                 tracer       <- otel4s.tracerProvider.get(config.serviceName)
                 meter        <- otel4s.meterProvider.get(config.serviceName)
-                tapirMetrics <- TapirMetrics.init[F](meter)
+                tapirMetrics <- Otel4sMetrics.init[F](meter)
             yield Observability(tracer, meter, tapirMetrics.metricsInterceptor())
         else
             noop

@@ -17,33 +17,33 @@ import sttp.tapir.server.interceptor.metrics.MetricsRequestInterceptor
 import sttp.tapir.server.metrics.EndpointMetric
 import sttp.tapir.server.metrics.Metric
 import sttp.tapir.server.metrics.MetricLabels
-import sttp.tapir.server.metrics.otel4s.TapirMetrics.*
+import sttp.tapir.server.metrics.otel4s.Otel4sMetrics.*
 import sttp.tapir.server.model.ServerResponse
 
 // TODO: copy pasted from atlas, should be contributed to tapir as `tapir-otel4s-metrics`
-case class TapirMetrics[F[_]: Applicative](meter: Meter[F], metrics: List[Metric[F, _]]):
+case class Otel4sMetrics[F[_]: Applicative](meter: Meter[F], metrics: List[Metric[F, _]]):
 
     /** Registers a `request_active{path, method}` up-down-counter (assuming default labels). */
-    def addRequestsActive(labels: MetricLabels = MetricLabels.Default): F[TapirMetrics[F]] =
+    def addRequestsActive(labels: MetricLabels = MetricLabels.Default): F[Otel4sMetrics[F]] =
         requestActive(meter, labels).map(m => copy(metrics = metrics :+ m))
 
     /** Registers a `request_total{path, method, status}` counter (assuming default labels). */
-    def addRequestsTotal(labels: MetricLabels = MetricLabels.Default): F[TapirMetrics[F]] =
+    def addRequestsTotal(labels: MetricLabels = MetricLabels.Default): F[Otel4sMetrics[F]] =
         requestTotal(meter, labels).map(m => copy(metrics = metrics :+ m))
 
     /** Registers a `request_duration_seconds{path, method, status, phase}` histogram (assuming default labels). */
-    def addRequestsDuration(labels: MetricLabels = MetricLabels.Default): F[TapirMetrics[F]] =
+    def addRequestsDuration(labels: MetricLabels = MetricLabels.Default): F[Otel4sMetrics[F]] =
         requestDuration(meter, labels).map(m => copy(metrics = metrics :+ m))
 
     /** Registers a custom metric. */
-    def addCustom(m: Metric[F, ?]): TapirMetrics[F] = copy(metrics = metrics :+ m)
+    def addCustom(m: Metric[F, ?]): Otel4sMetrics[F] = copy(metrics = metrics :+ m)
 
     /** The interceptor which can be added to a server's options, to enable metrics collection. */
     def metricsInterceptor(ignoreEndpoints: Seq[AnyEndpoint] = Seq.empty): MetricsRequestInterceptor[F] =
         new MetricsRequestInterceptor[F](metrics, ignoreEndpoints)
-end TapirMetrics
+end Otel4sMetrics
 
-object TapirMetrics:
+object Otel4sMetrics:
 
     /** Using the default labels, registers the following metrics:
     *
@@ -54,16 +54,16 @@ object TapirMetrics:
     * Status is by default the status code class (1xx, 2xx, etc.), and phase can be either `headers` or `body` - request duration is
     * measured separately up to the point where the headers are determined, and then once again when the whole response body is complete.
     */
-    def init[F[_]: Monad](meter: Meter[F], labels: MetricLabels = MetricLabels.Default): F[TapirMetrics[F]] =
+    def init[F[_]: Monad](meter: Meter[F], labels: MetricLabels = MetricLabels.Default): F[Otel4sMetrics[F]] =
         for
             active   <- requestActive(meter, labels)
             total    <- requestTotal(meter, labels)
             duration <- requestDuration(meter, labels)
-        yield TapirMetrics(meter, List[Metric[F, _]](active, total, duration))
-    def init[F[_]: Applicative](meter: Meter[F], metrics: List[Metric[F, _]]): F[TapirMetrics[F]]           =
-        TapirMetrics(meter, metrics).pure[F]
+        yield Otel4sMetrics(meter, List[Metric[F, _]](active, total, duration))
+    def init[F[_]: Applicative](meter: Meter[F], metrics: List[Metric[F, _]]): F[Otel4sMetrics[F]]           =
+        Otel4sMetrics(meter, metrics).pure[F]
 
-    def noop[F[_]: Applicative]: TapirMetrics[F] = TapirMetrics(Meter.noop[F], Nil)
+    def noop[F[_]: Applicative]: Otel4sMetrics[F] = Otel4sMetrics(Meter.noop[F], Nil)
 
     private def requestActive[F[_]: Applicative](
         meter: Meter[F],
@@ -208,4 +208,4 @@ object TapirMetrics:
     end asOpenTelemetryAttributes
 
     private def merge(a1: List[Attribute[String]], a2: List[Attribute[String]]): List[Attribute[String]] = a1 ++ a2
-end TapirMetrics
+end Otel4sMetrics
