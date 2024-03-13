@@ -24,12 +24,12 @@ jobs:
           token: ${{ github.token }}
           tag: ${{ github.ref_name }}
 
-      - name: Update version in docs
-        if: ${{ github.ref_type == 'tag' }}
-        run: |
-          TAG=${{ github.ref_name }}
-          VERSION=${TAG#v}
-          sed -i '' -e "s/\"version\": \'.*\'/\"version\": \"${VERSION}\"/" ${{ github.workspace }}/docToolchainConfig.groovy
+#      - name: Update version in docs
+#        if: ${{ github.ref_type == 'tag' }}
+#        run: |
+#          TAG=${{ github.ref_name }}
+#          VERSION=${TAG#v}
+#          sed -i '' -e "s/\"version\": \'.*\'/\"version\": \"${VERSION}\"/" ${{ github.workspace }}/docToolchainConfig.groovy
 
       - name: Create Release
         if: ${{ github.ref_type == 'tag' }}
