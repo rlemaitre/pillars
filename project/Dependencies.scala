@@ -93,6 +93,10 @@ object Dependencies {
       "org.tpolecat" %% "doobie-hikari" % "1.0.0-RC4" // HikariCP transactor.
     ) ++ tests
 
+    val fs2Rabbit: Seq[ModuleID] = Seq(
+      "dev.profunktor" %% "fs2-rabbit" % "5.1.1"
+    ) ++ tests
+
     val migrations: Seq[ModuleID] = Seq(
       "dev.rolang" %% "dumbo" % "0.1.0"
     ) ++ tests ++ testContainers

@@ -101,6 +101,17 @@ lazy val dbMigrations = Project("pillars-db-migration", file("modules/db-migrati
     )
     .dependsOn(core, db)
 
+lazy val rabbitmqFs2 = Project("pillars-rabbitmq-fs2", file("modules/rabbitmq-fs2"))
+    .enablePlugins(BuildInfoPlugin)
+    .settings(
+      name             := "pillars-rabbitmq-fs2",
+      description      := "pillars-rabbitmq-fs2 is a scala 3 library providing RabbitMQ services for writing backend applications using fs2-rabbit",
+      libraryDependencies ++= Dependencies.fs2Rabbit,
+      buildInfoKeys    := Seq[BuildInfoKey](name, version, description),
+      buildInfoPackage := "pillars.rabbitmq.fs2.build"
+    )
+    .dependsOn(core)
+
 lazy val flags = Project("pillars-flags", file("modules/flags"))
     .enablePlugins(BuildInfoPlugin)
     .settings(
