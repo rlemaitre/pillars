@@ -1,1 +1,1 @@
-pillars.db.RabbitMQLoader
+pillars.rabbitmq.fs2.RabbitMQLoader
