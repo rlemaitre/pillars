@@ -1,4 +1,13 @@
+import cats.data.Validated
+import com.monovore.decline.Argument
+import fs2.io.file.Path
+
 package object pillars:
+    given Argument[Path] with
+        def read(string: String) = Validated.valid(Path(string))
+
+        def defaultMetavar = "path"
+
     /**
      * Type alias for a Pillars[F] context bound.
      *
