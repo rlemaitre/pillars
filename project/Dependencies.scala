@@ -76,7 +76,8 @@ object Dependencies {
 
     val testContainers: Seq[ModuleID] = Seq(
       "com.dimafeng" %% "testcontainers-scala-munit"      % "0.41.3" % Test,
-      "com.dimafeng" %% "testcontainers-scala-postgresql" % "0.41.3" % Test
+      "com.dimafeng" %% "testcontainers-scala-postgresql" % "0.41.3" % Test,
+      "com.dimafeng" %% "testcontainers-scala-rabbitmq"   % "0.41.3" % Test
     )
 
     val observability: Seq[ModuleID] = Seq(
@@ -95,7 +96,6 @@ object Dependencies {
       "org.tpolecat" %% "doobie-hikari" % "1.0.0-RC4" // HikariCP transactor.
     ) ++ tests
 
-
     val migrationsRuntime: Seq[ModuleID] = Seq(
       "org.postgresql" % "postgresql"                 % "42.7.2",
       "org.flywaydb"   % "flyway-database-postgresql" % "10.9.1"
@@ -104,6 +104,10 @@ object Dependencies {
       "org.flywaydb" % "flyway-core" % "10.9.1"
     ) ++ tests ++ testContainers ++ migrationsRuntime.map(_ % Test)
 
+    val fs2Rabbit: Seq[ModuleID] = Seq(
+      "dev.profunktor" %% "fs2-rabbit" % "5.1.0"
+    ) ++ tests ++ testContainers
+  
     val rediculous: Seq[ModuleID] = Seq(
       "io.chrisdavenport" %% "rediculous" % "0.5.1"
     ) ++ tests
