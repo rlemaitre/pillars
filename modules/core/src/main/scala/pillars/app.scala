@@ -1,9 +1,7 @@
 package pillars
 
-import cats.data.Validated
 import cats.effect.*
 import cats.effect.std.Console
-import com.monovore.decline.Argument
 import com.monovore.decline.Command
 import com.monovore.decline.Opts
 import fs2.io.file.Path
@@ -13,11 +11,13 @@ import pillars.App.Description
 import pillars.App.Name
 import pillars.App.Version
 import pillars.probes.Probe
+import sttp.tapir.AnyEndpoint
 
 trait App[F[_]]:
     def infos: AppInfo
     def probes: List[Probe[F]]                = Nil
     def adminControllers: List[Controller[F]] = Nil
+    def endpoints: List[AnyEndpoint]
     def run: Run[F, F[Unit]]
 end App
 
@@ -47,18 +47,22 @@ trait BuildInfo:
 end BuildInfo
 
 trait EntryPoint extends IOApp:
-    given Argument[Path] with
-        def read(string: String) = Validated.valid(Path(string))
-        def defaultMetavar       = "path"
-
+    import pillars.given
     def app: App[IO]
     override final def run(args: List[String]): IO[ExitCode] =
-        Command(app.infos.name, app.infos.description)(
-          Opts.option[Path]("config", "Path to the configuration file")
-        ).parse(args, sys.env) match
-        case Left(help)        => Console[IO].errorln(help).as(ExitCode.Error)
-        case Right(configPath) =>
-            Pillars(configPath).use: pillars =>
-                given Pillars[IO] = pillars
-                app.run.as(ExitCode.Success)
+        val command = Command(app.infos.name, app.infos.description):
+            val configFile =
+                Opts.option[Path]("config", "Path to the configuration file").map: configPath =>
+                    Pillars(configPath).use: pillars =>
+                        given Pillars[IO] = pillars
+                        app.run.as(ExitCode.Success)
+            val openAPICmd =
+                Opts.subcommand(openapi.command).map: args =>
+                    openapi.Generator(app).generate(args).as(ExitCode.Success)
+            configFile orElse openAPICmd
+
+        command.parse(args, sys.env) match
+        case Left(help)  => Console[IO].errorln(help).as(ExitCode.Error)
+        case Right(prog) => prog
+    end run
 end EntryPoint
