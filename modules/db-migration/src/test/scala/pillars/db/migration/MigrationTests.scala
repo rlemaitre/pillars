@@ -11,15 +11,16 @@ import munit.CatsEffectSuite
 import org.testcontainers.utility.DockerImageName
 import org.typelevel.otel4s.trace.Tracer
 import pillars.Config.Secret
+import pillars.Module
+import pillars.Pillars
 import pillars.db.*
-import pillars.db.migrations.{DBMigration, MigrationConfig}
+import pillars.db.migrations.DBMigration
+import pillars.db.migrations.MigrationConfig
 import pillars.probes.ProbeConfig
-import pillars.{Module, Pillars}
+import scala.concurrent.duration.*
 import skunk.*
 import skunk.codec.all.*
 import skunk.implicits.*
-
-import scala.concurrent.duration.*
 
 class MigrationTests extends CatsEffectSuite, TestContainerForEach:
 
@@ -58,11 +59,11 @@ class MigrationTests extends CatsEffectSuite, TestContainerForEach:
             )
             val dbConfig: DatabaseConfig = configFor(pgContainer)
             val migration                = DBMigration[IO](config, dbConfig)
-            val result                     =
+            val result                   =
                 for
-                    _     <- migration.migrate("db/migrations")
+                    _   <- migration.migrate("db/migrations")
                     res <- session(dbConfig).use: s =>
-                                 s.unique(sql"SELECT count(*) FROM test where d is not null".query(int8))
+                               s.unique(sql"SELECT count(*) FROM test where d is not null".query(int8))
                 yield res
             assertIO(result, 5L)
         }
@@ -75,11 +76,11 @@ class MigrationTests extends CatsEffectSuite, TestContainerForEach:
             )
             val dbConfig: DatabaseConfig = configFor(pgContainer)
             val migration                = DBMigration[IO](config, dbConfig)
-            val result                     =
+            val result                   =
                 for
-                    _     <- migration.migrate("db/migrations", DatabaseSchema.public, DatabaseTable("schema_history"))
+                    _   <- migration.migrate("db/migrations", DatabaseSchema.public, DatabaseTable("schema_history"))
                     res <- session(dbConfig).use: s =>
-                                 s.unique(sql"SELECT count(*) FROM schema_history".query(int8))
+                               s.unique(sql"SELECT count(*) FROM schema_history".query(int8))
                 yield res
             assertIO(result, 3L) // 1 for init and one for each migration file
         }
@@ -92,12 +93,12 @@ class MigrationTests extends CatsEffectSuite, TestContainerForEach:
             )
             val dbConfig: DatabaseConfig = configFor(pgContainer)
             val migration                = DBMigration[IO](config, dbConfig)
-            val result                     =
+            val result                   =
                 for
-                    _     <- migration.migrate("db/migrations")
-                    _     <- migration.migrate("db/migrations")
+                    _   <- migration.migrate("db/migrations")
+                    _   <- migration.migrate("db/migrations")
                     res <- session(dbConfig).use: s =>
-                                 s.unique(sql"SELECT count(*) FROM test where d is not null".query(int8))
+                               s.unique(sql"SELECT count(*) FROM test where d is not null".query(int8))
                 yield res
             assertIO(result, 5L)
         }
