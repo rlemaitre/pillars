@@ -169,8 +169,12 @@ db:
     interval: PT10s
     failure-count: 3
 db-migration:
-  log-after: PT5s
-  validate-on-migrate: true
+  url: jdbc:postgresql://localhost:5432/pillars_example
+  username: postgres
+  password: postgres
+  system-schema: public
+  app-schema: public
+  baseline-version: "0"
 api:
   enabled: true
   http:

@@ -205,7 +205,7 @@ You can find an example in the <code>modules/example/src/main/resources/applicat
         def run: Run[IO, IO[Unit]] = // <i class="conum" data-value="4"></i><b>(4)</b>
             for
                 _ &lt;- Logger[IO].info(s"📚 Welcome to ${Config[IO].name}!")
-                _ &lt;- DBMigration[IO].migrate("db-migrations") // <i class="conum" data-value="5"></i><b>(5)</b>
+                _ &lt;- DBMigration[IO].migrate("classpath:db-migrations") // <i class="conum" data-value="5"></i><b>(5)</b>
                 _ &lt;- flag"feature-1".whenEnabled:
                          DB[IO].use: session =&gt;
                              for
@@ -325,7 +325,7 @@ In your <code>build.sbt</code>, add the following lines to your project definiti
     .settings(
       name             := "pillars-example",                                            // <i class="conum" data-value="2"></i><b>(2)</b>
       description      := "pillars-example is an example of application using pillars", // <i class="conum" data-value="3"></i><b>(3)</b>
-      libraryDependencies ++= Dependencies.tests,
+      libraryDependencies ++= Dependencies.tests ++ Dependencies.migrationsRuntime,
       buildInfoKeys    := Seq[BuildInfoKey](name, version, description),                // <i class="conum" data-value="4"></i><b>(4)</b>
       buildInfoOptions := Seq(BuildInfoOption.Traits("pillars.BuildInfo")),             // <i class="conum" data-value="5"></i><b>(5)</b>
       buildInfoPackage := "example.build",                                              // <i class="conum" data-value="6"></i><b>(6)</b>
