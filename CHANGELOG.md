@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.1.1] - 2024-03-13
+### :bug: Bug Fixes
+- [`c0272e3`](https://github.com/rlemaitre/pillars/commit/c0272e3e8e68a48125955641e760f78e15670cdb) - remove db migration clash *(commit by [@rlemaitre](https://github.com/rlemaitre))*
+
+
 ## [v0.1.0] - 2024-03-13
 ### :sparkles: New Features
 - [`12e9fbe`](https://github.com/rlemaitre/pillars/commit/12e9fbea5a902d1ac9b3e53164fdd50fa011f30a) - **flags**: [#39](https://github.com/rlemaitre/pillars/pull/39) Add ability to modify feature flags at runtime *(PR [#63](https://github.com/rlemaitre/pillars/pull/63) by [@rlemaitre](https://github.com/rlemaitre))*
@@ -28,3 +33,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 [v0.1.0]: https://github.com/rlemaitre/pillars/compare/v0.0.2...v0.1.0
+[v0.1.1]: https://github.com/rlemaitre/pillars/compare/v0.1.0...v0.1.1
