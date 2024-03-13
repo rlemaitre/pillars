@@ -117,7 +117,7 @@ opaque type Size <: Int     = Int :| SizeConstraint
 object Size extends RefinedTypeOps[Int, SizeConstraint, Size]
 
 private type JdbcUrlConstraint =
-    Match["jdbc\\:[^:]\\:.*"] DescribedAs "Driver class name must in jdbc:<subprotocol>:<subname> format"
+    Match["jdbc\\:[^:]+\\:.*"] DescribedAs "Driver class name must in jdbc:<subprotocol>:<subname> format"
 opaque type JdbcUrl <: String  = String :| JdbcUrlConstraint
 
 object JdbcUrl extends RefinedTypeOps[String, JdbcUrlConstraint, JdbcUrl]

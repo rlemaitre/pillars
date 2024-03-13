@@ -90,6 +90,17 @@ lazy val dbDoobie = Project("pillars-db-doobie", file("modules/db-doobie"))
     )
     .dependsOn(core)
 
+lazy val redisRediculous = Project("pillars-redis-rediculous", file("modules/redis-rediculous"))
+    .enablePlugins(BuildInfoPlugin)
+    .settings(
+      name             := "pillars-redis-rediculous",
+      description      := "pillars-redis-rediculous is a scala 3 library providing redis services for writing backend applications using rediculous",
+      libraryDependencies ++= Dependencies.rediculous,
+      buildInfoKeys    := Seq[BuildInfoKey](name, version, description),
+      buildInfoPackage := "pillars.doobie.build"
+    )
+    .dependsOn(core)
+
 lazy val dbMigrations = Project("pillars-db-migration", file("modules/db-migration"))
     .enablePlugins(BuildInfoPlugin)
     .settings(
@@ -140,7 +151,7 @@ lazy val example = Project("pillars-example", file("modules/example"))
     .settings(
       name             := "pillars-example",                                            // //<2>
       description      := "pillars-example is an example of application using pillars", // //<3>
-      libraryDependencies ++= Dependencies.tests,
+      libraryDependencies ++= Dependencies.tests ++ Dependencies.migrationsRuntime,
       buildInfoKeys    := Seq[BuildInfoKey](name, version, description),                // //<4>
       buildInfoOptions := Seq(BuildInfoOption.Traits("pillars.BuildInfo")),             // //<5>
       buildInfoPackage := "example.build",                                              // //<6>
@@ -157,7 +168,7 @@ lazy val docs = Project("pillars-docs", file("modules/docs"))
 
 lazy val pillars = project
     .in(file("."))
-    .aggregate(core, example, docs, db, dbDoobie, dbMigrations, flags, httpClient, rabbitmqFs2)
+    .aggregate(core, example, docs, db, dbDoobie, dbMigrations, flags, httpClient, rabbitmqFs2, redisRediculous)
     .settings(
       name                                       := "pillars",
       publishArtifact                            := false,

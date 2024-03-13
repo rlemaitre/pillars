@@ -23,8 +23,12 @@ db:
 # end::db[]
 # tag::db-migration[]
 db-migration:
-  log-after: PT5s
-  validate-on-migrate: true
+  url: jdbc:postgresql://localhost:5432/pillars_example
+  username: postgres
+  password: postgres
+  system-schema: public
+  app-schema: public
+  baseline-version: "0"
 # end::db-migration[]
 # tag::api[]
 api:
