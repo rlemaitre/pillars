@@ -11,23 +11,28 @@ import io.github.iltotore.iron.constraint.all.*
 import org.typelevel.otel4s.java.OtelJava
 import org.typelevel.otel4s.metrics.Meter
 import org.typelevel.otel4s.trace.Tracer
+import sttp.tapir.server.interceptor.EndpointInterceptor
+import sttp.tapir.server.interceptor.Interceptor
+import sttp.tapir.server.metrics.opentelemetry.OpenTelemetryMetrics
 
-final case class Observability[F[_]](tracer: Tracer[F], metrics: Meter[F]):
+final case class Observability[F[_]](tracer: Tracer[F], metrics: Meter[F], interceptor: Interceptor[F]):
     export metrics.*
     export tracer.span
     export tracer.spanBuilder
 end Observability
 object Observability:
     def apply[F[_]: Pillars]: Run[F, Observability[F]] = summon[Pillars[F]].observability
-    def noop[F[_]: LiftIO: Async]: F[Observability[F]] = Observability(Tracer.noop[F], Meter.noop[F]).pure[F]
+    def noop[F[_]: LiftIO: Async]: F[Observability[F]] =
+        Observability(Tracer.noop[F], Meter.noop[F], EndpointInterceptor.noop[F]).pure[F]
 
     def init[F[_]: LiftIO: Async](config: Config): F[Observability[F]] =
         if config.enabled then
             for
-                otel4s  <- OtelJava.global
-                tracer  <- otel4s.tracerProvider.get(config.serviceName)
-                metrics <- otel4s.meterProvider.get(config.serviceName)
-            yield Observability(tracer, metrics)
+                otel4s                              <- OtelJava.global
+                tracer                              <- otel4s.tracerProvider.get(config.serviceName)
+                otel4sMetrics                       <- otel4s.meterProvider.get(config.serviceName)
+                otelMetrics: OpenTelemetryMetrics[F] = OpenTelemetryMetrics.default[F](otel4sMetrics) // FIXME wer adapter ?
+            yield Observability(tracer, otel4sMetrics, otelMetrics.metricsInterceptor())
         else
             noop
     final case class Config(enabled: Boolean, serviceName: ServiceName = ServiceName("pillars"))

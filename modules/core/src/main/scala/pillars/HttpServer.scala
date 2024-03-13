@@ -15,6 +15,7 @@ import org.http4s.server.middleware.Logger
 import pillars.Controller.HttpEndpoint
 import pillars.codec.given
 import sttp.tapir.server.http4s.Http4sServerInterpreter
+import sttp.tapir.server.http4s.Http4sServerOptions
 
 object HttpServer:
     def build[F[_]: Async](
@@ -32,8 +33,14 @@ object HttpServer:
           redactHeadersWhen = _ => false,
           logAction = Some(scribe.cats[F].debug(_))
         )
-        val app: HttpApp[F]                         =
-            Http4sServerInterpreter[F]()
+
+        val options: Http4sServerOptions[F] =
+            Http4sServerOptions.customiseInterceptors
+                .prependInterceptor(observability.interceptor)
+                .options
+
+        val app: HttpApp[F] =
+            Http4sServerInterpreter[F](options)
                 .toRoutes(endpoints)
                 .orNotFound |>
                 logging |>

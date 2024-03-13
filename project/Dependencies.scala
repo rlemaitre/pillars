@@ -81,9 +81,10 @@ object Dependencies {
     )
 
     val observability: Seq[ModuleID] = Seq(
-      "org.typelevel"   %% "otel4s-java"                               % "0.4.0",
-      "io.opentelemetry" % "opentelemetry-exporter-otlp"               % "1.36.0" % Runtime,
-      "io.opentelemetry" % "opentelemetry-sdk-extension-autoconfigure" % "1.36.0" % Runtime
+      "org.typelevel"               %% "otel4s-java"                               % "0.4.0",
+      "io.opentelemetry"             % "opentelemetry-exporter-otlp"               % "1.36.0" % Runtime,
+      "io.opentelemetry"             % "opentelemetry-sdk-extension-autoconfigure" % "1.36.0" % Runtime,
+      "com.softwaremill.sttp.tapir" %% "tapir-opentelemetry-metrics"               % "1.9.11"
     )
 
     val database: Seq[ModuleID] = Seq(
@@ -107,7 +108,7 @@ object Dependencies {
     val fs2Rabbit: Seq[ModuleID] = Seq(
       "dev.profunktor" %% "fs2-rabbit" % "5.1.0"
     ) ++ tests ++ testContainers
-  
+
     val rediculous: Seq[ModuleID] = Seq(
       "io.chrisdavenport" %% "rediculous" % "0.5.1"
     ) ++ tests
