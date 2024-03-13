@@ -27,7 +27,8 @@ jobs:
       - name: Update version in docs
         if: ${{ github.ref_type == 'tag' }}
         run: |
-          VERSION=${GITHUB_REF_NAME#v}
+          TAG=${{ github.ref_name }}
+          VERSION=${TAG#v}
           sed -i '' -e "s/\"version\": \'.*\'/\"version\": \"${VERSION}\"/" docToolchainConfig.groovy
 
       - name: Create Release
