@@ -94,7 +94,7 @@ object Dependencies {
     ) ++ tests
 
     val fs2Rabbit: Seq[ModuleID] = Seq(
-      "dev.profunktor" %% "fs2-rabbit" % "5.1.1"
+      "dev.profunktor" %% "fs2-rabbit" % "5.1.0"
     ) ++ tests
 
     val migrations: Seq[ModuleID] = Seq(
