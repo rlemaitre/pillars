@@ -13,7 +13,7 @@ import org.typelevel.otel4s.metrics.Meter
 import org.typelevel.otel4s.trace.Tracer
 import sttp.tapir.server.interceptor.EndpointInterceptor
 import sttp.tapir.server.interceptor.Interceptor
-import sttp.tapir.server.metrics.opentelemetry.OpenTelemetryMetrics
+import sttp.tapir.server.metrics.otel4s.TapirMetrics
 
 final case class Observability[F[_]](tracer: Tracer[F], metrics: Meter[F], interceptor: Interceptor[F]):
     export metrics.*
@@ -28,11 +28,11 @@ object Observability:
     def init[F[_]: LiftIO: Async](config: Config): F[Observability[F]] =
         if config.enabled then
             for
-                otel4s                              <- OtelJava.global
-                tracer                              <- otel4s.tracerProvider.get(config.serviceName)
-                otel4sMetrics                       <- otel4s.meterProvider.get(config.serviceName)
-                otelMetrics: OpenTelemetryMetrics[F] = OpenTelemetryMetrics.default[F](otel4sMetrics) // FIXME wer adapter ?
-            yield Observability(tracer, otel4sMetrics, otelMetrics.metricsInterceptor())
+                otel4s       <- OtelJava.global
+                tracer       <- otel4s.tracerProvider.get(config.serviceName)
+                meter        <- otel4s.meterProvider.get(config.serviceName)
+                tapirMetrics <- TapirMetrics.init[F](meter)
+            yield Observability(tracer, meter, tapirMetrics.metricsInterceptor())
         else
             noop
     final case class Config(enabled: Boolean, serviceName: ServiceName = ServiceName("pillars"))
