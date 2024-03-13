@@ -22,7 +22,7 @@ object app extends pillars.EntryPoint: // // <1>
         def run: Run[IO, IO[Unit]] = // // <4>
             for
                 _ <- Logger[IO].info(s"📚 Welcome to ${Config[IO].name}!")
-                _ <- DBMigration[IO].migrate("db-migrations") // // <5>
+                _ <- DBMigration[IO].migrate("classpath:db-migrations") // // <5>
                 _ <- flag"feature-1".whenEnabled:
                          DB[IO].use: session =>
                              for

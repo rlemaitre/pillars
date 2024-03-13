@@ -13,9 +13,9 @@ import org.typelevel.otel4s.trace.Tracer
 import pillars.Config.Secret
 import pillars.Module
 import pillars.Pillars
-import pillars.db.*
-import pillars.db.migrations.DBMigration
-import pillars.db.migrations.MigrationConfig
+import pillars.db.DatabaseConfig
+import pillars.db.PoolSize
+import pillars.db.migrations.*
 import pillars.probes.ProbeConfig
 import scala.concurrent.duration.*
 import skunk.*
@@ -39,26 +39,34 @@ class MigrationTests extends CatsEffectSuite, TestContainerForEach:
         def readConfig[T](using Decoder[T]) = ???
         def module[T](key: Module.Key): T   = ???
 
-    given Tracer[IO]                                                        = Tracer.noop[IO]
-    private def configFor(pgContainer: PostgreSQLContainer): DatabaseConfig =
+    given Tracer[IO]                                                          = Tracer.noop[IO]
+    private def dbConfigFor(pgContainer: PostgreSQLContainer): DatabaseConfig =
         DatabaseConfig(
           host = Host.fromString(pgContainer.host).get,
           port = Port.fromInt(pgContainer.container.getMappedPort(5432)).get,
-          database = DatabaseName(pgContainer.databaseName.assume),
-          username = DatabaseUser(pgContainer.username.assume),
-          password = Secret(DatabasePassword(pgContainer.password.assume)),
+          database = pillars.db.DatabaseName(pgContainer.databaseName.assume),
+          username = pillars.db.DatabaseUser(pgContainer.username.assume),
+          password = Secret(pillars.db.DatabasePassword(pgContainer.password.assume)),
           poolSize = PoolSize(10),
           probe = ProbeConfig()
         )
 
+    private def configFor(pgContainer: PostgreSQLContainer): MigrationConfig =
+        val url =
+            s"jdbc:postgresql://${pgContainer.host}:${pgContainer.container.getMappedPort(5432)}/${pgContainer.databaseName}"
+        println(url)
+        MigrationConfig(
+          url = JdbcUrl(url.refineUnsafe),
+          username = DatabaseUser(pgContainer.username.assume),
+          password = Some(Secret(DatabasePassword(pgContainer.password.assume)))
+        )
+    end configFor
+
     test("migration should run the scripts"):
         withContainers { pgContainer =>
-            val config: MigrationConfig  = MigrationConfig(
-              logAfter = 1.second,
-              validateOnMigrate = true
-            )
-            val dbConfig: DatabaseConfig = configFor(pgContainer)
-            val migration                = DBMigration[IO](config, dbConfig)
+            val config: MigrationConfig  = configFor(pgContainer)
+            val dbConfig: DatabaseConfig = dbConfigFor(pgContainer)
+            val migration                = DBMigration[IO](config)
             val result                   =
                 for
                     _   <- migration.migrate("db/migrations")
@@ -70,29 +78,23 @@ class MigrationTests extends CatsEffectSuite, TestContainerForEach:
 
     test("migration should write in the history table"):
         withContainers { pgContainer =>
-            val config: MigrationConfig  = MigrationConfig(
-              logAfter = 1.second,
-              validateOnMigrate = true
-            )
-            val dbConfig: DatabaseConfig = configFor(pgContainer)
-            val migration                = DBMigration[IO](config, dbConfig)
+            val config: MigrationConfig  = configFor(pgContainer)
+            val dbConfig: DatabaseConfig = dbConfigFor(pgContainer)
+            val migration                = DBMigration[IO](config)
             val result                   =
                 for
                     _   <- migration.migrate("db/migrations", DatabaseSchema.public, DatabaseTable("schema_history"))
                     res <- session(dbConfig).use: s =>
                                s.unique(sql"SELECT count(*) FROM schema_history".query(int8))
                 yield res
-            assertIO(result, 3L) // 1 for init and one for each migration file
+            assertIO(result, 2L)
         }
 
     test("running twice migrations should be the same as running once"):
         withContainers { pgContainer =>
-            val config: MigrationConfig  = MigrationConfig(
-              logAfter = 1.second,
-              validateOnMigrate = true
-            )
-            val dbConfig: DatabaseConfig = configFor(pgContainer)
-            val migration                = DBMigration[IO](config, dbConfig)
+            val config: MigrationConfig  = configFor(pgContainer)
+            val dbConfig: DatabaseConfig = dbConfigFor(pgContainer)
+            val migration                = DBMigration[IO](config)
             val result                   =
                 for
                     _   <- migration.migrate("db/migrations")

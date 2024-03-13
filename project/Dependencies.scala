@@ -95,9 +95,13 @@ object Dependencies {
       "org.tpolecat" %% "doobie-hikari" % "1.0.0-RC4" // HikariCP transactor.
     ) ++ tests
 
-    val migrations: Seq[ModuleID] = Seq(
-      "dev.rolang" %% "dumbo" % "0.1.0"
-    ) ++ tests ++ testContainers
+    val migrationsRuntime: Seq[ModuleID] = Seq(
+      "org.postgresql" % "postgresql"                 % "42.7.2",
+      "org.flywaydb"   % "flyway-database-postgresql" % "10.9.1"
+    )
+    val migrations: Seq[ModuleID]        = Seq(
+      "org.flywaydb" % "flyway-core" % "10.9.1"
+    ) ++ tests ++ testContainers ++ migrationsRuntime.map(_ % Test)
 
     val flags: Seq[ModuleID]      = Seq(
       "org.typelevel" %% "literally" % "1.1.0"

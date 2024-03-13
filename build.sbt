@@ -129,7 +129,7 @@ lazy val example = Project("pillars-example", file("modules/example"))
     .settings(
       name             := "pillars-example",                                            // //<2>
       description      := "pillars-example is an example of application using pillars", // //<3>
-      libraryDependencies ++= Dependencies.tests,
+      libraryDependencies ++= Dependencies.tests ++ Dependencies.migrationsRuntime,
       buildInfoKeys    := Seq[BuildInfoKey](name, version, description),                // //<4>
       buildInfoOptions := Seq(BuildInfoOption.Traits("pillars.BuildInfo")),             // //<5>
       buildInfoPackage := "example.build",                                              // //<6>
