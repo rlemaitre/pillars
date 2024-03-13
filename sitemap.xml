@@ -2,12 +2,12 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
     <url>
-    	<loc>http://jbake.org/contribute/10_contributing.html</loc>
+    	<loc>http://jbake.org/contribute/20_code_of_conduct.html</loc>
     	<lastmod>2024-03-13</lastmod>
     </url>
 
     <url>
-    	<loc>http://jbake.org/contribute/20_code_of_conduct.html</loc>
+    	<loc>http://jbake.org/contribute/10_contributing.html</loc>
     	<lastmod>2024-03-13</lastmod>
     </url>
 
@@ -22,22 +22,22 @@
     </url>
 
     <url>
-    	<loc>http://jbake.org/user-guide/20_features/60_admin-server.html</loc>
-    	<lastmod>2024-03-13</lastmod>
-    </url>
-
-    <url>
     	<loc>http://jbake.org/user-guide/20_features/40_api-server.html</loc>
     	<lastmod>2024-03-13</lastmod>
     </url>
 
     <url>
-    	<loc>http://jbake.org/user-guide/20_features/30_probes.html</loc>
+    	<loc>http://jbake.org/user-guide/20_features/60_admin-server.html</loc>
     	<lastmod>2024-03-13</lastmod>
     </url>
 
     <url>
     	<loc>http://jbake.org/user-guide/20_features/20_logging.html</loc>
+    	<lastmod>2024-03-13</lastmod>
+    </url>
+
+    <url>
+    	<loc>http://jbake.org/user-guide/20_features/30_probes.html</loc>
     	<lastmod>2024-03-13</lastmod>
     </url>
 
@@ -52,22 +52,22 @@
     </url>
 
     <url>
-    	<loc>http://jbake.org/user-guide/30_modules/30_flags.html</loc>
-    	<lastmod>2024-03-13</lastmod>
-    </url>
-
-    <url>
     	<loc>http://jbake.org/user-guide/30_modules/15_db-migration.html</loc>
     	<lastmod>2024-03-13</lastmod>
     </url>
 
     <url>
-    	<loc>http://jbake.org/user-guide/30_modules/10_db.html</loc>
+    	<loc>http://jbake.org/user-guide/30_modules/30_flags.html</loc>
     	<lastmod>2024-03-13</lastmod>
     </url>
 
     <url>
     	<loc>http://jbake.org/user-guide/30_modules/index.html</loc>
+    	<lastmod>2024-03-13</lastmod>
+    </url>
+
+    <url>
+    	<loc>http://jbake.org/user-guide/30_modules/10_db.html</loc>
     	<lastmod>2024-03-13</lastmod>
     </url>
 
