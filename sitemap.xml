@@ -17,17 +17,17 @@
     </url>
 
     <url>
-    	<loc>http://jbake.org/user-guide/20_features/40_api-server.html</loc>
-    	<lastmod>2024-03-13</lastmod>
-    </url>
-
-    <url>
     	<loc>http://jbake.org/user-guide/20_features/10_configuration.html</loc>
     	<lastmod>2024-03-13</lastmod>
     </url>
 
     <url>
     	<loc>http://jbake.org/user-guide/20_features/60_admin-server.html</loc>
+    	<lastmod>2024-03-13</lastmod>
+    </url>
+
+    <url>
+    	<loc>http://jbake.org/user-guide/20_features/40_api-server.html</loc>
     	<lastmod>2024-03-13</lastmod>
     </url>
 
@@ -52,12 +52,12 @@
     </url>
 
     <url>
-    	<loc>http://jbake.org/user-guide/30_modules/30_flags.html</loc>
+    	<loc>http://jbake.org/user-guide/30_modules/15_db-migration.html</loc>
     	<lastmod>2024-03-13</lastmod>
     </url>
 
     <url>
-    	<loc>http://jbake.org/user-guide/30_modules/15_db-migration.html</loc>
+    	<loc>http://jbake.org/user-guide/30_modules/30_flags.html</loc>
     	<lastmod>2024-03-13</lastmod>
     </url>
 
