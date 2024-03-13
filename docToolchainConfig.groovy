@@ -127,7 +127,7 @@ microsite.with {
     // set a title to '-' in order to remove this menu entry.
     menu = ['user-guide': 'User Guide', 'contribute': 'Contribute', 'features': 'Features']
 
-    version = '0.0.2'
+    version = '0.1.0'
 
 //tag::additionalConverters[]
 /**
