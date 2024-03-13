@@ -157,7 +157,7 @@ lazy val docs = Project("pillars-docs", file("modules/docs"))
 
 lazy val pillars = project
     .in(file("."))
-    .aggregate(core, example, docs, db, flags, httpClient, rabbitmqFs2)
+    .aggregate(core, example, docs, db, dbDoobie, dbMigrations, flags, httpClient, rabbitmqFs2)
     .settings(
       name                                       := "pillars",
       publishArtifact                            := false,
