@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.1.3] - 2024-03-13
+### :sparkles: New Features
+- [`a6a482f`](https://github.com/rlemaitre/pillars/commit/a6a482f17696b1e4965d69c0e7e905275d3482bd) - Add OpenAPI generation *(PR [#81](https://github.com/rlemaitre/pillars/pull/81) by [@rlemaitre](https://github.com/rlemaitre))*
+- [`590b98b`](https://github.com/rlemaitre/pillars/commit/590b98b3d42687eeb743235a7a27e2cc0e5ecd52) - Add rediculous redis module *(PR [#80](https://github.com/rlemaitre/pillars/pull/80) by [@estrauser-ledger](https://github.com/estrauser-ledger))*
+- [`3aa338d`](https://github.com/rlemaitre/pillars/commit/3aa338d66cc6db80ebfa0a0b14a4acff5e2e2c54) - add rabbitmq fs2 module *(PR [#79](https://github.com/rlemaitre/pillars/pull/79) by [@jnicoulaud-ledger](https://github.com/jnicoulaud-ledger))*
+
+### :bug: Bug Fixes
+- [`090983d`](https://github.com/rlemaitre/pillars/commit/090983dfc83093367a4b18a9ebb7448e973400d0) - Add doobie loader *(PR [#82](https://github.com/rlemaitre/pillars/pull/82) by [@estrauser-ledger](https://github.com/estrauser-ledger))*
+
+### :recycle: Refactors
+- [`7acb4c3`](https://github.com/rlemaitre/pillars/commit/7acb4c34a8ebc49b71dba7c7398b86c95e9116f4) - **db-migration**: Use Flyway instead of dumbo *(PR [#83](https://github.com/rlemaitre/pillars/pull/83) by [@rlemaitre](https://github.com/rlemaitre))*
+
+
 ## [v0.1.1] - 2024-03-13
 ### :bug: Bug Fixes
 - [`c0272e3`](https://github.com/rlemaitre/pillars/commit/c0272e3e8e68a48125955641e760f78e15670cdb) - remove db migration clash *(commit by [@rlemaitre](https://github.com/rlemaitre))*
@@ -34,3 +47,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [v0.1.0]: https://github.com/rlemaitre/pillars/compare/v0.0.2...v0.1.0
 [v0.1.1]: https://github.com/rlemaitre/pillars/compare/v0.1.0...v0.1.1
+[v0.1.3]: https://github.com/rlemaitre/pillars/compare/v0.1.1...v0.1.3
