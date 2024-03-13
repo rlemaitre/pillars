@@ -164,7 +164,7 @@ You can help us by <a href="../../contribute/10_contributing.html">contributing 
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="sbt">libraryDependencies ++= Seq(
-  "com.rlemaitre" %% "pillars-core" % "0.1.0"
+  "com.rlemaitre" %% "pillars-core" % "0.1.1"
 )</code></pre>
 </div>
 </div>
@@ -174,10 +174,10 @@ You can help us by <a href="../../contribute/10_contributing.html">contributing 
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="sbt">libraryDependencies ++= Seq(
-  "com.rlemaitre" %% "pillars-db" % "0.1.0",
-  "com.rlemaitre" %% "pillars-db-migration" % "0.1.0",
-  "com.rlemaitre" %% "pillars-flags" % "0.1.0",
-  "com.rlemaitre" %% "pillars-http-client" % "0.1.0"
+  "com.rlemaitre" %% "pillars-db" % "0.1.1",
+  "com.rlemaitre" %% "pillars-db-migration" % "0.1.1",
+  "com.rlemaitre" %% "pillars-flags" % "0.1.1",
+  "com.rlemaitre" %% "pillars-http-client" % "0.1.1"
 )</code></pre>
 </div>
 </div>
@@ -203,7 +203,7 @@ You can find an example in the <code>modules/example/src/main/resources/applicat
         def run: Run[IO, IO[Unit]] = // <i class="conum" data-value="4"></i><b>(4)</b>
             for
                 _ &lt;- Logger[IO].info(s"📚 Welcome to ${Config[IO].name}!")
-                _ &lt;- DBMigration[IO].migrate("db/migrations") // <i class="conum" data-value="5"></i><b>(5)</b>
+                _ &lt;- DBMigration[IO].migrate("db-migrations") // <i class="conum" data-value="5"></i><b>(5)</b>
                 _ &lt;- flag"feature-1".whenEnabled:
                          DB[IO].use: session =&gt;
                              for

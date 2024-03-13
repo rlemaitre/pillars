@@ -110,33 +110,33 @@ end app
                 <li class="tab" data-tab="maven">Maven</li>
             </ul>
             <pre class="code tab__pane active sbt">
-                <code class="highlight language-scala">libraryDependencies ++= Seq("com.rlemaitre" %% "pillars-core" % "0.1.0")</code>
+                <code class="highlight language-scala">libraryDependencies ++= Seq("com.rlemaitre" %% "pillars-core" % "0.1.1")</code>
             </pre>
             <pre class="code tab__pane mill">
-                <code class="highlight language-scala">ivy"com.rlemaitre::pillars-core:0.1.0"</code>
+                <code class="highlight language-scala">ivy"com.rlemaitre::pillars-core:0.1.1"</code>
             </pre>
             <pre class="code tab__pane scala-cli">
-                <code class="highlight language-scala">//> using dep com.rlemaitre::pillars-core:0.1.0</code>
+                <code class="highlight language-scala">//> using dep com.rlemaitre::pillars-core:0.1.1</code>
             </pre>
             <pre class="code tab__pane pants">
                 <code class="highlight language-scala">
 scala_artifact(
     group="com.rlemaitre",
     artifact="pillars-core",
-    version="0.1.0",
+    version="0.1.1",
     packages=["pillars.**"],
 )
                 </code>
             </pre>
             <pre class="code tab__pane gradle">
-                <code class="highlight language-gradle">implementation 'com.rlemaitre:pillars-core:0.1.0'</code>
+                <code class="highlight language-gradle">implementation 'com.rlemaitre:pillars-core:0.1.1'</code>
             </pre>
             <pre class="code tab__pane maven">
                 <code class="highlight language-xml">
 &lt;dependency>
     &lt;groupId>com.rlemaitre&lt;/groupId>
     &lt;artifactId>pillars-core&lt;/artifactId>
-    &lt;version>0.1.0&lt;/version>
+    &lt;version>0.1.1&lt;/version>
 &lt;/dependency>
                 </code>
             </pre>
