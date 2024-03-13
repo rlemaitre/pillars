@@ -16,7 +16,6 @@ import io.circe.derivation.Configuration
 import io.github.iltotore.iron.*
 import io.github.iltotore.iron.circe.given
 import io.github.iltotore.iron.constraint.all.*
-
 import org.typelevel.otel4s.trace.Tracer
 import pillars.Loader
 import pillars.Module
@@ -25,11 +24,11 @@ import pillars.Pillars
 import pillars.codec.given
 import pillars.probes.*
 
-
 extension [F[_]](p: Pillars[F])
     def redis: Redis[F] = p.module[Redis[F]](Redis.Key)
 
-final case class Redis[F[_]: MonadCancelThrow](connection: Resource[F, RedisConnection[F]])(using c: Concurrent[F]) extends Module[F]:
+final case class Redis[F[_]: MonadCancelThrow](connection: Resource[F, RedisConnection[F]])(using c: Concurrent[F])
+    extends Module[F]:
     export connection.*
 
     override def probes: List[Probe[F]] =
@@ -38,7 +37,7 @@ final case class Redis[F[_]: MonadCancelThrow](connection: Resource[F, RedisConn
             override def check: F[Boolean]    = connection.use { client =>
                 RedisCommands.ping[io.chrisdavenport.rediculous.Redis[F, *]].run(client) map {
                     case Ok | Pong => true
-                    case _ => false
+                    case _         => false
                 }
             }
         probe.pure[List]
@@ -60,21 +59,22 @@ class RedisLoader extends Loader:
     ): Resource[F, Redis[F]] =
         import context.*
         given Files[F] = Files.forAsync[F]
-        for {
-            _          <- Resource.eval(logger.info("Loading Redis module"))
-            config     <- Resource.eval(configReader.read[RedisConfig]("redis"))
+        for
+            _         <- Resource.eval(logger.info("Loading Redis module"))
+            config    <- Resource.eval(configReader.read[RedisConfig]("redis"))
             connection = Redis(
-                RedisConnection.queued[F]
-                .withHost(config.host)
-                .withPort(config.port)
-                .withMaxQueued(config.maxQueue)
-                .withWorkers(config.workers)
-                .withAuth(config.username, config.password)
-                .withTLS
-                .build
-            )
-            _          <- Resource.eval(logger.info("Redis module loaded"))
-        } yield connection
+                           RedisConnection.queued[F]
+                               .withHost(config.host)
+                               .withPort(config.port)
+                               .withMaxQueued(config.maxQueue)
+                               .withWorkers(config.workers)
+                               .withAuth(config.username, config.password)
+                               .withTLS
+                               .build
+                         )
+            _         <- Resource.eval(logger.info("Redis module loaded"))
+        yield connection
+        end for
     end load
 end RedisLoader
 
@@ -102,4 +102,3 @@ private type RedisPasswordConstraint = Not[Blank] DescribedAs "Redis password mu
 opaque type RedisPassword <: String  = String :| RedisPasswordConstraint
 
 object RedisPassword extends RefinedTypeOps[String, RedisPasswordConstraint, RedisPassword]
-
