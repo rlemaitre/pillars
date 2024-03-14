@@ -1,5 +1,6 @@
 # sbt
 target/
+.gradle/
 project/plugins/project/
 boot/
 lib_managed/

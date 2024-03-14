@@ -16,6 +16,8 @@ endif::projectRootDir[]
 - <<Database>>
 - <<HTTP Client>>
 - <<Feature Flags>>
+- <<Redis>>
+- <<RabbitMQ>>
 
 === Database
 
@@ -36,6 +38,18 @@ xref:20_http-client.adoc[Read more]
 The Feature Flags module provides a simple abstraction over the feature flags layer.
 
 xref:30_flags.adoc[Read more]
+
+=== Redis
+
+The `Redis` module provides integration with https://redis.io[redis].
+
+xref:40_redis.adoc[Read more]
+
+=== RabbitMQ
+
+The `RabbitMQ` module provides integration with https://www.rabbitmq.com[RabbitMQ].
+
+xref:41_rabbitmq.adoc[Read more]
 
 === Write your own module
 
