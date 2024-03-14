@@ -11,7 +11,9 @@ create table if not exists country (
 
 create table if not exists user_registry (
   id      serial primary key,
-  name    varchar(255) unique not null,
+  first_name text,
+  last_name  text,
+  email    text unique not null,
   age     int,
   country char(2) references country(iso)
 );

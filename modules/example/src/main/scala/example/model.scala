@@ -2,25 +2,35 @@ package example
 
 import io.github.iltotore.iron.*
 import io.github.iltotore.iron.constraint.all.*
-import java.time.*
 
-opaque type Username <: String = String :| MinLength[3] & MaxLength[20]
-object Username extends RefinedTypeOps[String, MinLength[3] & MaxLength[20], Username]
+type UsernameConstraint        = (MinLength[3] & MaxLength[20]) DescribedAs "Must be between 3 and 20 characters"
+opaque type Username <: String = String :| UsernameConstraint
+object Username extends RefinedTypeOps[String, UsernameConstraint, Username]
 
-opaque type Age <: Int = Int :| Positive & Less[150]
-object Age extends RefinedTypeOps[Int, Positive & Less[150], Age]
+type AgeConstraint     = (Positive & Less[150]) DescribedAs "Must be a positive number less than 150"
+opaque type Age <: Int = Int :| AgeConstraint
+object Age extends RefinedTypeOps[Int, AgeConstraint, Age]
 
-opaque type Title <: String = String :| Not[Blank]
-object Title extends RefinedTypeOps[String, Not[Blank], Title]
+type FirstNameConstraint        = Not[Blank] DescribedAs "First name must not be blank"
+opaque type FirstName <: String = String :| FirstNameConstraint
+object FirstName extends RefinedTypeOps[String, FirstNameConstraint, FirstName]
 
-opaque type FirstName <: String = String :| Not[Blank]
-object FirstName extends RefinedTypeOps[String, Not[Blank], FirstName]
+type LastNameConstraint        = Not[Blank] DescribedAs "Last name must not be blank"
+opaque type LastName <: String = String :| LastNameConstraint
+object LastName extends RefinedTypeOps[String, LastNameConstraint, LastName]
 
-opaque type LastName <: String = String :| Not[Blank]
-object LastName extends RefinedTypeOps[String, Not[Blank], LastName]
+type EmailConstraint        = Match[".*@.*\\..*"] DescribedAs "Must be a valid e-mail"
+opaque type Email <: String = String :| EmailConstraint
+object Email extends RefinedTypeOps[String, EmailConstraint, Email]
 
-case class Book(title: Title, authors: List[Author], year: Year, pages: Int)
+type CountryNameConstraint        = Not[Blank] DescribedAs "Country name must not be blank"
+opaque type CountryName <: String = String :| CountryNameConstraint
+object CountryName extends RefinedTypeOps[String, CountryNameConstraint, CountryName]
 
-case class Author(firstName: FirstName, lastName: LastName)
+type CountryCodeConstraint        = (FixedLength[2] & LettersUpperCase) DescribedAs "Country name must not be blank"
+opaque type CountryCode <: String = String :| CountryCodeConstraint
+object CountryCode extends RefinedTypeOps[String, CountryCodeConstraint, CountryCode]
 
-case class User(name: Username, age: Age)
+case class Country(code: CountryCode, name: CountryName, niceName: String)
+
+case class User(firstName: FirstName, lastName: LastName, email: Email, age: Age, country: Country)

@@ -17,9 +17,10 @@ object app extends pillars.EntryPoint: // // <1>
     def app: pillars.App[IO] = new: // // <2>
         def infos: AppInfo = BuildInfo.toAppInfo // // <3>
 
-        def endpoints = TodoController().endpoints.map(_.endpoint)
+        def endpoints = Endpoints.all
 
         def run: Run[IO, IO[Unit]] = // // <4>
+            val controllers: List[Controller[IO]] = List(HomeController(), UserController())
             for
                 _ <- Logger[IO].info(s"📚 Welcome to ${Config[IO].name}!")
                 _ <- DBMigration[IO].migrate("classpath:db-migrations") // // <5>
@@ -35,7 +36,7 @@ object app extends pillars.EntryPoint: // // <1>
                              size <- response.body.compile.count
                              _    <- Logger[IO].info(s"Body: $size bytes")
                          yield ()
-                _ <- ApiServer[IO].start(TodoController().endpoints)
+                _ <- ApiServer[IO].start(controllers.foldLeft(List.empty)(_ ++ _.endpoints))
             yield ()
             end for
         end run
