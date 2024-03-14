@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
     
-    <!-- sourceuri: user-guide/30_modules/100_write-your-own-module.html -->
+    <!-- sourceuri: user-guide/30_modules/40_redis.html -->
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
     <meta content="INDEX, FOLLOW" name="ROBOTS">
 
-    <title>Write your own module</title>
+    <title>Redis Module</title>
 
     <meta content="Pillars" property="og:title">
     <meta content="Build your backend service in Scala 3 the easy way" property="og:description">
@@ -116,13 +116,13 @@
                                 <a class="" href="../../user-guide/30_modules/30_flags.html">Feature Flags module</a>
                             </li>
                             <li>
-                                <a class="" href="../../user-guide/30_modules/40_redis.html">Redis Module</a>
+                                <a class="active" href="../../user-guide/30_modules/40_redis.html">Redis Module</a>
                             </li>
                             <li>
                                 <a class="" href="../../user-guide/30_modules/41_rabbitmq.html">RabbitMQ Module</a>
                             </li>
                             <li>
-                                <a class="active" href="../../user-guide/30_modules/100_write-your-own-module.html">Write your own module</a>
+                                <a class="" href="../../user-guide/30_modules/100_write-your-own-module.html">Write your own module</a>
                             </li>
                         </ul>
                             </li>
@@ -144,20 +144,40 @@
         <p>
             
 <div class="sect1">
-<h2 id="_write_your_own_module">Write your own module</h2>
+<h2 id="_redis_module">Redis module</h2>
 <div class="sectionbody">
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-This documentation needs to be written.
-You can help us by <a href="../../contribute/10_contributing.html">contributing to the documentation</a>.
-</td>
-</tr>
-</table>
+<div class="paragraph">
+<p>The <code>Redis</code> module provides integration with <a href="https://redis.io">redis</a>.
+It uses the <a href="https://github.com/davenverse/rediculous">rediculous</a> library.</p>
+</div>
+<div class="sect2">
+<h3 id="_redis_module_configuration">Redis Module Configuration</h3>
+<div class="paragraph">
+<p>The configuration is read from the application&#8217;s configuration file under the <code>redis</code> section.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_using_the_redis_module">Using the Redis Module</h3>
+<div class="paragraph">
+<p>To use the <code>Redis</code> module, you need to import it and then access it through the <code>Pillars</code> instance:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight linenums"><code data-lang="scala">import pillars.redis.*
+
+val redisModule = pillarsInstance.redis</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can also use directly <code>Redis[F]</code>
+You can then use the <code>redisModule</code> to perform Redis operations.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_redis_operations">Redis Operations</h3>
+<div class="paragraph">
+<p>TODO</p>
+</div>
 </div>
 </div>
 </div>
@@ -188,11 +208,11 @@ You can help us by <a href="../../contribute/10_contributing.html">contributing 
     <button class="feedback--answer feedback--answer-yes">Yes</button>
     <button class="feedback--answer feedback--answer-no">No</button>
     <p class="feedback--response feedback--response-yes">
-        Glad to hear it! Please <a href="https://github.com/rlemaitre/pillars/issues/new?title=Docs%3A+Feedback+for+%27Write+your+own+module%27%20%F0%9F%91%8D&body=%0A%0A%5BEnter%20feedback%20here%5D%0A%0A%0A---%0A%23page:user-guide/30_modules/100_write-your-own-module.adoc">tell us
+        Glad to hear it! Please <a href="https://github.com/rlemaitre/pillars/issues/new?title=Docs%3A+Feedback+for+%27Redis+Module%27%20%F0%9F%91%8D&body=%0A%0A%5BEnter%20feedback%20here%5D%0A%0A%0A---%0A%23page:user-guide/30_modules/40_redis.adoc">tell us
     how we can improve</a>.
     </p>
     <p class="feedback--response feedback--response-no">
-        Sorry to hear that. Please <a href="https://github.com/rlemaitre/pillars/issues/new?title=Docs%3A+Feedback+for+%27Write+your+own+module%27%20%F0%9F%91%8E&body=%0A%0A%5BEnter%20feedback%20here%5D%0A%0A%0A---%0A%23page:user-guide/30_modules/100_write-your-own-module.adoc">tell
+        Sorry to hear that. Please <a href="https://github.com/rlemaitre/pillars/issues/new?title=Docs%3A+Feedback+for+%27Redis+Module%27%20%F0%9F%91%8E&body=%0A%0A%5BEnter%20feedback%20here%5D%0A%0A%0A---%0A%23page:user-guide/30_modules/40_redis.adoc">tell
     us how we can improve</a>.
     </p>
 </div>
@@ -263,7 +283,13 @@ You can help us by <a href="../../contribute/10_contributing.html">contributing 
         <div id="toc" class="toc">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_write_your_own_module">Write your own module</a></li>
+<li><a href="#_redis_module">Redis module</a>
+<ul class="sectlevel2">
+<li><a href="#_redis_module_configuration">Redis Module Configuration</a></li>
+<li><a href="#_using_the_redis_module">Using the Redis Module</a></li>
+<li><a href="#_redis_operations">Redis Operations</a></li>
+</ul>
+</li>
 </ul>
 </div>
 
@@ -271,12 +297,12 @@ You can help us by <a href="../../contribute/10_contributing.html">contributing 
     <ul>
 
         <li>
-            <a href="https://github.com/rlemaitre/pillars/edit/main/docs/user-guide/30_modules/100_write-your-own-module.adoc" target="_blank"><i class="fa fa-edit fa-fw"></i> Improve this doc</a>
+            <a href="https://github.com/rlemaitre/pillars/edit/main/docs/user-guide/30_modules/40_redis.adoc" target="_blank"><i class="fa fa-edit fa-fw"></i> Improve this doc</a>
         </li>
 
 
         <li>
-            <a href="https://github.com/rlemaitre/pillars/issues/new?title=Docs%3A+Feedback+for+%27Write+your+own+module%27&body=%0A%0A%5BEnter%20feedback%20here%5D%0A%0A%0A---%0A%23page:%20https://github.com/rlemaitre/pillars/edit/main/docs/user-guide/30_modules/100_write-your-own-module.adoc%0A%23branch:%20main" target="_blank">
+            <a href="https://github.com/rlemaitre/pillars/issues/new?title=Docs%3A+Feedback+for+%27Redis+Module%27&body=%0A%0A%5BEnter%20feedback%20here%5D%0A%0A%0A---%0A%23page:%20https://github.com/rlemaitre/pillars/edit/main/docs/user-guide/30_modules/40_redis.adoc%0A%23branch:%20main" target="_blank">
                 <i class="fa fa-github"></i> Create an issue
             </a>
         </li>

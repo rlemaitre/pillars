@@ -27,7 +27,17 @@
     </url>
 
     <url>
+    	<loc>http://jbake.org/user-guide/30_modules/40_redis.html</loc>
+    	<lastmod>2024-03-14</lastmod>
+    </url>
+
+    <url>
     	<loc>http://jbake.org/user-guide/30_modules/30_flags.html</loc>
+    	<lastmod>2024-03-14</lastmod>
+    </url>
+
+    <url>
+    	<loc>http://jbake.org/user-guide/30_modules/41_rabbitmq.html</loc>
     	<lastmod>2024-03-14</lastmod>
     </url>
 

@@ -37,11 +37,19 @@ var documents = [
     "uri": "user-guide/30_modules/index.html",
     "menu": "user-guide",
     "title": "Optional Modules",
-    "text": " Table of Contents Modules Database HTTP Client Feature Flags Write your own module Modules Pillars includes several optional modules: Database HTTP Client Feature Flags Database The database module provides a simple abstraction over the database access layer. It is based on the skunk library and provides a simple interface to execute queries and transactions. Read more HTTP Client The HTTP Client module provides a simple abstraction over the HTTP client layer. It is based on the http4s library using Netty and provides a simple interface to execute HTTP requests. Read more Feature Flags The Feature Flags module provides a simple abstraction over the feature flags layer. Read more Write your own module You can easily write your own module by implementing the Module trait. Read more "
+    "text": " Table of Contents Modules Database HTTP Client Feature Flags Redis RabbitMQ Write your own module Modules Pillars includes several optional modules: Database HTTP Client Feature Flags Redis RabbitMQ Database The database module provides a simple abstraction over the database access layer. It is based on the skunk library and provides a simple interface to execute queries and transactions. Read more HTTP Client The HTTP Client module provides a simple abstraction over the HTTP client layer. It is based on the http4s library using Netty and provides a simple interface to execute HTTP requests. Read more Feature Flags The Feature Flags module provides a simple abstraction over the feature flags layer. Read more Redis The Redis module provides integration with redis . Read more RabbitMQ The RabbitMQ module provides integration with RabbitMQ . Read more Write your own module You can easily write your own module by implementing the Module trait. Read more "
 },
 
 {
     "id": 5,
+    "uri": "user-guide/30_modules/40_redis.html",
+    "menu": "user-guide",
+    "title": "Redis Module",
+    "text": " Table of Contents Redis module Redis Module Configuration Using the Redis Module Redis Operations Redis module The Redis module provides integration with redis . It uses the rediculous library. Redis Module Configuration The configuration is read from the application&#8217;s configuration file under the redis section. Using the Redis Module To use the Redis module, you need to import it and then access it through the Pillars instance: import pillars.redis.* val redisModule = pillarsInstance.redis You can also use directly Redis[F] You can then use the redisModule to perform Redis operations. Redis Operations TODO "
+},
+
+{
+    "id": 6,
     "uri": "user-guide/30_modules/30_flags.html",
     "menu": "user-guide",
     "title": "Feature Flags module",
@@ -49,7 +57,15 @@ var documents = [
 },
 
 {
-    "id": 6,
+    "id": 7,
+    "uri": "user-guide/30_modules/41_rabbitmq.html",
+    "menu": "user-guide",
+    "title": "RabbitMQ Module",
+    "text": " Table of Contents RabbitMQ module RabbitMQ Module Configuration Using the RabbitMQ Module RabbitMQ Operations RabbitMQ module The RabbitMQ module provides integration with RabbitMQ . It uses the fs2-rabbit library. RabbitMQ Module Configuration The RabbitMQ configuration is defined in the Config case class. It includes the following fields: host : the RabbitMQ host port : the RabbitMQ port virtualHost : the RabbitMQ virtual host connectionTimeout : the connection timeout ssl : enable SSL mode username : RabbitMQ username password : RabbitMQ password requeueOnNack : requeue messages when not ACK-ed requeueOnReject : requeue messages when rejected internalQueueSize : client internal queue size requestedHeartbeat : heartbeat interval automaticRecovery : automatically reconnect on failure clientProvidedConnectionName : client label The configuration is read from the application&#8217;s configuration file under the rabbitmq section. Using the RabbitMQ Module To use the RabbitMQ module, you need to import it and then access it through the Pillars instance: import pillars.redis.* val rabbitmqModule = pillarsInstance.redis You can also use directly RabbitMQ[F] . You can then use the rabbitmqModule to perform RabbitMQ operations. RabbitMQ Operations import pillars.redis.* for client &lt;- RabbitMQ[IO](configFor(container)).map(_.client) _ &lt;- client.createConnectionChannel.evalMap { implicit channel =&gt; for publisher &lt;- client.createPublisher[String](exchange, routingKey) _ &lt;- publisher(\"test message\") subscriber &lt;- client.createAutoAckConsumer[String](queue) out &lt;- subscriber.head.compile.onlyOrError yield assertEquals(out.payload, \"test message\") } yield () end for "
+},
+
+{
+    "id": 8,
     "uri": "user-guide/30_modules/15_db-migration.html",
     "menu": "user-guide",
     "title": "DB Migration Module",
@@ -57,7 +73,7 @@ var documents = [
 },
 
 {
-    "id": 7,
+    "id": 9,
     "uri": "user-guide/30_modules/100_write-your-own-module.html",
     "menu": "user-guide",
     "title": "Write your own module",
@@ -65,7 +81,7 @@ var documents = [
 },
 
 {
-    "id": 8,
+    "id": 10,
     "uri": "user-guide/30_modules/20_http-client.html",
     "menu": "user-guide",
     "title": "HTTP Client Module",
@@ -73,7 +89,7 @@ var documents = [
 },
 
 {
-    "id": 9,
+    "id": 11,
     "uri": "user-guide/30_modules/10_db.html",
     "menu": "user-guide",
     "title": "Database Module",
@@ -81,7 +97,7 @@ var documents = [
 },
 
 {
-    "id": 10,
+    "id": 12,
     "uri": "user-guide/20_features/20_logging.html",
     "menu": "user-guide",
     "title": "Logging",
@@ -89,7 +105,7 @@ var documents = [
 },
 
 {
-    "id": 11,
+    "id": 13,
     "uri": "user-guide/20_features/60_admin-server.html",
     "menu": "user-guide",
     "title": "Admin Server",
@@ -97,7 +113,7 @@ var documents = [
 },
 
 {
-    "id": 12,
+    "id": 14,
     "uri": "user-guide/20_features/30_probes.html",
     "menu": "user-guide",
     "title": "Probes",
@@ -105,7 +121,7 @@ var documents = [
 },
 
 {
-    "id": 13,
+    "id": 15,
     "uri": "user-guide/20_features/10_configuration.html",
     "menu": "user-guide",
     "title": "Configuration",
@@ -113,7 +129,7 @@ var documents = [
 },
 
 {
-    "id": 14,
+    "id": 16,
     "uri": "user-guide/20_features/50_observability.html",
     "menu": "user-guide",
     "title": "Observability",
@@ -121,7 +137,7 @@ var documents = [
 },
 
 {
-    "id": 15,
+    "id": 17,
     "uri": "user-guide/20_features/40_api-server.html",
     "menu": "user-guide",
     "title": "API Server",
@@ -129,7 +145,7 @@ var documents = [
 },
 
 {
-    "id": 16,
+    "id": 18,
     "uri": "search.html",
     "menu": "-",
     "title": "search",
@@ -137,7 +153,7 @@ var documents = [
 },
 
 {
-    "id": 17,
+    "id": 19,
     "uri": "lunrjsindex.html",
     "menu": "-",
     "title": "null",
