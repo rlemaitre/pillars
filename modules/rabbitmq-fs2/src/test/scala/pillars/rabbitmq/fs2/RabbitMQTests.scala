@@ -44,8 +44,6 @@ class RabbitMQTests extends CatsEffectSuite, TestContainerForEach:
 
     test("allow exchanging messages"):
         withContainers { container =>
-
-            RabbitMQ[IO](configFor(container)).map(_.client).flatMap(_.createConnectionChannel)
             for
                 client <- RabbitMQ[IO](configFor(container)).map(_.client)
                 _      <- client.createConnectionChannel.evalMap { implicit channel =>
