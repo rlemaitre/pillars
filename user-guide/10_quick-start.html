@@ -200,9 +200,10 @@ You can find an example in the <code>modules/example/src/main/resources/applicat
     def app: pillars.App[IO] = new: // <i class="conum" data-value="2"></i><b>(2)</b>
         def infos: AppInfo = BuildInfo.toAppInfo // <i class="conum" data-value="3"></i><b>(3)</b>
 
-        def endpoints = TodoController().endpoints.map(_.endpoint)
+        def endpoints = Endpoints.all
 
         def run: Run[IO, IO[Unit]] = // <i class="conum" data-value="4"></i><b>(4)</b>
+            val controllers: List[Controller[IO]] = List(HomeController(), UserController())
             for
                 _ &lt;- Logger[IO].info(s"📚 Welcome to ${Config[IO].name}!")
                 _ &lt;- DBMigration[IO].migrate("classpath:db-migrations") // <i class="conum" data-value="5"></i><b>(5)</b>
@@ -218,7 +219,7 @@ You can find an example in the <code>modules/example/src/main/resources/applicat
                              size &lt;- response.body.compile.count
                              _    &lt;- Logger[IO].info(s"Body: $size bytes")
                          yield ()
-                _ &lt;- ApiServer[IO].start(TodoController().endpoints)
+                _ &lt;- ApiServer[IO].start(controllers.foldLeft(List.empty)(_ ++ _.endpoints))
             yield ()
             end for
         end run
