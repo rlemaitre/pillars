@@ -98,7 +98,7 @@ object Dependencies {
 
     val migrationsRuntime: Seq[ModuleID] = Seq(
       "org.postgresql" % "postgresql"                 % "42.7.2",
-      "org.flywaydb"   % "flyway-database-postgresql" % "10.9.1"
+      "org.flywaydb"   % "flyway-database-postgresql" % "10.10.0"
     )
     val migrations: Seq[ModuleID]        = Seq(
       "org.flywaydb" % "flyway-core" % "10.10.0"
