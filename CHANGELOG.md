@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.1.5] - 2024-03-14
+### :bug: Bug Fixes
+- [`0e6ca91`](https://github.com/rlemaitre/pillars/commit/0e6ca91e41507bbd46e5e549f71b1ca85d02d59b) - **core**: Handle correctly PillarsError in API *(PR [#86](https://github.com/rlemaitre/pillars/pull/86) by [@rlemaitre](https://github.com/rlemaitre))*
+
+
 ## [v0.1.4] - 2024-03-13
 ### :sparkles: New Features
 - [`bb6627e`](https://github.com/rlemaitre/pillars/commit/bb6627e234a0b5fdc6c7eb5189261d0f5a85f531) - add tapir metrics *(PR [#85](https://github.com/rlemaitre/pillars/pull/85) by [@jnicoulaud-ledger](https://github.com/jnicoulaud-ledger))*
@@ -57,3 +62,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.1.1]: https://github.com/rlemaitre/pillars/compare/v0.1.0...v0.1.1
 [v0.1.3]: https://github.com/rlemaitre/pillars/compare/v0.1.1...v0.1.3
 [v0.1.4]: https://github.com/rlemaitre/pillars/compare/v0.1.3...v0.1.4
+[v0.1.5]: https://github.com/rlemaitre/pillars/compare/v0.1.4...v0.1.5
