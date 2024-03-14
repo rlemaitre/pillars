@@ -25,14 +25,14 @@ final case class FlagController[F[_]: Functor](manager: FlagManager[F]) extends 
                 .getFlag(name)
                 .map:
                     case Some(flag) => Right(flag)
-                    case None       => FlagError.FlagNotFound(name).view
+                    case None       => FlagError.FlagNotFound(name).httpResponse
     private val modify  =
         FlagEndpoints.edit.serverLogic: (name, flag) =>
             manager
                 .setStatus(name, flag.status)
                 .map:
                     case Some(flag) => Right(flag)
-                    case None       => FlagError.FlagNotFound(name).view
+                    case None       => FlagError.FlagNotFound(name).httpResponse
 
     override def endpoints: List[HttpEndpoint[F]] = List(listAll, getOne, modify)
 end FlagController

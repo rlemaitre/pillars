@@ -17,11 +17,14 @@ trait PillarsError extends Throwable, NoStackTrace:
     def code: Code
     def number: ErrorNumber
     def message: Message
-    def details: Option[String]                             = None
-    def status: StatusCode                                  = StatusCode.InternalServerError
-    override def getMessage: String                         = f"$code-$number%04d : $message"
-    def view[T]: Either[(StatusCode, PillarsError.View), T] =
+    def details: Option[String]     = None
+    def status: StatusCode          = StatusCode.InternalServerError
+    override def getMessage: String = f"$code-$number%04d : $message"
+
+    def httpResponse[T]: Either[(StatusCode, PillarsError.View), T] =
         Left((status, PillarsError.View(f"$code-$number%04d", message, details)))
+
+    def view: PillarsError.View = PillarsError.View(f"$code-$number%04d", message, details)
 
 end PillarsError
 

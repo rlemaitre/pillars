@@ -1,0 +1,25 @@
+@host = http://localhost:9876
+
+###
+# @name home
+GET {{ host }}/
+
+###
+# @name user list
+GET {{ host }}/v0/user
+
+###
+# @name user create
+POST {{ host }}/v0/user
+
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "age": 25,
+  "country": "FR",
+  "email": "john.doe@example.com"
+}
+
+###
+# @name user get
+GET {{ host }}/v0/user/1

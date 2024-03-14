@@ -117,5 +117,5 @@ object Dependencies {
     ) ++ tests
     val httpClient: Seq[ModuleID] = http4sClient ++ http4s ++ tests
     val core: Seq[ModuleID]       =
-        effect ++ json ++ tapir ++ http4sServer ++ model ++ commandLine ++ logging ++ observability ++ tests
+        effect ++ json ++ tapir ++ http4s ++ http4sServer ++ model ++ commandLine ++ logging ++ observability ++ tests
 }
