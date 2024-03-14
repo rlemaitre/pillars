@@ -26,7 +26,7 @@ import pillars.probes.Component
 import pillars.probes.Probe
 import scala.language.postfixOps
 
-trait KafkaFs2Client[F[_]]
+trait $Prefix$Client[F[_]]
 
 extension [F[_]](p: Pillars[F])
     def $lowerCaseModuleName$ : $Prefix$[F] = p.module[$Prefix$[F]]($Prefix$.Key)
