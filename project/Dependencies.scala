@@ -92,8 +92,8 @@ object Dependencies {
     ) ++ tests
 
     val doobie: Seq[ModuleID] = Seq(
-      "org.tpolecat" %% "doobie-core"   % "1.0.0-RC4",
-      "org.tpolecat" %% "doobie-hikari" % "1.0.0-RC4" // HikariCP transactor.
+      "org.tpolecat" %% "doobie-core"   % "1.0.0-RC5",
+      "org.tpolecat" %% "doobie-hikari" % "1.0.0-RC5" // HikariCP transactor.
     ) ++ tests
 
     val migrationsRuntime: Seq[ModuleID] = Seq(
