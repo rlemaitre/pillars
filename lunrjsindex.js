@@ -130,18 +130,18 @@ var documents = [
 
 {
     "id": 16,
-    "uri": "user-guide/20_features/40_api-server.html",
-    "menu": "user-guide",
-    "title": "API Server",
-    "text": " Table of Contents API Server API Server This documentation needs to be written. You can help us by contributing to the documentation . "
-},
-
-{
-    "id": 17,
     "uri": "user-guide/20_features/50_observability.html",
     "menu": "user-guide",
     "title": "Observability",
     "text": " Table of Contents Observability Observability This documentation needs to be written. You can help us by contributing to the documentation . "
+},
+
+{
+    "id": 17,
+    "uri": "user-guide/20_features/40_api-server.html",
+    "menu": "user-guide",
+    "title": "API Server",
+    "text": " Table of Contents API Server API Server This documentation needs to be written. You can help us by contributing to the documentation . "
 },
 
 {
