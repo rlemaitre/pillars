@@ -58,6 +58,14 @@ var documents = [
 
 {
     "id": 7,
+    "uri": "user-guide/30_modules/41_rabbitmq.html",
+    "menu": "user-guide",
+    "title": "RabbitMQ Module",
+    "text": " Table of Contents RabbitMQ module RabbitMQ Module Configuration Using the RabbitMQ Module RabbitMQ Operations RabbitMQ module The RabbitMQ module provides integration with RabbitMQ . It uses the fs2-rabbit library. RabbitMQ Module Configuration The RabbitMQ configuration is defined in the Config case class. It includes the following fields: host : the RabbitMQ host port : the RabbitMQ port virtualHost : the RabbitMQ virtual host connectionTimeout : the connection timeout ssl : enable SSL mode username : RabbitMQ username password : RabbitMQ password requeueOnNack : requeue messages when not ACK-ed requeueOnReject : requeue messages when rejected internalQueueSize : client internal queue size requestedHeartbeat : heartbeat interval automaticRecovery : automatically reconnect on failure clientProvidedConnectionName : client label The configuration is read from the application&#8217;s configuration file under the rabbitmq section. Using the RabbitMQ Module To use the RabbitMQ module, you need to import it and then access it through the Pillars instance: import pillars.redis.* val rabbitmqModule = pillarsInstance.redis You can also use directly RabbitMQ[F] . You can then use the rabbitmqModule to perform RabbitMQ operations. RabbitMQ Operations import pillars.redis.* for client &lt;- RabbitMQ[IO](configFor(container)).map(_.client) _ &lt;- client.createConnectionChannel.evalMap { implicit channel =&gt; for publisher &lt;- client.createPublisher[String](exchange, routingKey) _ &lt;- publisher(\"test message\") subscriber &lt;- client.createAutoAckConsumer[String](queue) out &lt;- subscriber.head.compile.onlyOrError yield assertEquals(out.payload, \"test message\") } yield () end for "
+},
+
+{
+    "id": 8,
     "uri": "user-guide/30_modules/15_db-migration.html",
     "menu": "user-guide",
     "title": "DB Migration Module",
@@ -65,19 +73,11 @@ var documents = [
 },
 
 {
-    "id": 8,
+    "id": 9,
     "uri": "user-guide/30_modules/100_write-your-own-module.html",
     "menu": "user-guide",
     "title": "Write your own module",
     "text": " Table of Contents Write your own module Write your own module This documentation needs to be written. You can help us by contributing to the documentation . "
-},
-
-{
-    "id": 9,
-    "uri": "user-guide/30_modules/41_rabbitmq.html",
-    "menu": "user-guide",
-    "title": "RabbitMQ Module",
-    "text": " Table of Contents RabbitMQ module RabbitMQ Module Configuration Using the RabbitMQ Module RabbitMQ Operations RabbitMQ module The RabbitMQ module provides integration with RabbitMQ . It uses the fs2-rabbit library. RabbitMQ Module Configuration The RabbitMQ configuration is defined in the Config case class. It includes the following fields: host : the RabbitMQ host port : the RabbitMQ port virtualHost : the RabbitMQ virtual host connectionTimeout : the connection timeout ssl : enable SSL mode username : RabbitMQ username password : RabbitMQ password requeueOnNack : requeue messages when not ACK-ed requeueOnReject : requeue messages when rejected internalQueueSize : client internal queue size requestedHeartbeat : heartbeat interval automaticRecovery : automatically reconnect on failure clientProvidedConnectionName : client label The configuration is read from the application&#8217;s configuration file under the rabbitmq section. Using the RabbitMQ Module To use the RabbitMQ module, you need to import it and then access it through the Pillars instance: import pillars.redis.* val rabbitmqModule = pillarsInstance.redis You can also use directly RabbitMQ[F] . You can then use the rabbitmqModule to perform RabbitMQ operations. RabbitMQ Operations import pillars.redis.* for client &lt;- RabbitMQ[IO](configFor(container)).map(_.client) _ &lt;- client.createConnectionChannel.evalMap { implicit channel =&gt; for publisher &lt;- client.createPublisher[String](exchange, routingKey) _ &lt;- publisher(\"test message\") subscriber &lt;- client.createAutoAckConsumer[String](queue) out &lt;- subscriber.head.compile.onlyOrError yield assertEquals(out.payload, \"test message\") } yield () end for "
 },
 
 {

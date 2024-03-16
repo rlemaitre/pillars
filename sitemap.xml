@@ -37,17 +37,17 @@
     </url>
 
     <url>
+    	<loc>http://jbake.org/user-guide/30_modules/41_rabbitmq.html</loc>
+    	<lastmod>2024-03-16</lastmod>
+    </url>
+
+    <url>
     	<loc>http://jbake.org/user-guide/30_modules/15_db-migration.html</loc>
     	<lastmod>2024-03-16</lastmod>
     </url>
 
     <url>
     	<loc>http://jbake.org/user-guide/30_modules/100_write-your-own-module.html</loc>
-    	<lastmod>2024-03-16</lastmod>
-    </url>
-
-    <url>
-    	<loc>http://jbake.org/user-guide/30_modules/41_rabbitmq.html</loc>
     	<lastmod>2024-03-16</lastmod>
     </url>
 
