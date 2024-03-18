@@ -52,7 +52,7 @@ object Dependencies {
       "com.softwaremill.sttp.tapir"   %% "tapir-opentelemetry-metrics" % "1.9.11",
       "com.softwaremill.sttp.tapir"   %% "tapir-iron"                  % "1.9.11",
       "com.softwaremill.sttp.tapir"   %% "tapir-openapi-docs"          % "1.9.11",
-      "com.softwaremill.sttp.apispec" %% "openapi-circe-yaml"          % "0.7.4",
+      "com.softwaremill.sttp.apispec" %% "openapi-circe-yaml"          % "0.8.0",
       "com.softwaremill.sttp.tapir"   %% "tapir-http4s-client"         % "1.9.11" % Test,
       "com.softwaremill.sttp.tapir"   %% "tapir-sttp-stub-server"      % "1.9.11" % Test,
       "com.softwaremill.sttp.client3" %% "core"                        % "3.9.4"  % Test
