@@ -13,3 +13,6 @@ addSbtPlugin("com.github.sbt" % "sbt-dynver"    % "5.0.1")
 
 addSbtPlugin("org.xerial.sbt" % "sbt-sonatype"   % "3.10.0")
 addSbtPlugin("com.github.sbt" % "sbt-ci-release" % "1.5.12")
+
+// Giter8 scaffold
+addSbtPlugin("org.foundweekends.giter8" % "sbt-giter8-scaffold" % "0.16.2")
