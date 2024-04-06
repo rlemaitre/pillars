@@ -3,7 +3,7 @@ object Dependencies {
     val effect: Seq[ModuleID] = Seq(
       "org.typelevel" %% "cats-core"             % "2.10.0",
       "org.typelevel" %% "cats-effect"           % "3.5.4",
-      "co.fs2"        %% "fs2-core"              % "3.9.4",
+      "co.fs2"        %% "fs2-core"              % "3.10.2",
       "org.typelevel" %% "cats-collections-core" % "0.9.8",
       "org.typelevel" %% "cats-time"             % "0.5.1",
       "org.typelevel" %% "mouse"                 % "1.2.3"
@@ -55,16 +55,16 @@ object Dependencies {
       "com.softwaremill.sttp.apispec" %% "openapi-circe-yaml"          % "0.8.0",
       "com.softwaremill.sttp.tapir"   %% "tapir-http4s-client"         % "1.10.3" % Test,
       "com.softwaremill.sttp.tapir"   %% "tapir-sttp-stub-server"      % "1.10.3" % Test,
-      "com.softwaremill.sttp.client3" %% "core"                        % "3.9.4"  % Test
+      "com.softwaremill.sttp.client3" %% "core"                        % "3.9.5"  % Test
       //    "com.softwaremill.sttp.tapir"   %% "tapir-swagger-ui-bundle" % "1.9.1",
     )
 
     val logging: Seq[ModuleID] = Seq( //
-      "com.outr" %% "scribe"            % "3.13.0",
-      "com.outr" %% "scribe-cats"       % "3.13.0",
-      "com.outr" %% "scribe-slf4j"      % "3.13.0",
-      "com.outr" %% "scribe-json-circe" % "3.13.0",
-      "com.outr" %% "scribe-file"       % "3.13.0"
+      "com.outr" %% "scribe"            % "3.13.2",
+      "com.outr" %% "scribe-cats"       % "3.13.2",
+      "com.outr" %% "scribe-slf4j"      % "3.13.2",
+      "com.outr" %% "scribe-json-circe" % "3.13.2",
+      "com.outr" %% "scribe-file"       % "3.13.2"
     )
 
     val tests: Seq[ModuleID] = Seq(
