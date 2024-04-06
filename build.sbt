@@ -68,11 +68,11 @@ lazy val core = Project("pillars-core", file("modules/core"))
       buildInfoPackage := "pillars.build"
     )
 
-lazy val db = Project("pillars-db", file("modules/db"))
+lazy val dbSkunk = Project("pillars-db-skunk", file("modules/db-skunk"))
     .enablePlugins(BuildInfoPlugin)
     .settings(
-      name             := "pillars-db",
-      description      := "pillars-db is a scala 3 library providing database services for writing backend applications",
+      name             := "pillars-db-skunk",
+      description      := "pillars-db-skunk is a scala 3 library providing database services for writing backend applications using skunk",
       libraryDependencies ++= Dependencies.database,
       buildInfoKeys    := Seq[BuildInfoKey](name, version, description),
       buildInfoPackage := "pillars.db.build"
@@ -110,7 +110,7 @@ lazy val dbMigrations = Project("pillars-db-migration", file("modules/db-migrati
       buildInfoKeys    := Seq[BuildInfoKey](name, version, description),
       buildInfoPackage := "pillars.db.migrations.build"
     )
-    .dependsOn(core, db)
+    .dependsOn(core, dbSkunk)
 
 lazy val rabbitmqFs2 = Project("pillars-rabbitmq-fs2", file("modules/rabbitmq-fs2"))
     .enablePlugins(BuildInfoPlugin)
@@ -157,7 +157,7 @@ lazy val example = Project("pillars-example", file("modules/example"))
       buildInfoPackage := "example.build",                                              // //<6>
       publish / skip   := true
     )
-    .dependsOn(core, db, flags, httpClient, dbMigrations)
+    .dependsOn(core, dbSkunk, flags, httpClient, dbMigrations)
 // end::example[]
 lazy val docs = Project("pillars-docs", file("modules/docs"))
     .settings(
@@ -168,7 +168,7 @@ lazy val docs = Project("pillars-docs", file("modules/docs"))
 
 lazy val pillars = project
     .in(file("."))
-    .aggregate(core, example, docs, db, dbDoobie, dbMigrations, flags, httpClient, rabbitmqFs2, redisRediculous)
+    .aggregate(core, example, docs, dbSkunk, dbDoobie, dbMigrations, flags, httpClient, rabbitmqFs2, redisRediculous)
     .settings(
       name                                       := "pillars",
       publishArtifact                            := false,
