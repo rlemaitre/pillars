@@ -39,6 +39,16 @@ See link:contributing.adoc[`contributing.adoc`] for ways to get started.
 
 Please adhere to this project's link:CODE_OF_CONDUCT.adoc[`code of conduct`].
 
+Scafolding connector:
+
+```
+g8Scaffold module --moduleName=kafka-fs2
+```
+
+Mind the gap :D
+
+
+
 
 == Feedback
 
