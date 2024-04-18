@@ -37,9 +37,12 @@ class FlagManagerTests extends CatsEffectSuite:
                 manager <- FlagManagerLoader().createManager[IO](config)
                 enabled <- manager.isEnabled(flag)
             yield enabled
-        assertIO(isEnabled(flag"flag1"), true)
-        assertIO(isEnabled(flag"flag2"), false)
-        assertIO(isEnabled(flag"undefined"), false)
+        for
+            _ <- assertIO(isEnabled(flag"flag1"), true)
+            _ <- assertIO(isEnabled(flag"flag2"), false)
+            _ <- assertIO(isEnabled(flag"undefined"), false)
+        yield ()
+        end for
 
     test("FlagManager should perform the action if flag is enabled"):
         given Tracer[IO] = Tracer.noop[IO]
