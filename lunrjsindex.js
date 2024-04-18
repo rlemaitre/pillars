@@ -18,38 +18,6 @@ var documents = [
 
 {
     "id": 2,
-    "uri": "user-guide/20_features/30_probes.html",
-    "menu": "user-guide",
-    "title": "Probes",
-    "text": " Table of Contents Probes Liveness Probe Readiness Probe Custom Probes Probes Probes allow you to monitor the health of your application and the underlying infrastructure. Probes are used to determine if a container is ready to accept traffic or if it should be restarted. Liveness Probe A liveness probe checks if the container is still running. If the liveness probe fails, the container is restarted. Pillars defines a default liveness probe. Readiness Probe A readiness probe checks if the container is ready to accept traffic. If the readiness probe fails, the container is not added to the load balancer. The pillars readiness probe aggregates all probes defined in the application. Pillars defines by default a database probe that is enabled if you include the db module . Custom Probes You can define custom probes by implementing the Probe trait. trait Probe[F[_]]: def component: Component // (1) def check: F[Boolean] // (2) def config: ProbeConfig = ProbeConfig() // (3) end Probe 1 The probe component. 2 The check function. If the check function returns true , the probe is considered successful. If is returns false or throws an exception, the probe is considered failed. 3 The probe configuration. "
-},
-
-{
-    "id": 3,
-    "uri": "user-guide/20_features/20_logging.html",
-    "menu": "user-guide",
-    "title": "Logging",
-    "text": " Table of Contents Logging Configuration Logging in your code Logging Logging is a very important part of any application. It allows you to see what is happening in your application and to debug it. Pillars uses the scribe library for logging. Configuration The logging configuration is described in the Configuration section. Logging in your code To log something in your code, you can use the logger defined on the Pillars instance. def run(using p: Pillars[IO]): IO[Unit] = import p.* for _ &lt;- logger.info(s\"📚 Welcome to ${config.name}!\") _ &lt;- logger.debug(s\"📚 The configuration is: $config\") yield () As the logger is configured before the application starts, you can use it in any part of your code with the classic scribe usage. import scribe.warn import scribe.cats.io.info def foo: IO[Unit] = info(\"Hello from foo!\") def bar: Unit = warn(\"Hello from bar!\") "
-},
-
-{
-    "id": 4,
-    "uri": "user-guide/30_modules/15_db-migration.html",
-    "menu": "user-guide",
-    "title": "DB Migration Module",
-    "text": " Table of Contents DB Migration module Configuration Usage DB Migration module The DB Migration module is a standalone module that is used to manage the database schema and data. It depends on the DB module. Configuration The configuration of the DB Migration module is done in the application.yml file, in a db-migration section. Parameters are: log-after : (duration) the time after which the migration log will be printed. It must be declared in the ISO-8601 format. Default is PT5s (five seconds). See Dumbo for more information. validate-on-migrate : (boolean) whether to validate the schema after migration. db-migration: log-after: PT5s validate-on-migrate: true Usage In order to use the DB Migration module, you need to add it as a dependency to your project. The migrations are written in SQL and are located in the src/main/resources/db/migration directory of your project. The migration files must be named in the following format: V{version}__{description}.sql , where: {version} is the version of the migration, and {description} is a description of the migration. The migration files are executed in the order of their version. To execute the migrations, you can use the migrate method of the DBMigration[F] class. "
-},
-
-{
-    "id": 5,
-    "uri": "user-guide/20_features/60_admin-server.html",
-    "menu": "user-guide",
-    "title": "Admin Server",
-    "text": " Table of Contents Admin Server Configuration Endpoints Defining administration endpoints Admin Server Pillars provides an administration server that can be used to manage the Pillars server. The administration endpoints are separated from the API server in order to ease security management. As it uses a different port, it can be protected by a firewall or use authentication on an ingress (such as nginx or caddy ). Configuration The configuration is described in the Configuration section. Endpoints By default, the administration server is available on port 19876 and exposes the following endpoints: GET /probes/healthz : the liveness probe. It always returns 200 OK and can be used to check if the server is running. GET /probes/health : the readiness probe. It returns 200 OK if the server is ready to handle requests and all probes are successful. See the Probes section for more details. Modules can add their own endpoints to the administration server. See the Flags section for the feature flags endpoints. Defining administration endpoints You can define administration endpoints easily by defining an adminControllers property in your App . "
-},
-
-{
-    "id": 6,
     "uri": "user-guide/20_features/40_api-server.html",
     "menu": "user-guide",
     "title": "API Server",
@@ -57,19 +25,51 @@ var documents = [
 },
 
 {
-    "id": 7,
-    "uri": "user-guide/30_modules/40_redis.html",
+    "id": 3,
+    "uri": "user-guide/20_features/30_probes.html",
     "menu": "user-guide",
-    "title": "Redis Module",
-    "text": " Table of Contents Redis module Redis Module Configuration Using the Redis Module Redis Operations Redis module The Redis module provides integration with redis . It uses the rediculous library. Redis Module Configuration The configuration is read from the application&#8217;s configuration file under the redis section. Using the Redis Module To use the Redis module, you need to import it and then access it through the Pillars instance: import pillars.redis.* val redisModule = pillarsInstance.redis You can also use directly Redis[F] You can then use the redisModule to perform Redis operations. Redis Operations TODO "
+    "title": "Probes",
+    "text": " Table of Contents Probes Liveness Probe Readiness Probe Custom Probes Probes Probes allow you to monitor the health of your application and the underlying infrastructure. Probes are used to determine if a container is ready to accept traffic or if it should be restarted. Liveness Probe A liveness probe checks if the container is still running. If the liveness probe fails, the container is restarted. Pillars defines a default liveness probe. Readiness Probe A readiness probe checks if the container is ready to accept traffic. If the readiness probe fails, the container is not added to the load balancer. The pillars readiness probe aggregates all probes defined in the application. Pillars defines by default a database probe that is enabled if you include the db module . Custom Probes You can define custom probes by implementing the Probe trait. trait Probe[F[_]]: def component: Component // (1) def check: F[Boolean] // (2) def config: ProbeConfig = ProbeConfig() // (3) end Probe 1 The probe component. 2 The check function. If the check function returns true , the probe is considered successful. If is returns false or throws an exception, the probe is considered failed. 3 The probe configuration. "
 },
 
 {
-    "id": 8,
+    "id": 4,
+    "uri": "user-guide/20_features/20_logging.html",
+    "menu": "user-guide",
+    "title": "Logging",
+    "text": " Table of Contents Logging Configuration Logging in your code Logging Logging is a very important part of any application. It allows you to see what is happening in your application and to debug it. Pillars uses the scribe library for logging. Configuration The logging configuration is described in the Configuration section. Logging in your code To log something in your code, you can use the logger defined on the Pillars instance. def run(using p: Pillars[IO]): IO[Unit] = import p.* for _ &lt;- logger.info(s\"📚 Welcome to ${config.name}!\") _ &lt;- logger.debug(s\"📚 The configuration is: $config\") yield () As the logger is configured before the application starts, you can use it in any part of your code with the classic scribe usage. import scribe.warn import scribe.cats.io.info def foo: IO[Unit] = info(\"Hello from foo!\") def bar: Unit = warn(\"Hello from bar!\") "
+},
+
+{
+    "id": 5,
     "uri": "user-guide/30_modules/20_http-client.html",
     "menu": "user-guide",
     "title": "HTTP Client Module",
     "text": " Table of Contents HTTP Client module HTTP Client Configuration Using the HttpClient Module HTTP Operations HTTP Client module The HttpClient module provides HTTP client functionality for the Pillars application. It uses the http4s library for creating HTTP requests and handling HTTP responses. HTTP Client Configuration The HTTP client configuration is defined in the Config case class. It includes the following field: followRedirect : A flag indicating whether to follow redirects. The configuration is read from the application&#8217;s configuration file under the http-client section. Using the HttpClient Module To use the HttpClient module, you need to import it and then access it through the Pillars instance: import pillars.httpclient.* val httpClientModule = pillarsInstance.httpClient You can also use directly Client[F] You can then use the httpClientModule to perform HTTP operations. HTTP Operations The HttpClient module provides methods for sending HTTP requests and receiving HTTP responses. You can use the httpClient extension method on Pillars to get an instance of Client[F] : import org.http4s.client.Client val client: Client[F] = pillars.httpClient This Client[F] instance can be used to send HTTP requests by using the same methods as org.http4s.client.Client[F] . "
+},
+
+{
+    "id": 6,
+    "uri": "user-guide/30_modules/15_db-migration.html",
+    "menu": "user-guide",
+    "title": "DB Migration Module",
+    "text": " Table of Contents DB Migration module Configuration Usage DB Migration module The DB Migration module is a standalone module that is used to manage the database schema and data. It depends on the DB module. Configuration The configuration of the DB Migration module is done in the application.yml file, in a db-migration section. Parameters are: log-after : (duration) the time after which the migration log will be printed. It must be declared in the ISO-8601 format. Default is PT5s (five seconds). See Dumbo for more information. validate-on-migrate : (boolean) whether to validate the schema after migration. db-migration: log-after: PT5s validate-on-migrate: true Usage In order to use the DB Migration module, you need to add it as a dependency to your project. The migrations are written in SQL and are located in the src/main/resources/db/migration directory of your project. The migration files must be named in the following format: V{version}__{description}.sql , where: {version} is the version of the migration, and {description} is a description of the migration. The migration files are executed in the order of their version. To execute the migrations, you can use the migrate method of the DBMigration[F] class. "
+},
+
+{
+    "id": 7,
+    "uri": "user-guide/20_features/60_admin-server.html",
+    "menu": "user-guide",
+    "title": "Admin Server",
+    "text": " Table of Contents Admin Server Configuration Endpoints Defining administration endpoints Admin Server Pillars provides an administration server that can be used to manage the Pillars server. The administration endpoints are separated from the API server in order to ease security management. As it uses a different port, it can be protected by a firewall or use authentication on an ingress (such as nginx or caddy ). Configuration The configuration is described in the Configuration section. Endpoints By default, the administration server is available on port 19876 and exposes the following endpoints: GET /probes/healthz : the liveness probe. It always returns 200 OK and can be used to check if the server is running. GET /probes/health : the readiness probe. It returns 200 OK if the server is ready to handle requests and all probes are successful. See the Probes section for more details. Modules can add their own endpoints to the administration server. See the Flags section for the feature flags endpoints. Defining administration endpoints You can define administration endpoints easily by defining an adminControllers property in your App . "
+},
+
+{
+    "id": 8,
+    "uri": "user-guide/30_modules/40_redis.html",
+    "menu": "user-guide",
+    "title": "Redis Module",
+    "text": " Table of Contents Redis module Redis Module Configuration Using the Redis Module Redis Operations Redis module The Redis module provides integration with redis . It uses the rediculous library. Redis Module Configuration The configuration is read from the application&#8217;s configuration file under the redis section. Using the Redis Module To use the Redis module, you need to import it and then access it through the Pillars instance: import pillars.redis.* val redisModule = pillarsInstance.redis You can also use directly Redis[F] You can then use the redisModule to perform Redis operations. Redis Operations TODO "
 },
 
 {
