@@ -8,10 +8,25 @@ import sttp.tapir.codec.iron.given
 import sttp.tapir.json.circe.jsonBody
 
 object Endpoints:
-    val home: Endpoint[Unit, Unit, Unit, String, Any] = endpoint.get.out(stringBody)
+    private val base                                               = endpoint.errorOut(jsonBody[PillarsError.View])
+    val ping: Endpoint[Unit, Unit, PillarsError.View, String, Any] =
+        base
+            .get
+            .in("ping")
+            .name("ping")
+            .description("Always return pong")
+            .out(stringBody)
 
-    private val base     = endpoint.in("v0").errorOut(jsonBody[PillarsError.View])
-    private val userBase = base.in("user")
+    val boom: Endpoint[Unit, Unit, PillarsError.View, String, Any] =
+        base
+            .get
+            .in("boom")
+            .name("boom")
+            .description("Always in error")
+            .out(stringBody)
+
+    private val api      = endpoint.in("v0").errorOut(jsonBody[PillarsError.View])
+    private val userBase = api.in("user")
 
     val createUser: Endpoint[Unit, UserView, PillarsError.View, UserView, Any] = userBase
         .in(jsonBody[UserView])
@@ -37,7 +52,7 @@ object Endpoints:
         .name("delete user")
 
     val all = List(
-      home,
+      ping,
       createUser,
       listUser,
       getUser,
