@@ -7,9 +7,11 @@ import pillars.Controller.HttpEndpoint
 import pillars.Pillars
 
 final case class HomeController()(using Pillars[IO]) extends Controller[IO]:
-    def list: HttpEndpoint[IO] = Endpoints.home.serverLogicSuccess: _ =>
-        "👋 Hi".pure[IO]
-    val endpoints              = List(list)
+    def ping: HttpEndpoint[IO] = Endpoints.ping.serverLogicSuccess: _ =>
+        "pong".pure[IO]
+    def boom: HttpEndpoint[IO] = Endpoints.boom.serverLogic: _ =>
+        throw new RuntimeException("💣 boom")
+    val endpoints              = List(ping, boom)
 end HomeController
 
 final case class UserController()(using Pillars[IO]) extends Controller[IO]:

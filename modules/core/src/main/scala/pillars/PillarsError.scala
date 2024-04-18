@@ -45,6 +45,14 @@ object PillarsError:
         override def details: Option[String] = Some(reason.getMessage)
     end Unknown
 
+    private[pillars] final case class PayloadTooLarge(maxLength: Long) extends PillarsError:
+        override def code: Code              = Code("ERR")
+        override def number: ErrorNumber     = ErrorNumber(Int.MaxValue)
+        override def message: Message        = Message(s"Payload limit ($maxLength) exceeded".refineUnsafe)
+        override def status: StatusCode      = StatusCode.PayloadTooLarge
+        override def details: Option[String] = Some(s"Payload limit ($maxLength) exceeded")
+    end PayloadTooLarge
+
     private type CodeConstraint = (Not[Empty] & LettersUpperCase) DescribedAs "Code cannot be empty"
     opaque type Code <: String  = String :| CodeConstraint
 
