@@ -36,10 +36,10 @@ object Dependencies {
     )
 
     val http4sClient: Seq[ModuleID] = Seq(
-      "org.http4s" %% "http4s-netty-client" % "0.5.15"
+      "org.http4s" %% "http4s-netty-client" % "0.5.16"
     )
     val http4sServer: Seq[ModuleID] = Seq(
-      "org.http4s" %% "http4s-netty-server" % "0.5.15"
+      "org.http4s" %% "http4s-netty-server" % "0.5.16"
     )
     val scodec: Seq[ModuleID]       = Seq(
       "org.scodec" %% "scodec-bits" % "2.2.2",
@@ -47,14 +47,14 @@ object Dependencies {
     )
 
     private val tapir = Seq(
-      "com.softwaremill.sttp.tapir"   %% "tapir-http4s-server"         % "1.10.3",
-      "com.softwaremill.sttp.tapir"   %% "tapir-json-circe"            % "1.10.3",
-      "com.softwaremill.sttp.tapir"   %% "tapir-opentelemetry-metrics" % "1.10.3",
-      "com.softwaremill.sttp.tapir"   %% "tapir-iron"                  % "1.10.3",
-      "com.softwaremill.sttp.tapir"   %% "tapir-openapi-docs"          % "1.10.3",
+      "com.softwaremill.sttp.tapir"   %% "tapir-http4s-server"         % "1.10.4",
+      "com.softwaremill.sttp.tapir"   %% "tapir-json-circe"            % "1.10.4",
+      "com.softwaremill.sttp.tapir"   %% "tapir-opentelemetry-metrics" % "1.10.4",
+      "com.softwaremill.sttp.tapir"   %% "tapir-iron"                  % "1.10.4",
+      "com.softwaremill.sttp.tapir"   %% "tapir-openapi-docs"          % "1.10.4",
       "com.softwaremill.sttp.apispec" %% "openapi-circe-yaml"          % "0.8.0",
-      "com.softwaremill.sttp.tapir"   %% "tapir-http4s-client"         % "1.10.3" % Test,
-      "com.softwaremill.sttp.tapir"   %% "tapir-sttp-stub-server"      % "1.10.3" % Test,
+      "com.softwaremill.sttp.tapir"   %% "tapir-http4s-client"         % "1.10.4" % Test,
+      "com.softwaremill.sttp.tapir"   %% "tapir-sttp-stub-server"      % "1.10.4" % Test,
       "com.softwaremill.sttp.client3" %% "core"                        % "3.9.5"  % Test
       //    "com.softwaremill.sttp.tapir"   %% "tapir-swagger-ui-bundle" % "1.9.1",
     )
@@ -82,8 +82,8 @@ object Dependencies {
 
     val observability: Seq[ModuleID] = Seq(
       "org.typelevel"   %% "otel4s-java"                               % "0.4.0",
-      "io.opentelemetry" % "opentelemetry-exporter-otlp"               % "1.36.0" % Runtime,
-      "io.opentelemetry" % "opentelemetry-sdk-extension-autoconfigure" % "1.36.0" % Runtime
+      "io.opentelemetry" % "opentelemetry-exporter-otlp"               % "1.37.0" % Runtime,
+      "io.opentelemetry" % "opentelemetry-sdk-extension-autoconfigure" % "1.37.0" % Runtime
     )
 
     val database: Seq[ModuleID] = Seq(
@@ -98,10 +98,10 @@ object Dependencies {
 
     val migrationsRuntime: Seq[ModuleID] = Seq(
       "org.postgresql" % "postgresql"                 % "42.7.3",
-      "org.flywaydb"   % "flyway-database-postgresql" % "10.10.0"
+      "org.flywaydb"   % "flyway-database-postgresql" % "10.11.0"
     )
     val migrations: Seq[ModuleID]        = Seq(
-      "org.flywaydb" % "flyway-core" % "10.10.0"
+      "org.flywaydb" % "flyway-core" % "10.11.0"
     ) ++ tests ++ testContainers ++ migrationsRuntime.map(_ % Test)
 
     val fs2Rabbit: Seq[ModuleID] = Seq(
