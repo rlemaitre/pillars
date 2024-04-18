@@ -18,14 +18,6 @@ var documents = [
 
 {
     "id": 2,
-    "uri": "user-guide/20_features/40_api-server.html",
-    "menu": "user-guide",
-    "title": "API Server",
-    "text": " Table of Contents API Server API Server This documentation needs to be written. You can help us by contributing to the documentation . "
-},
-
-{
-    "id": 3,
     "uri": "user-guide/20_features/30_probes.html",
     "menu": "user-guide",
     "title": "Probes",
@@ -33,7 +25,7 @@ var documents = [
 },
 
 {
-    "id": 4,
+    "id": 3,
     "uri": "user-guide/20_features/20_logging.html",
     "menu": "user-guide",
     "title": "Logging",
@@ -41,15 +33,7 @@ var documents = [
 },
 
 {
-    "id": 5,
-    "uri": "user-guide/30_modules/20_http-client.html",
-    "menu": "user-guide",
-    "title": "HTTP Client Module",
-    "text": " Table of Contents HTTP Client module HTTP Client Configuration Using the HttpClient Module HTTP Operations HTTP Client module The HttpClient module provides HTTP client functionality for the Pillars application. It uses the http4s library for creating HTTP requests and handling HTTP responses. HTTP Client Configuration The HTTP client configuration is defined in the Config case class. It includes the following field: followRedirect : A flag indicating whether to follow redirects. The configuration is read from the application&#8217;s configuration file under the http-client section. Using the HttpClient Module To use the HttpClient module, you need to import it and then access it through the Pillars instance: import pillars.httpclient.* val httpClientModule = pillarsInstance.httpClient You can also use directly Client[F] You can then use the httpClientModule to perform HTTP operations. HTTP Operations The HttpClient module provides methods for sending HTTP requests and receiving HTTP responses. You can use the httpClient extension method on Pillars to get an instance of Client[F] : import org.http4s.client.Client val client: Client[F] = pillars.httpClient This Client[F] instance can be used to send HTTP requests by using the same methods as org.http4s.client.Client[F] . "
-},
-
-{
-    "id": 6,
+    "id": 4,
     "uri": "user-guide/30_modules/15_db-migration.html",
     "menu": "user-guide",
     "title": "DB Migration Module",
@@ -57,7 +41,7 @@ var documents = [
 },
 
 {
-    "id": 7,
+    "id": 5,
     "uri": "user-guide/20_features/60_admin-server.html",
     "menu": "user-guide",
     "title": "Admin Server",
@@ -65,11 +49,27 @@ var documents = [
 },
 
 {
-    "id": 8,
+    "id": 6,
+    "uri": "user-guide/20_features/40_api-server.html",
+    "menu": "user-guide",
+    "title": "API Server",
+    "text": " Table of Contents API Server API Server This documentation needs to be written. You can help us by contributing to the documentation . "
+},
+
+{
+    "id": 7,
     "uri": "user-guide/30_modules/40_redis.html",
     "menu": "user-guide",
     "title": "Redis Module",
     "text": " Table of Contents Redis module Redis Module Configuration Using the Redis Module Redis Operations Redis module The Redis module provides integration with redis . It uses the rediculous library. Redis Module Configuration The configuration is read from the application&#8217;s configuration file under the redis section. Using the Redis Module To use the Redis module, you need to import it and then access it through the Pillars instance: import pillars.redis.* val redisModule = pillarsInstance.redis You can also use directly Redis[F] You can then use the redisModule to perform Redis operations. Redis Operations TODO "
+},
+
+{
+    "id": 8,
+    "uri": "user-guide/30_modules/20_http-client.html",
+    "menu": "user-guide",
+    "title": "HTTP Client Module",
+    "text": " Table of Contents HTTP Client module HTTP Client Configuration Using the HttpClient Module HTTP Operations HTTP Client module The HttpClient module provides HTTP client functionality for the Pillars application. It uses the http4s library for creating HTTP requests and handling HTTP responses. HTTP Client Configuration The HTTP client configuration is defined in the Config case class. It includes the following field: followRedirect : A flag indicating whether to follow redirects. The configuration is read from the application&#8217;s configuration file under the http-client section. Using the HttpClient Module To use the HttpClient module, you need to import it and then access it through the Pillars instance: import pillars.httpclient.* val httpClientModule = pillarsInstance.httpClient You can also use directly Client[F] You can then use the httpClientModule to perform HTTP operations. HTTP Operations The HttpClient module provides methods for sending HTTP requests and receiving HTTP responses. You can use the httpClient extension method on Pillars to get an instance of Client[F] : import org.http4s.client.Client val client: Client[F] = pillars.httpClient This Client[F] instance can be used to send HTTP requests by using the same methods as org.http4s.client.Client[F] . "
 },
 
 {
@@ -90,18 +90,18 @@ var documents = [
 
 {
     "id": 11,
-    "uri": "user-guide/30_modules/index.html",
-    "menu": "user-guide",
-    "title": "Optional Modules",
-    "text": " Table of Contents Modules Database HTTP Client Feature Flags Redis RabbitMQ Write your own module Modules Pillars includes several optional modules: Database HTTP Client Feature Flags Redis RabbitMQ Database The database module provides a simple abstraction over the database access layer. It is based on the skunk library and provides a simple interface to execute queries and transactions. Read more HTTP Client The HTTP Client module provides a simple abstraction over the HTTP client layer. It is based on the http4s library using Netty and provides a simple interface to execute HTTP requests. Read more Feature Flags The Feature Flags module provides a simple abstraction over the feature flags layer. Read more Redis The Redis module provides integration with redis . Read more RabbitMQ The RabbitMQ module provides integration with RabbitMQ . Read more Write your own module You can easily write your own module by implementing the Module trait. Read more "
-},
-
-{
-    "id": 12,
     "uri": "user-guide/30_modules/30_flags.html",
     "menu": "user-guide",
     "title": "Feature Flags module",
     "text": " Table of Contents Feature Flags module Creating a feature flag Using a feature flag Endpoints Feature Flags module Feature flags are a way to enable or disable features in your application. They are useful for many reasons, including: Allowing you to test features in production before releasing them to all users. Allowing you to do a gradual rollout of a feature to a percentage of users. Currently, feature flags are only read from the configuration file and cannot be changed at runtime. This means that you will need to restart your application to change the value of a feature flag. In the future, we plan to add support for changing feature flags at runtime and storing them in a database. Creating a feature flag Feature flags are defined in the feature-flags section of the configuration file. feature-flags: enabled: true # (1) flags: - name: feature-1 # (2) status: enabled # (3) - name: feature-2 status: disabled 1 Whether feature flags are enabled or not. If this is set to false , all feature flags will be disabled. 2 The name of the feature flag. 3 The status of the feature flag. Possible values are enabled and disabled . Using a feature flag Feature flags can be used in your application by using the flags module on Pillars . import pillars.flags.* // (1) val flag = flag\"feature-1\" // (2) for enabled &lt;- pillars.flags.isEnabled(flag) // (3) _ &lt;- IO.whenA(enabled)(IO.println(\"Feature 1 is enabled\")) // (4) // or _ &lt;- pillars.whenEnabled(flag\"feature-2\")(IO.println(\"Feature 2 is enabled\")) // (5) // or _ &lt;- flag\"feature-3\".whenEnabled(IO.println(\"Feature 3 is enabled\")) // (6) yield () 1 Import the flags module to enable the flag string interpolator and the flags property on Pillars . 2 Create a Flag instance by using the flag string interpolator. 3 Check if the feature flag is enabled. 4 If the feature flag is enabled, perform the action you want. 5 Use the pillars.whenEnabled method to perform an action if the feature flag is enabled. 6 Use the whenEnabled method on the FeatureFlag.Name instance to perform an action if the feature flag is enabled. Endpoints Feature flags are exposed on the admin server . Get all feature flags The GET /admin/flags endpoint returns all feature flags. curl -X GET http://localhost:19876/admin/flags The response is a JSON array of feature flags. [ { \"name\": \"feature-1\", \"status\": \"enabled\" }, { \"name\": \"feature-2\", \"status\": \"disabled\" } ] Get a specific feature flag The GET /admin/flags/+{name}+ endpoint returns a specific feature flag. curl -X GET http://localhost:19876/admin/flags/feature-1 The response is a JSON object with the name and status of the feature flag. { \"name\": \"feature-1\", \"status\": \"enabled\" } Update a specific feature flag The PUT /admin/flags/+{name}+ endpoint updates a specific feature flag. curl -X PUT -H \"Content-Type: application/json\" -d '{\"status\": \"disabled\"}' http://localhost:19876/admin/flags/feature-1 The request body should be a JSON object with the new status of the feature flag. { \"status\": \"disabled\" } The response is a JSON object with the name and status of the feature flag. { \"name\": \"feature-1\", \"status\": \"disabled\" } "
+},
+
+{
+    "id": 12,
+    "uri": "user-guide/30_modules/index.html",
+    "menu": "user-guide",
+    "title": "Optional Modules",
+    "text": " Table of Contents Modules Database HTTP Client Feature Flags Redis RabbitMQ Write your own module Modules Pillars includes several optional modules: Database HTTP Client Feature Flags Redis RabbitMQ Database The database module provides a simple abstraction over the database access layer. It is based on the skunk library and provides a simple interface to execute queries and transactions. Read more HTTP Client The HTTP Client module provides a simple abstraction over the HTTP client layer. It is based on the http4s library using Netty and provides a simple interface to execute HTTP requests. Read more Feature Flags The Feature Flags module provides a simple abstraction over the feature flags layer. Read more Redis The Redis module provides integration with redis . Read more RabbitMQ The RabbitMQ module provides integration with RabbitMQ . Read more Write your own module You can easily write your own module by implementing the Module trait. Read more "
 },
 
 {
