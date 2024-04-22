@@ -47,24 +47,24 @@ object Dependencies {
     )
 
     private val tapir = Seq(
-      "com.softwaremill.sttp.tapir"   %% "tapir-http4s-server"         % "1.10.4",
-      "com.softwaremill.sttp.tapir"   %% "tapir-json-circe"            % "1.10.4",
-      "com.softwaremill.sttp.tapir"   %% "tapir-opentelemetry-metrics" % "1.10.4",
-      "com.softwaremill.sttp.tapir"   %% "tapir-iron"                  % "1.10.4",
-      "com.softwaremill.sttp.tapir"   %% "tapir-openapi-docs"          % "1.10.4",
-      "com.softwaremill.sttp.apispec" %% "openapi-circe-yaml"          % "0.8.0",
-      "com.softwaremill.sttp.tapir"   %% "tapir-http4s-client"         % "1.10.4" % Test,
-      "com.softwaremill.sttp.tapir"   %% "tapir-sttp-stub-server"      % "1.10.4" % Test,
+      "com.softwaremill.sttp.tapir"   %% "tapir-http4s-server"         % "1.10.5",
+      "com.softwaremill.sttp.tapir"   %% "tapir-json-circe"            % "1.10.5",
+      "com.softwaremill.sttp.tapir"   %% "tapir-opentelemetry-metrics" % "1.10.5",
+      "com.softwaremill.sttp.tapir"   %% "tapir-iron"                  % "1.10.5",
+      "com.softwaremill.sttp.tapir"   %% "tapir-openapi-docs"          % "1.10.5",
+      "com.softwaremill.sttp.apispec" %% "openapi-circe-yaml"          % "0.9.0",
+      "com.softwaremill.sttp.tapir"   %% "tapir-http4s-client"         % "1.10.5" % Test,
+      "com.softwaremill.sttp.tapir"   %% "tapir-sttp-stub-server"      % "1.10.5" % Test,
       "com.softwaremill.sttp.client3" %% "core"                        % "3.9.5"  % Test
       //    "com.softwaremill.sttp.tapir"   %% "tapir-swagger-ui-bundle" % "1.9.1",
     )
 
     val logging: Seq[ModuleID] = Seq( //
-      "com.outr" %% "scribe"            % "3.13.2",
-      "com.outr" %% "scribe-cats"       % "3.13.2",
-      "com.outr" %% "scribe-slf4j"      % "3.13.2",
-      "com.outr" %% "scribe-json-circe" % "3.13.2",
-      "com.outr" %% "scribe-file"       % "3.13.2"
+      "com.outr" %% "scribe"            % "3.13.3",
+      "com.outr" %% "scribe-cats"       % "3.13.3",
+      "com.outr" %% "scribe-slf4j"      % "3.13.3",
+      "com.outr" %% "scribe-json-circe" % "3.13.3",
+      "com.outr" %% "scribe-file"       % "3.13.3"
     )
 
     val tests: Seq[ModuleID] = Seq(
@@ -98,10 +98,10 @@ object Dependencies {
 
     val migrationsRuntime: Seq[ModuleID] = Seq(
       "org.postgresql" % "postgresql"                 % "42.7.3",
-      "org.flywaydb"   % "flyway-database-postgresql" % "10.11.0"
+      "org.flywaydb"   % "flyway-database-postgresql" % "10.11.1"
     )
     val migrations: Seq[ModuleID]        = Seq(
-      "org.flywaydb" % "flyway-core" % "10.11.0"
+      "org.flywaydb" % "flyway-core" % "10.11.1"
     ) ++ tests ++ testContainers ++ migrationsRuntime.map(_ % Test)
 
     val fs2Rabbit: Seq[ModuleID] = Seq(
