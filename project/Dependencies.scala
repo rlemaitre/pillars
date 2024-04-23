@@ -87,8 +87,8 @@ object Dependencies {
     )
 
     val database: Seq[ModuleID] = Seq(
-      "org.tpolecat" %% "skunk-core"  % "1.0.0-M4",
-      "org.tpolecat" %% "skunk-circe" % "1.0.0-M4"
+      "org.tpolecat" %% "skunk-core"  % "1.0.0-M5",
+      "org.tpolecat" %% "skunk-circe" % "1.0.0-M5"
     ) ++ tests
 
     val doobie: Seq[ModuleID] = Seq(
