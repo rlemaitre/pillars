@@ -94,8 +94,8 @@ object Otel4sMetrics:
 
     private def requestTotal[F[_]: Applicative](meter: Meter[F], labels: MetricLabels): F[Metric[F, Counter[F, Long]]] =
         meter
-            .counter("request.total")
-            .withDescription[Long]("Total HTTP requests")
+            .counter[Long]("request.total")
+            .withDescription("Total HTTP requests")
             .withUnit("1")
             .create
             .map: counter =>
@@ -132,8 +132,8 @@ object Otel4sMetrics:
         labels: MetricLabels
     ): F[Metric[F, Histogram[F, Double]]] =
         meter
-            .histogram("request.duration")
-            .withDescription[Double]("Duration of HTTP requests")
+            .histogram[Double]("request.duration")
+            .withDescription("Duration of HTTP requests")
             .withUnit("ms")
             .create
             .map: histogram =>
