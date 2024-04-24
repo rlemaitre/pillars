@@ -1,8 +1,32 @@
 @host = http://localhost:9876
 
 ###
-# @name home
-GET {{ host }}/
+# @name ping
+GET {{ host }}/ping
+
+> {%
+  client.test("Request executed successfully", function () {
+    client.assert(response.status === 200, "Response status is not 200");
+  });
+
+  client.test("Request returned the correct body", function () {
+    client.assert(response.body === "pong", "Response body is not pong");
+  });
+%}
+
+###
+# @name boom
+GET {{ host }}/boom
+
+> {%
+  client.test("Request failed successfully 🙂", function () {
+    client.assert(response.status === 500, "Response status is not 500");
+  });
+
+  client.test("Request returned json", function () {
+    client.assert(response.contentType === "application/json", "Response is not in json format");
+  });
+%}
 
 ###
 # @name user list

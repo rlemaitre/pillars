@@ -20,9 +20,15 @@ import org.http4s.server.middleware.ErrorHandling
 import org.http4s.server.middleware.Logger
 import pillars.Controller.HttpEndpoint
 import pillars.codec.given
+import sttp.capabilities.StreamMaxLengthExceededException
+import sttp.monad.MonadError
 import sttp.tapir.*
+import sttp.tapir.json.circe.jsonBody
 import sttp.tapir.server.http4s.Http4sServerInterpreter
 import sttp.tapir.server.http4s.Http4sServerOptions
+import sttp.tapir.server.interceptor.exception.ExceptionContext
+import sttp.tapir.server.interceptor.exception.ExceptionHandler
+import sttp.tapir.server.model.ValuedEndpointOutput
 
 object HttpServer:
     def build[F[_]: Async](
@@ -42,8 +48,10 @@ object HttpServer:
         )
 
         val options: Http4sServerOptions[F] =
-            Http4sServerOptions.customiseInterceptors
+            Http4sServerOptions
+                .customiseInterceptors
                 .prependInterceptor(observability.interceptor)
+                .exceptionHandler(exceptionHandler())
                 .options
 
         val app: HttpApp[F] =
@@ -61,14 +69,36 @@ object HttpServer:
             .resource
     end build
 
+    private def exceptionHandler[F[_]](): ExceptionHandler[F] =
+        new ExceptionHandler[F]:
+            override def apply(ctx: ExceptionContext)(implicit
+                monad: MonadError[F]
+            ): F[Option[ValuedEndpointOutput[_]]] =
+                def handlePillarsError(e: PillarsError) =
+                    Some(ValuedEndpointOutput(statusCode.and(jsonBody[PillarsError.View]), (e.status, e.view)))
+
+                ctx.e match
+                case e: PillarsError                            =>
+                    monad.unit(handlePillarsError(e))
+                case StreamMaxLengthExceededException(maxBytes) =>
+                    monad.unit(handlePillarsError(PillarsError.PayloadTooLarge(maxBytes)))
+                case _                                          =>
+                    monad.unit(handlePillarsError(PillarsError.fromThrowable(ctx.e)))
+                end match
+            end apply
+
     private def buildExceptionHandler[F[_]: Applicative](): PartialFunction[Throwable, F[Response[F]]] =
         case e: PillarsError =>
             Response(
               Status.fromInt(e.status.code).getOrElse(Status.InternalServerError),
               HttpVersion.`HTTP/1.1`
-            ).withEntity(e.view).pure[F]
+            )
+                .withEntity(e.view)
+                .pure[F]
         case e: Throwable    =>
-            Response(Status.InternalServerError, HttpVersion.`HTTP/1.1`).withEntity(e.getMessage).pure[F]
+            Response(Status.InternalServerError, HttpVersion.`HTTP/1.1`)
+                .withEntity(PillarsError.fromThrowable(e).view)
+                .pure[F]
     end buildExceptionHandler
 
     final case class Config(
