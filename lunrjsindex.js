@@ -18,14 +18,6 @@ var documents = [
 
 {
     "id": 2,
-    "uri": "user-guide/20_features/30_probes.html",
-    "menu": "user-guide",
-    "title": "Probes",
-    "text": " Table of Contents Probes Liveness Probe Readiness Probe Custom Probes Probes Probes allow you to monitor the health of your application and the underlying infrastructure. Probes are used to determine if a container is ready to accept traffic or if it should be restarted. Liveness Probe A liveness probe checks if the container is still running. If the liveness probe fails, the container is restarted. Pillars defines a default liveness probe. Readiness Probe A readiness probe checks if the container is ready to accept traffic. If the readiness probe fails, the container is not added to the load balancer. The pillars readiness probe aggregates all probes defined in the application. Pillars defines by default a database probe that is enabled if you include the db module . Custom Probes You can define custom probes by implementing the Probe trait. trait Probe[F[_]]: def component: Component // (1) def check: F[Boolean] // (2) def config: ProbeConfig = ProbeConfig() // (3) end Probe 1 The probe component. 2 The check function. If the check function returns true , the probe is considered successful. If is returns false or throws an exception, the probe is considered failed. 3 The probe configuration. "
-},
-
-{
-    "id": 3,
     "uri": "user-guide/20_features/20_logging.html",
     "menu": "user-guide",
     "title": "Logging",
@@ -33,7 +25,7 @@ var documents = [
 },
 
 {
-    "id": 4,
+    "id": 3,
     "uri": "user-guide/30_modules/15_db-migration.html",
     "menu": "user-guide",
     "title": "DB Migration Module",
@@ -41,7 +33,7 @@ var documents = [
 },
 
 {
-    "id": 5,
+    "id": 4,
     "uri": "user-guide/20_features/60_admin-server.html",
     "menu": "user-guide",
     "title": "Admin Server",
@@ -49,11 +41,19 @@ var documents = [
 },
 
 {
-    "id": 6,
+    "id": 5,
     "uri": "user-guide/20_features/40_api-server.html",
     "menu": "user-guide",
     "title": "API Server",
     "text": " Table of Contents API Server API Server This documentation needs to be written. You can help us by contributing to the documentation . "
+},
+
+{
+    "id": 6,
+    "uri": "user-guide/20_features/30_probes.html",
+    "menu": "user-guide",
+    "title": "Probes",
+    "text": " Table of Contents Probes Liveness Probe Readiness Probe Custom Probes Probes Probes allow you to monitor the health of your application and the underlying infrastructure. Probes are used to determine if a container is ready to accept traffic or if it should be restarted. Liveness Probe A liveness probe checks if the container is still running. If the liveness probe fails, the container is restarted. Pillars defines a default liveness probe. Readiness Probe A readiness probe checks if the container is ready to accept traffic. If the readiness probe fails, the container is not added to the load balancer. The pillars readiness probe aggregates all probes defined in the application. Pillars defines by default a database probe that is enabled if you include the db module . Custom Probes You can define custom probes by implementing the Probe trait. trait Probe[F[_]]: def component: Component // (1) def check: F[Boolean] // (2) def config: ProbeConfig = ProbeConfig() // (3) end Probe 1 The probe component. 2 The check function. If the check function returns true , the probe is considered successful. If is returns false or throws an exception, the probe is considered failed. 3 The probe configuration. "
 },
 
 {
