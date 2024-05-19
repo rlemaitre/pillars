@@ -25,5 +25,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/sql.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/xml.min.js"></script>
+<% if (config.site_plausibleUrl && config.site_domain) { %>
+<script defer data-domain="${config.site_domain}" src="${config.site_plausibleUrl}"></script>
+<% } %>
 <script>hljs.highlightAll();</script>
 <script src="${content.rootpath}js/scribbler.js"></script>

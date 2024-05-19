@@ -77,7 +77,11 @@ microsite.with {
     //siteFolder = '../site'
 
     /** end:microsite **/
+    // the base url of the microsite
+    domain = 'pillars.rlemaitre.com'
 
+    // plausible url for the microsite
+    plausibleUrl = 'https://analytics.lemaitre.me/js/script.js'
     //project theme
     //site folder relative to the docs folder
     //see 'copyTheme' for more details
