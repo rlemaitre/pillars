@@ -52,7 +52,7 @@ object Dependencies {
       "com.softwaremill.sttp.tapir"   %% "tapir-opentelemetry-metrics" % "1.10.7",
       "com.softwaremill.sttp.tapir"   %% "tapir-iron"                  % "1.10.7",
       "com.softwaremill.sttp.tapir"   %% "tapir-openapi-docs"          % "1.10.7",
-      "com.softwaremill.sttp.apispec" %% "openapi-circe-yaml"          % "0.9.0",
+      "com.softwaremill.sttp.apispec" %% "openapi-circe-yaml"          % "0.10.0",
       "com.softwaremill.sttp.tapir"   %% "tapir-http4s-client"         % "1.10.7" % Test,
       "com.softwaremill.sttp.tapir"   %% "tapir-sttp-stub-server"      % "1.10.7" % Test,
       "com.softwaremill.sttp.client3" %% "core"                        % "3.9.7"  % Test
@@ -68,10 +68,10 @@ object Dependencies {
     )
 
     val tests: Seq[ModuleID] = Seq(
-      "org.scalameta"      %% "munit"             % "1.0.0-M12" % Test,
-      "org.typelevel"      %% "munit-cats-effect" % "2.0.0-M5"  % Test,
-      "org.scalameta"      %% "munit-scalacheck"  % "1.0.0-RC1" % Test,
-      "io.github.iltotore" %% "iron-scalacheck"   % "2.5.0"     % Test
+      "org.scalameta"      %% "munit"             % "1.0.0" % Test,
+      "org.typelevel"      %% "munit-cats-effect" % "2.0.0" % Test,
+      "org.scalameta"      %% "munit-scalacheck"  % "1.0.0" % Test,
+      "io.github.iltotore" %% "iron-scalacheck"   % "2.5.0" % Test
     )
 
     val testContainers: Seq[ModuleID] = Seq(
@@ -81,14 +81,14 @@ object Dependencies {
     )
 
     val observability: Seq[ModuleID] = Seq(
-      "org.typelevel"   %% "otel4s-oteljava"                           % "0.5.0",
+      "org.typelevel"   %% "otel4s-oteljava"                           % "0.6.0",
       "io.opentelemetry" % "opentelemetry-exporter-otlp"               % "1.38.0" % Runtime,
       "io.opentelemetry" % "opentelemetry-sdk-extension-autoconfigure" % "1.38.0" % Runtime
     )
 
     val database: Seq[ModuleID] = Seq(
-      "org.tpolecat" %% "skunk-core"  % "1.0.0-M5",
-      "org.tpolecat" %% "skunk-circe" % "1.0.0-M5"
+      "org.tpolecat" %% "skunk-core"  % "1.0.0-M6",
+      "org.tpolecat" %% "skunk-circe" % "1.0.0-M6"
     ) ++ tests
 
     val doobie: Seq[ModuleID] = Seq(
