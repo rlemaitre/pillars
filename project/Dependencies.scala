@@ -105,7 +105,7 @@ object Dependencies {
     ) ++ tests ++ testContainers ++ migrationsRuntime.map(_ % Test)
 
     val fs2Rabbit: Seq[ModuleID] = Seq(
-      "dev.profunktor" %% "fs2-rabbit" % "5.1.0"
+      "dev.profunktor" %% "fs2-rabbit" % "5.1.2"
     ) ++ tests ++ testContainers
 
     val rediculous: Seq[ModuleID] = Seq(
