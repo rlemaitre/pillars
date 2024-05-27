@@ -60,7 +60,7 @@ object Dependencies {
     )
 
     val logging: Seq[ModuleID] = Seq( //
-      "com.outr" %% "scribe"            % "3.13.3",
+      "com.outr" %% "scribe"            % "3.13.5",
       "com.outr" %% "scribe-cats"       % "3.13.3",
       "com.outr" %% "scribe-slf4j"      % "3.13.3",
       "com.outr" %% "scribe-json-circe" % "3.13.3",
