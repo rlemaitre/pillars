@@ -113,7 +113,7 @@ object Dependencies {
     ) ++ tests
 
     val flags: Seq[ModuleID]      = Seq(
-      "org.typelevel" %% "literally" % "1.1.0"
+      "org.typelevel" %% "literally" % "1.2.0"
     ) ++ tests
     val httpClient: Seq[ModuleID] = http4sClient ++ http4s ++ tests
     val core: Seq[ModuleID]       =
