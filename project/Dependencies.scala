@@ -81,14 +81,14 @@ object Dependencies {
     )
 
     val observability: Seq[ModuleID] = Seq(
-      "org.typelevel"   %% "otel4s-oteljava"                           % "0.5.0",
+      "org.typelevel"   %% "otel4s-oteljava"                           % "0.6.0",
       "io.opentelemetry" % "opentelemetry-exporter-otlp"               % "1.37.0" % Runtime,
       "io.opentelemetry" % "opentelemetry-sdk-extension-autoconfigure" % "1.37.0" % Runtime
     )
 
     val database: Seq[ModuleID] = Seq(
-      "org.tpolecat" %% "skunk-core"  % "1.0.0-M5",
-      "org.tpolecat" %% "skunk-circe" % "1.0.0-M5"
+      "org.tpolecat" %% "skunk-core"  % "1.0.0-M6",
+      "org.tpolecat" %% "skunk-circe" % "1.0.0-M6"
     ) ++ tests
 
     val doobie: Seq[ModuleID] = Seq(
