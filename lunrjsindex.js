@@ -10,14 +10,6 @@ var documents = [
 
 {
     "id": 1,
-    "uri": "user-guide/20_features/40_api-server.html",
-    "menu": "user-guide",
-    "title": "API Server",
-    "text": " Table of Contents API Server API Server This documentation needs to be written. You can help us by contributing to the documentation . "
-},
-
-{
-    "id": 2,
     "uri": "contribute/20_code_of_conduct.html",
     "menu": "contribute",
     "title": "Code of Conduct",
@@ -25,11 +17,19 @@ var documents = [
 },
 
 {
-    "id": 3,
+    "id": 2,
     "uri": "user-guide/20_features/50_observability.html",
     "menu": "user-guide",
     "title": "Observability",
     "text": " Table of Contents Observability Observability This documentation needs to be written. You can help us by contributing to the documentation . "
+},
+
+{
+    "id": 3,
+    "uri": "user-guide/20_features/40_api-server.html",
+    "menu": "user-guide",
+    "title": "API Server",
+    "text": " Table of Contents API Server API Server This documentation needs to be written. You can help us by contributing to the documentation . "
 },
 
 {
@@ -74,18 +74,18 @@ var documents = [
 
 {
     "id": 9,
-    "uri": "user-guide/30_modules/15_db-migration.html",
-    "menu": "user-guide",
-    "title": "DB Migration Module",
-    "text": " Table of Contents DB Migration module Configuration Usage DB Migration module The DB Migration module is a standalone module that is used to manage the database schema and data. It depends on the DB module. Configuration The configuration of the DB Migration module is done in the application.yml file, in a db-migration section. Parameters are: log-after : (duration) the time after which the migration log will be printed. It must be declared in the ISO-8601 format. Default is PT5s (five seconds). See Dumbo for more information. validate-on-migrate : (boolean) whether to validate the schema after migration. db-migration: log-after: PT5s validate-on-migrate: true Usage In order to use the DB Migration module, you need to add it as a dependency to your project. The migrations are written in SQL and are located in the src/main/resources/db/migration directory of your project. The migration files must be named in the following format: V{version}__{description}.sql , where: {version} is the version of the migration, and {description} is a description of the migration. The migration files are executed in the order of their version. To execute the migrations, you can use the migrate method of the DBMigration[F] class. "
-},
-
-{
-    "id": 10,
     "uri": "user-guide/30_modules/40_redis.html",
     "menu": "user-guide",
     "title": "Redis Module",
     "text": " Table of Contents Redis module Redis Module Configuration Using the Redis Module Redis Operations Redis module The Redis module provides integration with redis . It uses the rediculous library. Redis Module Configuration The configuration is read from the application&#8217;s configuration file under the redis section. Using the Redis Module To use the Redis module, you need to import it and then access it through the Pillars instance: import pillars.redis.* val redisModule = pillarsInstance.redis You can also use directly Redis[F] You can then use the redisModule to perform Redis operations. Redis Operations TODO "
+},
+
+{
+    "id": 10,
+    "uri": "user-guide/30_modules/15_db-migration.html",
+    "menu": "user-guide",
+    "title": "DB Migration Module",
+    "text": " Table of Contents DB Migration module Configuration Usage DB Migration module The DB Migration module is a standalone module that is used to manage the database schema and data. It depends on the DB module. Configuration The configuration of the DB Migration module is done in the application.yml file, in a db-migration section. Parameters are: log-after : (duration) the time after which the migration log will be printed. It must be declared in the ISO-8601 format. Default is PT5s (five seconds). See Dumbo for more information. validate-on-migrate : (boolean) whether to validate the schema after migration. db-migration: log-after: PT5s validate-on-migrate: true Usage In order to use the DB Migration module, you need to add it as a dependency to your project. The migrations are written in SQL and are located in the src/main/resources/db/migration directory of your project. The migration files must be named in the following format: V{version}__{description}.sql , where: {version} is the version of the migration, and {description} is a description of the migration. The migration files are executed in the order of their version. To execute the migrations, you can use the migrate method of the DBMigration[F] class. "
 },
 
 {
@@ -114,18 +114,18 @@ var documents = [
 
 {
     "id": 14,
-    "uri": "user-guide/30_modules/20_http-client.html",
-    "menu": "user-guide",
-    "title": "HTTP Client Module",
-    "text": " Table of Contents HTTP Client module HTTP Client Configuration Using the HttpClient Module HTTP Operations HTTP Client module The HttpClient module provides HTTP client functionality for the Pillars application. It uses the http4s library for creating HTTP requests and handling HTTP responses. HTTP Client Configuration The HTTP client configuration is defined in the Config case class. It includes the following field: followRedirect : A flag indicating whether to follow redirects. The configuration is read from the application&#8217;s configuration file under the http-client section. Using the HttpClient Module To use the HttpClient module, you need to import it and then access it through the Pillars instance: import pillars.httpclient.* val httpClientModule = pillarsInstance.httpClient You can also use directly Client[F] You can then use the httpClientModule to perform HTTP operations. HTTP Operations The HttpClient module provides methods for sending HTTP requests and receiving HTTP responses. You can use the httpClient extension method on Pillars to get an instance of Client[F] : import org.http4s.client.Client val client: Client[F] = pillars.httpClient This Client[F] instance can be used to send HTTP requests by using the same methods as org.http4s.client.Client[F] . "
-},
-
-{
-    "id": 15,
     "uri": "user-guide/30_modules/41_rabbitmq.html",
     "menu": "user-guide",
     "title": "RabbitMQ Module",
     "text": " Table of Contents RabbitMQ module RabbitMQ Module Configuration Using the RabbitMQ Module RabbitMQ Operations RabbitMQ module The RabbitMQ module provides integration with RabbitMQ . It uses the fs2-rabbit library. RabbitMQ Module Configuration The RabbitMQ configuration is defined in the Config case class. It includes the following fields: host : the RabbitMQ host port : the RabbitMQ port virtualHost : the RabbitMQ virtual host connectionTimeout : the connection timeout ssl : enable SSL mode username : RabbitMQ username password : RabbitMQ password requeueOnNack : requeue messages when not ACK-ed requeueOnReject : requeue messages when rejected internalQueueSize : client internal queue size requestedHeartbeat : heartbeat interval automaticRecovery : automatically reconnect on failure clientProvidedConnectionName : client label The configuration is read from the application&#8217;s configuration file under the rabbitmq section. Using the RabbitMQ Module To use the RabbitMQ module, you need to import it and then access it through the Pillars instance: import pillars.redis.* val rabbitmqModule = pillarsInstance.redis You can also use directly RabbitMQ[F] . You can then use the rabbitmqModule to perform RabbitMQ operations. RabbitMQ Operations import pillars.redis.* for client &lt;- RabbitMQ[IO](configFor(container)).map(_.client) _ &lt;- client.createConnectionChannel.evalMap { implicit channel =&gt; for publisher &lt;- client.createPublisher[String](exchange, routingKey) _ &lt;- publisher(\"test message\") subscriber &lt;- client.createAutoAckConsumer[String](queue) out &lt;- subscriber.head.compile.onlyOrError yield assertEquals(out.payload, \"test message\") } yield () end for "
+},
+
+{
+    "id": 15,
+    "uri": "user-guide/30_modules/20_http-client.html",
+    "menu": "user-guide",
+    "title": "HTTP Client Module",
+    "text": " Table of Contents HTTP Client module HTTP Client Configuration Using the HttpClient Module HTTP Operations HTTP Client module The HttpClient module provides HTTP client functionality for the Pillars application. It uses the http4s library for creating HTTP requests and handling HTTP responses. HTTP Client Configuration The HTTP client configuration is defined in the Config case class. It includes the following field: followRedirect : A flag indicating whether to follow redirects. The configuration is read from the application&#8217;s configuration file under the http-client section. Using the HttpClient Module To use the HttpClient module, you need to import it and then access it through the Pillars instance: import pillars.httpclient.* val httpClientModule = pillarsInstance.httpClient You can also use directly Client[F] You can then use the httpClientModule to perform HTTP operations. HTTP Operations The HttpClient module provides methods for sending HTTP requests and receiving HTTP responses. You can use the httpClient extension method on Pillars to get an instance of Client[F] : import org.http4s.client.Client val client: Client[F] = pillars.httpClient This Client[F] instance can be used to send HTTP requests by using the same methods as org.http4s.client.Client[F] . "
 },
 
 {

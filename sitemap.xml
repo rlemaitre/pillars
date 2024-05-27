@@ -7,17 +7,17 @@
     </url>
 
     <url>
-    	<loc>http://jbake.org/user-guide/20_features/40_api-server.html</loc>
-    	<lastmod>2024-05-27</lastmod>
-    </url>
-
-    <url>
     	<loc>http://jbake.org/contribute/20_code_of_conduct.html</loc>
     	<lastmod>2024-05-27</lastmod>
     </url>
 
     <url>
     	<loc>http://jbake.org/user-guide/20_features/50_observability.html</loc>
+    	<lastmod>2024-05-27</lastmod>
+    </url>
+
+    <url>
+    	<loc>http://jbake.org/user-guide/20_features/40_api-server.html</loc>
     	<lastmod>2024-05-27</lastmod>
     </url>
 
@@ -47,12 +47,12 @@
     </url>
 
     <url>
-    	<loc>http://jbake.org/user-guide/30_modules/15_db-migration.html</loc>
+    	<loc>http://jbake.org/user-guide/30_modules/40_redis.html</loc>
     	<lastmod>2024-05-27</lastmod>
     </url>
 
     <url>
-    	<loc>http://jbake.org/user-guide/30_modules/40_redis.html</loc>
+    	<loc>http://jbake.org/user-guide/30_modules/15_db-migration.html</loc>
     	<lastmod>2024-05-27</lastmod>
     </url>
 
@@ -72,12 +72,12 @@
     </url>
 
     <url>
-    	<loc>http://jbake.org/user-guide/30_modules/20_http-client.html</loc>
+    	<loc>http://jbake.org/user-guide/30_modules/41_rabbitmq.html</loc>
     	<lastmod>2024-05-27</lastmod>
     </url>
 
     <url>
-    	<loc>http://jbake.org/user-guide/30_modules/41_rabbitmq.html</loc>
+    	<loc>http://jbake.org/user-guide/30_modules/20_http-client.html</loc>
     	<lastmod>2024-05-27</lastmod>
     </url>
 
