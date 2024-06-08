@@ -1,7 +1,7 @@
 import sbt.*
 object Dependencies {
     val effect: Seq[ModuleID] = Seq(
-      "org.typelevel" %% "cats-core"             % "2.10.0",
+      "org.typelevel" %% "cats-core"             % "2.12.0",
       "org.typelevel" %% "cats-effect"           % "3.5.4",
       "co.fs2"        %% "fs2-core"              % "3.10.2",
       "org.typelevel" %% "cats-collections-core" % "0.9.8",
