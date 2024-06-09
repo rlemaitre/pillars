@@ -10,6 +10,14 @@ var documents = [
 
 {
     "id": 1,
+    "uri": "user-guide/20_features/40_api-server.html",
+    "menu": "user-guide",
+    "title": "API Server",
+    "text": " Table of Contents API Server API Server This documentation needs to be written. You can help us by contributing to the documentation . "
+},
+
+{
+    "id": 2,
     "uri": "contribute/20_code_of_conduct.html",
     "menu": "contribute",
     "title": "Code of Conduct",
@@ -17,19 +25,11 @@ var documents = [
 },
 
 {
-    "id": 2,
+    "id": 3,
     "uri": "user-guide/20_features/50_observability.html",
     "menu": "user-guide",
     "title": "Observability",
     "text": " Table of Contents Observability Observability This documentation needs to be written. You can help us by contributing to the documentation . "
-},
-
-{
-    "id": 3,
-    "uri": "user-guide/20_features/40_api-server.html",
-    "menu": "user-guide",
-    "title": "API Server",
-    "text": " Table of Contents API Server API Server This documentation needs to be written. You can help us by contributing to the documentation . "
 },
 
 {
@@ -90,14 +90,6 @@ var documents = [
 
 {
     "id": 11,
-    "uri": "user-guide/30_modules/30_flags.html",
-    "menu": "user-guide",
-    "title": "Feature Flags module",
-    "text": " Table of Contents Feature Flags module Creating a feature flag Using a feature flag Endpoints Feature Flags module Feature flags are a way to enable or disable features in your application. They are useful for many reasons, including: Allowing you to test features in production before releasing them to all users. Allowing you to do a gradual rollout of a feature to a percentage of users. Currently, feature flags are only read from the configuration file and cannot be changed at runtime. This means that you will need to restart your application to change the value of a feature flag. In the future, we plan to add support for changing feature flags at runtime and storing them in a database. Creating a feature flag Feature flags are defined in the feature-flags section of the configuration file. feature-flags: enabled: true # (1) flags: - name: feature-1 # (2) status: enabled # (3) - name: feature-2 status: disabled 1 Whether feature flags are enabled or not. If this is set to false , all feature flags will be disabled. 2 The name of the feature flag. 3 The status of the feature flag. Possible values are enabled and disabled . Using a feature flag Feature flags can be used in your application by using the flags module on Pillars . import pillars.flags.* // (1) val flag = flag\"feature-1\" // (2) for enabled &lt;- pillars.flags.isEnabled(flag) // (3) _ &lt;- IO.whenA(enabled)(IO.println(\"Feature 1 is enabled\")) // (4) // or _ &lt;- pillars.whenEnabled(flag\"feature-2\")(IO.println(\"Feature 2 is enabled\")) // (5) // or _ &lt;- flag\"feature-3\".whenEnabled(IO.println(\"Feature 3 is enabled\")) // (6) yield () 1 Import the flags module to enable the flag string interpolator and the flags property on Pillars . 2 Create a Flag instance by using the flag string interpolator. 3 Check if the feature flag is enabled. 4 If the feature flag is enabled, perform the action you want. 5 Use the pillars.whenEnabled method to perform an action if the feature flag is enabled. 6 Use the whenEnabled method on the FeatureFlag.Name instance to perform an action if the feature flag is enabled. Endpoints Feature flags are exposed on the admin server . Get all feature flags The GET /admin/flags endpoint returns all feature flags. curl -X GET http://localhost:19876/admin/flags The response is a JSON array of feature flags. [ { \"name\": \"feature-1\", \"status\": \"enabled\" }, { \"name\": \"feature-2\", \"status\": \"disabled\" } ] Get a specific feature flag The GET /admin/flags/+{name}+ endpoint returns a specific feature flag. curl -X GET http://localhost:19876/admin/flags/feature-1 The response is a JSON object with the name and status of the feature flag. { \"name\": \"feature-1\", \"status\": \"enabled\" } Update a specific feature flag The PUT /admin/flags/+{name}+ endpoint updates a specific feature flag. curl -X PUT -H \"Content-Type: application/json\" -d '{\"status\": \"disabled\"}' http://localhost:19876/admin/flags/feature-1 The request body should be a JSON object with the new status of the feature flag. { \"status\": \"disabled\" } The response is a JSON object with the name and status of the feature flag. { \"name\": \"feature-1\", \"status\": \"disabled\" } "
-},
-
-{
-    "id": 12,
     "uri": "user-guide/30_modules/100_write-your-own-module.html",
     "menu": "user-guide",
     "title": "Write your own module",
@@ -105,11 +97,19 @@ var documents = [
 },
 
 {
-    "id": 13,
+    "id": 12,
     "uri": "user-guide/30_modules/index.html",
     "menu": "user-guide",
     "title": "Optional Modules",
     "text": " Table of Contents Modules Database HTTP Client Feature Flags Redis RabbitMQ Write your own module Modules Pillars includes several optional modules: Database HTTP Client Feature Flags Redis RabbitMQ Database The database module provides a simple abstraction over the database access layer. It is based on the skunk library and provides a simple interface to execute queries and transactions. Read more HTTP Client The HTTP Client module provides a simple abstraction over the HTTP client layer. It is based on the http4s library using Netty and provides a simple interface to execute HTTP requests. Read more Feature Flags The Feature Flags module provides a simple abstraction over the feature flags layer. Read more Redis The Redis module provides integration with redis . Read more RabbitMQ The RabbitMQ module provides integration with RabbitMQ . Read more Write your own module You can easily write your own module by implementing the Module trait. Read more "
+},
+
+{
+    "id": 13,
+    "uri": "user-guide/30_modules/30_flags.html",
+    "menu": "user-guide",
+    "title": "Feature Flags module",
+    "text": " Table of Contents Feature Flags module Creating a feature flag Using a feature flag Endpoints Feature Flags module Feature flags are a way to enable or disable features in your application. They are useful for many reasons, including: Allowing you to test features in production before releasing them to all users. Allowing you to do a gradual rollout of a feature to a percentage of users. Currently, feature flags are only read from the configuration file and cannot be changed at runtime. This means that you will need to restart your application to change the value of a feature flag. In the future, we plan to add support for changing feature flags at runtime and storing them in a database. Creating a feature flag Feature flags are defined in the feature-flags section of the configuration file. feature-flags: enabled: true # (1) flags: - name: feature-1 # (2) status: enabled # (3) - name: feature-2 status: disabled 1 Whether feature flags are enabled or not. If this is set to false , all feature flags will be disabled. 2 The name of the feature flag. 3 The status of the feature flag. Possible values are enabled and disabled . Using a feature flag Feature flags can be used in your application by using the flags module on Pillars . import pillars.flags.* // (1) val flag = flag\"feature-1\" // (2) for enabled &lt;- pillars.flags.isEnabled(flag) // (3) _ &lt;- IO.whenA(enabled)(IO.println(\"Feature 1 is enabled\")) // (4) // or _ &lt;- pillars.whenEnabled(flag\"feature-2\")(IO.println(\"Feature 2 is enabled\")) // (5) // or _ &lt;- flag\"feature-3\".whenEnabled(IO.println(\"Feature 3 is enabled\")) // (6) yield () 1 Import the flags module to enable the flag string interpolator and the flags property on Pillars . 2 Create a Flag instance by using the flag string interpolator. 3 Check if the feature flag is enabled. 4 If the feature flag is enabled, perform the action you want. 5 Use the pillars.whenEnabled method to perform an action if the feature flag is enabled. 6 Use the whenEnabled method on the FeatureFlag.Name instance to perform an action if the feature flag is enabled. Endpoints Feature flags are exposed on the admin server . Get all feature flags The GET /admin/flags endpoint returns all feature flags. curl -X GET http://localhost:19876/admin/flags The response is a JSON array of feature flags. [ { \"name\": \"feature-1\", \"status\": \"enabled\" }, { \"name\": \"feature-2\", \"status\": \"disabled\" } ] Get a specific feature flag The GET /admin/flags/+{name}+ endpoint returns a specific feature flag. curl -X GET http://localhost:19876/admin/flags/feature-1 The response is a JSON object with the name and status of the feature flag. { \"name\": \"feature-1\", \"status\": \"enabled\" } Update a specific feature flag The PUT /admin/flags/+{name}+ endpoint updates a specific feature flag. curl -X PUT -H \"Content-Type: application/json\" -d '{\"status\": \"disabled\"}' http://localhost:19876/admin/flags/feature-1 The request body should be a JSON object with the new status of the feature flag. { \"status\": \"disabled\" } The response is a JSON object with the name and status of the feature flag. { \"name\": \"feature-1\", \"status\": \"disabled\" } "
 },
 
 {
