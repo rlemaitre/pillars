@@ -12,7 +12,7 @@ object Dependencies {
     val model: Seq[ModuleID] = Seq(
       "com.comcast"        %% "ip4s-core"    % "3.6.0",
       "io.github.iltotore" %% "iron"         % "2.6.0",
-      "io.github.iltotore" %% "iron-cats"    % "2.5.0",
+      "io.github.iltotore" %% "iron-cats"    % "2.6.0",
       "io.github.iltotore" %% "iron-circe"   % "2.5.0",
       "io.github.iltotore" %% "iron-decline" % "2.5.0"
     )
