@@ -77,7 +77,7 @@ object Dependencies {
     val testContainers: Seq[ModuleID] = Seq(
       "com.dimafeng" %% "testcontainers-scala-munit"      % "0.41.4" % Test,
       "com.dimafeng" %% "testcontainers-scala-postgresql" % "0.41.4" % Test,
-      "com.dimafeng" %% "testcontainers-scala-rabbitmq"   % "0.41.3" % Test
+      "com.dimafeng" %% "testcontainers-scala-rabbitmq"   % "0.41.4" % Test
     )
 
     val observability: Seq[ModuleID] = Seq(
