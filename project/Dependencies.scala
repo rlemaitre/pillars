@@ -14,7 +14,7 @@ object Dependencies {
       "io.github.iltotore" %% "iron"         % "2.6.0",
       "io.github.iltotore" %% "iron-cats"    % "2.6.0",
       "io.github.iltotore" %% "iron-circe"   % "2.6.0",
-      "io.github.iltotore" %% "iron-decline" % "2.5.0"
+      "io.github.iltotore" %% "iron-decline" % "2.6.0"
     )
 
     val commandLine: Seq[ModuleID] = Seq(
