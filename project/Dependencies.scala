@@ -26,7 +26,7 @@ object Dependencies {
       "io.circe" %% "circe-core"    % "0.14.9",
       "io.circe" %% "circe-generic" % "0.14.9",
       "io.circe" %% "circe-parser"  % "0.14.9",
-      "io.circe" %% "circe-yaml"    % "0.15.1"
+      "io.circe" %% "circe-yaml"    % "0.15.2"
     )
 
     val http4s: Seq[ModuleID] = Seq(
