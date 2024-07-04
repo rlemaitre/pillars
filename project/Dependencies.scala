@@ -48,7 +48,7 @@ object Dependencies {
 
     private val tapir = Seq(
       "com.softwaremill.sttp.tapir"   %% "tapir-http4s-server"         % "1.10.12",
-      "com.softwaremill.sttp.tapir"   %% "tapir-json-circe"            % "1.10.8",
+      "com.softwaremill.sttp.tapir"   %% "tapir-json-circe"            % "1.10.12",
       "com.softwaremill.sttp.tapir"   %% "tapir-opentelemetry-metrics" % "1.10.8",
       "com.softwaremill.sttp.tapir"   %% "tapir-iron"                  % "1.10.12",
       "com.softwaremill.sttp.tapir"   %% "tapir-openapi-docs"          % "1.10.8",
