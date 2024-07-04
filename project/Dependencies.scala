@@ -24,7 +24,7 @@ object Dependencies {
 
     val json: Seq[ModuleID] = Seq(
       "io.circe" %% "circe-core"    % "0.14.9",
-      "io.circe" %% "circe-generic" % "0.14.7",
+      "io.circe" %% "circe-generic" % "0.14.9",
       "io.circe" %% "circe-parser"  % "0.14.7",
       "io.circe" %% "circe-yaml"    % "0.15.1"
     )
