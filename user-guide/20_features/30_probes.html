@@ -180,7 +180,7 @@ The pillars readiness probe aggregates all probes defined in the application.</p
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="scala">    trait Probe[F[_]]:
         def component: Component //<i class="conum" data-value="1"></i><b>(1)</b>
-        def check: F[Boolean]    //<i class="conum" data-value="2"></i><b>(2)</b>
+        def check: F[Boolean] //<i class="conum" data-value="2"></i><b>(2)</b>
         def config: ProbeConfig = ProbeConfig() //<i class="conum" data-value="3"></i><b>(3)</b>
     end Probe</code></pre>
 </div>
