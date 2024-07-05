@@ -42,7 +42,7 @@ object probes:
     // tag::probe[]
     trait Probe[F[_]]:
         def component: Component //// <1>
-        def check: F[Boolean]    //// <2>
+        def check: F[Boolean] //// <2>
         def config: ProbeConfig = ProbeConfig() //// <3>
     end Probe
     // end::probe[]

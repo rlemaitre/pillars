@@ -6,15 +6,15 @@ object Dependencies {
       "co.fs2"        %% "fs2-core"              % "3.10.2",
       "org.typelevel" %% "cats-collections-core" % "0.9.8",
       "org.typelevel" %% "cats-time"             % "0.5.1",
-      "org.typelevel" %% "mouse"                 % "1.2.4"
+      "org.typelevel" %% "mouse"                 % "1.3.1"
     )
 
     val model: Seq[ModuleID] = Seq(
       "com.comcast"        %% "ip4s-core"    % "3.6.0",
-      "io.github.iltotore" %% "iron"         % "2.5.0",
-      "io.github.iltotore" %% "iron-cats"    % "2.5.0",
-      "io.github.iltotore" %% "iron-circe"   % "2.5.0",
-      "io.github.iltotore" %% "iron-decline" % "2.5.0"
+      "io.github.iltotore" %% "iron"         % "2.6.0",
+      "io.github.iltotore" %% "iron-cats"    % "2.6.0",
+      "io.github.iltotore" %% "iron-circe"   % "2.6.0",
+      "io.github.iltotore" %% "iron-decline" % "2.6.0"
     )
 
     val commandLine: Seq[ModuleID] = Seq(
@@ -23,10 +23,10 @@ object Dependencies {
     )
 
     val json: Seq[ModuleID] = Seq(
-      "io.circe" %% "circe-core"    % "0.14.7",
-      "io.circe" %% "circe-generic" % "0.14.7",
-      "io.circe" %% "circe-parser"  % "0.14.7",
-      "io.circe" %% "circe-yaml"    % "0.15.1"
+      "io.circe" %% "circe-core"    % "0.14.9",
+      "io.circe" %% "circe-generic" % "0.14.9",
+      "io.circe" %% "circe-parser"  % "0.14.9",
+      "io.circe" %% "circe-yaml"    % "0.15.2"
     )
 
     val http4s: Seq[ModuleID] = Seq(
@@ -36,10 +36,10 @@ object Dependencies {
     )
 
     val http4sClient: Seq[ModuleID] = Seq(
-      "org.http4s" %% "http4s-netty-client" % "0.5.16"
+      "org.http4s" %% "http4s-netty-client" % "0.5.17"
     )
     val http4sServer: Seq[ModuleID] = Seq(
-      "org.http4s" %% "http4s-netty-server" % "0.5.16"
+      "org.http4s" %% "http4s-netty-server" % "0.5.17"
     )
     val scodec: Seq[ModuleID]       = Seq(
       "org.scodec" %% "scodec-bits" % "2.2.2",
@@ -47,15 +47,15 @@ object Dependencies {
     )
 
     private val tapir = Seq(
-      "com.softwaremill.sttp.tapir"   %% "tapir-http4s-server"         % "1.10.8",
-      "com.softwaremill.sttp.tapir"   %% "tapir-json-circe"            % "1.10.8",
-      "com.softwaremill.sttp.tapir"   %% "tapir-opentelemetry-metrics" % "1.10.8",
-      "com.softwaremill.sttp.tapir"   %% "tapir-iron"                  % "1.10.8",
-      "com.softwaremill.sttp.tapir"   %% "tapir-openapi-docs"          % "1.10.8",
+      "com.softwaremill.sttp.tapir"   %% "tapir-http4s-server"         % "1.10.12",
+      "com.softwaremill.sttp.tapir"   %% "tapir-json-circe"            % "1.10.12",
+      "com.softwaremill.sttp.tapir"   %% "tapir-opentelemetry-metrics" % "1.10.12",
+      "com.softwaremill.sttp.tapir"   %% "tapir-iron"                  % "1.10.12",
+      "com.softwaremill.sttp.tapir"   %% "tapir-openapi-docs"          % "1.10.12",
       "com.softwaremill.sttp.apispec" %% "openapi-circe-yaml"          % "0.10.0",
-      "com.softwaremill.sttp.tapir"   %% "tapir-http4s-client"         % "1.10.8" % Test,
-      "com.softwaremill.sttp.tapir"   %% "tapir-sttp-stub-server"      % "1.10.8" % Test,
-      "com.softwaremill.sttp.client3" %% "core"                        % "3.9.7"  % Test
+      "com.softwaremill.sttp.tapir"   %% "tapir-http4s-client"         % "1.10.12" % Test,
+      "com.softwaremill.sttp.tapir"   %% "tapir-sttp-stub-server"      % "1.10.12" % Test,
+      "com.softwaremill.sttp.client3" %% "core"                        % "3.9.7"   % Test
       //    "com.softwaremill.sttp.tapir"   %% "tapir-swagger-ui-bundle" % "1.9.1",
     )
 
@@ -71,13 +71,13 @@ object Dependencies {
       "org.scalameta"      %% "munit"             % "1.0.0" % Test,
       "org.typelevel"      %% "munit-cats-effect" % "2.0.0" % Test,
       "org.scalameta"      %% "munit-scalacheck"  % "1.0.0" % Test,
-      "io.github.iltotore" %% "iron-scalacheck"   % "2.5.0" % Test
+      "io.github.iltotore" %% "iron-scalacheck"   % "2.6.0" % Test
     )
 
     val testContainers: Seq[ModuleID] = Seq(
-      "com.dimafeng" %% "testcontainers-scala-munit"      % "0.41.3" % Test,
-      "com.dimafeng" %% "testcontainers-scala-postgresql" % "0.41.3" % Test,
-      "com.dimafeng" %% "testcontainers-scala-rabbitmq"   % "0.41.3" % Test
+      "com.dimafeng" %% "testcontainers-scala-munit"      % "0.41.4" % Test,
+      "com.dimafeng" %% "testcontainers-scala-postgresql" % "0.41.4" % Test,
+      "com.dimafeng" %% "testcontainers-scala-rabbitmq"   % "0.41.4" % Test
     )
 
     val observability: Seq[ModuleID] = Seq(
@@ -98,14 +98,14 @@ object Dependencies {
 
     val migrationsRuntime: Seq[ModuleID] = Seq(
       "org.postgresql" % "postgresql"                 % "42.7.3",
-      "org.flywaydb"   % "flyway-database-postgresql" % "10.14.0"
+      "org.flywaydb"   % "flyway-database-postgresql" % "10.15.2"
     )
     val migrations: Seq[ModuleID]        = Seq(
-      "org.flywaydb" % "flyway-core" % "10.14.0"
+      "org.flywaydb" % "flyway-core" % "10.15.2"
     ) ++ tests ++ testContainers ++ migrationsRuntime.map(_ % Test)
 
     val fs2Rabbit: Seq[ModuleID] = Seq(
-      "dev.profunktor" %% "fs2-rabbit" % "5.1.3"
+      "dev.profunktor" %% "fs2-rabbit" % "5.2.0"
     ) ++ tests ++ testContainers
 
     val rediculous: Seq[ModuleID] = Seq(

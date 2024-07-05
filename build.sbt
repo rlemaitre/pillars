@@ -27,9 +27,12 @@ inThisBuild(
       )
     ),
     startYear              := Some(2023),
-    licenses += ("Apache-2.0", url(
-      "http://www.apache.org/licenses/LICENSE-2.0"
-    )),
+    licenses += (
+      "Apache-2.0",
+      url(
+        "http://www.apache.org/licenses/LICENSE-2.0"
+      )
+    ),
     scalacOptions ++= ScalacOptions.tokensForVersion(
       ScalaVersion.V3_3_0,
       Set(
