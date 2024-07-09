@@ -60,7 +60,7 @@ In addition to `org.http4s.client.Client[F]` methods, the `HttpClient` module pr
 
 [source,scala,linenums]
 --
-val client[F] = pillarsInstance.httpClient
+val client = summon[Pillars[F]].httpClient
 val public: PublicEndpoint[Input, ErrorOutput, Output, Capabilities] = ???
 val secure: Endpoint[SecurityInput, Input, ErrorOutput, Output, Capabilities] = ???
 

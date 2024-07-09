@@ -18,6 +18,7 @@ import pillars.Modules
 import pillars.Pillars
 import pillars.PillarsError
 import pillars.PillarsError.*
+import pillars.Run
 import sttp.tapir.AnyEndpoint
 import sttp.tapir.DecodeResult
 import sttp.tapir.Endpoint
@@ -42,44 +43,36 @@ final case class HttpClient[F[_]: Async](client: org.http4s.client.Client[F])
     extends pillars.Module[F]:
     export client.*
 
-    def callSecure[SI, I, EO, O, R](
-        endpoint: Endpoint[SI, I, EO, O, R],
-        uri: Option[Uri],
-        clientOptions: Http4sClientOptions = Http4sClientOptions.default
-    )(securityInput: SI, input: I): F[Either[EO, O]] =
-        callRequest(endpoint, uri)(
-          Http4sClientInterpreter[F](clientOptions).toSecureRequest(endpoint, uri)(securityInput)(input)
-        )
-
-    end callSecure
+    private val interpreter = Http4sClientInterpreter[F](Http4sClientOptions.default)
 
     def call[SI, I, EO, O, R](
         endpoint: PublicEndpoint[I, EO, O, R],
         uri: Option[Uri],
-        clientOptions: Http4sClientOptions = Http4sClientOptions.default
+        handler: FailureHandler[F, EO, O] = FailureHandler.default[F, EO, O]
     )(input: I): F[Either[EO, O]] =
-        callRequest(endpoint, uri)(Http4sClientInterpreter[F](clientOptions).toRequest(endpoint, uri)(input))
+        callRequest(endpoint, uri)(interpreter.toRequest(endpoint, uri)(input))
     end call
 
-    private[this] def callRequest[EO, O](
+    def callSecure[SI, I, EO, O, R](
+        endpoint: Endpoint[SI, I, EO, O, R],
+        uri: Option[Uri],
+        handler: FailureHandler[F, EO, O] = FailureHandler.default[F, EO, O]
+    )(securityInput: SI, input: I): F[Either[EO, O]] =
+        callRequest(endpoint, uri)(interpreter.toSecureRequest(endpoint, uri)(securityInput)(input))
+    end callSecure
+
+    private[this] def callRequest[I, EO, O](
         endpoint: AnyEndpoint,
-        uri: Option[Uri]
+        uri: Option[Uri],
+        handler: FailureHandler[F, EO, O] = FailureHandler.default[F, EO, O]
     )(interpret: (Request[F], Response[F] => F[DecodeResult[Either[EO, O]]])) =
-        import HttpClient.Error.*
         val (request, parseResponse) = interpret
         client
             .run(request)
             .use(parseResponse)
             .flatMap:
-                case DecodeResult.Value(v)                   => v.pure[F]
-                case DecodeResult.Error(raw, error)          =>
-                    DecodingError(endpoint, uri, raw, error).raiseError[F, Either[EO, O]]
-                case DecodeResult.Missing                    => Missing(endpoint, uri).raiseError[F, Either[EO, O]]
-                case DecodeResult.Multiple(vs)               => Multiple(endpoint, uri, vs).raiseError[F, Either[EO, O]]
-                case DecodeResult.Mismatch(expected, actual) =>
-                    Mismatch(endpoint, uri, expected, actual).raiseError[F, Either[EO, O]]
-                case DecodeResult.InvalidValue(errors)       =>
-                    InvalidInput(endpoint, uri, errors).raiseError[F, Either[EO, O]]
+                case DecodeResult.Value(v)         => v.pure[F]
+                case failure: DecodeResult.Failure => handler.handle(endpoint, uri, failure)
     end callRequest
 
 end HttpClient
@@ -116,6 +109,31 @@ object HttpClient:
     end Error
 end HttpClient
 
+trait FailureHandler[F[_], EO, O]:
+    def handle(endpoint: AnyEndpoint, uri: Option[Uri], failure: DecodeResult.Failure): F[Either[EO, O]]
+
+object FailureHandler:
+    def default[F[_]: Async, EO, O]: FailureHandler[F, EO, O] =
+        (endpoint: AnyEndpoint, uri: Option[Uri], failure: DecodeResult.Failure) =>
+            import HttpClient.Error.*
+            failure match
+            case DecodeResult.Error(raw, error)          => DecodingError(endpoint, uri, raw, error).raiseError[F, Either[EO, O]]
+            case DecodeResult.Missing                    => Missing(endpoint, uri).raiseError[F, Either[EO, O]]
+            case DecodeResult.Multiple(vs)               => Multiple(endpoint, uri, vs).raiseError[F, Either[EO, O]]
+            case DecodeResult.Mismatch(expected, actual) =>
+                Mismatch(endpoint, uri, expected, actual).raiseError[F, Either[EO, O]]
+            case DecodeResult.InvalidValue(errors)       => InvalidInput(endpoint, uri, errors).raiseError[F, Either[EO, O]]
+            end match
+end FailureHandler
+
 private[httpclient] final case class Config(followRedirect: Boolean)
 extension [F[_]](p: Pillars[F])
-    def httpClient: Client[F] = p.module[HttpClient[F]](HttpClient.Key).client
+    def httpClient: HttpClient[F] = p.module[HttpClient[F]](HttpClient.Key)
+
+extension [I, EO, O, R](endpoint: PublicEndpoint[I, EO, O, R])
+    def call[F[_]](uri: Option[Uri])(input: I): Run[F, F[Either[EO, O]]] =
+        summon[Pillars[F]].httpClient.call(endpoint, uri)(input)
+
+extension [SI, I, EO, O, R](endpoint: Endpoint[SI, I, EO, O, R])
+    def call[F[_]](uri: Option[Uri])(securityInput: SI, input: I): Run[F, F[Either[EO, O]]] =
+        summon[Pillars[F]].httpClient.callSecure(endpoint, uri)(securityInput, input)
