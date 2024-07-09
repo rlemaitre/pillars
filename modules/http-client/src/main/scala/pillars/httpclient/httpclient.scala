@@ -95,7 +95,7 @@ object HttpClient:
               endpoint,
               uri,
               ErrorNumber(1001),
-              Message(s"Cannot decode output $raw. Cause is $cause".assume)
+              Message.assume(s"Cannot decode output $raw. Cause is $cause")
             )
         case Missing(endpoint: AnyEndpoint, uri: Option[Uri])
             extends Error(endpoint, uri, ErrorNumber(1002), Message("Missing"))
