@@ -21,6 +21,7 @@ import pillars.PillarsError.*
 import sttp.tapir.AnyEndpoint
 import sttp.tapir.DecodeResult
 import sttp.tapir.Endpoint
+import sttp.tapir.PublicEndpoint
 import sttp.tapir.ValidationError
 import sttp.tapir.client.http4s.Http4sClientInterpreter
 import sttp.tapir.client.http4s.Http4sClientOptions
@@ -41,14 +42,31 @@ final case class HttpClient[F[_]: Async](client: org.http4s.client.Client[F])
     extends pillars.Module[F]:
     export client.*
 
-    def call[SI, I, EO, O, R](
+    def callSecure[SI, I, EO, O, R](
         endpoint: Endpoint[SI, I, EO, O, R],
         uri: Option[Uri],
         clientOptions: Http4sClientOptions = Http4sClientOptions.default
     )(securityInput: SI, input: I): F[Either[EO, O]] =
-        val (request, parseResponse) =
-            Http4sClientInterpreter[F](clientOptions).toSecureRequest(endpoint, uri)(securityInput)(input)
+        callRequest(endpoint, uri)(
+          Http4sClientInterpreter[F](clientOptions).toSecureRequest(endpoint, uri)(securityInput)(input)
+        )
+
+    end callSecure
+
+    def call[SI, I, EO, O, R](
+        endpoint: PublicEndpoint[I, EO, O, R],
+        uri: Option[Uri],
+        clientOptions: Http4sClientOptions = Http4sClientOptions.default
+    )(input: I): F[Either[EO, O]] =
+        callRequest(endpoint, uri)(Http4sClientInterpreter[F](clientOptions).toRequest(endpoint, uri)(input))
+    end call
+
+    private[this] def callRequest[EO, O](
+        endpoint: AnyEndpoint,
+        uri: Option[Uri]
+    )(interpret: (Request[F], Response[F] => F[DecodeResult[Either[EO, O]]])) =
         import HttpClient.Error.*
+        val (request, parseResponse) = interpret
         client
             .run(request)
             .use(parseResponse)
@@ -62,7 +80,7 @@ final case class HttpClient[F[_]: Async](client: org.http4s.client.Client[F])
                     Mismatch(endpoint, uri, expected, actual).raiseError[F, Either[EO, O]]
                 case DecodeResult.InvalidValue(errors)       =>
                     InvalidInput(endpoint, uri, errors).raiseError[F, Either[EO, O]]
-    end call
+    end callRequest
 
 end HttpClient
 

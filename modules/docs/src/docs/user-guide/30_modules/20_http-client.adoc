@@ -53,3 +53,23 @@ val client: Client[F] = pillars.httpClient
 
 This `Client[F]` instance can be used to send HTTP requests by using the same methods as `org.http4s.client.Client[F]`.
 
+In addition to `org.http4s.client.Client[F]` methods, the `HttpClient` module provides methods to directly call a tapir endpoint:
+
+* `call`: Calls a tapir public endpoint with the specified input and returns either the output or the error output.
+* `callSecure`: Calls a tapir secure endpoint with the specified input and security input and returns either the output or the error output.
+
+[source,scala,linenums]
+--
+val client[F] = pillarsInstance.httpClient
+val public: PublicEndpoint[Input, ErrorOutput, Output, Capabilities] = ???
+val secure: Endpoint[SecurityInput, Input, ErrorOutput, Output, Capabilities] = ???
+
+val uri: Option[Uri] = ???
+val input: Input = ???
+val securityInput: SecurityInput = ???
+
+val output: F[Either[ErrorOutput, Output]] = client.call(public, uri)(input)
+val secureOutput: F[Either[ErrorOutput, Output]] = client.callSecure(secure)(securityInput, input)
+--
+
+If an infrastructure error occurs, a `HttpClient.Error` will be thrown on the error channel.
