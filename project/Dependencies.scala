@@ -36,7 +36,9 @@ object Dependencies {
     )
 
     val http4sClient: Seq[ModuleID] = Seq(
-      "org.http4s" %% "http4s-netty-client" % "0.5.17"
+      "org.http4s" %% "http4s-netty-client" % "0.5.17",
+      "com.softwaremill.sttp.tapir"   %% "tapir-http4s-client"         % "1.10.12",
+
     )
     val http4sServer: Seq[ModuleID] = Seq(
       "org.http4s" %% "http4s-netty-server" % "0.5.17"
@@ -53,7 +55,6 @@ object Dependencies {
       "com.softwaremill.sttp.tapir"   %% "tapir-iron"                  % "1.10.12",
       "com.softwaremill.sttp.tapir"   %% "tapir-openapi-docs"          % "1.10.12",
       "com.softwaremill.sttp.apispec" %% "openapi-circe-yaml"          % "0.10.0",
-      "com.softwaremill.sttp.tapir"   %% "tapir-http4s-client"         % "1.10.12" % Test,
       "com.softwaremill.sttp.tapir"   %% "tapir-sttp-stub-server"      % "1.10.12" % Test,
       "com.softwaremill.sttp.client3" %% "core"                        % "3.9.7"   % Test
       //    "com.softwaremill.sttp.tapir"   %% "tapir-swagger-ui-bundle" % "1.9.1",
