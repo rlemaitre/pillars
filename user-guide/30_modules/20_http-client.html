@@ -200,6 +200,36 @@ val client: Client[F] = pillars.httpClient</code></pre>
 <div class="paragraph">
 <p>This <code>Client[F]</code> instance can be used to send HTTP requests by using the same methods as <code>org.http4s.client.Client[F]</code>.</p>
 </div>
+<div class="paragraph">
+<p>In addition to <code>org.http4s.client.Client[F]</code> methods, the <code>HttpClient</code> module provides methods to directly call a tapir endpoint:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>call</code>: Calls a tapir public endpoint with the specified input and returns either the output or the error output.</p>
+</li>
+<li>
+<p><code>callSecure</code>: Calls a tapir secure endpoint with the specified input and security input and returns either the output or the error output.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight linenums"><code data-lang="scala">val client = summon[Pillars[F]].httpClient
+val public: PublicEndpoint[Input, ErrorOutput, Output, Capabilities] = ???
+val secure: Endpoint[SecurityInput, Input, ErrorOutput, Output, Capabilities] = ???
+
+val uri: Option[Uri] = ???
+val input: Input = ???
+val securityInput: SecurityInput = ???
+
+val output: F[Either[ErrorOutput, Output]] = client.call(public, uri)(input)
+val secureOutput: F[Either[ErrorOutput, Output]] = client.callSecure(secure)(securityInput, input)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If an infrastructure error occurs, a <code>HttpClient.Error</code> will be thrown on the error channel.</p>
+</div>
 </div>
 </div>
 </div>
