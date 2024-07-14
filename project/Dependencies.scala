@@ -37,7 +37,7 @@ object Dependencies {
 
     val http4sClient: Seq[ModuleID] = Seq(
       "org.http4s"                  %% "http4s-netty-client" % "0.5.17",
-      "com.softwaremill.sttp.tapir" %% "tapir-http4s-client" % "1.10.12",
+      "com.softwaremill.sttp.tapir" %% "tapir-http4s-client" % "1.10.13",
       "com.alejandrohdezma"         %% "http4s-munit"        % "1.0.0" % Test
     )
     val http4sServer: Seq[ModuleID] = Seq(
