@@ -1,7 +1,7 @@
 package pillars
 
 import cats.Show
-import cats.effect.Sync
+import cats.effect.*
 import cats.syntax.all.*
 import fs2.io.file.Path
 import io.circe.*
@@ -18,6 +18,7 @@ import scribe.Scribe
 import scribe.file.PathBuilder
 import scribe.format.Formatter
 import scribe.json.ScribeCirceJsonSupport
+import scribe.mdc.MDC
 import scribe.writer.ConsoleWriter
 import scribe.writer.Writer
 
@@ -141,5 +142,19 @@ object Logging:
 
         given Codec[Config] = Codec.AsObject.derivedConfigured
     end Config
+
+    final case class HttpConfig(
+        enabled: Boolean = true,
+        level: Level = Level.Debug,
+        logHeaders: Boolean = false,
+        logBody: Boolean = true
+    ):
+        def logAction[F[_]: Async: Scribe]: Option[String => F[Unit]] = Some(Scribe[F].log(level, MDC.instance, _))
+    end HttpConfig
+
+    object HttpConfig:
+        import Config.given
+        given Codec[HttpConfig] = Codec.AsObject.derivedConfigured
+    end HttpConfig
 
 end Logging

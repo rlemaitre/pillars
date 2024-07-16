@@ -3,14 +3,18 @@ package pillars.httpclient
 import cats.effect.Async
 import cats.effect.Resource
 import cats.effect.std.Console
+import cats.effect.syntax.all.*
 import cats.syntax.all.*
 import fs2.io.net.Network
 import io.github.iltotore.iron.*
 import io.github.iltotore.iron.constraint.all.*
+import mouse.all.anySyntaxMouse
 import org.http4s.Request
 import org.http4s.Response
 import org.http4s.Uri
 import org.http4s.client.Client
+import org.http4s.client.middleware.Logger
+import org.http4s.client.middleware.Metrics
 import org.http4s.netty.client.NettyClientBuilder
 import org.typelevel.otel4s.trace.Tracer
 import pillars.Module
@@ -36,7 +40,24 @@ class Loader extends pillars.Loader:
         context: pillars.Loader.Context[F],
         modules: Modules[F]
     ): Resource[F, HttpClient[F]] =
-        NettyClientBuilder[F].withHttp2.withNioTransport.resource.map(HttpClient.apply)
+        for
+            ops    <- ClientMetrics(context.observability).toResource
+            client <- NettyClientBuilder[F]
+                          .withHttp2
+                          .withNioTransport
+                          .resource
+                          .map: client =>
+                              val classifier   = (r: Request[F]) => Some(r.method.name.toLowerCase)
+                              val logging      = Logger[F](
+                                logHeaders = false,
+                                logBody = true,
+                                logAction = Some(scribe.cats[F].debug(_))
+                              )
+                              client
+                                  |> Metrics[F](ops, classifier)
+                                  |> logging
+                                  |> HttpClient.apply
+        yield client
 end Loader
 
 final case class HttpClient[F[_]: Async](client: org.http4s.client.Client[F])
@@ -78,7 +99,7 @@ final case class HttpClient[F[_]: Async](client: org.http4s.client.Client[F])
 end HttpClient
 
 object HttpClient:
-    def apply[F[_]](using p: Pillars[F]): Client[F] = p.module[HttpClient[F]](Key).client
+    def apply[F[_]: Async](using p: Pillars[F]): HttpClient[F] = p.module[HttpClient[F]](HttpClient.Key)
     case object Key extends Module.Key:
         override def name: String = "http-client"
 
@@ -137,3 +158,22 @@ extension [I, EO, O, R](endpoint: PublicEndpoint[I, EO, O, R])
 extension [SI, I, EO, O, R](endpoint: Endpoint[SI, I, EO, O, R])
     def call[F[_]](uri: Option[Uri])(securityInput: SI, input: I): Run[F, F[Either[EO, O]]] =
         summon[Pillars[F]].httpClient.callSecure(endpoint, uri)(securityInput, input)
+
+//trait ClientMiddleware:
+//    implicit class ClientMiddlewareOps[F[_]: Tracer: Async, A](client: Client[F]):
+//        def runTraced(request: Request[F]): F[Response[F]] =
+//            Tracer[F].spanBuilder("client-request")
+//                .addAttribute(Attribute("http.method", request.method.name))
+//                .addAttribute(Attribute("http.url", request.uri.renderString))
+//                .withSpanKind(SpanKind.Client)
+//                .wrapResource(client.run(request))
+//                .build
+//                .use:
+//                    case span @ Span.Res(response) =>
+//                        for
+//                            _ <- span.addAttribute(Attribute("http.status-code", response.status.code.toLong))
+//                            _ <- if response.status.isSuccess then
+//                                span.setStatus(Status.Ok)
+//                            else
+//                                span.setStatus(Status.Error)
+//                        yield response

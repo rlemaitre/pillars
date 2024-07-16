@@ -20,6 +20,7 @@ import org.http4s.server.middleware.ErrorHandling
 import org.http4s.server.middleware.Logger
 import pillars.Controller.HttpEndpoint
 import pillars.codec.given
+import scribe.Scribe
 import sttp.capabilities.StreamMaxLengthExceededException
 import sttp.monad.MonadError
 import sttp.tapir.*
@@ -31,7 +32,7 @@ import sttp.tapir.server.interceptor.exception.ExceptionHandler
 import sttp.tapir.server.model.ValuedEndpointOutput
 
 object HttpServer:
-    def build[F[_]: Async](
+    def build[F[_]: Async: Scribe](
         name: String,
         config: Config,
         observability: Observability[F],
@@ -40,12 +41,14 @@ object HttpServer:
         val cors: HttpApp[F] => HttpApp[F]          =
             CORS.policy.withAllowMethodsAll.withAllowOriginAll.withAllowHeadersAll.httpApp[F]
         val errorHandling: HttpApp[F] => HttpApp[F] = ErrorHandling.Custom.recoverWith(_)(buildExceptionHandler())
-        val logging                                 = Logger.httpApp[F](
-          logHeaders = false,
-          logBody = true,
-          redactHeadersWhen = _ => false,
-          logAction = Some(scribe.cats[F].debug(_))
-        )
+        val logging                                 = 
+            if config.logging.enabled then
+                Logger.httpApp[F](
+                  logHeaders = config.logging.logHeaders,
+                  logBody = config.logging.logBody,
+                  logAction = config.logging.logAction
+                )
+            else identity[HttpApp[F]]
 
         val options: Http4sServerOptions[F] =
             Http4sServerOptions
@@ -54,13 +57,9 @@ object HttpServer:
                 .exceptionHandler(exceptionHandler())
                 .options
 
+        val routes = Http4sServerInterpreter[F](options).toRoutes(endpoints).orNotFound
         val app: HttpApp[F] =
-            Http4sServerInterpreter[F](options)
-                .toRoutes(endpoints)
-                .orNotFound |>
-                logging |>
-                errorHandling |>
-                cors
+            routes |> logging |> errorHandling |> cors
 
         NettyServerBuilder[F].withoutSsl.withNioTransport
             .bindHttp(config.port.value, config.host.toString)
@@ -104,7 +103,8 @@ object HttpServer:
     final case class Config(
         host: Host,
         port: Port,
-        enableLogging: Boolean
+        enableLogging: Boolean,
+        logging: Logging.HttpConfig
     )
 
     object Config:

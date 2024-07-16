@@ -1,19 +1,17 @@
 package pillars
 
-import cats.effect.Async
-import cats.effect.LiftIO
+import cats.effect.{Async, LiftIO}
 import cats.syntax.all.*
 import io.circe.Codec
 import io.circe.derivation.Configuration
 import io.github.iltotore.iron.*
 import io.github.iltotore.iron.circe.given
 import io.github.iltotore.iron.constraint.all.*
+import org.typelevel.otel4s.{Attribute, AttributeKey}
 import org.typelevel.otel4s.metrics.Meter
 import org.typelevel.otel4s.oteljava.OtelJava
 import org.typelevel.otel4s.trace.Tracer
-import sttp.tapir.server.interceptor.EndpointInterceptor
-import sttp.tapir.server.interceptor.Interceptor
-import sttp.tapir.server.metrics.otel4s.Otel4sMetrics
+import sttp.tapir.server.interceptor.{EndpointInterceptor, Interceptor}
 
 final case class Observability[F[_]](tracer: Tracer[F], metrics: Meter[F], interceptor: Interceptor[F]):
     export metrics.*
@@ -43,4 +41,16 @@ object Observability:
     private type ServiceNameConstraint = Not[Blank]
     opaque type ServiceName <: String  = String :| ServiceNameConstraint
     object ServiceName extends RefinedTypeOps[String, ServiceNameConstraint, ServiceName]
+
+    extension (value: String)
+        def toAttribute(name: String): Attribute[String] = Attribute(name, value)
+
+    extension (value: Long)
+        def toAttribute(name: String): Attribute[Long] = Attribute(name, value)
+
+    extension (value: Double)
+        def toAttribute(name: String): Attribute[Double] = Attribute(name, value)
+
+    extension (value: Boolean)
+        def toAttribute(name: String): Attribute[Boolean] = Attribute(name, value)
 end Observability
