@@ -6,7 +6,7 @@ inThisBuild(
   List(
     scalaVersion           := "3.3.3",
     organization           := "com.rlemaitre",
-    homepage               := Some(url("https://pillars.rlemaitre.com/")),
+    homepage               := Some(url("https://pillars.dev/")),
     sonatypeCredentialHost := "s01.oss.sonatype.org",
     sonatypeRepository     := "https://s01.oss.sonatype.org/service/local",
     pgpPublicRing          := file("/tmp/public.asc"),
