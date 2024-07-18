@@ -21,7 +21,7 @@ object app extends pillars.EntryPoint:
                   date <- session.unique(sql"select now()".query(timestamptz))
                   _    <- Logger[IO].info(s"The current date is \$date.")
                 yield ()
-        _ <- HttpClient[IO].get("https://pillars.rlemaitre.com"): response =>
+        _ <- HttpClient[IO].get("https://pillars.dev"): response =>
               Logger[IO].info(s"Response: \${response.status}")
         _ <- ApiServer[IO].start(endpoints.all)
       yield ()
