@@ -30,10 +30,10 @@
     <meta content="@rlemaitre" name="twitter:creator">
     <meta content="Pillars" name="twitter:title">
     <meta content="Build your backend service in Scala 3 the easy way" name="twitter:description">
-    <meta property="og:url" content="https://pillars.rlemaitre.com/" />
+    <meta property="og:url" content="https://pillars.dev/" />
     <meta property="og:title" content="Pillars" />
     <meta property="og:description" content="Build your backend service in Scala 3 the easy way" />
-    <meta property="og:image" content="https://pillars.rlemaitre.com/images/logo.svg" />
+    <meta property="og:image" content="https://pillars.dev/images/logo.svg" />
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800,900" rel="stylesheet">
