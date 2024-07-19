@@ -20,8 +20,7 @@ import sttp.tapir.server.metrics.MetricLabels
 import sttp.tapir.server.metrics.otel4s.Otel4sMetrics.*
 import sttp.tapir.server.model.ServerResponse
 
-// TODO: copy pasted from atlas, should be contributed to tapir as `tapir-otel4s-metrics`
-case class Otel4sMetrics[F[_]: Applicative](meter: Meter[F], metrics: List[Metric[F, _]]):
+case class Otel4sMetrics[F[_]: Applicative](meter: Meter[F], metrics: List[Metric[F, ?]]):
 
     /** Registers a `request_active{path, method}` up-down-counter (assuming default labels). */
     def addRequestsActive(labels: MetricLabels = MetricLabels.Default): F[Otel4sMetrics[F]] =
@@ -59,8 +58,8 @@ object Otel4sMetrics:
             active   <- requestActive(meter, labels)
             total    <- requestTotal(meter, labels)
             duration <- requestDuration(meter, labels)
-        yield Otel4sMetrics(meter, List[Metric[F, _]](active, total, duration))
-    def init[F[_]: Applicative](meter: Meter[F], metrics: List[Metric[F, _]]): F[Otel4sMetrics[F]]           =
+        yield Otel4sMetrics(meter, List[Metric[F, ?]](active, total, duration))
+    def init[F[_]: Applicative](meter: Meter[F], metrics: List[Metric[F, ?]]): F[Otel4sMetrics[F]]           =
         Otel4sMetrics(meter, metrics).pure[F]
 
     def noop[F[_]: Applicative]: Otel4sMetrics[F] = Otel4sMetrics(Meter.noop[F], Nil)
@@ -195,7 +194,7 @@ object Otel4sMetrics:
 
     def asOpenTelemetryAttributes(
         l: MetricLabels,
-        res: Either[Throwable, ServerResponse[_]],
+        res: Either[Throwable, ServerResponse[?]],
         phase: Option[String]
     ): List[Attribute[String]] =
         val attributes = l.forResponse
