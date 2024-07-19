@@ -1,188 +1,127 @@
 package pillars.httpclient
 
 import cats.effect.Async
+import cats.effect.Clock
+import cats.effect.Resource
+import cats.effect.syntax.all.*
 import cats.syntax.all.*
-import org.http4s.Method
+import org.http4s.Request
+import org.http4s.Response
 import org.http4s.Status
-import org.http4s.metrics.MetricsOps
-import org.http4s.metrics.TerminationType
-import org.typelevel.otel4s.metrics.Counter
+import org.http4s.client.Client
+import org.typelevel.otel4s.Attribute
+import org.typelevel.otel4s.metrics.BucketBoundaries
 import org.typelevel.otel4s.metrics.Histogram
 import org.typelevel.otel4s.metrics.Meter
 import org.typelevel.otel4s.metrics.UpDownCounter
 import pillars.Observability
+import pillars.Observability.*
 
 final case class MetricsCollection[F[_]](
     responseDuration: Histogram[F, Long],
     activeRequests: UpDownCounter[F, Long],
-    requests: Counter[F, Long],
-    abnormalTerminations: Histogram[F, Long]
+    requestBodySize: Histogram[F, Long],
+    responseBodySize: Histogram[F, Long]
 )
 
 object MetricsCollection:
     def create[F[_]: Async](meter: Meter[F]): F[MetricsCollection[F]] =
         (
           meter.histogram[Long]("http.client.request.duration")
-              .withUnit("s")
-              .withDescription("Response time in seconds")
+              .withUnit("ms")
+              .withDescription("Response time in milliseconds")
+              .withExplicitBucketBoundaries(
+                BucketBoundaries(Vector(5L, 10L, 25L, 50L, 75L, 100L, 250L, 500L, 750L, 1000L, 2500L, 5000L, 7500L,
+                  10000L))
+              )
               .create,
           meter
-              .upDownCounter[Long]("http.client.open_connections")
-              .withUnit("{connection}")
+              .upDownCounter[Long]("http.client.active_requests")
+              .withUnit("{request}")
               .withDescription("Active requests")
               .create,
-          meter.counter[Long]("http.client.requests.active.total")
-              .withUnit("1")
-              .withDescription("Total requests")
+          meter.histogram[Long]("http.client.request.body.size")
+              .withUnit("By")
+              .withDescription(
+                "The size of the request payload body in bytes. This is the number of bytes transferred excluding headers and is often, but not always, present as the Content-Length header."
+              )
               .create,
-          meter.histogram[Long]("http.client.requests.abnormal_terminations_milliseconds")
-              .withUnit("ms")
-              .withDescription("Abnormal terminations time in milliseconds")
+          meter.histogram[Long]("http.client.response.body.size")
+              .withUnit("By")
+              .withDescription(
+                "The size of the response payload body in bytes. This is the number of bytes transferred excluding headers and is often, but not always, present as the Content-Length header."
+              )
               .create
         ).mapN(MetricsCollection.apply)
 end MetricsCollection
-
-final case class ClientMetrics[F[_]: Async](metrics: MetricsCollection[F]) extends MetricsOps[F]:
-    import pillars.Observability.*
-    override def increaseActiveRequests(classifier: Option[String]): F[Unit] =
-        metrics.activeRequests.inc(label(classifier).toAttribute("classifier"))
-
-    override def decreaseActiveRequests(classifier: Option[String]): F[Unit] =
-        metrics.activeRequests.dec(label(classifier).toAttribute("classifier"))
-
-    override def recordHeadersTime(
-        method: Method,
-        elapsed: Long,
-        classifier: Option[String]
-    ): F[Unit] =
-        metrics.responseDuration
-            .record(
-              elapsed,
-              label(classifier).toAttribute("classifier"),
-              reportMethod(method).toAttribute("method"),
-              Phase.Headers.report.toAttribute("phase")
-            )
-
-    override def recordTotalTime(
-        method: Method,
-        status: Status,
-        elapsed: Long,
-        classifier: Option[String]
-    ): F[Unit] =
-        for
-            _ <- metrics.responseDuration
-                     .record(
-                       elapsed,
-                       label(classifier).toAttribute("classifier"),
-                       reportMethod(method).toAttribute("method"),
-                       Phase.Body.report.toAttribute("phase")
-                     )
-            _ <- metrics.requests
-                     .inc(
-                       label(classifier).toAttribute("classifier"),
-                       reportMethod(method).toAttribute("method"),
-                       reportStatus(status).toAttribute("status")
-                     )
-        yield ()
-
-    override def recordAbnormalTermination(
-        elapsed: Long,
-        terminationType: TerminationType,
-        classifier: Option[String]
-    ): F[Unit] =
-        terminationType match
-        case TerminationType.Abnormal(e) => recordAbnormal(elapsed, classifier, e)
-        case TerminationType.Error(e)    => recordError(elapsed, classifier, e)
-        case TerminationType.Canceled    => recordCanceled(elapsed, classifier)
-        case TerminationType.Timeout     => recordTimeout(elapsed, classifier)
-
-    private def recordCanceled(elapsed: Long, classifier: Option[String]): F[Unit] =
-        metrics.abnormalTerminations
-            .record(
-              elapsed,
-              label(classifier).toAttribute("classifier"),
-              AbnormalTermination.Canceled.report.toAttribute("type")
-            )
-
-    private def recordAbnormal(
-        elapsed: Long,
-        classifier: Option[String],
-        cause: Throwable
-    ): F[Unit] =
-        metrics.abnormalTerminations
-            .record(
-              elapsed,
-              label(classifier).toAttribute("classifier"),
-              AbnormalTermination.Abnormal.report.toAttribute("type"),
-              cause.getClass.getName.toAttribute("cause")
-            )
-
-    private def recordError(
-        elapsed: Long,
-        classifier: Option[String],
-        cause: Throwable
-    ): F[Unit] =
-        metrics.abnormalTerminations
-            .record(
-              elapsed,
-              label(classifier).toAttribute("classifier"),
-              AbnormalTermination.Error.report.toAttribute("type"),
-              cause.getClass.getName.toAttribute("cause")
-            )
-
-    private def recordTimeout(elapsed: Long, classifier: Option[String]): F[Unit] =
-        metrics.abnormalTerminations
-            .record(
-              elapsed,
-              label(classifier).toAttribute("classifier"),
-              AbnormalTermination.Timeout.report.toAttribute("type")
-            )
-
-    private def label(value: Option[String]): String = value.getOrElse("")
-
-    private def reportStatus(status: Status): String =
-        status.code match
-        case informational if informational < 200 => "1xx"
-        case success if success < 300             => "2xx"
-        case redirect if redirect < 400           => "3xx"
-        case clientError if clientError < 500     => "4xx"
-        case _                                    => "5xx"
-
-    private def reportMethod(m: Method): String =
-        m match
-        case Method.GET     => "get"
-        case Method.PUT     => "put"
-        case Method.POST    => "post"
-        case Method.PATCH   => "patch"
-        case Method.HEAD    => "head"
-        case Method.MOVE    => "move"
-        case Method.OPTIONS => "options"
-        case Method.TRACE   => "trace"
-        case Method.CONNECT => "connect"
-        case Method.DELETE  => "delete"
-        case _              => "other"
-end ClientMetrics
 
 object ClientMetrics:
     def apply[F[_]: Async](observability: Observability[F]): F[ClientMetrics[F]] =
         MetricsCollection.create(observability.metrics).map(ClientMetrics.apply)
 
-enum Phase:
-    case Headers, Body
+final case class ClientMetrics[F[_]](metrics: MetricsCollection[F])(using async: Async[F], clock: Clock[F]):
 
-    def report: String =
-        this match
-        case Headers => "headers"
-        case Body    => "body"
-end Phase
+    def middleware(client: Client[F]): Client[F] =
+        Client(instrument(client))
 
-enum AbnormalTermination:
-    case Abnormal, Error, Timeout, Canceled
+    private def instrument(client: Client[F])(request: Request[F]): Resource[F, Response[F]] =
+        val requestAttributes = extractAttributes(request)
+        clock.monotonic.toResource.flatMap { start =>
+            val happyPath: Resource[F, Response[F]] =
+                for
+                    _                 <- Resource.make(
+                                           metrics.activeRequests.inc(requestAttributes*)
+                                         )(_ =>
+                                             metrics.activeRequests.dec(requestAttributes*)
+                                         )
+                    response          <- client.run(request)
+                    end               <- Resource.eval(clock.monotonic)
+                    responseAttributes = extractAttributes(response)
+                    _                 <- Resource.eval(metrics.responseDuration.record(
+                                           (end - start).toMillis,
+                                           responseAttributes ++ responseAttributes*
+                                         ))
+                yield response
+            happyPath.handleErrorWith: (e: Throwable) =>
+                Resource.eval:
+                    clock.monotonic
+                        .flatMap(now =>
+                            metrics.responseDuration.record(
+                              (now - start).toMillis,
+                              requestAttributes ++ extractAttributes(e)*
+                            )
+                        )
+                        .flatMap(_ =>
+                            async.raiseError[Response[F]](e)
+                        )
+        }
+    end instrument
 
-    def report: String =
-        this match
-        case Abnormal => "abnormal"
-        case Timeout  => "timeout"
-        case Error    => "error"
-        case Canceled => "cancel"
-end AbnormalTermination
+    private def extractAttributes(value: Request[F] | Response[F] | Throwable) =
+        val l = value match
+        case request: Request[F]   =>
+            List(
+              "http.route"          -> s"${request.uri.host.map(_.value).getOrElse("")}",
+              "http.request.method" -> request.method.name,
+              "url.scheme"          -> request.uri.scheme.map(_.value).getOrElse("")
+            )
+        case response: Response[F] =>
+            List(
+              "http.response.status"      -> {
+                  response.status.responseClass match
+                  case Status.Informational => "1xx"
+                  case Status.Successful    => "2xx"
+                  case Status.Redirection   => "3xx"
+                  case Status.ClientError   => "4xx"
+                  case Status.ServerError   => "5xx"
+              },
+              "http.response.status_code" -> response.status.code.toString
+            )
+        case e: Throwable          =>
+            List(
+              "error.type" -> e.getClass.getName
+            )
+        l.map { case (name, value) => value.toAttribute(name) }
+    end extractAttributes
+
+end ClientMetrics

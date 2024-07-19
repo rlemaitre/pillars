@@ -72,7 +72,7 @@ object Pillars:
         val configReader = Reader[F](path)
         for
             _config        <- Resource.eval(configReader.read[PillarsConfig])
-            obs            <- Resource.eval(Observability.init[F](_config.observability))
+            obs            <- Observability.init[F](_config.observability)
             given Tracer[F] = obs.tracer
             _              <- Resource.eval(Logging.init(_config.log))
             _logger         = ScribeImpl[F](Sync[F])

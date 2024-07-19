@@ -138,23 +138,24 @@ object Otel4sMetrics:
     private def requestDuration[F[_]: Applicative](
         meter: Meter[F],
         labels: MetricLabels
-    ): F[Metric[F, Histogram[F, Double]]] =
+    ): F[Metric[F, Histogram[F, Long]]] =
         meter
-            .histogram[Double]("http.server.request.duration")
+            .histogram[Long]("http.server.request.duration")
             .withDescription("Duration of HTTP requests")
-            .withUnit("s")
+            .withUnit("ms")
             .withExplicitBucketBoundaries(
-              BucketBoundaries(Vector(0.005, 0.01, 0.025, 0.05, 0.075, 0.1, 0.25, 0.5, 0.75, 1.0, 2.5, 5.0, 7.5, 10.0))
+              BucketBoundaries(Vector(5L, 10L, 25L, 50L, 75L, 100L, 250L, 500L, 750L, 1000L, 2500L, 5000L, 7500L,
+                10000L))
             )
             .create
             .map: histogram =>
-                Metric[F, Histogram[F, Double]](
+                Metric[F, Histogram[F, Long]](
                   histogram,
                   onRequest = (req, recorder, m) =>
                       m.eval:
                           val requestStart = Instant.now()
 
-                          def duration = Duration.between(requestStart, Instant.now()).toMillis.toDouble / 1000
+                          def duration = Duration.between(requestStart, Instant.now()).toMillis
 
                           EndpointMetric()
                               .onResponseHeaders: (ep, res) =>

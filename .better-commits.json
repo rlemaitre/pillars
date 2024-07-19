@@ -77,28 +77,40 @@
                 "label": "core"
             },
             {
-                "value": "db",
-                "label": "db"
+                "value": "db-doobie",
+                "label": "db-doobie"
             },
             {
                 "value": "db-migration",
                 "label": "db-migration"
             },
             {
-                "value": "flags",
-                "label": "flags"
+                "value": "db-skunk",
+                "label": "db-skunk"
             },
             {
                 "value": "docs",
                 "label": "docs"
             },
             {
+                "value": "example",
+                "label": "example"
+            },
+            {
+                "value": "flags",
+                "label": "flags"
+            },
+            {
                 "value": "http-client",
                 "label": "http-client"
             },
             {
-                "value": "example",
-                "label": "example"
+                "value": "rabbitmq-client",
+                "label": "rabbitmq-client"
+            },
+            {
+                "value": "redis-client",
+                "label": "redis-client"
             },
             {
                 "value": "",

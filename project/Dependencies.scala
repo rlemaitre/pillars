@@ -5,7 +5,7 @@ object Dependencies {
       "org.typelevel" %% "cats-effect"           % "3.5.4",
       "co.fs2"        %% "fs2-core"              % "3.10.2",
       "org.typelevel" %% "cats-collections-core" % "0.9.8",
-      "org.typelevel" %% "cats-time"             % "0.5.1",
+      "org.typelevel" %% "cats-time"             % "0.5.1"
     )
 
     val model: Seq[ModuleID] = Seq(
@@ -80,10 +80,12 @@ object Dependencies {
       "com.dimafeng" %% "testcontainers-scala-rabbitmq"   % "0.41.4" % Test
     )
 
-    val observability: Seq[ModuleID] = Seq(
-      "org.typelevel"   %% "otel4s-oteljava"                           % "0.6.0",
-      "io.opentelemetry" % "opentelemetry-exporter-otlp"               % "1.40.0" % Runtime,
-      "io.opentelemetry" % "opentelemetry-sdk-extension-autoconfigure" % "1.40.0" % Runtime
+    val observability: Seq[ModuleID]        = Seq(
+      "org.typelevel" %% "otel4s-oteljava" % "0.6.0"
+    )
+    val observabilityRuntime: Seq[ModuleID] = Seq(
+      "io.opentelemetry" % "opentelemetry-exporter-otlp"               % "1.40.0",
+      "io.opentelemetry" % "opentelemetry-sdk-extension-autoconfigure" % "1.40.0"
     )
 
     val database: Seq[ModuleID] = Seq(

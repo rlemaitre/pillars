@@ -20,6 +20,11 @@ db:
     timeout: PT5s
     interval: PT10s
     failure-count: 3
+  logging:
+    enabled: true
+    level: info
+    statements: true
+    timing: true
 # end::db[]
 # tag::db-migration[]
 db-migration:
@@ -36,7 +41,11 @@ api:
   http:
     host: 0.0.0.0
     port: 9876
-    enable-logging: true
+    logging:
+      enabled: true
+      headers: true
+      body: true
+      level: info
 # end::api[]
 # tag::admin[]
 admin:
@@ -44,13 +53,27 @@ admin:
   http:
     host: 0.0.0.0
     port: 19876
-    enable-logging: true
+    logging:
+      enabled: true
+      headers: true
+      body: true
+      level: debug
 # end::admin[]
 # tag::observability[]
 observability:
   enabled: true
   service-name: bookstore
 # end::observability[]
+# tag::http-client[]
+http-client:
+  follow-redirect: true
+  user-agent: pillars/bookstore
+  logging:
+    enabled: true
+    headers: true
+    body: true
+    level: info
+# end:: http-client[]
 # tag::feature-flags[]
 feature-flags:
   enabled: true

@@ -5,24 +5,32 @@ import cats.effect.Resource
 import cats.effect.std.Console
 import cats.effect.syntax.all.*
 import cats.syntax.all.*
+import fs2.io.file.Files
 import fs2.io.net.Network
+import io.circe.Codec
+import io.circe.Decoder
+import io.circe.Encoder
+import io.circe.derivation.Configuration
 import io.github.iltotore.iron.*
 import io.github.iltotore.iron.constraint.all.*
-import mouse.all.anySyntaxMouse
+import org.http4s.ProductId
 import org.http4s.Request
 import org.http4s.Response
 import org.http4s.Uri
 import org.http4s.client.Client
+import org.http4s.client.middleware.FollowRedirect
 import org.http4s.client.middleware.Logger
-import org.http4s.client.middleware.Metrics
+import org.http4s.headers.`User-Agent`
 import org.http4s.netty.client.NettyClientBuilder
 import org.typelevel.otel4s.trace.Tracer
+import pillars.Logging
 import pillars.Module
 import pillars.Modules
 import pillars.Pillars
 import pillars.PillarsError
 import pillars.PillarsError.*
 import pillars.Run
+import pillars.syntax.*
 import sttp.tapir.AnyEndpoint
 import sttp.tapir.DecodeResult
 import sttp.tapir.Endpoint
@@ -40,24 +48,37 @@ class Loader extends pillars.Loader:
         context: pillars.Loader.Context[F],
         modules: Modules[F]
     ): Resource[F, HttpClient[F]] =
+        import context.*
+        given Files[F] = Files.forAsync[F]
         for
-            ops    <- ClientMetrics(context.observability).toResource
-            client <- NettyClientBuilder[F]
-                          .withHttp2
-                          .withNioTransport
-                          .resource
-                          .map: client =>
-                              val classifier   = (r: Request[F]) => Some(r.method.name.toLowerCase)
-                              val logging      = Logger[F](
-                                logHeaders = false,
-                                logBody = true,
-                                logAction = Some(scribe.cats[F].debug(_))
-                              )
-                              client
-                                  |> Metrics[F](ops, classifier)
-                                  |> logging
-                                  |> HttpClient.apply
+            _       <- Resource.eval(logger.info("Loading HTTP client module"))
+            conf    <- Resource.eval(configReader.read[HttpClient.Config]("http-client"))
+            metrics <- ClientMetrics(observability).toResource
+            client  <- NettyClientBuilder[F]
+                           .withHttp2
+                           .withNioTransport
+                           .withUserAgent(conf.userAgent)
+                           .resource
+                           .map: client =>
+                               val logging        =
+                                   if conf.logging.enabled then
+                                       Logger[F](
+                                         logHeaders = conf.logging.headers,
+                                         logBody = conf.logging.body,
+                                         logAction = conf.logging.logAction
+                                       )
+                                   else identity[Client[F]]
+                               val followRedirect =
+                                   if conf.followRedirect then FollowRedirect[F](10) else identity[Client[F]]
+                               client
+                                   |> metrics.middleware
+                                   |> logging
+                                   |> followRedirect
+                                   |> HttpClient.apply
+            _       <- Resource.eval(logger.info("HTTP client module loaded"))
         yield client
+        end for
+    end load
 end Loader
 
 final case class HttpClient[F[_]: Async](client: org.http4s.client.Client[F])
@@ -102,6 +123,22 @@ object HttpClient:
     def apply[F[_]: Async](using p: Pillars[F]): HttpClient[F] = p.module[HttpClient[F]](HttpClient.Key)
     case object Key extends Module.Key:
         override def name: String = "http-client"
+
+    final case class Config(
+        followRedirect: Boolean = true,
+        userAgent: `User-Agent` = Config.defaultUserAgent,
+        logging: Logging.HttpConfig = Logging.HttpConfig()
+    )
+    object Config:
+        given Configuration         = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults
+        given Decoder[`User-Agent`] = Decoder.decodeString.emap(s =>
+            `User-Agent`.parse(10)(s).leftMap(f => s"Invalid User-Agent '$s': ${f.message}")
+        )
+        given Encoder[`User-Agent`] = Encoder.encodeString.contramap(_.toString)
+        given Codec[Config]         = Codec.AsObject.derivedConfigured
+
+        private val defaultUserAgent: `User-Agent` = `User-Agent`(ProductId("pillars", None), ProductId("netty", None))
+    end Config
 
     enum Error(endpoint: AnyEndpoint, uri: Option[Uri], val number: ErrorNumber, val message: Message)
         extends PillarsError:

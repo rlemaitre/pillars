@@ -1,6 +1,7 @@
 package pillars
 
-import cats.effect.{Async, LiftIO}
+import cats.effect.{Async, LiftIO, Resource}
+import cats.effect.syntax.all.*
 import cats.syntax.all.*
 import io.circe.Codec
 import io.circe.derivation.Configuration
@@ -23,16 +24,16 @@ object Observability:
     def noop[F[_]: LiftIO: Async]: F[Observability[F]] =
         Observability(Tracer.noop[F], Meter.noop[F], EndpointInterceptor.noop[F]).pure[F]
 
-    def init[F[_]: LiftIO: Async](config: Config): F[Observability[F]] =
+    def init[F[_]: LiftIO: Async](config: Config): Resource[F, Observability[F]] =
         if config.enabled then
             for
-                otel4s       <- OtelJava.global
-                tracer       <- otel4s.tracerProvider.get(config.serviceName)
-                meter        <- otel4s.meterProvider.get(config.serviceName)
-                tapirMetrics <- Otel4sMetrics.init[F](meter)
+                otel4s       <- OtelJava.autoConfigured[F]()
+                tracer       <- otel4s.tracerProvider.get(config.serviceName).toResource
+                meter        <- otel4s.meterProvider.get(config.serviceName).toResource
+                tapirMetrics <- Otel4sMetrics.init[F](meter).toResource
             yield Observability(tracer, meter, tapirMetrics.metricsInterceptor())
         else
-            noop
+            noop.toResource
     final case class Config(enabled: Boolean, serviceName: ServiceName = ServiceName("pillars"))
 
     object Config:

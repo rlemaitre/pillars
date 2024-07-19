@@ -144,12 +144,12 @@ object Logging:
     end Config
 
     final case class HttpConfig(
-        enabled: Boolean = true,
+        enabled: Boolean = false,
         level: Level = Level.Debug,
-        logHeaders: Boolean = false,
-        logBody: Boolean = true
+        headers: Boolean = false,
+        body: Boolean = true
     ):
-        def logAction[F[_]: Async: Scribe]: Option[String => F[Unit]] = Some(Scribe[F].log(level, MDC.instance, _))
+        def logAction[F[_]: Sync]: Option[String => F[Unit]] = Some(scribe.cats.effect[F].log(level, MDC.instance, _))
     end HttpConfig
 
     object HttpConfig:
