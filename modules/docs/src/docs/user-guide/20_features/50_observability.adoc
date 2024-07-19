@@ -11,5 +11,11 @@ ifndef::projectRootDir[]
 endif::projectRootDir[]
 
 [NOTE]
-This documentation needs to be written.
+This documentation needs to be completed.
 You can help us by xref:../../contribute/10_contributing.adoc[contributing to the documentation].
+
+=== Configuration
+
+=== Metrics
+
+=== Traces

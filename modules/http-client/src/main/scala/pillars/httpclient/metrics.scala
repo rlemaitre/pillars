@@ -79,7 +79,7 @@ final case class ClientMetrics[F[_]](metrics: MetricsCollection[F])(using async:
                     responseAttributes = extractAttributes(response)
                     _                 <- Resource.eval(metrics.responseDuration.record(
                                            (end - start).toMillis,
-                                           responseAttributes ++ responseAttributes*
+                                           requestAttributes ++ responseAttributes*
                                          ))
                 yield response
             happyPath.handleErrorWith: (e: Throwable) =>
@@ -101,7 +101,8 @@ final case class ClientMetrics[F[_]](metrics: MetricsCollection[F])(using async:
         val l = value match
         case request: Request[F]   =>
             List(
-              "http.route"          -> s"${request.uri.host.map(_.value).getOrElse("")}",
+              "http.route"          -> s"${request.uri.path.addEndsWithSlash.renderString}",
+              "http.request.host"   -> s"${request.uri.host.map(_.value).getOrElse("")}",
               "http.request.method" -> request.method.name,
               "url.scheme"          -> request.uri.scheme.map(_.value).getOrElse("")
             )

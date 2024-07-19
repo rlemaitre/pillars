@@ -1,5 +1,6 @@
 import org.typelevel.scalacoptions.ScalacOptions
 import org.typelevel.scalacoptions.ScalaVersion
+import sbt.util
 
 ThisBuild / versionScheme := Some("semver-spec")
 inThisBuild(
@@ -61,6 +62,11 @@ enablePlugins(ScalaUnidocPlugin)
 
 outputStrategy := Some(StdoutOutput)
 
+//assumedVersionScheme := VersionScheme.Always
+//libraryDependencySchemes ++= Seq(
+//  "org.typelevel" %% "otel4s-core-trace" % VersionScheme.Always
+//)
+
 lazy val core = Project("pillars-core", file("modules/core"))
     .enablePlugins(BuildInfoPlugin)
     .settings(
@@ -74,11 +80,12 @@ lazy val core = Project("pillars-core", file("modules/core"))
 lazy val dbSkunk = Project("pillars-db-skunk", file("modules/db-skunk"))
     .enablePlugins(BuildInfoPlugin)
     .settings(
-      name             := "pillars-db-skunk",
-      description      := "pillars-db-skunk is a scala 3 library providing database services for writing backend applications using skunk",
-      libraryDependencies ++= Dependencies.database,
-      buildInfoKeys    := Seq[BuildInfoKey](name, version, description),
-      buildInfoPackage := "pillars.db.build"
+      name                                        := "pillars-db-skunk",
+      description                                 := "pillars-db-skunk is a scala 3 library providing database services for writing backend applications using skunk",
+      libraryDependencies ++= Dependencies.skunk,
+      buildInfoKeys                               := Seq[BuildInfoKey](name, version, description),
+      buildInfoPackage                            := "pillars.db.build",
+      libraryDependencySchemes += "org.typelevel" %% "otel4s-core-trace" % VersionScheme.Always
     )
     .dependsOn(core)
 
@@ -107,11 +114,12 @@ lazy val redisRediculous = Project("pillars-redis-rediculous", file("modules/red
 lazy val dbMigrations = Project("pillars-db-migration", file("modules/db-migration"))
     .enablePlugins(BuildInfoPlugin)
     .settings(
-      name             := "pillars-db-migration",
-      description      := "pillars-db is a scala 3 library providing database migrations",
+      name                                        := "pillars-db-migration",
+      description                                 := "pillars-db is a scala 3 library providing database migrations",
+      libraryDependencySchemes += "org.typelevel" %% "otel4s-core-trace" % VersionScheme.Always,
       libraryDependencies ++= Dependencies.migrations,
-      buildInfoKeys    := Seq[BuildInfoKey](name, version, description),
-      buildInfoPackage := "pillars.db.migrations.build"
+      buildInfoKeys                               := Seq[BuildInfoKey](name, version, description),
+      buildInfoPackage                            := "pillars.db.migrations.build"
     )
     .dependsOn(core, dbSkunk)
 
@@ -152,13 +160,14 @@ lazy val httpClient = Project("pillars-http-client", file("modules/http-client")
 lazy val example = Project("pillars-example", file("modules/example"))
     .enablePlugins(BuildInfoPlugin) // //<1>
     .settings(
-      name             := "pillars-example",                                            // //<2>
-      description      := "pillars-example is an example of application using pillars", // //<3>
+      name                                        := "pillars-example", // //<2>
+      description                                 := "pillars-example is an example of application using pillars", // //<3>
       libraryDependencies ++= Dependencies.tests ++ Dependencies.migrationsRuntime ++ Dependencies.observabilityRuntime,
-      buildInfoKeys    := Seq[BuildInfoKey](name, version, description),                // //<4>
-      buildInfoOptions := Seq(BuildInfoOption.Traits("pillars.BuildInfo")),             // //<5>
-      buildInfoPackage := "example.build",                                              // //<6>
-      publish / skip   := true
+      buildInfoKeys                               := Seq[BuildInfoKey](name, version, description), // //<4>
+      buildInfoOptions                            := Seq(BuildInfoOption.Traits("pillars.BuildInfo")), // //<5>
+      buildInfoPackage                            := "example.build", // //<6>
+      publish / skip                              := true,
+      libraryDependencySchemes += "org.typelevel" %% "otel4s-core-trace" % VersionScheme.Always
     )
     .dependsOn(core, dbSkunk, flags, httpClient, dbMigrations)
 // end::example[]

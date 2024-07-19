@@ -53,7 +53,7 @@ trait EntryPoint extends IOApp:
         val command = Command(app.infos.name, app.infos.description):
             val configFile =
                 Opts.option[Path]("config", "Path to the configuration file").map: configPath =>
-                    Pillars(configPath).use: pillars =>
+                    Pillars(app.infos, configPath).use: pillars =>
                         given Pillars[IO] = pillars
                         app.run.as(ExitCode.Success)
             val openAPICmd =

@@ -81,15 +81,16 @@ object Dependencies {
     )
 
     val observability: Seq[ModuleID]        = Seq(
-      "org.typelevel" %% "otel4s-oteljava" % "0.6.0"
+      "org.typelevel" %% "otel4s-sdk"          % "0.8.0",
+      "org.typelevel" %% "otel4s-sdk-exporter" % "0.8.0"
     )
     val observabilityRuntime: Seq[ModuleID] = Seq(
-      "io.opentelemetry" % "opentelemetry-exporter-otlp"               % "1.40.0",
-      "io.opentelemetry" % "opentelemetry-sdk-extension-autoconfigure" % "1.40.0"
+//      "io.opentelemetry" % "opentelemetry-exporter-otlp"               % "1.40.0",
+//      "io.opentelemetry" % "opentelemetry-sdk-extension-autoconfigure" % "1.40.0"
     )
 
-    val database: Seq[ModuleID] = Seq(
-      "org.tpolecat" %% "skunk-core"  % "1.0.0-M6",
+    val skunk: Seq[ModuleID] = Seq(
+      "org.tpolecat" %% "skunk-core"  % "1.0.0-M6" exclude("org.typelevel", "otel4s-core-trace"),
       "org.tpolecat" %% "skunk-circe" % "1.0.0-M6"
     ) ++ tests
 
