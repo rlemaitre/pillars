@@ -12,7 +12,6 @@ import org.typelevel.otel4s.metrics.Counter
 import org.typelevel.otel4s.metrics.Histogram
 import org.typelevel.otel4s.metrics.Meter
 import org.typelevel.otel4s.metrics.UpDownCounter
-import pillars.Otel4sMetrics.*
 import sttp.tapir.AnyEndpoint
 import sttp.tapir.model.ServerRequest
 import sttp.tapir.server.interceptor.metrics.MetricsRequestInterceptor
