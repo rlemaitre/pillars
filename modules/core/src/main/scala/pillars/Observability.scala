@@ -1,6 +1,8 @@
 package pillars
 
-import cats.effect.{Async, LiftIO, Resource}
+import cats.effect.Async
+import cats.effect.LiftIO
+import cats.effect.Resource
 import cats.effect.syntax.all.*
 import cats.syntax.all.*
 import io.circe.Codec
@@ -8,11 +10,13 @@ import io.circe.derivation.Configuration
 import io.github.iltotore.iron.*
 import io.github.iltotore.iron.circe.given
 import io.github.iltotore.iron.constraint.all.*
-import org.typelevel.otel4s.{Attribute, AttributeKey}
+import org.typelevel.otel4s.Attribute
+import org.typelevel.otel4s.AttributeKey
 import org.typelevel.otel4s.metrics.Meter
 import org.typelevel.otel4s.oteljava.OtelJava
 import org.typelevel.otel4s.trace.Tracer
-import sttp.tapir.server.interceptor.{EndpointInterceptor, Interceptor}
+import sttp.tapir.server.interceptor.EndpointInterceptor
+import sttp.tapir.server.interceptor.Interceptor
 
 final case class Observability[F[_]](tracer: Tracer[F], metrics: Meter[F], interceptor: Interceptor[F]):
     export metrics.*

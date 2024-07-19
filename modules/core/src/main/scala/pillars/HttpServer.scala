@@ -7,7 +7,6 @@ import cats.syntax.all.*
 import com.comcast.ip4s.*
 import io.circe.Codec
 import io.circe.derivation.Configuration
-import pillars.syntax.*
 import org.http4s.HttpApp
 import org.http4s.HttpVersion
 import org.http4s.Response
@@ -20,6 +19,7 @@ import org.http4s.server.middleware.ErrorHandling
 import org.http4s.server.middleware.Logger
 import pillars.Controller.HttpEndpoint
 import pillars.codec.given
+import pillars.syntax.*
 import sttp.capabilities.StreamMaxLengthExceededException
 import sttp.monad.MonadError
 import sttp.tapir.*
@@ -56,7 +56,7 @@ object HttpServer:
                 .exceptionHandler(exceptionHandler())
                 .options
 
-        val routes = Http4sServerInterpreter[F](options).toRoutes(endpoints).orNotFound
+        val routes          = Http4sServerInterpreter[F](options).toRoutes(endpoints).orNotFound
         val app: HttpApp[F] = routes |> logging |> errorHandling |> cors
 
         NettyServerBuilder[F].withoutSsl.withNioTransport
@@ -101,7 +101,7 @@ object HttpServer:
     final case class Config(
         host: Host,
         port: Port,
-        logging: Logging.HttpConfig = Logging.HttpConfig() 
+        logging: Logging.HttpConfig = Logging.HttpConfig()
     )
 
     object Config:

@@ -92,8 +92,8 @@ final case class DatabaseConfig(
 object DatabaseConfig:
     given Configuration         = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults
     given Codec[DatabaseConfig] = Codec.AsObject.derivedConfigured
-    import pillars.Logging.Config.given 
-    given Codec[LoggingConfig] = Codec.AsObject.derivedConfigured
+    import pillars.Logging.Config.given
+    given Codec[LoggingConfig]  = Codec.AsObject.derivedConfigured
 
     given CirceDecoder[SSL] = CirceDecoder.decodeString.emap {
         case "none"    => Right(SSL.None)
