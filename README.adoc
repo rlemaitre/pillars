@@ -52,7 +52,7 @@ Mind the gap :D
 
 == Feedback
 
-If you have any feedback, please reach out to us at mailto:pillars@rlemaitre.com[]
+If you have any feedback, please reach out to us at mailto:pillars@pillars.dev[]
 
 
 == License

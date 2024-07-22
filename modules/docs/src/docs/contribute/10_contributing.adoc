@@ -34,14 +34,14 @@ There are other easy ways to support the project and show your appreciation, whi
 This project and everyone participating in it is governed by the
 link:https://github.com/rlemaitre/pillarsblob/master/CODE_OF_CONDUCT.md[Pillars Code of Conduct].
 By participating, you are expected to uphold this code.
-Please report unacceptable behavior to mailto:pillars@rlemaitre.com[].
+Please report unacceptable behavior to mailto:pillars@pillars.dev[].
 
 
 [#i-have-a-question]
 === I Have a Question
 
 [NOTE]
-If you want to ask a question, we assume that you have read the available link:https://pillars.rlemaitre.com[Documentation].
+If you want to ask a question, we assume that you have read the available link:https://pillars.dev[Documentation].
 
 Before you ask a question, it is best to search for existing link:https://github.com/rlemaitre/pillars/issues[Issues] that might help you.
 In case you have found a suitable issue and still need clarification, you can write your question in this issue.
@@ -69,7 +69,7 @@ Therefore, we ask you to investigate carefully, collect information and describe
 Please complete the following steps in advance to help us fix any potential bug as fast as possible.
 
 * Make sure that you are using the latest version.
-* Determine if your bug is really a bug and not an error on your side e.g. using incompatible environment components/versions (Make sure that you have read the link:https://pillars.rlemaitre.com[documentation]. If you are looking for support, you might want to check <<i-have-a-question, this section>>.
+* Determine if your bug is really a bug and not an error on your side e.g. using incompatible environment components/versions (Make sure that you have read the link:https://pillars.dev[documentation]. If you are looking for support, you might want to check <<i-have-a-question, this section>>.
 * To see if other users have experienced (and potentially already solved) the same issue you are having, check if there is not already a bug report existing for your bug or error in the link:https://github.com/rlemaitre/pillarsissues?q=label%3Abug[bug tracker].
 * Also make sure to search the internet (including Stack Overflow) to see if users outside of the GitHub community have discussed the issue.
 * Collect information about the bug:
@@ -83,7 +83,7 @@ Please complete the following steps in advance to help us fix any potential bug 
 
 [IMPORTANT]
 You must never report security related issues, vulnerabilities or bugs including sensitive information to the issue tracker, or elsewhere in public.
-Instead, sensitive bugs must be sent by email to mailto:security@rlemaitre.com[].
+Instead, sensitive bugs must be sent by email to mailto:security@pillars.dev[].
 
 We use GitHub issues to track bugs and errors.
 If you run into an issue with the project:
@@ -113,7 +113,7 @@ Following these guidelines will help maintainers and the community to understand
 ===== Before Submitting an Enhancement
 
 * Make sure that you are using the latest version.
-* Read the link:https://pillars.rlemaitre.com[documentation] carefully and find out if the functionality is already covered, maybe by an individual configuration.
+* Read the link:https://pillars.pillars.dev[documentation] carefully and find out if the functionality is already covered, maybe by an individual configuration.
 * Perform a link:https://github.com/rlemaitre/pillars/issues[search] to see if the enhancement has already been suggested.
 If it has, add a comment to the existing issue instead of opening a new one.
 * Find out whether your idea fits with the scope and aims of the project.

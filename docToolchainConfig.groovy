@@ -78,7 +78,7 @@ microsite.with {
 
     /** end:microsite **/
     // the base url of the microsite
-    domain = 'pillars.rlemaitre.com'
+    domain = 'pillars.dev'
 
     // plausible url for the microsite
     plausibleUrl = 'https://analytics.lemaitre.me/js/script.js'
@@ -93,10 +93,10 @@ microsite.with {
     //
     // contact eMail
     // example: mailto:bert@example.com
-    footerMail = 'mailto:pillars@rlemaitre.com'
+    footerMail = 'mailto:pillars@pillars.dev'
     //
     // twitter account url
-    footerTwitter = 'https://twitter.com/rlemaitre'
+    footerTwitter = 'https://twitter.com/scaladdict'
     //
     // Stackoverflow QA
 //    footerSO = '##Stackoverflow-url##'
@@ -453,8 +453,8 @@ openApi = [:]
 
 openApi.with {
     specFile = 'docs/pillars-admin.yaml' // i.e. 'petstore.yaml', 'src/doc/petstore.yaml'
-    infoUrl = 'https://pillars.rlemaitre.com'
-    infoEmail = 'pillars@rlemaitre.com'
+    infoUrl = 'https://pillars.dev'
+    infoEmail = 'pillars@pillars.dev'
 }
 //end::openApiConfig[]
 
