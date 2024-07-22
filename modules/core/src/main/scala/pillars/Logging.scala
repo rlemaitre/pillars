@@ -43,8 +43,8 @@ object Logging:
 
     private def writer(config: Config): Writer =
         config.format match
-        case Format.Json => ScribeCirceJsonSupport.writer(config.output.writer)
-        case _           => config.output.writer
+            case Format.Json => ScribeCirceJsonSupport.writer(config.output.writer)
+            case _           => config.output.writer
 
     private type BufferSizeConstraint = Positive DescribedAs "Buffer size should be positive"
     opaque type BufferSize <: Int     = Int :| BufferSizeConstraint
@@ -62,14 +62,14 @@ object Logging:
         case Strict
 
         def formatter: Formatter = this match
-        case Format.Json     => Formatter.default
-        case Format.Simple   => Formatter.simple
-        case Format.Colored  => Formatter.colored
-        case Format.Classic  => Formatter.classic
-        case Format.Compact  => Formatter.compact
-        case Format.Enhanced => Formatter.enhanced
-        case Format.Advanced => Formatter.advanced
-        case Format.Strict   => Formatter.strict
+            case Format.Json     => Formatter.default
+            case Format.Simple   => Formatter.simple
+            case Format.Colored  => Formatter.colored
+            case Format.Classic  => Formatter.classic
+            case Format.Compact  => Formatter.compact
+            case Format.Enhanced => Formatter.enhanced
+            case Format.Advanced => Formatter.advanced
+            case Format.Strict   => Formatter.strict
     end Format
 
     private object Format:
@@ -95,8 +95,8 @@ object Logging:
         case File(path: Path)
 
         def writer: Writer = this match
-        case Output.Console    => ConsoleWriter
-        case Output.File(path) => scribe.file.FileWriter(PathBuilder.static(path.toNioPath))
+            case Output.Console    => ConsoleWriter
+            case Output.File(path) => scribe.file.FileWriter(PathBuilder.static(path.toNioPath))
     end Output
 
     private object Output:

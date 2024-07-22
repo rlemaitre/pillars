@@ -99,29 +99,29 @@ final case class ClientMetrics[F[_]](metrics: MetricsCollection[F])(using async:
 
     private def extractAttributes(value: Request[F] | Response[F] | Throwable) =
         val l = value match
-        case request: Request[F]   =>
-            List(
-              "http.route"          -> s"${request.uri.path.addEndsWithSlash.renderString}",
-              "http.request.host"   -> s"${request.uri.host.map(_.value).getOrElse("")}",
-              "http.request.method" -> request.method.name,
-              "url.scheme"          -> request.uri.scheme.map(_.value).getOrElse("")
-            )
-        case response: Response[F] =>
-            List(
-              "http.response.status"      -> {
-                  response.status.responseClass match
-                  case Status.Informational => "1xx"
-                  case Status.Successful    => "2xx"
-                  case Status.Redirection   => "3xx"
-                  case Status.ClientError   => "4xx"
-                  case Status.ServerError   => "5xx"
-              },
-              "http.response.status_code" -> response.status.code.toString
-            )
-        case e: Throwable          =>
-            List(
-              "error.type" -> e.getClass.getName
-            )
+            case request: Request[F]   =>
+                List(
+                  "http.route"          -> s"${request.uri.path.addEndsWithSlash.renderString}",
+                  "http.request.host"   -> s"${request.uri.host.map(_.value).getOrElse("")}",
+                  "http.request.method" -> request.method.name,
+                  "url.scheme"          -> request.uri.scheme.map(_.value).getOrElse("")
+                )
+            case response: Response[F] =>
+                List(
+                  "http.response.status"      -> {
+                      response.status.responseClass match
+                          case Status.Informational => "1xx"
+                          case Status.Successful    => "2xx"
+                          case Status.Redirection   => "3xx"
+                          case Status.ClientError   => "4xx"
+                          case Status.ServerError   => "5xx"
+                  },
+                  "http.response.status_code" -> response.status.code.toString
+                )
+            case e: Throwable          =>
+                List(
+                  "error.type" -> e.getClass.getName
+                )
         l.map { case (name, value) => value.toAttribute(name) }
     end extractAttributes
 

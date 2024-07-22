@@ -31,8 +31,8 @@ end PillarsError
 object PillarsError:
     def fromThrowable(throwable: Throwable): PillarsError =
         throwable match
-        case error: PillarsError => error
-        case _                   => Unknown(throwable)
+            case error: PillarsError => error
+            case _                   => Unknown(throwable)
     case class View(code: String, message: String, details: Option[String]) derives Codec.AsObject, Schema
     object View:
         val output: EndpointOutput[(StatusCode, View)] = statusCode.and(jsonBody[View])

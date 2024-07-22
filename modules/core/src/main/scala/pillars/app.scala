@@ -62,7 +62,7 @@ trait EntryPoint extends IOApp:
             configFile orElse openAPICmd
 
         command.parse(args, sys.env) match
-        case Left(help)  => Console[IO].errorln(help).as(ExitCode.Error)
-        case Right(prog) => prog
+            case Left(help)  => Console[IO].errorln(help).as(ExitCode.Error)
+            case Right(prog) => prog
     end run
 end EntryPoint

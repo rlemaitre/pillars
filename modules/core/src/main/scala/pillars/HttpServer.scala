@@ -75,12 +75,12 @@ object HttpServer:
                     Some(ValuedEndpointOutput(statusCode.and(jsonBody[PillarsError.View]), (e.status, e.view)))
 
                 ctx.e match
-                case e: PillarsError                            =>
-                    monad.unit(handlePillarsError(e))
-                case StreamMaxLengthExceededException(maxBytes) =>
-                    monad.unit(handlePillarsError(PillarsError.PayloadTooLarge(maxBytes)))
-                case _                                          =>
-                    monad.unit(handlePillarsError(PillarsError.fromThrowable(ctx.e)))
+                    case e: PillarsError                            =>
+                        monad.unit(handlePillarsError(e))
+                    case StreamMaxLengthExceededException(maxBytes) =>
+                        monad.unit(handlePillarsError(PillarsError.PayloadTooLarge(maxBytes)))
+                    case _                                          =>
+                        monad.unit(handlePillarsError(PillarsError.fromThrowable(ctx.e)))
                 end match
             end apply
 

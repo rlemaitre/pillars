@@ -1,6 +1,5 @@
 import org.typelevel.scalacoptions.ScalacOptions
 import org.typelevel.scalacoptions.ScalaVersion
-import sbt.util
 
 ThisBuild / versionScheme := Some("semver-spec")
 inThisBuild(
@@ -45,7 +44,7 @@ inThisBuild(
     ) ++ Seq("-new-syntax")
   )
 )
-javaOptions += "-Dotel.java.global-autoconfigure.enabled=true"
+//javaOptions += "-Dotel.java.global-autoconfigure.enabled=true"
 
 Compile / scalacOptions ++= ScalacOptions.tokensForVersion(
   ScalaVersion.V3_3_0,
@@ -162,7 +161,7 @@ lazy val example = Project("pillars-example", file("modules/example"))
     .settings(
       name                                        := "pillars-example", // //<2>
       description                                 := "pillars-example is an example of application using pillars", // //<3>
-      libraryDependencies ++= Dependencies.tests ++ Dependencies.migrationsRuntime ++ Dependencies.observabilityRuntime,
+      libraryDependencies ++= Dependencies.tests ++ Dependencies.migrationsRuntime,
       buildInfoKeys                               := Seq[BuildInfoKey](name, version, description), // //<4>
       buildInfoOptions                            := Seq(BuildInfoOption.Traits("pillars.BuildInfo")), // //<5>
       buildInfoPackage                            := "example.build", // //<6>

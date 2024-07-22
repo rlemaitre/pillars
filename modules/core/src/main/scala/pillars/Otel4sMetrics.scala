@@ -12,6 +12,7 @@ import org.typelevel.otel4s.metrics.Counter
 import org.typelevel.otel4s.metrics.Histogram
 import org.typelevel.otel4s.metrics.Meter
 import org.typelevel.otel4s.metrics.UpDownCounter
+import sttp.monad.MonadError
 import sttp.tapir.AnyEndpoint
 import sttp.tapir.model.ServerRequest
 import sttp.tapir.server.interceptor.metrics.MetricsRequestInterceptor
@@ -38,12 +39,12 @@ object Otel4sMetrics:
         "http.response.status"      -> {
             case Right(r) =>
                 r.code match
-                case c if c.isInformational => "1xx"
-                case c if c.isSuccess       => "2xx"
-                case c if c.isRedirect      => "3xx"
-                case c if c.isClientError   => "4xx"
-                case c if c.isServerError   => "5xx"
-                case _                      => ""
+                    case c if c.isInformational => "1xx"
+                    case c if c.isSuccess       => "2xx"
+                    case c if c.isRedirect      => "3xx"
+                    case c if c.isClientError   => "4xx"
+                    case c if c.isServerError   => "5xx"
+                    case _                      => ""
             case Left(_)  => "5xx"
         },
         "http.response.status_code" -> {
@@ -69,11 +70,11 @@ object Otel4sMetrics:
     */
     def init[F[_]: Monad](meter: Meter[F]): F[Otel4sMetrics[F]] =
         for
-            active       <- requestActive(meter, labels)
-            total        <- requestTotal(meter, labels)
-            duration     <- requestDuration(meter, labels)
-            requestSize  <- requestBodySize(meter, labels)
-            responseSize <- responseBodySize(meter, labels)
+            active       <- requestActive(meter)
+            total        <- requestTotal(meter)
+            duration     <- requestDuration(meter)
+            requestSize  <- requestBodySize(meter)
+            responseSize <- responseBodySize(meter)
         yield Otel4sMetrics(meter, List[Metric[F, _]](active, total, duration))
 
     def init[F[_]: Applicative](meter: Meter[F], metrics: List[Metric[F, _]]): F[Otel4sMetrics[F]] =
@@ -81,9 +82,24 @@ object Otel4sMetrics:
 
     def noop[F[_]: Applicative]: Otel4sMetrics[F] = Otel4sMetrics(Meter.noop[F], Nil)
 
+    private def decreaseCounter[F[_]](
+        req: ServerRequest,
+        counter: UpDownCounter[F, Long],
+        m: MonadError[F],
+        ep: AnyEndpoint
+    ) =
+        m.suspend(counter.dec(asOpenTelemetryAttributes(ep, req)*))
+
+    private def increaseCounter[F[_]](
+        req: ServerRequest,
+        counter: UpDownCounter[F, Long],
+        m: MonadError[F],
+        ep: AnyEndpoint
+    ) =
+        m.suspend(counter.inc(asOpenTelemetryAttributes(ep, req)*))
+
     private def requestActive[F[_]: Applicative](
-        meter: Meter[F],
-        labels: MetricLabels
+        meter: Meter[F]
     ): F[Metric[F, UpDownCounter[F, Long]]] =
         meter
             .upDownCounter[Long]("http.server.active_requests")
@@ -97,14 +113,14 @@ object Otel4sMetrics:
                       m.unit:
                           EndpointMetric()
                               .onEndpointRequest: ep =>
-                                  m.suspend(counter.inc(asOpenTelemetryAttributes(labels, ep, req)*))
+                                  increaseCounter(req, counter, m, ep)
                               .onResponseBody: (ep, _) =>
-                                  m.suspend(counter.dec(asOpenTelemetryAttributes(labels, ep, req)*))
+                                  decreaseCounter(req, counter, m, ep)
                               .onException: (ep, _) =>
-                                  m.suspend(counter.dec(asOpenTelemetryAttributes(labels, ep, req)*))
+                                  decreaseCounter(req, counter, m, ep)
                 )
 
-    private def requestTotal[F[_]: Applicative](meter: Meter[F], labels: MetricLabels): F[Metric[F, Counter[F, Long]]] =
+    private def requestTotal[F[_]: Applicative](meter: Meter[F]): F[Metric[F, Counter[F, Long]]] =
         meter
             .counter[Long]("http.server.request.total")
             .withDescription("Total HTTP requests")
@@ -119,25 +135,22 @@ object Otel4sMetrics:
                               .onResponseBody: (ep, res) =>
                                   m.suspend:
                                       val otLabels =
-                                          merge(
-                                            asOpenTelemetryAttributes(labels, ep, req),
-                                            asOpenTelemetryAttributes(labels, Right(res), None)
+                                          asOpenTelemetryAttributes(ep, req) ++ asOpenTelemetryAttributes(
+                                            Right(res),
+                                            None
                                           )
                                       counter.inc(otLabels*)
                               .onException: (ep, ex) =>
                                   m.suspend:
                                       val otLabels =
-                                          merge(
-                                            asOpenTelemetryAttributes(labels, ep, req),
-                                            asOpenTelemetryAttributes(labels, Left(ex), None)
+                                          asOpenTelemetryAttributes(ep, req) ++ asOpenTelemetryAttributes(
+                                            Left(ex),
+                                            None
                                           )
                                       counter.inc(otLabels*)
                 )
 
-    private def requestDuration[F[_]: Applicative](
-        meter: Meter[F],
-        labels: MetricLabels
-    ): F[Metric[F, Histogram[F, Long]]] =
+    private def requestDuration[F[_]: Applicative](meter: Meter[F]): F[Metric[F, Histogram[F, Long]]] =
         meter
             .histogram[Long]("http.server.request.duration")
             .withDescription("Duration of HTTP requests")
@@ -160,41 +173,30 @@ object Otel4sMetrics:
                               .onResponseHeaders: (ep, res) =>
                                   m.suspend:
                                       val otLabels =
-                                          merge(
-                                            asOpenTelemetryAttributes(labels, ep, req),
-                                            asOpenTelemetryAttributes(
-                                              labels,
-                                              Right(res),
-                                              Some(labels.forResponsePhase.headersValue)
-                                            )
+                                          asOpenTelemetryAttributes(ep, req) ++ asOpenTelemetryAttributes(
+                                            Right(res),
+                                            Some(labels.forResponsePhase.headersValue)
                                           )
                                       recorder.record(duration, otLabels*)
                               .onResponseBody: (ep, res) =>
                                   m.suspend:
                                       val otLabels =
-                                          merge(
-                                            asOpenTelemetryAttributes(labels, ep, req),
-                                            asOpenTelemetryAttributes(
-                                              labels,
-                                              Right(res),
-                                              Some(labels.forResponsePhase.bodyValue)
-                                            )
+                                          asOpenTelemetryAttributes(ep, req) ++ asOpenTelemetryAttributes(
+                                            Right(res),
+                                            Some(labels.forResponsePhase.bodyValue)
                                           )
                                       recorder.record(duration, otLabels*)
                               .onException: (ep, ex) =>
                                   m.suspend:
                                       val otLabels =
-                                          merge(
-                                            asOpenTelemetryAttributes(labels, ep, req),
-                                            asOpenTelemetryAttributes(labels, Left(ex), None)
+                                          asOpenTelemetryAttributes(ep, req) ++ asOpenTelemetryAttributes(
+                                            Left(ex),
+                                            None
                                           )
                                       recorder.record(duration, otLabels*)
                 )
 
-    private def requestBodySize[F[_]: Applicative](
-        meter: Meter[F],
-        labels: MetricLabels
-    ): F[Metric[F, Histogram[F, Long]]] =
+    private def requestBodySize[F[_]: Applicative](meter: Meter[F]): F[Metric[F, Histogram[F, Long]]] =
         meter
             .histogram[Long]("http.server.request.body.size")
             .withDescription(
@@ -210,14 +212,11 @@ object Otel4sMetrics:
                           EndpointMetric()
                               .onEndpointRequest: ep =>
                                   m.suspend:
-                                      val otLabels = asOpenTelemetryAttributes(labels, ep, req)
+                                      val otLabels = asOpenTelemetryAttributes(ep, req)
                                       recorder.record(req.contentLength.getOrElse(0L), otLabels*)
                 )
 
-    private def responseBodySize[F[_]: Applicative](
-        meter: Meter[F],
-        labels: MetricLabels
-    ): F[Metric[F, Histogram[F, Long]]] =
+    private def responseBodySize[F[_]: Applicative](meter: Meter[F]): F[Metric[F, Histogram[F, Long]]] =
         meter
             .histogram[Long]("http.server.response.body.size")
             .withDescription(
@@ -232,33 +231,24 @@ object Otel4sMetrics:
                       m.eval:
                           EndpointMetric().onResponseBody: (endpoint, response) =>
                               m.eval:
-                                  val otLabels = asOpenTelemetryAttributes(labels, endpoint, req)
+                                  val otLabels = asOpenTelemetryAttributes(endpoint, req)
                                   response.body.foreach:
                                       case Right((_, Some(length: Long))) => recorder.record(length, otLabels*)
                                       case _                              => m.unit(())
                 )
 
-    private def asOpenTelemetryAttributes(
-        l: MetricLabels,
-        ep: AnyEndpoint,
-        req: ServerRequest
-    ): List[Attribute[String]] =
-        l.forRequest
+    private def asOpenTelemetryAttributes(ep: AnyEndpoint, req: ServerRequest) =
+        labels.forRequest
             .foldLeft(List.empty[Attribute[String]]): (b, label) =>
                 b :+ Attribute(AttributeKey.string(label._1), label._2(ep, req))
 
-    private def asOpenTelemetryAttributes(
-        l: MetricLabels,
-        res: Either[Throwable, ServerResponse[_]],
-        phase: Option[String]
-    ): List[Attribute[String]] =
-        val attributes = l.forResponse
+    private def asOpenTelemetryAttributes(res: Either[Throwable, ServerResponse[?]], phase: Option[String]) =
+        val attributes = labels.forResponse
             .foldLeft(List.empty[Attribute[String]]): (b, label) =>
                 b :+ Attribute(AttributeKey.string(label._1), label._2(res))
         phase match
-        case Some(value) => attributes :+ Attribute(AttributeKey.string(l.forResponsePhase.name), value)
-        case None        => attributes
+            case Some(value) => attributes :+ Attribute(AttributeKey.string(labels.forResponsePhase.name), value)
+            case None        => attributes
     end asOpenTelemetryAttributes
 
-    private def merge(a1: List[Attribute[String]], a2: List[Attribute[String]]): List[Attribute[String]] = a1 ++ a2
 end Otel4sMetrics

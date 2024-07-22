@@ -175,12 +175,14 @@ object FailureHandler:
         (endpoint: AnyEndpoint, uri: Option[Uri], failure: DecodeResult.Failure) =>
             import HttpClient.Error.*
             failure match
-            case DecodeResult.Error(raw, error)          => DecodingError(endpoint, uri, raw, error).raiseError[F, Either[EO, O]]
-            case DecodeResult.Missing                    => Missing(endpoint, uri).raiseError[F, Either[EO, O]]
-            case DecodeResult.Multiple(vs)               => Multiple(endpoint, uri, vs).raiseError[F, Either[EO, O]]
-            case DecodeResult.Mismatch(expected, actual) =>
-                Mismatch(endpoint, uri, expected, actual).raiseError[F, Either[EO, O]]
-            case DecodeResult.InvalidValue(errors)       => InvalidInput(endpoint, uri, errors).raiseError[F, Either[EO, O]]
+                case DecodeResult.Error(raw, error)          =>
+                    DecodingError(endpoint, uri, raw, error).raiseError[F, Either[EO, O]]
+                case DecodeResult.Missing                    => Missing(endpoint, uri).raiseError[F, Either[EO, O]]
+                case DecodeResult.Multiple(vs)               => Multiple(endpoint, uri, vs).raiseError[F, Either[EO, O]]
+                case DecodeResult.Mismatch(expected, actual) =>
+                    Mismatch(endpoint, uri, expected, actual).raiseError[F, Either[EO, O]]
+                case DecodeResult.InvalidValue(errors)       =>
+                    InvalidInput(endpoint, uri, errors).raiseError[F, Either[EO, O]]
             end match
 end FailureHandler
 
