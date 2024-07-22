@@ -84,14 +84,10 @@ object Dependencies {
       "org.typelevel" %% "otel4s-sdk"          % "0.8.0",
       "org.typelevel" %% "otel4s-sdk-exporter" % "0.8.0"
     )
-    val observabilityRuntime: Seq[ModuleID] = Seq(
-//      "io.opentelemetry" % "opentelemetry-exporter-otlp"               % "1.40.0",
-//      "io.opentelemetry" % "opentelemetry-sdk-extension-autoconfigure" % "1.40.0"
-    )
 
     val skunk: Seq[ModuleID] = Seq(
-      "org.tpolecat" %% "skunk-core"  % "1.0.0-M6" exclude("org.typelevel", "otel4s-core-trace"),
-      "org.tpolecat" %% "skunk-circe" % "1.0.0-M6"
+      "org.tpolecat" %% "skunk-core"  % "1.0.0-M7",
+      "org.tpolecat" %% "skunk-circe" % "1.0.0-M7"
     ) ++ tests
 
     val doobie: Seq[ModuleID] = Seq(
@@ -118,6 +114,7 @@ object Dependencies {
     val flags: Seq[ModuleID]      = Seq(
       "org.typelevel" %% "literally" % "1.2.0"
     ) ++ tests
+
     val httpClient: Seq[ModuleID] = http4sClient ++ http4s ++ tests
     val core: Seq[ModuleID]       =
         effect ++ json ++ tapir ++ http4s ++ http4sServer ++ model ++ commandLine ++ logging ++ observability ++ tests

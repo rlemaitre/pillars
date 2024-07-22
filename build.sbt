@@ -31,7 +31,7 @@ inThisBuild(
     licenses += (
       "Apache-2.0",
       url(
-        "http://www.apache.org/licenses/LICENSE-2.0"
+        "https://www.apache.org/licenses/LICENSE-2.0"
       )
     ),
     scalacOptions ++= ScalacOptions.tokensForVersion(
