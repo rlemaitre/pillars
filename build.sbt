@@ -30,7 +30,7 @@ inThisBuild(
     licenses += (
       "Apache-2.0",
       url(
-        "http://www.apache.org/licenses/LICENSE-2.0"
+        "https://www.apache.org/licenses/LICENSE-2.0"
       )
     ),
     scalacOptions ++= ScalacOptions.tokensForVersion(
@@ -76,7 +76,7 @@ lazy val dbSkunk = Project("pillars-db-skunk", file("modules/db-skunk"))
     .settings(
       name             := "pillars-db-skunk",
       description      := "pillars-db-skunk is a scala 3 library providing database services for writing backend applications using skunk",
-      libraryDependencies ++= Dependencies.database,
+      libraryDependencies ++= Dependencies.skunk,
       buildInfoKeys    := Seq[BuildInfoKey](name, version, description),
       buildInfoPackage := "pillars.db.build"
     )
