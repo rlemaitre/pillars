@@ -51,7 +51,7 @@ object Observability:
                 sdk           = otel4s.sdk
                 tracer       <- sdk.tracerProvider.get(config.traces.name.getOrElse(config.serviceName)).toResource
                 meter        <- sdk.meterProvider.get(config.metrics.name.getOrElse(config.serviceName)).toResource
-                tapirMetrics <- Otel4sMetrics.init[F](meter).toResource
+                tapirMetrics <- Metrics.init[F](meter).toResource
             yield Observability(tracer, meter, tapirMetrics.metricsInterceptor())
         else
             noop.toResource

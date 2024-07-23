@@ -77,7 +77,7 @@ http-client:
     headers: true
     body: true
     level: info
-# end:: http-client[]
+# end::http-client[]
 # tag::feature-flags[]
 feature-flags:
   enabled: true

@@ -11,15 +11,18 @@ import org.http4s.Status
 import org.http4s.client.Client
 import org.typelevel.otel4s.Attribute
 import org.typelevel.otel4s.metrics.BucketBoundaries
+import org.typelevel.otel4s.metrics.Counter
 import org.typelevel.otel4s.metrics.Histogram
 import org.typelevel.otel4s.metrics.Meter
 import org.typelevel.otel4s.metrics.UpDownCounter
 import pillars.Observability
 import pillars.Observability.*
+import scala.concurrent.duration.FiniteDuration
 
 final case class MetricsCollection[F[_]](
     responseDuration: Histogram[F, Long],
     activeRequests: UpDownCounter[F, Long],
+    totalRequests: Counter[F, Long],
     requestBodySize: Histogram[F, Long],
     responseBodySize: Histogram[F, Long]
 )
@@ -39,6 +42,11 @@ object MetricsCollection:
               .upDownCounter[Long]("http.client.active_requests")
               .withUnit("{request}")
               .withDescription("Active requests")
+              .create,
+          meter
+              .counter[Long]("http.client.request.total")
+              .withUnit("{request}")
+              .withDescription("Number of requests")
               .create,
           meter.histogram[Long]("http.client.request.body.size")
               .withUnit("By")
@@ -66,7 +74,14 @@ final case class ClientMetrics[F[_]](metrics: MetricsCollection[F])(using async:
 
     private def instrument(client: Client[F])(request: Request[F]): Resource[F, Response[F]] =
         val requestAttributes = extractAttributes(request)
-        clock.monotonic.toResource.flatMap { start =>
+
+        def recordRequest(start: FiniteDuration, end: FiniteDuration, attributes: List[Attribute[String]]) =
+            for
+                _ <- metrics.responseDuration.record((end - start).toMillis, attributes*)
+                _ <- metrics.totalRequests.inc(attributes*)
+            yield ()
+
+        clock.monotonic.toResource.flatMap: start =>
             val happyPath: Resource[F, Response[F]] =
                 for
                     _                 <- Resource.make(
@@ -77,24 +92,16 @@ final case class ClientMetrics[F[_]](metrics: MetricsCollection[F])(using async:
                     response          <- client.run(request)
                     end               <- Resource.eval(clock.monotonic)
                     responseAttributes = extractAttributes(response)
-                    _                 <- Resource.eval(metrics.responseDuration.record(
-                                           (end - start).toMillis,
-                                           requestAttributes ++ responseAttributes*
-                                         ))
+                    _                 <- Resource.eval:
+                                             recordRequest(start, end, requestAttributes ++ responseAttributes)
                 yield response
             happyPath.handleErrorWith: (e: Throwable) =>
                 Resource.eval:
                     clock.monotonic
-                        .flatMap(now =>
-                            metrics.responseDuration.record(
-                              (now - start).toMillis,
-                              requestAttributes ++ extractAttributes(e)*
-                            )
-                        )
-                        .flatMap(_ =>
+                        .flatMap: now =>
+                            recordRequest(start, now, requestAttributes ++ extractAttributes(e))
+                        .flatMap: _ =>
                             async.raiseError[Response[F]](e)
-                        )
-        }
     end instrument
 
     private def extractAttributes(value: Request[F] | Response[F] | Throwable) =
