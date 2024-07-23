@@ -13,8 +13,9 @@ jobs:
 
       - uses: actions/setup-java@v4
         with:
-          distribution: adopt
-          java-version: 19
+          distribution: temurin
+          java-version: 8
+          cache: sbt
 
       - name: Update CHANGELOG
         if: ${{ github.ref_type == 'tag' }}
