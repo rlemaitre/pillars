@@ -30,7 +30,7 @@ object app extends pillars.EntryPoint: // // <1>
                                  date <- session.unique(sql"select now()".query(timestamptz))
                                  _    <- Logger[IO].info(s"The current date is $date.")
                              yield ()
-                _ <- HttpClient[IO].get("https://pillars.dev"): response =>
+                _ <- HttpClient[IO].get("https://swapi.dev/api/people/1"): response =>
                          for
                              _    <- Logger[IO].info(s"Response: ${response.status}")
                              size <- response.body.compile.count

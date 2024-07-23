@@ -1,7 +1,7 @@
 package pillars
 
 import cats.Show
-import cats.effect.Sync
+import cats.effect.*
 import cats.syntax.all.*
 import fs2.io.file.Path
 import io.circe.*
@@ -18,6 +18,7 @@ import scribe.Scribe
 import scribe.file.PathBuilder
 import scribe.format.Formatter
 import scribe.json.ScribeCirceJsonSupport
+import scribe.mdc.MDC
 import scribe.writer.ConsoleWriter
 import scribe.writer.Writer
 
@@ -42,8 +43,8 @@ object Logging:
 
     private def writer(config: Config): Writer =
         config.format match
-        case Format.Json => ScribeCirceJsonSupport.writer(config.output.writer)
-        case _           => config.output.writer
+            case Format.Json => ScribeCirceJsonSupport.writer(config.output.writer)
+            case _           => config.output.writer
 
     private type BufferSizeConstraint = Positive DescribedAs "Buffer size should be positive"
     opaque type BufferSize <: Int     = Int :| BufferSizeConstraint
@@ -61,14 +62,14 @@ object Logging:
         case Strict
 
         def formatter: Formatter = this match
-        case Format.Json     => Formatter.default
-        case Format.Simple   => Formatter.simple
-        case Format.Colored  => Formatter.colored
-        case Format.Classic  => Formatter.classic
-        case Format.Compact  => Formatter.compact
-        case Format.Enhanced => Formatter.enhanced
-        case Format.Advanced => Formatter.advanced
-        case Format.Strict   => Formatter.strict
+            case Format.Json     => Formatter.default
+            case Format.Simple   => Formatter.simple
+            case Format.Colored  => Formatter.colored
+            case Format.Classic  => Formatter.classic
+            case Format.Compact  => Formatter.compact
+            case Format.Enhanced => Formatter.enhanced
+            case Format.Advanced => Formatter.advanced
+            case Format.Strict   => Formatter.strict
     end Format
 
     private object Format:
@@ -94,8 +95,8 @@ object Logging:
         case File(path: Path)
 
         def writer: Writer = this match
-        case Output.Console    => ConsoleWriter
-        case Output.File(path) => scribe.file.FileWriter(PathBuilder.static(path.toNioPath))
+            case Output.Console    => ConsoleWriter
+            case Output.File(path) => scribe.file.FileWriter(PathBuilder.static(path.toNioPath))
     end Output
 
     private object Output:
@@ -141,5 +142,19 @@ object Logging:
 
         given Codec[Config] = Codec.AsObject.derivedConfigured
     end Config
+
+    final case class HttpConfig(
+        enabled: Boolean = false,
+        level: Level = Level.Debug,
+        headers: Boolean = false,
+        body: Boolean = true
+    ):
+        def logAction[F[_]: Sync]: Option[String => F[Unit]] = Some(scribe.cats.effect[F].log(level, MDC.instance, _))
+    end HttpConfig
+
+    object HttpConfig:
+        import Config.given
+        given Codec[HttpConfig] = Codec.AsObject.derivedConfigured
+    end HttpConfig
 
 end Logging

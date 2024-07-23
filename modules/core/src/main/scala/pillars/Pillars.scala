@@ -1,5 +1,6 @@
 package pillars
 
+import cats.Parallel
 import cats.effect.*
 import cats.effect.std.Console
 import cats.syntax.all.*
@@ -19,6 +20,11 @@ import scribe.*
  * The Pillars trait defines the main components of the application.
  */
 trait Pillars[F[_]]:
+    /**
+     * The application information.
+     */
+    def appInfo: AppInfo
+
     /**
      * Component for observability. It allows you to create spans and metrics.
      */
@@ -68,11 +74,11 @@ object Pillars:
      * @param path The path to the configuration file.
      * @return a resource that will create a new instance of Pillars.
      */
-    def apply[F[_]: LiftIO: Async: Console: Network](path: Path): Resource[F, Pillars[F]] =
+    def apply[F[_]: LiftIO: Async: Console: Network: Parallel](infos: AppInfo, path: Path): Resource[F, Pillars[F]] =
         val configReader = Reader[F](path)
         for
             _config        <- Resource.eval(configReader.read[PillarsConfig])
-            obs            <- Resource.eval(Observability.init[F](_config.observability))
+            obs            <- Observability.init[F](infos, _config.observability)
             given Tracer[F] = obs.tracer
             _              <- Resource.eval(Logging.init(_config.log))
             _logger         = ScribeImpl[F](Sync[F])
@@ -85,6 +91,7 @@ object Pillars:
             _              <- Spawn[F].background:
                                   AdminServer[F](_config.admin, obs, _modules.adminControllers :+ ProbesController(probes)).start()
         yield new Pillars[F]:
+            override def appInfo: AppInfo                      = infos
             override def observability: Observability[F]       = obs
             override def config: PillarsConfig                 = _config
             override def apiServer: ApiServer[F]               =
@@ -109,11 +116,11 @@ object Pillars:
             .map((key, value) => key -> value.head)
         scribe.info(s"Found ${loaders.size} module loaders: ${loaders.keys.map(_.name).mkString(", ")}")
         loaders.topologicalSort(_.dependsOn) match
-        case Left(value)  => throw IllegalStateException("Circular dependency detected in modules")
-        case Right(value) =>
-            value.foldLeftM(Modules.empty[F]):
-                case (acc, (key, loader)) =>
-                    loader.load(context, acc).map(acc.add(key))
+            case Left(value)  => throw IllegalStateException("Circular dependency detected in modules")
+            case Right(value) =>
+                value.foldLeftM(Modules.empty[F]):
+                    case (acc, (key, loader)) =>
+                        loader.load(context, acc).map(acc.add(key))
         end match
     end loadModules
 

@@ -64,8 +64,8 @@ object Config:
             readConfig[T].use: parsed =>
                 Sync[F].fromEither:
                     parsed match
-                    case Left(failure) => Left(ConfigError.ParsingError(failure))
-                    case Right(json)   => json.hcursor.downField(key).as[T].leftMap(ConfigError.ParsingError.apply)
+                        case Left(failure) => Left(ConfigError.ParsingError(failure))
+                        case Right(json)   => json.hcursor.downField(key).as[T].leftMap(ConfigError.ParsingError.apply)
     end Reader
 
     final case class Redacted[T](value: T) extends AnyVal:
@@ -97,7 +97,8 @@ object Config:
         case ParsingError(cause: Throwable)           extends ConfigError(ErrorNumber(2))
 
         override def message: Message = this match
-        case ConfigError.MissingEnvironmentVariable(name) => Message(s"Missing environment variable $name".assume)
-        case ConfigError.ParsingError(cause)              => Message(s"Failed to parse configuration: ${cause.getMessage}".assume)
+            case ConfigError.MissingEnvironmentVariable(name) => Message(s"Missing environment variable $name".assume)
+            case ConfigError.ParsingError(cause)              =>
+                Message(s"Failed to parse configuration: ${cause.getMessage}".assume)
     end ConfigError
 end Config

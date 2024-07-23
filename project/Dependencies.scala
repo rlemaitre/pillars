@@ -5,8 +5,7 @@ object Dependencies {
       "org.typelevel" %% "cats-effect"           % "3.5.4",
       "co.fs2"        %% "fs2-core"              % "3.10.2",
       "org.typelevel" %% "cats-collections-core" % "0.9.8",
-      "org.typelevel" %% "cats-time"             % "0.5.1",
-      "org.typelevel" %% "mouse"                 % "1.3.1"
+      "org.typelevel" %% "cats-time"             % "0.5.1"
     )
 
     val model: Seq[ModuleID] = Seq(
@@ -81,14 +80,13 @@ object Dependencies {
       "com.dimafeng" %% "testcontainers-scala-rabbitmq"   % "0.41.4" % Test
     )
 
-    val observability: Seq[ModuleID] = Seq(
-      "org.typelevel"   %% "otel4s-oteljava"                           % "0.8.0",
-      "io.opentelemetry" % "opentelemetry-exporter-otlp"               % "1.40.0" % Runtime,
-      "io.opentelemetry" % "opentelemetry-sdk-extension-autoconfigure" % "1.40.0" % Runtime
+    val observability: Seq[ModuleID]        = Seq(
+      "org.typelevel" %% "otel4s-sdk"          % "0.8.0",
+      "org.typelevel" %% "otel4s-sdk-exporter" % "0.8.0"
     )
 
     val skunk: Seq[ModuleID] = Seq(
-      "org.tpolecat" %% "skunk-core"  % "1.0.0-M7",
+      "org.tpolecat" %% "skunk-core"  % "1.0.0-M7" exclude("org.typelevel", "otel4s-core-trace"),
       "org.tpolecat" %% "skunk-circe" % "1.0.0-M7"
     ) ++ tests
 

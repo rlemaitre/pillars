@@ -36,5 +36,9 @@ object AdminServer:
     val baseEndpoint = endpoint.in("admin").errorOut(PillarsError.View.output)
     final case class Config(enabled: Boolean, http: HttpServer.Config = defaultHttp) derives Codec.AsObject
 
-    private val defaultHttp = HttpServer.Config(host = host"0.0.0.0", port = port"19876", enableLogging = false)
+    private val defaultHttp = HttpServer.Config(
+      host = host"0.0.0.0",
+      port = port"19876",
+      logging = Logging.HttpConfig()
+    )
 end AdminServer

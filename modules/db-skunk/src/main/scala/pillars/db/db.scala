@@ -21,6 +21,7 @@ import pillars.Modules
 import pillars.Pillars
 import pillars.codec.given
 import pillars.probes.*
+import scribe.Level
 import skunk.*
 import skunk.codec.all.*
 import skunk.implicits.*
@@ -84,12 +85,15 @@ final case class DatabaseConfig(
     // TODO: Add system and application schemas (default = public)
     poolSize: PoolSize = PoolSize(32),
     debug: Boolean = false,
-    probe: ProbeConfig
+    probe: ProbeConfig = ProbeConfig(),
+    logging: LoggingConfig = LoggingConfig()
 )
 
 object DatabaseConfig:
     given Configuration         = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults
     given Codec[DatabaseConfig] = Codec.AsObject.derivedConfigured
+    import pillars.Logging.Config.given
+    given Codec[LoggingConfig]  = Codec.AsObject.derivedConfigured
 
     given CirceDecoder[SSL] = CirceDecoder.decodeString.emap {
         case "none"    => Right(SSL.None)
@@ -103,6 +107,13 @@ object DatabaseConfig:
         case SSL.System  => "system"
     }
 end DatabaseConfig
+
+final case class LoggingConfig(
+    enabled: Boolean = false,
+    level: Level = Level.Debug,
+    statements: Boolean = false,
+    timing: Boolean = false
+)
 
 private type DatabaseNameConstraint = Not[Blank] DescribedAs "Database name must not be blank"
 opaque type DatabaseName <: String  = String :| DatabaseNameConstraint

@@ -11,5 +11,80 @@ ifndef::projectRootDir[]
 endif::projectRootDir[]
 
 [NOTE]
-This documentation needs to be written.
+This documentation needs to be completed.
 You can help us by xref:../../contribute/10_contributing.adoc[contributing to the documentation].
+
+=== Configuration
+
+Pillars integrates OpenTelemetry to provide observability features.
+You can configure the following settings in the `application.conf` file:
+
+[source,yaml]
+----
+include::{projectRootDir}/modules/example/src/main/resources/config.yaml[tag=observability]
+----
+
+
+=== Metrics
+
+By default, the following metrics are defined on API server, Admin server and HTTP client
+
+==== API Server and Admin Server
+
+[cols="1,1,1,1"]
+|===
+| Metric | Description | Type | Unit
+
+| `http.server.active_requests` | The number of HTTP active requests | UpDownCounter | requests
+| `http.server.request.total` | The total number of HTTP requests | Counter | requests
+| `http.server.request.duration` | Duration of HTTP requests | Histogram | milliseconds
+| `http.server.request.body.size` | The HTTP request payload body size | Histogram | bytes
+| `http.server.response.body.size` | The HTTP request payload body size | Histogram | bytes
+|===
+
+===== Attributes
+
+The following attributes are added to the HTTP server metrics:
+
+[cols="1,1,1"]
+|===
+| Attribute | Description | Type
+
+| `http.route` | The HTTP route | String
+| `http.request.method` | The HTTP request method | String
+| `url.scheme` | The URL scheme | String
+| `http.response.status` | The HTTP response status class (`1xx`, `2xx`, `3xx`, `4xx` or `5xx`) | String
+| `http.response.status_code` | The HTTP response status | String
+| `error.type` | The error type | String
+|===
+
+==== HTTP Client
+
+[cols="1,1,1,1"]
+|===
+| Metric | Description | Type | Unit
+
+| `http.client.active_requests` | The number of HTTP active requests | UpDownCounter | requests
+| `http.client.request.total` | The total number of HTTP requests | Counter | requests
+| `http.client.request.duration` | Duration of HTTP requests | Histogram | milliseconds
+| `http.client.response.body.size` | The HTTP request payload body size | Histogram | bytes
+|===
+
+===== Attributes
+
+The following attributes are added to the HTTP client metrics:
+
+[cols="1,1,1"]
+|===
+| Attribute | Description | Type
+
+| `http.route` | The HTTP path | String
+| `http.request.host` | The HTTP request host | String
+| `http.request.method` | The HTTP request method | String
+| `url.scheme` | The URL scheme | String
+| `http.response.status` | The HTTP response status class (`1xx`, `2xx`, `3xx`, `4xx` or `5xx`) | String
+| `http.response.status_code` | The HTTP response status code | String
+| `error.type` | The error type | String
+|===
+
+=== Traces

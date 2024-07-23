@@ -15,6 +15,6 @@ enum Status:
     case Enabled, Disabled
 
     def isEnabled: Boolean = this match
-    case Enabled  => true
-    case Disabled => false
+        case Enabled  => true
+        case Disabled => false
 end Status

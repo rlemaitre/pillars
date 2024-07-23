@@ -32,6 +32,7 @@ class MigrationTests extends CatsEffectSuite, TestContainerForEach:
     )
 
     given Pillars[IO] = new Pillars[IO]:
+        def appInfo                         = ???
         def observability                   = ???
         def config                          = ???
         def apiServer                       = ???

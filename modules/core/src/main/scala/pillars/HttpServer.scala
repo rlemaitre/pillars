@@ -7,7 +7,6 @@ import cats.syntax.all.*
 import com.comcast.ip4s.*
 import io.circe.Codec
 import io.circe.derivation.Configuration
-import mouse.all.anySyntaxMouse
 import org.http4s.HttpApp
 import org.http4s.HttpVersion
 import org.http4s.Response
@@ -20,6 +19,7 @@ import org.http4s.server.middleware.ErrorHandling
 import org.http4s.server.middleware.Logger
 import pillars.Controller.HttpEndpoint
 import pillars.codec.given
+import pillars.syntax.*
 import sttp.capabilities.StreamMaxLengthExceededException
 import sttp.monad.MonadError
 import sttp.tapir.*
@@ -40,12 +40,14 @@ object HttpServer:
         val cors: HttpApp[F] => HttpApp[F]          =
             CORS.policy.withAllowMethodsAll.withAllowOriginAll.withAllowHeadersAll.httpApp[F]
         val errorHandling: HttpApp[F] => HttpApp[F] = ErrorHandling.Custom.recoverWith(_)(buildExceptionHandler())
-        val logging                                 = Logger.httpApp[F](
-          logHeaders = false,
-          logBody = true,
-          redactHeadersWhen = _ => false,
-          logAction = Some(scribe.cats[F].debug(_))
-        )
+        val logging                                 =
+            if config.logging.enabled then
+                Logger.httpApp[F](
+                  logHeaders = config.logging.headers,
+                  logBody = config.logging.body,
+                  logAction = config.logging.logAction
+                )
+            else identity[HttpApp[F]]
 
         val options: Http4sServerOptions[F] =
             Http4sServerOptions
@@ -54,13 +56,8 @@ object HttpServer:
                 .exceptionHandler(exceptionHandler())
                 .options
 
-        val app: HttpApp[F] =
-            Http4sServerInterpreter[F](options)
-                .toRoutes(endpoints)
-                .orNotFound |>
-                logging |>
-                errorHandling |>
-                cors
+        val routes          = Http4sServerInterpreter[F](options).toRoutes(endpoints).orNotFound
+        val app: HttpApp[F] = routes |> logging |> errorHandling |> cors
 
         NettyServerBuilder[F].withoutSsl.withNioTransport
             .bindHttp(config.port.value, config.host.toString)
@@ -78,12 +75,12 @@ object HttpServer:
                     Some(ValuedEndpointOutput(statusCode.and(jsonBody[PillarsError.View]), (e.status, e.view)))
 
                 ctx.e match
-                case e: PillarsError                            =>
-                    monad.unit(handlePillarsError(e))
-                case StreamMaxLengthExceededException(maxBytes) =>
-                    monad.unit(handlePillarsError(PillarsError.PayloadTooLarge(maxBytes)))
-                case _                                          =>
-                    monad.unit(handlePillarsError(PillarsError.fromThrowable(ctx.e)))
+                    case e: PillarsError                            =>
+                        monad.unit(handlePillarsError(e))
+                    case StreamMaxLengthExceededException(maxBytes) =>
+                        monad.unit(handlePillarsError(PillarsError.PayloadTooLarge(maxBytes)))
+                    case _                                          =>
+                        monad.unit(handlePillarsError(PillarsError.fromThrowable(ctx.e)))
                 end match
             end apply
 
@@ -104,7 +101,7 @@ object HttpServer:
     final case class Config(
         host: Host,
         port: Port,
-        enableLogging: Boolean
+        logging: Logging.HttpConfig = Logging.HttpConfig()
     )
 
     object Config:

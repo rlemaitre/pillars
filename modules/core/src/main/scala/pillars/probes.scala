@@ -99,10 +99,10 @@ object probes:
             def empty: Status                         = Status.pass
             def combine(x: Status, y: Status): Status =
                 (x, y) match
-                case (Status.pass, Status.pass) => Status.pass
-                case (Status.fail, _)           => Status.fail
-                case (_, Status.fail)           => Status.fail
-                case _                          => Status.warn
+                    case (Status.pass, Status.pass) => Status.pass
+                    case (Status.fail, _)           => Status.fail
+                    case (_, Status.fail)           => Status.fail
+                    case _                          => Status.warn
         end given
     end Status
 
@@ -112,10 +112,10 @@ object probes:
 
     given Decoder[Status] = Decoder.decodeString.emap: status =>
         status.toLowerCase match
-        case "pass" => Right(Status.pass)
-        case "warn" => Right(Status.warn)
-        case "fail" => Right(Status.fail)
-        case other  => Left(s"Unknown status: $other")
+            case "pass" => Right(Status.pass)
+            case "warn" => Right(Status.warn)
+            case "fail" => Right(Status.fail)
+            case other  => Left(s"Unknown status: $other")
 
     given Schema[Component.Type] = Schema.derived
 
@@ -123,10 +123,10 @@ object probes:
 
     given Decoder[Component.Type] = Decoder.decodeString.emap: status =>
         status.toLowerCase match
-        case "system"    => Right(Component.Type.System)
-        case "datastore" => Right(Component.Type.Datastore)
-        case "component" => Right(Component.Type.Component)
-        case other       => Left(s"Unknown component type: $other")
+            case "system"    => Right(Component.Type.System)
+            case "datastore" => Right(Component.Type.Datastore)
+            case "component" => Right(Component.Type.Component)
+            case other       => Left(s"Unknown component type: $other")
 
     final case class ProbeConfig(
         timeout: FiniteDuration = 5.seconds,

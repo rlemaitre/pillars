@@ -25,14 +25,14 @@ object openapi:
                 .toYaml
             println(yaml)
             args.output match
-            case Some(path) =>
-                Stream.emit(yaml)
-                    .covary[IO]
-                    .through(text.utf8.encode)
-                    .through(Files[IO].writeAll(path))
-                    .compile
-                    .drain
-            case None       => IO.println(yaml)
+                case Some(path) =>
+                    Stream.emit(yaml)
+                        .covary[IO]
+                        .through(text.utf8.encode)
+                        .through(Files[IO].writeAll(path))
+                        .compile
+                        .drain
+                case None       => IO.println(yaml)
             end match
         end generate
     end Generator
