@@ -153,11 +153,244 @@
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-This documentation needs to be written.
+This documentation needs to be completed.
 You can help us by <a href="../../contribute/10_contributing.html">contributing to the documentation</a>.
 </td>
 </tr>
 </table>
+</div>
+<div class="sect2">
+<h3 id="_configuration">Configuration</h3>
+<div class="paragraph">
+<p>Pillars integrates OpenTelemetry to provide observability features.
+You can configure the following settings in the <code>application.conf</code> file:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="yaml">observability:
+  enabled: true
+  service-name: bookstore
+  metrics:
+    enabled: true
+  traces:
+    enabled: true</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_metrics">Metrics</h3>
+<div class="paragraph">
+<p>By default, the following metrics are defined on API server, Admin server and HTTP client</p>
+</div>
+<div class="sect3">
+<h4 id="_api_server_and_admin_server">API Server and Admin Server</h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Metric</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>http.server.active_requests</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The number of HTTP active requests</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UpDownCounter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">requests</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>http.server.request.total</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The total number of HTTP requests</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Counter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">requests</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>http.server.request.duration</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Duration of HTTP requests</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Histogram</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">milliseconds</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>http.server.request.body.size</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The HTTP request payload body size</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Histogram</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bytes</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>http.server.response.body.size</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The HTTP request payload body size</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Histogram</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bytes</p></td>
+</tr>
+</tbody>
+</table>
+<div class="sect4">
+<h5 id="_attributes">Attributes</h5>
+<div class="paragraph">
+<p>The following attributes are added to the HTTP server metrics:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Attribute</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>http.route</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The HTTP route</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>http.request.method</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The HTTP request method</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>url.scheme</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The URL scheme</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>http.response.status</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The HTTP response status class (<code>1xx</code>, <code>2xx</code>, <code>3xx</code>, <code>4xx</code> or <code>5xx</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>http.response.status_code</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The HTTP response status</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>error.type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The error type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_http_client">HTTP Client</h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Metric</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>http.client.active_requests</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The number of HTTP active requests</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UpDownCounter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">requests</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>http.client.request.total</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The total number of HTTP requests</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Counter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">requests</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>http.client.request.duration</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Duration of HTTP requests</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Histogram</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">milliseconds</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>http.client.response.body.size</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The HTTP request payload body size</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Histogram</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bytes</p></td>
+</tr>
+</tbody>
+</table>
+<div class="sect4">
+<h5 id="_attributes_2">Attributes</h5>
+<div class="paragraph">
+<p>The following attributes are added to the HTTP client metrics:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Attribute</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>http.route</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The HTTP path</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>http.request.host</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The HTTP request host</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>http.request.method</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The HTTP request method</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>url.scheme</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The URL scheme</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>http.response.status</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The HTTP response status class (<code>1xx</code>, <code>2xx</code>, <code>3xx</code>, <code>4xx</code> or <code>5xx</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>http.response.status_code</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The HTTP response status code</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>error.type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The error type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_traces">Traces</h3>
+
 </div>
 </div>
 </div>
@@ -263,7 +496,13 @@ You can help us by <a href="../../contribute/10_contributing.html">contributing 
         <div id="toc" class="toc">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_observability">Observability</a></li>
+<li><a href="#_observability">Observability</a>
+<ul class="sectlevel2">
+<li><a href="#_configuration">Configuration</a></li>
+<li><a href="#_metrics">Metrics</a></li>
+<li><a href="#_traces">Traces</a></li>
+</ul>
+</li>
 </ul>
 </div>
 

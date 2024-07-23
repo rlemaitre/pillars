@@ -174,6 +174,11 @@ db:
     timeout: PT5s
     interval: PT10s
     failure-count: 3
+  logging:
+    enabled: true
+    level: info
+    statements: true
+    timing: true
 db-migration:
   url: jdbc:postgresql://localhost:5432/pillars_example
   username: postgres
@@ -186,16 +191,36 @@ api:
   http:
     host: 0.0.0.0
     port: 9876
-    enable-logging: true
+    logging:
+      enabled: true
+      headers: true
+      body: true
+      level: info
 admin:
   enabled: true
   http:
     host: 0.0.0.0
     port: 19876
-    enable-logging: true
+    logging:
+      enabled: true
+      headers: true
+      body: true
+      level: debug
 observability:
   enabled: true
   service-name: bookstore
+  metrics:
+    enabled: true
+  traces:
+    enabled: true
+http-client:
+  follow-redirect: true
+  user-agent: pillars/bookstore
+  logging:
+    enabled: true
+    headers: true
+    body: true
+    level: info
 feature-flags:
   enabled: true
   flags:
@@ -254,7 +279,11 @@ If you are using the <code>EntryPoint</code> trait, the path to this file must b
   http:
     host: 0.0.0.0
     port: 9876
-    enable-logging: true</code></pre>
+    logging:
+      enabled: true
+      headers: true
+      body: true
+      level: info</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -296,7 +325,11 @@ If you are using the <code>EntryPoint</code> trait, the path to this file must b
   http:
     host: 0.0.0.0
     port: 19876
-    enable-logging: true</code></pre>
+    logging:
+      enabled: true
+      headers: true
+      body: true
+      level: debug</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -332,7 +365,11 @@ If you are using the <code>EntryPoint</code> trait, the path to this file must b
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="yaml">observability:
   enabled: true
-  service-name: bookstore</code></pre>
+  service-name: bookstore
+  metrics:
+    enabled: true
+  traces:
+    enabled: true</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -416,7 +453,12 @@ It is used only if <code>output.type</code> is <code>file</code>.</p>
   probe:
     timeout: PT5s
     interval: PT10s
-    failure-count: 3</code></pre>
+    failure-count: 3
+  logging:
+    enabled: true
+    level: info
+    statements: true
+    timing: true</code></pre>
 </div>
 </div>
 <div class="paragraph">
