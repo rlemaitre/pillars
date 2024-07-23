@@ -4,6 +4,45 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.2.0] - 2024-07-23
+### :boom: BREAKING CHANGES
+- due to [`c49773d`](https://github.com/rlemaitre/pillars/commit/c49773de50b466bfb5769f61fba0141932df0b19) - Rename db to db-skunk *(PR [#95](https://github.com/rlemaitre/pillars/pull/95) by [@rlemaitre](https://github.com/rlemaitre))*:
+
+  dependencies have to be updated to `pillars-db-skunk` if you used `pillars-db`
+
+
+### :sparkles: New Features
+- [`82955ca`](https://github.com/rlemaitre/pillars/commit/82955ca34d66dbee8586b542a9e95fed2ecdc879) - **core**: Errors are returned in json *(PR [#102](https://github.com/rlemaitre/pillars/pull/102) by [@rlemaitre](https://github.com/rlemaitre))*
+- [`bd47d89`](https://github.com/rlemaitre/pillars/commit/bd47d8968ea5262b2f0f57fc97bf18aabceac3a8) - Add metrics for http-client and http servers*(PR [#125](https://github.com/rlemaitre/pillars/pull/125) by [@rlemaitre](https://github.com/rlemaitre))*
+  - :arrow_lower_right: *addresses issue [#35](https://github.com/rlemaitre/pillars/issues/35) opened by [@rlemaitre](https://github.com/rlemaitre)*
+  - :arrow_lower_right: *addresses issue [#127](https://github.com/rlemaitre/pillars/issues/127) opened by [@rlemaitre](https://github.com/rlemaitre)*
+
+### :recycle: Refactors
+- [`c49773d`](https://github.com/rlemaitre/pillars/commit/c49773de50b466bfb5769f61fba0141932df0b19) - **db**: Rename db to db-skunk *(PR [#95](https://github.com/rlemaitre/pillars/pull/95) by [@rlemaitre](https://github.com/rlemaitre))*
+
+### :wrench: Chores
+- [`f309fdc`](https://github.com/rlemaitre/pillars/commit/f309fdc203e8b4c9eae3fb9d7a46ecc23ac1da8c) - Make Scala Steward follow conventional commits *(commit by [@rlemaitre](https://github.com/rlemaitre))*
+- [`dcf775c`](https://github.com/rlemaitre/pillars/commit/dcf775c5f2db75891d8939e222a1def845d86b6c) - Update openapi-circe-yaml from 0.7.4 to 0.8.0 *(PR [#89](https://github.com/rlemaitre/pillars/pull/89) by [@scala-steward](https://github.com/scala-steward))*
+- [`1d74de5`](https://github.com/rlemaitre/pillars/commit/1d74de5c449aaab1222dc770353acd98d42f5f1f) - Patches/Minor updates *(PR [#92](https://github.com/rlemaitre/pillars/pull/92) by [@scala-steward](https://github.com/scala-steward))*
+- [`a7df4e2`](https://github.com/rlemaitre/pillars/commit/a7df4e2a68baa0120cb4dd91ac05bcb46014e721) - Update sbt-buildinfo from 0.11.0 to 0.12.0 *(PR [#93](https://github.com/rlemaitre/pillars/pull/93) by [@scala-steward](https://github.com/scala-steward))*
+- [`e5d3a95`](https://github.com/rlemaitre/pillars/commit/e5d3a95ea32557a33424cb7e36346fa66ef8351d) - Minor dependencies upgrade *(PR [#100](https://github.com/rlemaitre/pillars/pull/100) by [@rlemaitre](https://github.com/rlemaitre))*
+- [`e7d8b34`](https://github.com/rlemaitre/pillars/commit/e7d8b34f89a093238456d6f16b25f73bd514bd9f) - Update munit-cats-effect from 2.0.0-M4 to 2.0.0-M5 *(PR [#97](https://github.com/rlemaitre/pillars/pull/97) by [@scala-steward](https://github.com/scala-steward))*
+- [`b3ad72e`](https://github.com/rlemaitre/pillars/commit/b3ad72e37827b48fee9728c83209cdfdf9bda2c8) - Update openapi-circe-yaml from 0.8.0 to 0.9.0 *(PR [#98](https://github.com/rlemaitre/pillars/pull/98) by [@scala-steward](https://github.com/scala-steward))*
+- [`04119ff`](https://github.com/rlemaitre/pillars/commit/04119ff3e81a994479e8875b01c7f20238f85db9) - Update munit, munit-scalacheck from 1.0.0-M11 to 1.0.0-M12 *(PR [#103](https://github.com/rlemaitre/pillars/pull/103) by [@scala-steward](https://github.com/scala-steward))*
+- [`3603f53`](https://github.com/rlemaitre/pillars/commit/3603f53ba1ea2178e3285a2fefae5b0660e1a766) - Patches/Minor updates *(PR [#104](https://github.com/rlemaitre/pillars/pull/104) by [@scala-steward](https://github.com/scala-steward))*
+- [`8a8c9f0`](https://github.com/rlemaitre/pillars/commit/8a8c9f0f75c3f6d6f5ebfb59ea7e02d3edb5b283) - Update skunk-circe, skunk-core from 1.0.0-M4 to 1.0.0-M5, otel4s from 0.0.4 to 0.0.5 *(PR [#105](https://github.com/rlemaitre/pillars/pull/105) by [@scala-steward](https://github.com/scala-steward))*
+- [`b1a3932`](https://github.com/rlemaitre/pillars/commit/b1a393272859ed72f84f495e0c86233ab67998ee) - Update munit-scalacheck from 1.0.0-M12 to 1.0.0-RC1 *(PR [#109](https://github.com/rlemaitre/pillars/pull/109) by [@scala-steward](https://github.com/scala-steward))*
+- [`17091bb`](https://github.com/rlemaitre/pillars/commit/17091bb3f0d70db12b5c315f8d1a057ad37b00f1) - Update munit-cats-effect from 2.0.0-M5 to 2.0.0 *(PR [#117](https://github.com/rlemaitre/pillars/pull/117) by [@scala-steward](https://github.com/scala-steward))*
+- [`f462abd`](https://github.com/rlemaitre/pillars/commit/f462abd6573bb50317bd9d89a2afd1c760b297c6) - Update munit-scalacheck from 1.0.0-RC1 to 1.0.0 *(PR [#116](https://github.com/rlemaitre/pillars/pull/116) by [@scala-steward](https://github.com/scala-steward))*
+- [`a14aad1`](https://github.com/rlemaitre/pillars/commit/a14aad1b54685a311f17ae1c6893421a6617e986) - Update munit from 1.0.0-M12 to 1.0.0 *(PR [#115](https://github.com/rlemaitre/pillars/pull/115) by [@scala-steward](https://github.com/scala-steward))*
+- [`ee9245e`](https://github.com/rlemaitre/pillars/commit/ee9245e96871b61895bc30065871cc52426ca3d0) - Update skunk-circe, skunk-core from 1.0.0-M5 to 1.0.0-M6 *(PR [#113](https://github.com/rlemaitre/pillars/pull/113) by [@scala-steward](https://github.com/scala-steward))*
+- [`9453aba`](https://github.com/rlemaitre/pillars/commit/9453aba6c44b8500bf20c250809db3c00370d22d) - Patches/Minor updates *(PR [#111](https://github.com/rlemaitre/pillars/pull/111) by [@scala-steward](https://github.com/scala-steward))*
+- [`044571c`](https://github.com/rlemaitre/pillars/commit/044571cf2899d1c8db474fac9873d931b13e5482) - Patches/Minor updates *(PR [#118](https://github.com/rlemaitre/pillars/pull/118) by [@scala-steward](https://github.com/scala-steward))*
+- [`9827be6`](https://github.com/rlemaitre/pillars/commit/9827be6c442a6d32047b6b5509cda42ac1e2668f) - Patches/Minor updates *(PR [#120](https://github.com/rlemaitre/pillars/pull/120) by [@scala-steward](https://github.com/scala-steward))*
+- [`0f5f36e`](https://github.com/rlemaitre/pillars/commit/0f5f36e3c8bb4c6d700f3ceee183a20acb93a30e) - Patches/Minor updates *(PR [#122](https://github.com/rlemaitre/pillars/pull/122) by [@scala-steward](https://github.com/scala-steward))*
+- [`a2b1e85`](https://github.com/rlemaitre/pillars/commit/a2b1e85ce85e7f2ffee9b0b9223d4e4a29e73651) - Upgrade otel4s to 0.8.0 and skunk to 1.0.0-M7 *(PR [#123](https://github.com/rlemaitre/pillars/pull/123) by [@rlemaitre](https://github.com/rlemaitre))*
+
+
 ## [v0.1.5] - 2024-03-14
 ### :bug: Bug Fixes
 - [`0e6ca91`](https://github.com/rlemaitre/pillars/commit/0e6ca91e41507bbd46e5e549f71b1ca85d02d59b) - **core**: Handle correctly PillarsError in API *(PR [#86](https://github.com/rlemaitre/pillars/pull/86) by [@rlemaitre](https://github.com/rlemaitre))*
@@ -63,4 +102,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.1.3]: https://github.com/rlemaitre/pillars/compare/v0.1.1...v0.1.3
 [v0.1.4]: https://github.com/rlemaitre/pillars/compare/v0.1.3...v0.1.4
 [v0.1.5]: https://github.com/rlemaitre/pillars/compare/v0.1.4...v0.1.5
+[v0.2.0]: https://github.com/rlemaitre/pillars/compare/v0.1.5...v0.2.0
 [v0.2.0]: https://github.com/rlemaitre/pillars/compare/v0.1.5...v0.2.0
