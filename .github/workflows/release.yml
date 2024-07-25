@@ -40,7 +40,9 @@ jobs:
 
       - name: 🏷️ Retrieve version tag
         id: version
-        run: echo ::set-output name=version::v$(sbt "print pillars-core/version" --error 2>/dev/null)
+        run: |
+          git pull --tags
+          echo version="v$(sbt "print pillars-core/version" --error 2>/dev/null)" >> ${GITHUB_OUTPUT}
 
       - name: 📝 Update CHANGELOG
         id: changelog
@@ -105,12 +107,12 @@ jobs:
             pillars-cache-${{ hashFiles('build.sbt', 'plugins.sbt') }}
 
       - name: 📊 Get latest version
-        run: echo ::set-output name=version::$(sbt "print pillars-core/version" --error 2>/dev/null)
+        run: echo version=$(sbt "print pillars-core/version" --error 2>/dev/null) >> ${GITHUB_OUTPUT}
 
       - name: 📝 Generate site
         run: ./dtcw generateSite && sbt unidoc
         env:
-          VERSION: ${{ steps.version.outputs.version }}
+          PILLARS_VERSION: ${{ steps.version.outputs.version }}
 
       - name: 📄 Copy to public
         run: cp -r ./target/microsite/output ./public
