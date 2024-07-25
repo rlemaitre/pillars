@@ -8,3 +8,4 @@ src_managed/
 !modules/docs/src/site
 .bsp
 .idea
+/gnupg-*
