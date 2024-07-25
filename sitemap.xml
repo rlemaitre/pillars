@@ -7,12 +7,12 @@
     </url>
 
     <url>
-    	<loc>http://jbake.org/contribute/20_code_of_conduct.html</loc>
+    	<loc>http://jbake.org/user-guide/index.html</loc>
     	<lastmod>2024-07-25</lastmod>
     </url>
 
     <url>
-    	<loc>http://jbake.org/user-guide/index.html</loc>
+    	<loc>http://jbake.org/contribute/20_code_of_conduct.html</loc>
     	<lastmod>2024-07-25</lastmod>
     </url>
 
@@ -42,6 +42,11 @@
     </url>
 
     <url>
+    	<loc>http://jbake.org/user-guide/30_modules/100_write-your-own-module.html</loc>
+    	<lastmod>2024-07-25</lastmod>
+    </url>
+
+    <url>
     	<loc>http://jbake.org/user-guide/20_features/40_api-server.html</loc>
     	<lastmod>2024-07-25</lastmod>
     </url>
@@ -58,11 +63,6 @@
 
     <url>
     	<loc>http://jbake.org/user-guide/30_modules/30_flags.html</loc>
-    	<lastmod>2024-07-25</lastmod>
-    </url>
-
-    <url>
-    	<loc>http://jbake.org/user-guide/30_modules/100_write-your-own-module.html</loc>
     	<lastmod>2024-07-25</lastmod>
     </url>
 
