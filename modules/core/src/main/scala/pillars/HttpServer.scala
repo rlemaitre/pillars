@@ -37,6 +37,7 @@ object HttpServer:
     def build[F[_]: Async](
         name: String,
         config: Config,
+        openApi: Config.OpenAPI,
         infos: AppInfo,
         observability: Observability[F],
         endpoints: List[HttpEndpoint[F]]
@@ -60,14 +61,14 @@ object HttpServer:
                 .exceptionHandler(exceptionHandler())
                 .options
 
-        val openAPIEndpoints = if config.openApi.enabled then
+        val openAPIEndpoints = if openApi.enabled then
             SwaggerInterpreter(
               swaggerUIOptions = SwaggerUIOptions(
-                pathPrefix = config.openApi.pathPrefix,
-                yamlName = config.openApi.yamlName,
-                contextPath = config.openApi.contextPath,
-                useRelativePaths = config.openApi.useRelativePaths,
-                showExtensions = config.openApi.showExtensions
+                pathPrefix = openApi.pathPrefix,
+                yamlName = openApi.yamlName,
+                contextPath = openApi.contextPath,
+                useRelativePaths = openApi.useRelativePaths,
+                showExtensions = openApi.showExtensions
               )
             ).fromServerEndpoints(endpoints, name, infos.version)
         else Nil
@@ -118,15 +119,14 @@ object HttpServer:
     final case class Config(
         host: Host,
         port: Port,
-        logging: Logging.HttpConfig = Logging.HttpConfig(),
-        openApi: Config.OpenAPI = Config.OpenAPI()
+        logging: Logging.HttpConfig = Logging.HttpConfig()
     )
 
     object Config:
         given Configuration = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults
 
-        given Codec[OpenAPI] = Codec.AsObject.derivedConfigured
-        given Codec[Config] = Codec.AsObject.derivedConfigured
+        given Codec[Config.OpenAPI] = Codec.AsObject.derivedConfigured
+        given Codec[Config]         = Codec.AsObject.derivedConfigured
 
         final case class OpenAPI(
             enabled: Boolean = false,

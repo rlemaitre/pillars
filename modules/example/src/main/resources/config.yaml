@@ -46,13 +46,13 @@ api:
       headers: true
       body: true
       level: info
-    open-api:
-      enabled: false
-      path-prefix: ["docs"]
-      yaml-name: "pillars-example.yaml"
-      context-path: []
-      use-relative-paths: true
-      show-extensions: false
+  open-api:
+    enabled: false
+    path-prefix: ["docs"]
+    yaml-name: "pillars-example.yaml"
+    context-path: []
+    use-relative-paths: true
+    show-extensions: false
 # end::api[]
 # tag::admin[]
 admin:
@@ -65,13 +65,13 @@ admin:
       headers: true
       body: true
       level: debug
-    open-api:
-      enabled: false
-      path-prefix: ["docs"]
-      yaml-name: "pillars-example.yaml"
-      context-path: []
-      use-relative-paths: true
-      show-extensions: false
+  open-api:
+    enabled: false
+    path-prefix: ["docs"]
+    yaml-name: "pillars-example.yaml"
+    context-path: []
+    use-relative-paths: true
+    show-extensions: false
 # end::admin[]
 # tag::observability[]
 observability:

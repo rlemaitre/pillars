@@ -51,7 +51,18 @@ It contains the following keys:
 * `http`: the HTTP server configuration:
 ** `host`: the host to bind to. Default is `0.0.0.0`, i.e. all interfaces.
 ** `port`: the port to bind to. Default is `9876`.
-** `enable-logging`: whether to enable HTTP access logging or not. Default is `false`.
+** `logging`: The HTTP logging configuration:
+*** `enabled`: whether to enable HTTP access logging or not. Default is `false`.
+*** `headers`: whether to log HTTP headers or not. Default is `false`.
+*** `body`: whether to log HTTP bodies or not. Default is `false`.
+*** `level`: the log level. Possible values are `trace`, `debug`, `info`, `warn`, `error`. Default is `debug`.
+** `open-api`: the OpenAPI configuration:
+*** `enabled`: whether to enable OpenAPI or not. Default is `false`.
+*** `path-prefix`: the path prefix for the OpenAPI documentation. Default is `["docs"]`.
+*** `yaml-name`: the name of the OpenAPI YAML file. Default is `pillars.yaml`.
+*** `context-path`: the context path for the OpenAPI documentation. Default is `/`.
+*** `use-relative-paths`: whether to use relative paths or not. Default is `true`.
+*** `show-extensions`: whether to show extensions or not. Default is `false`.
 
 [#admin-configuration]
 ==== Admin Configuration
@@ -69,6 +80,18 @@ It contains the following keys:
 * `http`: the HTTP server configuration:
 ** `host`: the host to bind to. Default is `0.0.0.0`, i.e. all interfaces.
 ** `port`: the port to bind to. Default is `19876`.
+** `logging`: The HTTP logging configuration:
+*** `enabled`: whether to enable HTTP access logging or not. Default is `false`.
+*** `headers`: whether to log HTTP headers or not. Default is `false`.
+*** `body`: whether to log HTTP bodies or not. Default is `false`.
+*** `level`: the log level. Possible values are `trace`, `debug`, `info`, `warn`, `error`. Default is `debug`.
+** `open-api`: the OpenAPI configuration:
+*** `enabled`: whether to enable OpenAPI or not. Default is `false`.
+*** `path-prefix`: the path prefix for the OpenAPI documentation. Default is `["docs"]`.
+*** `yaml-name`: the name of the OpenAPI YAML file. Default is `pillars.yaml`.
+*** `context-path`: the context path for the OpenAPI documentation. Default is `/`.
+*** `use-relative-paths`: whether to use relative paths or not. Default is `true`.
+*** `show-extensions`: whether to show extensions or not. Default is `false`.
 
 [#observability-configuration]
 ==== Observability Configuration
@@ -84,6 +107,10 @@ It contains the following keys:
 
 * `enabled`: whether observability is enabled or not
 * `service-name`: the name of the service.Default is `pillars`.
+* `metrics`: the metrics configuration:
+** `enabled`: whether metrics are enabled or not. Default is `false`.
+* `traces`: the traces configuration:
+** `enabled`: whether traces are enabled or not. Default is `false`.
 
 [#logging-configuration]
 ==== Logging Configuration

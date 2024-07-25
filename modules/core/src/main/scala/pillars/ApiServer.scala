@@ -5,6 +5,7 @@ import cats.effect.Resource.ExitCase
 import cats.syntax.all.*
 import com.comcast.ip4s.*
 import io.circe.Codec
+import io.circe.derivation.Configuration
 import io.github.iltotore.iron.*
 import pillars.Controller.HttpEndpoint
 import pillars.PillarsError.Code
@@ -27,7 +28,7 @@ object ApiServer:
                 for
                     _ <- logger.info(s"Starting API server on ${config.http.host}:${config.http.port}")
                     _ <- HttpServer
-                             .build("api", config.http, infos, observability, endpoints)
+                             .build("api", config.http, config.openApi, infos, observability, endpoints)
                              .onFinalizeCase:
                                  case ExitCase.Errored(e) => logger.error(s"API server stopped with error: $e")
                                  case _                   => logger.info("API server stopped")
@@ -38,7 +39,14 @@ object ApiServer:
         final override def code: Code = Code("API")
     end Error
 
-    final case class Config(enabled: Boolean, http: HttpServer.Config = defaultHttp) derives Codec.AsObject
+    final case class Config(
+        enabled: Boolean,
+        http: HttpServer.Config = defaultHttp,
+        openApi: HttpServer.Config.OpenAPI = HttpServer.Config.OpenAPI()
+    )
+
+    given Configuration = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults
+    given Codec[Config] = Codec.AsObject.derivedConfigured
 
     private val defaultHttp = HttpServer.Config(
       host = host"0.0.0.0",
