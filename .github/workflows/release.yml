@@ -45,7 +45,7 @@ jobs:
       - name: 🏷️ Retrieve version tag
         id: version
         run: |
-          PILLARS_VERSION="$(sbt "print pillars-core/version" --error 2>/dev/null)"
+          PILLARS_VERSION="$(git ls-remote --tags $REPO | awk -F"/" '{print $3}' | grep '^v[0-9]*\.[0-9]*\.[0-9]*' | grep -v {} | sort --version-sort | tail -n1)"
           echo "latest version is [$PILLARS_VERSION]"
           echo "version=$PILLARS_VERSION" >> "$GITHUB_OUTPUT"
 
@@ -114,9 +114,9 @@ jobs:
       - name: 📊 Get latest version
         id: version
         run: |
-          PILLARS_VERSION="$(sbt "print pillars-core/version" --error 2>/dev/null)"
+          PILLARS_VERSION="$(git ls-remote --tags $REPO | awk -F"/" '{print $3}' | grep '^v[0-9]*\.[0-9]*\.[0-9]*' | grep -v {} | sort --version-sort | tail -n1)"
           echo "latest version is [$PILLARS_VERSION]"
-          echo "version=$PILLARS_VERSION" >> "$GITHUB_OUTPUT"
+          echo "version=${PILLARS_VERSION#v}" >> "$GITHUB_OUTPUT"
 
       - name: 📝 Generate site
         run: ./dtcw generateSite && sbt unidoc
