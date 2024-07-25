@@ -89,13 +89,14 @@ object Pillars:
             probes         <- ProbeManager.build[F](_modules)
             _              <- Spawn[F].background(probes.start())
             _              <- Spawn[F].background:
-                                  AdminServer[F](_config.admin, obs, _modules.adminControllers :+ ProbesController(probes)).start()
+                                  AdminServer[F](_config.admin, infos, obs, _modules.adminControllers :+ ProbesController(probes))
+                                      .start()
         yield new Pillars[F]:
             override def appInfo: AppInfo                      = infos
             override def observability: Observability[F]       = obs
             override def config: PillarsConfig                 = _config
             override def apiServer: ApiServer[F]               =
-                ApiServer.init(config.api, observability, logger)
+                ApiServer.init(config.api, infos, observability, logger)
             override def logger: Scribe[F]                     = _logger
             override def readConfig[T](using Decoder[T]): F[T] = configReader.read[T]
             override def module[T](key: Module.Key): T         = _modules.get(key)

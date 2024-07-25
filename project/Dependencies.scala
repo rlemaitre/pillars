@@ -54,9 +54,9 @@ object Dependencies {
       "com.softwaremill.sttp.tapir"   %% "tapir-iron"                  % "1.10.15",
       "com.softwaremill.sttp.tapir"   %% "tapir-openapi-docs"          % "1.10.15",
       "com.softwaremill.sttp.apispec" %% "openapi-circe-yaml"          % "0.11.0",
+      "com.softwaremill.sttp.tapir"   %% "tapir-swagger-ui-bundle"     % "1.10.15",
       "com.softwaremill.sttp.tapir"   %% "tapir-sttp-stub-server"      % "1.10.15" % Test,
       "com.softwaremill.sttp.client3" %% "core"                        % "3.9.7"   % Test
-      //    "com.softwaremill.sttp.tapir"   %% "tapir-swagger-ui-bundle" % "1.9.1",
     )
 
     val logging: Seq[ModuleID] = Seq( //
@@ -80,13 +80,13 @@ object Dependencies {
       "com.dimafeng" %% "testcontainers-scala-rabbitmq"   % "0.41.4" % Test
     )
 
-    val observability: Seq[ModuleID]        = Seq(
+    val observability: Seq[ModuleID] = Seq(
       "org.typelevel" %% "otel4s-sdk"          % "0.8.0",
       "org.typelevel" %% "otel4s-sdk-exporter" % "0.8.0"
     )
 
     val skunk: Seq[ModuleID] = Seq(
-      "org.tpolecat" %% "skunk-core"  % "1.0.0-M7" exclude("org.typelevel", "otel4s-core-trace"),
+      "org.tpolecat" %% "skunk-core"  % "1.0.0-M7" exclude ("org.typelevel", "otel4s-core-trace"),
       "org.tpolecat" %% "skunk-circe" % "1.0.0-M7"
     ) ++ tests
 
@@ -111,7 +111,7 @@ object Dependencies {
       "io.chrisdavenport" %% "rediculous" % "0.5.1"
     ) ++ tests
 
-    val flags: Seq[ModuleID]      = Seq(
+    val flags: Seq[ModuleID] = Seq(
       "org.typelevel" %% "literally" % "1.2.0"
     ) ++ tests
 

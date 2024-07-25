@@ -23,17 +23,21 @@ import pillars.syntax.*
 import sttp.capabilities.StreamMaxLengthExceededException
 import sttp.monad.MonadError
 import sttp.tapir.*
+import sttp.tapir.docs.openapi.OpenAPIDocsOptions
 import sttp.tapir.json.circe.jsonBody
 import sttp.tapir.server.http4s.Http4sServerInterpreter
 import sttp.tapir.server.http4s.Http4sServerOptions
 import sttp.tapir.server.interceptor.exception.ExceptionContext
 import sttp.tapir.server.interceptor.exception.ExceptionHandler
 import sttp.tapir.server.model.ValuedEndpointOutput
+import sttp.tapir.swagger.SwaggerUIOptions
+import sttp.tapir.swagger.bundle.SwaggerInterpreter
 
 object HttpServer:
     def build[F[_]: Async](
         name: String,
         config: Config,
+        infos: AppInfo,
         observability: Observability[F],
         endpoints: List[HttpEndpoint[F]]
     ): Resource[F, Server] =
@@ -56,7 +60,20 @@ object HttpServer:
                 .exceptionHandler(exceptionHandler())
                 .options
 
-        val routes          = Http4sServerInterpreter[F](options).toRoutes(endpoints).orNotFound
+        val openAPIEndpoints = if config.openApi.enabled then
+            SwaggerInterpreter(
+              swaggerUIOptions = SwaggerUIOptions(
+                pathPrefix = config.openApi.pathPrefix,
+                yamlName = config.openApi.yamlName,
+                contextPath = config.openApi.contextPath,
+                useRelativePaths = config.openApi.useRelativePaths,
+                showExtensions = config.openApi.showExtensions
+              )
+            ).fromServerEndpoints(endpoints, name, infos.version)
+        else Nil
+
+        val routes = Http4sServerInterpreter[F](options).toRoutes(endpoints ++ openAPIEndpoints).orNotFound
+
         val app: HttpApp[F] = routes |> logging |> errorHandling |> cors
 
         NettyServerBuilder[F].withoutSsl.withNioTransport
@@ -101,13 +118,24 @@ object HttpServer:
     final case class Config(
         host: Host,
         port: Port,
-        logging: Logging.HttpConfig = Logging.HttpConfig()
+        logging: Logging.HttpConfig = Logging.HttpConfig(),
+        openApi: Config.OpenAPI = Config.OpenAPI()
     )
 
     object Config:
         given Configuration = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults
 
+        given Codec[OpenAPI] = Codec.AsObject.derivedConfigured
         given Codec[Config] = Codec.AsObject.derivedConfigured
+
+        final case class OpenAPI(
+            enabled: Boolean = false,
+            pathPrefix: List[String] = List("docs"),
+            yamlName: String = "pillars.yaml",
+            contextPath: List[String] = Nil,
+            useRelativePaths: Boolean = true,
+            showExtensions: Boolean = false
+        )
 
     end Config
 end HttpServer

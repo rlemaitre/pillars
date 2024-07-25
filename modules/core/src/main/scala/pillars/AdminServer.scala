@@ -12,6 +12,7 @@ import sttp.tapir.*
 
 final case class AdminServer[F[_]: Async](
     config: Config,
+    infos: AppInfo,
     obs: Observability[F],
     controllers: List[Controller[F]] = List.empty[Controller[F]]
 ):
@@ -22,7 +23,7 @@ final case class AdminServer[F[_]: Async](
             for
                 _ <- info(s"Starting admin server on ${config.http.host}:${config.http.port}")
                 _ <- HttpServer
-                         .build("admin", config.http, obs, controllers.foldLeft(List.empty)(_ ++ _.endpoints))
+                         .build("admin", config.http, infos, obs, controllers.foldLeft(List.empty)(_ ++ _.endpoints))
                          .onFinalizeCase:
                              case ExitCase.Errored(e) => error(s"Admin server stopped with error: $e")
                              case _                   => info("Admin server stopped")
