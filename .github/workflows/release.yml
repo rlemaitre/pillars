@@ -13,6 +13,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          fetch-tags: true
 
       - name: ☕ Install JDK 21
         uses: actions/setup-java@v4
@@ -38,11 +39,12 @@ jobs:
       - name: 🔖 Create version tag
         run: sbt +test ciReleaseTagNextVersion
 
+      - name: 🔄 Refresh version tag
+        run: git pull --tags
+
       - name: 🏷️ Retrieve version tag
         id: version
-        run: |
-          git pull --tags
-          echo version="v$(sbt "print pillars-core/version" --error 2>/dev/null)" >> ${GITHUB_OUTPUT}
+        run: echo version="v$(sbt "print pillars-core/version" --error 2>/dev/null)" >> ${GITHUB_OUTPUT}
 
       - name: 📝 Update CHANGELOG
         id: changelog
