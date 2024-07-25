@@ -22,12 +22,12 @@
     </url>
 
     <url>
-    	<loc>http://jbake.org/user-guide/20_features/10_configuration.html</loc>
+    	<loc>http://jbake.org/user-guide/20_features/60_admin-server.html</loc>
     	<lastmod>2024-07-25</lastmod>
     </url>
 
     <url>
-    	<loc>http://jbake.org/user-guide/20_features/60_admin-server.html</loc>
+    	<loc>http://jbake.org/user-guide/20_features/10_configuration.html</loc>
     	<lastmod>2024-07-25</lastmod>
     </url>
 
@@ -37,17 +37,12 @@
     </url>
 
     <url>
-    	<loc>http://jbake.org/user-guide/20_features/40_api-server.html</loc>
-    	<lastmod>2024-07-25</lastmod>
-    </url>
-
-    <url>
     	<loc>http://jbake.org/user-guide/20_features/20_logging.html</loc>
     	<lastmod>2024-07-25</lastmod>
     </url>
 
     <url>
-    	<loc>http://jbake.org/user-guide/30_modules/100_write-your-own-module.html</loc>
+    	<loc>http://jbake.org/user-guide/20_features/40_api-server.html</loc>
     	<lastmod>2024-07-25</lastmod>
     </url>
 
@@ -57,17 +52,22 @@
     </url>
 
     <url>
-    	<loc>http://jbake.org/user-guide/30_modules/41_rabbitmq.html</loc>
-    	<lastmod>2024-07-25</lastmod>
-    </url>
-
-    <url>
     	<loc>http://jbake.org/user-guide/30_modules/30_flags.html</loc>
     	<lastmod>2024-07-25</lastmod>
     </url>
 
     <url>
+    	<loc>http://jbake.org/user-guide/30_modules/100_write-your-own-module.html</loc>
+    	<lastmod>2024-07-25</lastmod>
+    </url>
+
+    <url>
     	<loc>http://jbake.org/user-guide/30_modules/index.html</loc>
+    	<lastmod>2024-07-25</lastmod>
+    </url>
+
+    <url>
+    	<loc>http://jbake.org/user-guide/30_modules/41_rabbitmq.html</loc>
     	<lastmod>2024-07-25</lastmod>
     </url>
 
