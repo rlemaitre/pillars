@@ -44,7 +44,10 @@ jobs:
 
       - name: 🏷️ Retrieve version tag
         id: version
-        run: echo "version=v$(sbt "print pillars-core/version" --error 2>/dev/null)" >> "$GITHUB_OUTPUT"
+        run: |
+          PILLARS_VERSION="$(sbt "print pillars-core/version" --error 2>/dev/null)"
+          echo "latest version is [$PILLARS_VERSION]"
+          echo "version=$PILLARS_VERSION" >> "$GITHUB_OUTPUT"
 
       - name: 📝 Update CHANGELOG
         id: changelog
@@ -109,7 +112,11 @@ jobs:
             pillars-cache-${{ hashFiles('build.sbt', 'plugins.sbt') }}
 
       - name: 📊 Get latest version
-        run: echo "version=$(sbt "print pillars-core/version" --error 2>/dev/null)" >> "$GITHUB_OUTPUT"
+        id: version
+        run: |
+          PILLARS_VERSION="$(sbt "print pillars-core/version" --error 2>/dev/null)"
+          echo "latest version is [$PILLARS_VERSION]"
+          echo "version=$PILLARS_VERSION" >> "$GITHUB_OUTPUT"
 
       - name: 📝 Generate site
         run: ./dtcw generateSite && sbt unidoc
