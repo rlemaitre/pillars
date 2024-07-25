@@ -131,7 +131,7 @@ microsite.with {
     // set a title to '-' in order to remove this menu entry.
     menu = ['user-guide': 'User Guide', 'contribute': 'Contribute', 'features': 'Features']
 
-    version = '0.2.0'
+    version = System.getenv("PILLARS_VERSION")?:'<version>'
 
 //tag::additionalConverters[]
 /**

@@ -6,6 +6,7 @@ on:
     tags: ["v*"]
 jobs:
   release:
+    name: 🚀 Release
     runs-on: ubuntu-22.04
     steps:
       - name: ⬇️ Checkout project
@@ -26,40 +27,6 @@ jobs:
       - name: 🔑 Import PGP secret
         run: echo "${{ secrets.PGP_SECRET }}" | base64 --decode | gpg --batch --import
 
-      - name: 📝 Update CHANGELOG
-        if: ${{ github.ref_type == 'tag' }}
-        id: changelog
-        uses: requarks/changelog-action@v1
-        with:
-          token: ${{ github.token }}
-          tag: ${{ github.ref_name }}
-
-#      - name: Update version in docs
-#        if: ${{ github.ref_type == 'tag' }}
-#        run: |
-#          TAG=${{ github.ref_name }}
-#          VERSION=${TAG#v}
-#          sed -i '' -e "s/\"version\": \'.*\'/\"version\": \"${VERSION}\"/" ${{ github.workspace }}/docToolchainConfig.groovy
-
-      - name: 📦 Create Release
-        if: ${{ github.ref_type == 'tag' }}
-        uses: ncipollo/release-action@v1.12.0
-        with:
-          allowUpdates: true
-          draft: false
-          makeLatest: true
-          name: ${{ github.ref_name }}
-          body: ${{ steps.changelog.outputs.changes }}
-          token: ${{ github.token }}
-
-      - name: ✍️ Commit CHANGELOG.md
-        if: ${{ github.ref_type == 'tag' }}
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          branch: main
-          commit_message: 'docs: update CHANGELOG.md for ${{ github.ref_name }} [skip ci]'
-          file_pattern: 'CHANGELOG.md docToolchainConfig.groovy'
-
       - name: 👻 Cache SBT
         uses: actions/cache@v2
         with:
@@ -68,8 +35,91 @@ jobs:
             ~/.coursier
           key: ${{ runner.os }}-sbt-${{ hashfiles('**/build.sbt', 'project/plugins.sbt', 'project/Dependencies.scala') }}
 
+      - name: 🔖 Create version tag
+        run: sbt +test ciReleaseTagNextVersion
+
+      - name: 🏷️ Retrieve version tag
+        id: version
+        run: echo ::set-output name=version::v$(sbt "print pillars-core/version" --error 2>/dev/null)
+
+      - name: 📝 Update CHANGELOG
+        id: changelog
+        uses: requarks/changelog-action@v1
+        with:
+          token: ${{ github.token }}
+          tag: ${{ steps.version.outputs.version }}
+
+      - name: 📦 Create Release
+        uses: ncipollo/release-action@v1.12.0
+        with:
+          allowUpdates: true
+          draft: false
+          makeLatest: true
+          name: ${{ steps.version.outputs.version }}
+          body: ${{ steps.changelog.outputs.changes }}
+          token: ${{ github.token }}
+
+      - name: ✍️ Commit CHANGELOG.md
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          branch: main
+          commit_message: 'docs: update CHANGELOG.md for ${{ steps.version.outputs.version }} [skip ci]'
+          file_pattern: 'CHANGELOG.md docToolchainConfig.groovy'
+
       - name: 📤 Publish to Sonatype
-        run: sbt +test ciReleaseTagNextVersion ciReleaseSonatype
+        run: sbt ciReleaseSonatype
         env:
           SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
           SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+
+  website:
+    name: 🌐 Publish website
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+    env:
+      DTC_HEADLESS: true
+    steps:
+      - name: ⬇️ Checkout project
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup
+        run: chmod +x dtcw
+
+      - name: ☕ Install JDK 19
+        uses: actions/setup-java@v3
+        with:
+          distribution: adopt
+          java-version: 19
+
+      - name: 📦 Cache SBT
+        uses: actions/cache@v3
+        with:
+          path: |
+            .ivy2
+            .sbt
+          key: pillars-cache-${{ hashFiles('build.sbt', 'plugins.sbt') }}
+          restore-keys: |
+            pillars-cache-${{ hashFiles('build.sbt', 'plugins.sbt') }}
+
+      - name: 📊 Get latest version
+        run: echo ::set-output name=version::$(sbt "print pillars-core/version" --error 2>/dev/null)
+
+      - name: 📝 Generate site
+        run: ./dtcw generateSite && sbt unidoc
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+
+      - name: 📄 Copy to public
+        run: cp -r ./target/microsite/output ./public
+
+      - name: 🚀 Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          cname: pillars.dev
+          enable_jekyll: false
+
