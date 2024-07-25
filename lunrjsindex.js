@@ -58,14 +58,6 @@ var documents = [
 
 {
     "id": 7,
-    "uri": "user-guide/20_features/20_logging.html",
-    "menu": "user-guide",
-    "title": "Logging",
-    "text": " Table of Contents Logging Configuration Logging in your code Logging Logging is a very important part of any application. It allows you to see what is happening in your application and to debug it. Pillars uses the scribe library for logging. Configuration The logging configuration is described in the Configuration section. Logging in your code To log something in your code, you can use the logger defined on the Pillars instance. def run(using p: Pillars[IO]): IO[Unit] = import p.* for _ &lt;- logger.info(s\"📚 Welcome to ${config.name}!\") _ &lt;- logger.debug(s\"📚 The configuration is: $config\") yield () As the logger is configured before the application starts, you can use it in any part of your code with the classic scribe usage. import scribe.warn import scribe.cats.io.info def foo: IO[Unit] = info(\"Hello from foo!\") def bar: Unit = warn(\"Hello from bar!\") "
-},
-
-{
-    "id": 8,
     "uri": "user-guide/20_features/40_api-server.html",
     "menu": "user-guide",
     "title": "API Server",
@@ -73,23 +65,15 @@ var documents = [
 },
 
 {
+    "id": 8,
+    "uri": "user-guide/20_features/20_logging.html",
+    "menu": "user-guide",
+    "title": "Logging",
+    "text": " Table of Contents Logging Configuration Logging in your code Logging Logging is a very important part of any application. It allows you to see what is happening in your application and to debug it. Pillars uses the scribe library for logging. Configuration The logging configuration is described in the Configuration section. Logging in your code To log something in your code, you can use the logger defined on the Pillars instance. def run(using p: Pillars[IO]): IO[Unit] = import p.* for _ &lt;- logger.info(s\"📚 Welcome to ${config.name}!\") _ &lt;- logger.debug(s\"📚 The configuration is: $config\") yield () As the logger is configured before the application starts, you can use it in any part of your code with the classic scribe usage. import scribe.warn import scribe.cats.io.info def foo: IO[Unit] = info(\"Hello from foo!\") def bar: Unit = warn(\"Hello from bar!\") "
+},
+
+{
     "id": 9,
-    "uri": "user-guide/20_features/30_probes.html",
-    "menu": "user-guide",
-    "title": "Probes",
-    "text": " Table of Contents Probes Liveness Probe Readiness Probe Custom Probes Probes Probes allow you to monitor the health of your application and the underlying infrastructure. Probes are used to determine if a container is ready to accept traffic or if it should be restarted. Liveness Probe A liveness probe checks if the container is still running. If the liveness probe fails, the container is restarted. Pillars defines a default liveness probe. Readiness Probe A readiness probe checks if the container is ready to accept traffic. If the readiness probe fails, the container is not added to the load balancer. The pillars readiness probe aggregates all probes defined in the application. Pillars defines by default a database probe that is enabled if you include the db module . Custom Probes You can define custom probes by implementing the Probe trait. trait Probe[F[_]]: def component: Component // (1) def check: F[Boolean] // (2) def config: ProbeConfig = ProbeConfig() // (3) end Probe 1 The probe component. 2 The check function. If the check function returns true , the probe is considered successful. If is returns false or throws an exception, the probe is considered failed. 3 The probe configuration. "
-},
-
-{
-    "id": 10,
-    "uri": "user-guide/30_modules/30_flags.html",
-    "menu": "user-guide",
-    "title": "Feature Flags module",
-    "text": " Table of Contents Feature Flags module Creating a feature flag Using a feature flag Endpoints Feature Flags module Feature flags are a way to enable or disable features in your application. They are useful for many reasons, including: Allowing you to test features in production before releasing them to all users. Allowing you to do a gradual rollout of a feature to a percentage of users. Currently, feature flags are only read from the configuration file and cannot be changed at runtime. This means that you will need to restart your application to change the value of a feature flag. In the future, we plan to add support for changing feature flags at runtime and storing them in a database. Creating a feature flag Feature flags are defined in the feature-flags section of the configuration file. feature-flags: enabled: true # (1) flags: - name: feature-1 # (2) status: enabled # (3) - name: feature-2 status: disabled 1 Whether feature flags are enabled or not. If this is set to false , all feature flags will be disabled. 2 The name of the feature flag. 3 The status of the feature flag. Possible values are enabled and disabled . Using a feature flag Feature flags can be used in your application by using the flags module on Pillars . import pillars.flags.* // (1) val flag = flag\"feature-1\" // (2) for enabled &lt;- pillars.flags.isEnabled(flag) // (3) _ &lt;- IO.whenA(enabled)(IO.println(\"Feature 1 is enabled\")) // (4) // or _ &lt;- pillars.whenEnabled(flag\"feature-2\")(IO.println(\"Feature 2 is enabled\")) // (5) // or _ &lt;- flag\"feature-3\".whenEnabled(IO.println(\"Feature 3 is enabled\")) // (6) yield () 1 Import the flags module to enable the flag string interpolator and the flags property on Pillars . 2 Create a Flag instance by using the flag string interpolator. 3 Check if the feature flag is enabled. 4 If the feature flag is enabled, perform the action you want. 5 Use the pillars.whenEnabled method to perform an action if the feature flag is enabled. 6 Use the whenEnabled method on the FeatureFlag.Name instance to perform an action if the feature flag is enabled. Endpoints Feature flags are exposed on the admin server . Get all feature flags The GET /admin/flags endpoint returns all feature flags. curl -X GET http://localhost:19876/admin/flags The response is a JSON array of feature flags. [ { \"name\": \"feature-1\", \"status\": \"enabled\" }, { \"name\": \"feature-2\", \"status\": \"disabled\" } ] Get a specific feature flag The GET /admin/flags/+{name}+ endpoint returns a specific feature flag. curl -X GET http://localhost:19876/admin/flags/feature-1 The response is a JSON object with the name and status of the feature flag. { \"name\": \"feature-1\", \"status\": \"enabled\" } Update a specific feature flag The PUT /admin/flags/+{name}+ endpoint updates a specific feature flag. curl -X PUT -H \"Content-Type: application/json\" -d '{\"status\": \"disabled\"}' http://localhost:19876/admin/flags/feature-1 The request body should be a JSON object with the new status of the feature flag. { \"status\": \"disabled\" } The response is a JSON object with the name and status of the feature flag. { \"name\": \"feature-1\", \"status\": \"disabled\" } "
-},
-
-{
-    "id": 11,
     "uri": "user-guide/30_modules/100_write-your-own-module.html",
     "menu": "user-guide",
     "title": "Write your own module",
@@ -97,19 +81,35 @@ var documents = [
 },
 
 {
-    "id": 12,
-    "uri": "user-guide/30_modules/index.html",
+    "id": 10,
+    "uri": "user-guide/20_features/30_probes.html",
     "menu": "user-guide",
-    "title": "Optional Modules",
-    "text": " Table of Contents Modules Database HTTP Client Feature Flags Redis RabbitMQ Write your own module Modules Pillars includes several optional modules: Database HTTP Client Feature Flags Redis RabbitMQ Database The database module provides a simple abstraction over the database access layer. It is based on the skunk library and provides a simple interface to execute queries and transactions. Read more HTTP Client The HTTP Client module provides a simple abstraction over the HTTP client layer. It is based on the http4s library using Netty and provides a simple interface to execute HTTP requests. Read more Feature Flags The Feature Flags module provides a simple abstraction over the feature flags layer. Read more Redis The Redis module provides integration with redis . Read more RabbitMQ The RabbitMQ module provides integration with RabbitMQ . Read more Write your own module You can easily write your own module by implementing the Module trait. Read more "
+    "title": "Probes",
+    "text": " Table of Contents Probes Liveness Probe Readiness Probe Custom Probes Probes Probes allow you to monitor the health of your application and the underlying infrastructure. Probes are used to determine if a container is ready to accept traffic or if it should be restarted. Liveness Probe A liveness probe checks if the container is still running. If the liveness probe fails, the container is restarted. Pillars defines a default liveness probe. Readiness Probe A readiness probe checks if the container is ready to accept traffic. If the readiness probe fails, the container is not added to the load balancer. The pillars readiness probe aggregates all probes defined in the application. Pillars defines by default a database probe that is enabled if you include the db module . Custom Probes You can define custom probes by implementing the Probe trait. trait Probe[F[_]]: def component: Component // (1) def check: F[Boolean] // (2) def config: ProbeConfig = ProbeConfig() // (3) end Probe 1 The probe component. 2 The check function. If the check function returns true , the probe is considered successful. If is returns false or throws an exception, the probe is considered failed. 3 The probe configuration. "
 },
 
 {
-    "id": 13,
+    "id": 11,
     "uri": "user-guide/30_modules/41_rabbitmq.html",
     "menu": "user-guide",
     "title": "RabbitMQ Module",
     "text": " Table of Contents RabbitMQ module RabbitMQ Module Configuration Using the RabbitMQ Module RabbitMQ Operations RabbitMQ module The RabbitMQ module provides integration with RabbitMQ . It uses the fs2-rabbit library. RabbitMQ Module Configuration The RabbitMQ configuration is defined in the Config case class. It includes the following fields: host : the RabbitMQ host port : the RabbitMQ port virtualHost : the RabbitMQ virtual host connectionTimeout : the connection timeout ssl : enable SSL mode username : RabbitMQ username password : RabbitMQ password requeueOnNack : requeue messages when not ACK-ed requeueOnReject : requeue messages when rejected internalQueueSize : client internal queue size requestedHeartbeat : heartbeat interval automaticRecovery : automatically reconnect on failure clientProvidedConnectionName : client label The configuration is read from the application&#8217;s configuration file under the rabbitmq section. Using the RabbitMQ Module To use the RabbitMQ module, you need to import it and then access it through the Pillars instance: import pillars.redis.* val rabbitmqModule = pillarsInstance.redis You can also use directly RabbitMQ[F] . You can then use the rabbitmqModule to perform RabbitMQ operations. RabbitMQ Operations import pillars.redis.* for client &lt;- RabbitMQ[IO](configFor(container)).map(_.client) _ &lt;- client.createConnectionChannel.evalMap { implicit channel =&gt; for publisher &lt;- client.createPublisher[String](exchange, routingKey) _ &lt;- publisher(\"test message\") subscriber &lt;- client.createAutoAckConsumer[String](queue) out &lt;- subscriber.head.compile.onlyOrError yield assertEquals(out.payload, \"test message\") } yield () end for "
+},
+
+{
+    "id": 12,
+    "uri": "user-guide/30_modules/30_flags.html",
+    "menu": "user-guide",
+    "title": "Feature Flags module",
+    "text": " Table of Contents Feature Flags module Creating a feature flag Using a feature flag Endpoints Feature Flags module Feature flags are a way to enable or disable features in your application. They are useful for many reasons, including: Allowing you to test features in production before releasing them to all users. Allowing you to do a gradual rollout of a feature to a percentage of users. Currently, feature flags are only read from the configuration file and cannot be changed at runtime. This means that you will need to restart your application to change the value of a feature flag. In the future, we plan to add support for changing feature flags at runtime and storing them in a database. Creating a feature flag Feature flags are defined in the feature-flags section of the configuration file. feature-flags: enabled: true # (1) flags: - name: feature-1 # (2) status: enabled # (3) - name: feature-2 status: disabled 1 Whether feature flags are enabled or not. If this is set to false , all feature flags will be disabled. 2 The name of the feature flag. 3 The status of the feature flag. Possible values are enabled and disabled . Using a feature flag Feature flags can be used in your application by using the flags module on Pillars . import pillars.flags.* // (1) val flag = flag\"feature-1\" // (2) for enabled &lt;- pillars.flags.isEnabled(flag) // (3) _ &lt;- IO.whenA(enabled)(IO.println(\"Feature 1 is enabled\")) // (4) // or _ &lt;- pillars.whenEnabled(flag\"feature-2\")(IO.println(\"Feature 2 is enabled\")) // (5) // or _ &lt;- flag\"feature-3\".whenEnabled(IO.println(\"Feature 3 is enabled\")) // (6) yield () 1 Import the flags module to enable the flag string interpolator and the flags property on Pillars . 2 Create a Flag instance by using the flag string interpolator. 3 Check if the feature flag is enabled. 4 If the feature flag is enabled, perform the action you want. 5 Use the pillars.whenEnabled method to perform an action if the feature flag is enabled. 6 Use the whenEnabled method on the FeatureFlag.Name instance to perform an action if the feature flag is enabled. Endpoints Feature flags are exposed on the admin server . Get all feature flags The GET /admin/flags endpoint returns all feature flags. curl -X GET http://localhost:19876/admin/flags The response is a JSON array of feature flags. [ { \"name\": \"feature-1\", \"status\": \"enabled\" }, { \"name\": \"feature-2\", \"status\": \"disabled\" } ] Get a specific feature flag The GET /admin/flags/+{name}+ endpoint returns a specific feature flag. curl -X GET http://localhost:19876/admin/flags/feature-1 The response is a JSON object with the name and status of the feature flag. { \"name\": \"feature-1\", \"status\": \"enabled\" } Update a specific feature flag The PUT /admin/flags/+{name}+ endpoint updates a specific feature flag. curl -X PUT -H \"Content-Type: application/json\" -d '{\"status\": \"disabled\"}' http://localhost:19876/admin/flags/feature-1 The request body should be a JSON object with the new status of the feature flag. { \"status\": \"disabled\" } The response is a JSON object with the name and status of the feature flag. { \"name\": \"feature-1\", \"status\": \"disabled\" } "
+},
+
+{
+    "id": 13,
+    "uri": "user-guide/30_modules/index.html",
+    "menu": "user-guide",
+    "title": "Optional Modules",
+    "text": " Table of Contents Modules Database HTTP Client Feature Flags Redis RabbitMQ Write your own module Modules Pillars includes several optional modules: Database HTTP Client Feature Flags Redis RabbitMQ Database The database module provides a simple abstraction over the database access layer. It is based on the skunk library and provides a simple interface to execute queries and transactions. Read more HTTP Client The HTTP Client module provides a simple abstraction over the HTTP client layer. It is based on the http4s library using Netty and provides a simple interface to execute HTTP requests. Read more Feature Flags The Feature Flags module provides a simple abstraction over the feature flags layer. Read more Redis The Redis module provides integration with redis . Read more RabbitMQ The RabbitMQ module provides integration with RabbitMQ . Read more Write your own module You can easily write your own module by implementing the Module trait. Read more "
 },
 
 {
@@ -130,18 +130,18 @@ var documents = [
 
 {
     "id": 16,
-    "uri": "user-guide/30_modules/15_db-migration.html",
-    "menu": "user-guide",
-    "title": "DB Migration Module",
-    "text": " Table of Contents DB Migration module Configuration Usage DB Migration module The DB Migration module is a standalone module that is used to manage the database schema and data. It depends on the DB module. Configuration The configuration of the DB Migration module is done in the application.yml file, in a db-migration section. Parameters are: log-after : (duration) the time after which the migration log will be printed. It must be declared in the ISO-8601 format. Default is PT5s (five seconds). See Dumbo for more information. validate-on-migrate : (boolean) whether to validate the schema after migration. db-migration: log-after: PT5s validate-on-migrate: true Usage In order to use the DB Migration module, you need to add it as a dependency to your project. The migrations are written in SQL and are located in the src/main/resources/db/migration directory of your project. The migration files must be named in the following format: V{version}__{description}.sql , where: {version} is the version of the migration, and {description} is a description of the migration. The migration files are executed in the order of their version. To execute the migrations, you can use the migrate method of the DBMigration[F] class. "
-},
-
-{
-    "id": 17,
     "uri": "user-guide/30_modules/10_db.html",
     "menu": "user-guide",
     "title": "Database Module",
     "text": " Table of Contents Database module Database Configuration Using the DB Module Probe Database module The DB modules provide database connectivity and operations for the Pillars application. There are two database modules: db : the main database module using Skunk for interacting with PostgreSQL databases db-doobie : a Doobie-based database module for interacting with databases using JDBC drivers Use only one of these two modules in your application. Using both modules in the same application will result in a conflict. Database Configuration The configuration is read from the application&#8217;s configuration file under the db section. Skunk The database configuration is defined in the pillars.db.DatabaseConfig case class. It includes the following fields: host : The host of the database. port : The port of the database. database : The name of the database. username : The username for the database. password : The password for the database. system-schema : The schema for pillars configuration in the database. app-schema : The schema for the application in the database. ssl : The SSL mode for the database. Accepted values are none , trusted and system . See Skunk documentation for more information. pool-size : The size of the connection pool. debug : A flag indicating whether to enable debug mode. probe : The configuration for the database probe. Doobie The database configuration is defined in the pillars.db_doobie.DatabaseConfig case class. It includes the following fields: driver-class-name : The JDBC driver class name. url : The JDBC URL of the database. username : The username for the database. password : The password for the database. system-schema : The schema for pillars configuration in the database. app-schema : The schema for the application in the database. pool-size : The size of the connection pool. debug : A flag indicating whether to enable debug mode. probe : The configuration for the database probe. statement-cache : Configuration of the statement cache. It contains the following fields: enabled : A flag indicating whether to enable the statement cache. size : The size of the statement cache. sql-limit : The maximum length of the SQL string to be cached. Using the DB Module To use the DB module, you need to import it and then access it through the Pillars instance: val dbModule = pillarsInstance.db You can then use the dbModule to perform database operations. You can also use directly DB[F] to perform database operations: For Skunk: import pillars.db.* import skunk.* def foo[F[_]](using Pillars[F]) = DB[F].use: session =&gt; session.unique(sql\"SELECT 1\".query[Int]) For Doobie: import pillars.db_doobie.* import doobie.* def foo[F[_]](using Pillars[F]) = DB[F].use: xa =&gt; sql\"SELECT 1\".query[Int].unique.transact(xa) Probe The DB module provides a probe for health checks. val isHealthy: F[Boolean] = dbModule.probes.head.check This will return a boolean indicating whether the database is healthy or not. "
+},
+
+{
+    "id": 17,
+    "uri": "user-guide/30_modules/15_db-migration.html",
+    "menu": "user-guide",
+    "title": "DB Migration Module",
+    "text": " Table of Contents DB Migration module Configuration Usage DB Migration module The DB Migration module is a standalone module that is used to manage the database schema and data. It depends on the DB module. Configuration The configuration of the DB Migration module is done in the application.yml file, in a db-migration section. Parameters are: log-after : (duration) the time after which the migration log will be printed. It must be declared in the ISO-8601 format. Default is PT5s (five seconds). See Dumbo for more information. validate-on-migrate : (boolean) whether to validate the schema after migration. db-migration: log-after: PT5s validate-on-migrate: true Usage In order to use the DB Migration module, you need to add it as a dependency to your project. The migrations are written in SQL and are located in the src/main/resources/db/migration directory of your project. The migration files must be named in the following format: V{version}__{description}.sql , where: {version} is the version of the migration, and {description} is a description of the migration. The migration files are executed in the order of their version. To execute the migrations, you can use the migrate method of the DBMigration[F] class. "
 },
 
 {
