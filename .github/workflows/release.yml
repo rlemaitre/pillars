@@ -57,7 +57,7 @@ jobs:
           tag: ${{ steps.version.outputs.version }}
 
       - name: 📦 Create Release
-        uses: ncipollo/release-action@v1.12.0
+        uses: ncipollo/release-action@v1.14.0
         with:
           allowUpdates: true
           draft: false
