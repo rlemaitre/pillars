@@ -29,7 +29,7 @@ jobs:
         run: echo "${{ secrets.PGP_SECRET }}" | base64 --decode | gpg --batch --import
 
       - name: 👻 Cache SBT
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: |
             ~/.sbt
@@ -108,7 +108,7 @@ jobs:
         run: ./dtcw local install doctoolchain
 
       - name: 📦 Cache SBT
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             .ivy2
