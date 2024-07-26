@@ -83,6 +83,8 @@ jobs:
   website:
     name: 🌐 Publish website
     runs-on: ubuntu-latest
+    needs:
+      - release
     permissions:
       contents: write
     concurrency:
@@ -102,6 +104,9 @@ jobs:
           distribution: adopt
           java-version: 19
 
+      - name: 🧰 Install docToolchain
+        run: ./dtcw local install doctoolchain
+
       - name: 📦 Cache SBT
         uses: actions/cache@v3
         with:
@@ -120,9 +125,10 @@ jobs:
           echo "version=${PILLARS_VERSION#v}" >> "$GITHUB_OUTPUT"
 
       - name: 📝 Generate site
-        run: ./dtcw generateSite && sbt unidoc
+        run: ./dtcw local generateSite && sbt unidoc
         env:
           PILLARS_VERSION: ${{ steps.version.outputs.version }}
+          DTC_HEADLESS: true
 
       - name: 📄 Copy to public
         run: cp -r ./target/microsite/output ./public
