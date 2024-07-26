@@ -29,7 +29,7 @@ jobs:
         run: echo "${{ secrets.PGP_SECRET }}" | base64 --decode | gpg --batch --import
 
       - name: 👻 Cache SBT
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: |
             ~/.sbt
@@ -57,7 +57,7 @@ jobs:
           tag: ${{ steps.version.outputs.version }}
 
       - name: 📦 Create Release
-        uses: ncipollo/release-action@v1.12.0
+        uses: ncipollo/release-action@v1.14.0
         with:
           allowUpdates: true
           draft: false
@@ -108,7 +108,7 @@ jobs:
         run: ./dtcw local install doctoolchain
 
       - name: 📦 Cache SBT
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             .ivy2
@@ -134,7 +134,7 @@ jobs:
         run: cp -r ./target/microsite/output ./public
 
       - name: 🚀 Deploy
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
