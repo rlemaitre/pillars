@@ -14,7 +14,7 @@ jobs:
     name: 🕸️ Update Dependency Graph
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: scalacenter/sbt-dependency-submission@v2
         with:
           ## Optional: Define the working directory of your build.
