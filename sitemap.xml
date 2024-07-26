@@ -42,17 +42,17 @@
     </url>
 
     <url>
-    	<loc>http://jbake.org/user-guide/30_modules/100_write-your-own-module.html</loc>
-    	<lastmod>2024-07-26</lastmod>
-    </url>
-
-    <url>
     	<loc>http://jbake.org/user-guide/20_features/40_api-server.html</loc>
     	<lastmod>2024-07-26</lastmod>
     </url>
 
     <url>
     	<loc>http://jbake.org/user-guide/20_features/30_probes.html</loc>
+    	<lastmod>2024-07-26</lastmod>
+    </url>
+
+    <url>
+    	<loc>http://jbake.org/user-guide/30_modules/100_write-your-own-module.html</loc>
     	<lastmod>2024-07-26</lastmod>
     </url>
 
@@ -82,12 +82,12 @@
     </url>
 
     <url>
-    	<loc>http://jbake.org/user-guide/30_modules/15_db-migration.html</loc>
+    	<loc>http://jbake.org/user-guide/30_modules/10_db.html</loc>
     	<lastmod>2024-07-26</lastmod>
     </url>
 
     <url>
-    	<loc>http://jbake.org/user-guide/30_modules/10_db.html</loc>
+    	<loc>http://jbake.org/user-guide/30_modules/15_db-migration.html</loc>
     	<lastmod>2024-07-26</lastmod>
     </url>
 
