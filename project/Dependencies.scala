@@ -82,7 +82,7 @@ object Dependencies {
 
     val observability: Seq[ModuleID] = Seq(
       "org.typelevel" %% "otel4s-sdk"          % "0.8.1",
-      "org.typelevel" %% "otel4s-sdk-exporter" % "0.8.0"
+      "org.typelevel" %% "otel4s-sdk-exporter" % "0.8.1"
     )
 
     val skunk: Seq[ModuleID] = Seq(
