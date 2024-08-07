@@ -21,10 +21,12 @@ import pillars.Modules
 import pillars.Pillars
 import pillars.codec.given
 import pillars.probes.*
+import scala.concurrent.duration.Duration
 import scribe.Level
 import skunk.*
 import skunk.codec.all.*
 import skunk.implicits.*
+import skunk.util.Typer
 
 extension [F[_]](p: Pillars[F])
     def db: DB[F] = p.module[DB[F]](DB.Key)
@@ -65,7 +67,14 @@ class DBLoader extends Loader:
                          user = config.username,
                          password = config.password.some.map(_.value),
                          max = config.poolSize,
-                         debug = config.debug
+                         debug = config.debug,
+                         strategy = config.typerStrategy,
+                         parameters = Session.DefaultConnectionParameters ++ config.extraParameters,
+                         commandCache = config.commandCache,
+                         queryCache = config.queryCache,
+                         parseCache = config.parseCache,
+                         readTimeout = config.readTimeout,
+                         redactionStrategy = config.redactionStrategy
                        )
             _       <- Resource.eval(logger.info("DB module loaded"))
         yield DB(poolRes)
@@ -86,7 +95,14 @@ final case class DatabaseConfig(
     poolSize: PoolSize = PoolSize(32),
     debug: Boolean = false,
     probe: ProbeConfig = ProbeConfig(),
-    logging: LoggingConfig = LoggingConfig()
+    logging: LoggingConfig = LoggingConfig(),
+    typerStrategy: Typer.Strategy = Typer.Strategy.BuiltinsOnly,
+    extraParameters: Map[String, String] = Map.empty,
+    commandCache: Int = 1024,
+    queryCache: Int = 1024,
+    parseCache: Int = 1024,
+    readTimeout: Duration = Duration.Inf,
+    redactionStrategy: RedactionStrategy = RedactionStrategy.OptIn
 )
 
 object DatabaseConfig:
@@ -95,17 +111,34 @@ object DatabaseConfig:
     import pillars.Logging.Config.given
     given Codec[LoggingConfig]  = Codec.AsObject.derivedConfigured
 
-    given CirceDecoder[SSL] = CirceDecoder.decodeString.emap {
+    given CirceEncoder[Typer.Strategy] = CirceEncoder.encodeString.contramap:
+        case Typer.Strategy.BuiltinsOnly => "BuiltinsOnly"
+        case Typer.Strategy.SearchPath   => "SearchPath"
+    given CirceDecoder[Typer.Strategy] = CirceDecoder.decodeString.map(_.toLowerCase).emap:
+        case "builtinsonly" => Right(Typer.Strategy.BuiltinsOnly)
+        case "searchpath"   => Right(Typer.Strategy.SearchPath)
+        case other          => Left(s"Invalid Typer strategy: $other")
+
+    given CirceDecoder[SSL] = CirceDecoder.decodeString.map(_.toLowerCase).emap:
         case "none"    => Right(SSL.None)
         case "trusted" => Right(SSL.Trusted)
         case "system"  => Right(SSL.System)
         case other     => Left(s"Invalid SSL mode: $other")
-    }
-    given CirceEncoder[SSL] = CirceEncoder.encodeString.contramap {
+    given CirceEncoder[SSL] = CirceEncoder.encodeString.contramap:
         case SSL.None    => "none"
         case SSL.Trusted => "trusted"
         case SSL.System  => "system"
-    }
+
+    given CirceDecoder[RedactionStrategy] = CirceDecoder.decodeString.map(_.toLowerCase).emap:
+        case "none"  => Right(RedactionStrategy.None)
+        case "all"   => Right(RedactionStrategy.All)
+        case "optin" => Right(RedactionStrategy.OptIn)
+        case other   => Left(s"Invalid SSL mode: $other")
+    given CirceEncoder[RedactionStrategy] = CirceEncoder.encodeString.contramap:
+        case RedactionStrategy.None  => "none"
+        case RedactionStrategy.All   => "all"
+        case RedactionStrategy.OptIn => "OptIn"
+
 end DatabaseConfig
 
 final case class LoggingConfig(
