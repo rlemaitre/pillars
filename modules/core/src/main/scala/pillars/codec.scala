@@ -8,7 +8,9 @@ import io.circe.Codec
 import io.circe.Decoder
 import io.circe.Encoder
 import io.circe.derivation.Configuration
+import io.circe.syntax.*
 import org.http4s.Uri
+import scala.concurrent.duration.Duration
 import scala.concurrent.duration.FiniteDuration
 import scala.jdk.DurationConverters.*
 
@@ -32,8 +34,16 @@ object codec:
     )
 
     given Decoder[FiniteDuration] = Decoder.decodeDuration.map(_.toScala)
-
     given Encoder[FiniteDuration] = Encoder.encodeDuration.contramap(_.toJava)
+
+    given Decoder[Duration] = Decoder.decodeDuration.map(_.toScala)
+    given Encoder[Duration] = Encoder.instance[Duration]:
+        case Duration.Inf       => "infinity".asJson
+        case Duration.MinusInf  => "-infinity".asJson
+        case Duration.Zero      => "0".asJson
+        case Duration.Undefined => "undefined".asJson
+        case d: FiniteDuration  => d.asJson
+        case other              => other.toString.asJson
 
     given Configuration = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults
 end codec
