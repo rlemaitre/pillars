@@ -34,8 +34,7 @@ object MetricsCollection:
               .withUnit("ms")
               .withDescription("Response time in milliseconds")
               .withExplicitBucketBoundaries(
-                BucketBoundaries(Vector(5L, 10L, 25L, 50L, 75L, 100L, 250L, 500L, 750L, 1000L, 2500L, 5000L, 7500L,
-                  10000L))
+                BucketBoundaries(5, 10, 25, 50, 75, 100, 250, 500, 750, 1000, 2500, 5000, 7500, 10000)
               )
               .create,
           meter
