@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.2.16] - 2024-08-07
+### :sparkles: New Features
+- [`84bad0c`](https://github.com/rlemaitre/pillars/commit/84bad0c12adf4f6aea9f3954861c2f9d10237a5b) - **db-skunk**: Allow session configuration *(PR [#140](https://github.com/rlemaitre/pillars/pull/140) by [@rlemaitre](https://github.com/rlemaitre))*
+
+
 ## [v0.2.15] - 2024-07-26
 ### :wrench: Chores
 - [`c4b66a3`](https://github.com/rlemaitre/pillars/commit/c4b66a34aedae06b58c21fcf1d191c3961248f4f) - Upgrade Github Actions versions *(commit by [@rlemaitre](https://github.com/rlemaitre))*
@@ -110,3 +115,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.2.0]: https://github.com/rlemaitre/pillars/compare/v0.1.5...v0.2.0
 [v0.2.0]: https://github.com/rlemaitre/pillars/compare/v0.1.5...v0.2.0
 [v0.2.15]: https://github.com/rlemaitre/pillars/compare/v0.2.14...v0.2.15
+[v0.2.16]: https://github.com/rlemaitre/pillars/compare/v0.2.15...v0.2.16
