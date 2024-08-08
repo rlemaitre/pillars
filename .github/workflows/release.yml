@@ -56,6 +56,16 @@ jobs:
           token: ${{ github.token }}
           tag: ${{ steps.version.outputs.version }}
 
+      - name: ✍️ Commit CHANGELOG.md
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          branch: main
+          commit_message: 'docs: update CHANGELOG.md for ${{ steps.version.outputs.version }} [skip ci]'
+          file_pattern: 'CHANGELOG.md docToolchainConfig.groovy'
+
+      - name: 🏷️ Move tag to HEAD
+        run: git tag -f ${{ steps.version.outputs.version }} && git push origin ${{ steps.version.outputs.version }} --force
+
       - name: 📦 Create Release
         uses: ncipollo/release-action@v1.14.0
         with:
@@ -66,13 +76,6 @@ jobs:
           tag: ${{ steps.version.outputs.version }}
           body: ${{ steps.changelog.outputs.changes }}
           token: ${{ github.token }}
-
-      - name: ✍️ Commit CHANGELOG.md
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          branch: main
-          commit_message: 'docs: update CHANGELOG.md for ${{ steps.version.outputs.version }} [skip ci]'
-          file_pattern: 'CHANGELOG.md docToolchainConfig.groovy'
 
       - name: 📤 Publish to Sonatype
         run: sbt ciReleaseSonatype
