@@ -20,18 +20,6 @@ inputFiles = [
         //[file: 'arc42-template.adoc',    formats: ['html','pdf']],
         /** inputFiles **/
 ]
-jbake.with {
-  // possibility to configure additional asciidoctorj plugins used by jbake
-  plugins = [ ]
-
-  // possibiltiy to configure additional asciidoctor attributes passed to the jbake task
-  asciidoctorAttributes = [
-    "project-name": "Pillars",
-    "source-highlighter": "rouge",
-    "rouge-style": "base16.monokai.dark",
-    "icons": "font"
-  ]
-}
 //folders in which asciidoc will find images.
 //these will be copied as resources to ./images
 //folders are relative to inputPath

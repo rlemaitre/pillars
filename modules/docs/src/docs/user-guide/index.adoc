@@ -1,4 +1,6 @@
 == Overview
+:project-name: Pillars
+:author: {project-name} Team
 :toc: preamble
 :icons: font
 :jbake-type: page
