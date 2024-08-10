@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.2.21] - 2024-08-10
+### :bug: Bug Fixes
+- [`5c8ad04`](https://github.com/rlemaitre/pillars/commit/5c8ad042e83b2c676a10635bf8f07957bbb8e1ef) - **docs**: Fix project name replacement in overview *(PR [#141](https://github.com/rlemaitre/pillars/pull/141) by [@rlemaitre](https://github.com/rlemaitre))*
+
+
 ## [v0.2.18] - 2024-08-07
 ### :wrench: Chores
 - [`e6eac0d`](https://github.com/rlemaitre/pillars/commit/e6eac0de122d0410e7c0fef2cd0df0169ac4fa1f) - Patches/Minor updates *(PR [#138](https://github.com/rlemaitre/pillars/pull/138) by [@scala-steward](https://github.com/scala-steward))*
@@ -122,3 +127,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.2.15]: https://github.com/rlemaitre/pillars/compare/v0.2.14...v0.2.15
 [v0.2.16]: https://github.com/rlemaitre/pillars/compare/v0.2.15...v0.2.16
 [v0.2.18]: https://github.com/rlemaitre/pillars/compare/v0.2.17...v0.2.18
+[v0.2.21]: https://github.com/rlemaitre/pillars/compare/v0.2.20...v0.2.21
