@@ -51,7 +51,7 @@ object Dependencies {
       "com.softwaremill.sttp.tapir"   %% "tapir-http4s-server"         % "1.11.1",
       "com.softwaremill.sttp.tapir"   %% "tapir-json-circe"            % "1.11.0",
       "com.softwaremill.sttp.tapir"   %% "tapir-opentelemetry-metrics" % "1.11.0",
-      "com.softwaremill.sttp.tapir"   %% "tapir-iron"                  % "1.11.0",
+      "com.softwaremill.sttp.tapir"   %% "tapir-iron"                  % "1.11.1",
       "com.softwaremill.sttp.tapir"   %% "tapir-openapi-docs"          % "1.11.0",
       "com.softwaremill.sttp.apispec" %% "openapi-circe-yaml"          % "0.11.3",
       "com.softwaremill.sttp.tapir"   %% "tapir-swagger-ui-bundle"     % "1.11.0",
