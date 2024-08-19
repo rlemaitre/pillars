@@ -56,7 +56,7 @@ object Dependencies {
       "com.softwaremill.sttp.apispec" %% "openapi-circe-yaml"          % "0.11.3",
       "com.softwaremill.sttp.tapir"   %% "tapir-swagger-ui-bundle"     % "1.11.0",
       "com.softwaremill.sttp.tapir"   %% "tapir-sttp-stub-server"      % "1.11.0" % Test,
-      "com.softwaremill.sttp.client3" %% "core"                        % "3.9.7"  % Test
+      "com.softwaremill.sttp.client3" %% "core"                        % "3.9.8"  % Test
     )
 
     val logging: Seq[ModuleID] = Seq( //
