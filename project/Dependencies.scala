@@ -18,7 +18,8 @@ object Dependencies {
 
     val commandLine: Seq[ModuleID] = Seq(
       "com.monovore" %% "decline"        % "2.4.1",
-      "com.monovore" %% "decline-effect" % "2.4.1"
+      "com.monovore" %% "decline-effect" % "2.4.1",
+      "com.lihaoyi"  %% "fansi"          % "0.5.0"
     )
 
     val json: Seq[ModuleID] = Seq(
@@ -116,6 +117,9 @@ object Dependencies {
     ) ++ tests
 
     val httpClient: Seq[ModuleID] = http4sClient ++ http4s ++ tests
-    val core: Seq[ModuleID]       =
+
+    val core: Seq[ModuleID] =
         effect ++ json ++ tapir ++ http4s ++ http4sServer ++ model ++ commandLine ++ logging ++ observability ++ tests
+
+    val cli: Seq[ModuleID] = effect ++ model ++ commandLine ++ tests
 }
