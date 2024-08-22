@@ -74,7 +74,8 @@ class DBLoader extends Loader:
                          queryCache = config.queryCache,
                          parseCache = config.parseCache,
                          readTimeout = config.readTimeout,
-                         redactionStrategy = config.redactionStrategy
+                         redactionStrategy = config.redactionStrategy,
+                         ssl = config.ssl
                        )
             _       <- Resource.eval(logger.info("DB module loaded"))
         yield DB(poolRes)
