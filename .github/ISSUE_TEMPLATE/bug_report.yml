@@ -1,6 +1,8 @@
 name: "🪲 Bug report"
 description: "Create a report to help us improve"
 title: "bug: <title>"
+labels:
+  - "bug"
 body:
   - type: checkboxes
     id: "existing-issue"
