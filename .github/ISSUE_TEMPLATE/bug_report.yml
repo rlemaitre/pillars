@@ -1,0 +1,87 @@
+name: "🪲 Bug report"
+description: "Create a report to help us improve"
+title: "bug: <title>"
+body:
+  - type: checkboxes
+    id: "existing-issue"
+    attributes:
+      label: "Is there an existing issue for this?"
+      description: "Please search to see if an issue already exists for the bug you encountered."
+      options:
+        - label: "I have searched the existing issues"
+          required: true
+  - type: checkboxes
+    id: "security-issue"
+    attributes:
+      label: "Is this a security issue?"
+      description: "If you believe you have found a security issue, please do not report it here. Instead, email <security at pillars dot dev>"
+      options:
+          - label: "This is not a security issue"
+            required: true
+  - type: checkboxes
+    id: "affected-module"
+    attributes:
+      label: "Which module is affected?"
+      description: "If you are unsure, please leave this blank."
+      options:
+        - label: "core"
+        - label: "db-doobie"
+        - label: "db-skunk"
+        - label: "db-migration"
+        - label: "docs"
+        - label: "flags"
+        - label: "http-client"
+        - label: "rabbitmq-fs2"
+        - label: "redis-rediculous"
+  - type: textarea
+    id: "current-behavior"
+    attributes:
+      label: "Current Behavior"
+      description: "A concise description of what you're experiencing."
+    validations:
+      required: false
+  - type: textarea
+    id: "expected-behavior"
+    attributes:
+      label: "Expected Behavior"
+      description: "A concise description of what you expected to happen."
+    validations:
+      required: false
+  - type: textarea
+    id: "steps-to-reproduce"
+    attributes:
+      label: "Steps To Reproduce"
+      description: "Steps to reproduce the behavior."
+      placeholder: |
+        1. In this environment...
+        1. With this config...
+        1. Run '...'
+        1. See error...
+    validations:
+      required: false
+  - type: textarea
+    id: "environment"
+    attributes:
+      label: "Environment"
+      description: |
+        examples:
+          - **JVM**: Oracle GraalVM 21.0.2
+          - **Scala**: 3.3.3
+          - **Pillars**: 0.2.22
+      value: |
+        - **JVM**:
+        - **Scala**:
+        - **Pillars**:
+      render: "markdown"
+    validations:
+      required: false
+  - type: textarea
+    id: "additional-context"
+    attributes:
+      label: "Anything else?"
+      description: |
+        Links? References? Anything that will give us more context about the issue you are encountering!
+
+        Tip: You can attach images or log files by clicking this area to highlight it and then dragging files in.
+    validations:
+      required: false

@@ -1,0 +1,71 @@
+  name: "🆕 Feature request"
+  description: "Suggest an idea for this project"
+  title: "feat: <title>"
+  body:
+    - type: checkboxes
+      id: "existing-issue"
+      attributes:
+        label: "Is there an existing issue for this?"
+        description: "Please search to see if an issue already exists for the bug you encountered."
+        options:
+          - label: "I have searched the existing issues"
+            required: true
+    - type: checkboxes
+      id: "affected-module"
+      attributes:
+        label: "Which module is affected?"
+        description: "If you are unsure, please leave this blank."
+        options:
+          - label: "core"
+          - label: "db-doobie"
+          - label: "db-skunk"
+          - label: "db-migration"
+          - label: "docs"
+          - label: "flags"
+          - label: "http-client"
+          - label: "rabbitmq-fs2"
+          - label: "redis-rediculous"
+    - type: textarea
+      id: "cause"
+      attributes:
+        label: "Cause"
+        description: "A clear and concise description of what the problem is."
+        placeholder: "I'm always frustrated when [...]"
+      validations:
+        required: false
+    - type: textarea
+      id: "description"
+      attributes:
+        label: "Description"
+        description: "Provide a detailed description of the change or addition you are proposing"
+      validations:
+        required: true
+    - type: textarea
+      id: "alternatives"
+      attributes:
+        label: "Alternatives"
+        description: "A clear and concise description of any alternative solutions or features you've considered."
+      validations:
+        required: false
+    - type: textarea
+      id: "context"
+      attributes:
+          label: "Context"
+          description: "Why is this change important to you? How would you use it? How can it benefit other users?"
+      validations:
+        required: false
+    - type: textarea
+      id: "implementation"
+      attributes:
+          label: "Possible Implementation"
+          description: "Not obligatory, but suggest an idea for implementing addition or change"
+      validations:
+        required: false
+    - type: textarea
+      id: "additional-context"
+      attributes:
+        label: "Anything else?"
+        description: |
+          Links? References? Screenshots? Anything that will give us more context about the feature you are requesting!
+      validations:
+        required: false
