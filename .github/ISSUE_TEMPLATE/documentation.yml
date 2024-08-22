@@ -1,0 +1,44 @@
+name: "📝 Documentation"
+description: "Create a report to help us improve our documentation and website"
+title: "docs: <title>"
+labels:
+  - "documentation"
+body:
+  - type: checkboxes
+    id: "existing-issue"
+    attributes:
+      label: "Is there an existing issue for this?"
+      description: "Please search to see if an issue already exists for the bug you encountered."
+      options:
+        - label: "I have searched the existing issues"
+          required: true
+  - type: checkboxes
+    id: "security-issue"
+    attributes:
+      label: "Is this a security issue?"
+      description: "If you believe you have found a security issue, please do not report it here. Instead, email <security at pillars dot dev>"
+      options:
+          - label: "This is not a security issue"
+            required: true
+  - type: checkboxes
+    id: "affected-module"
+    attributes:
+      label: "Which module is affected?"
+      description: "If you are unsure, please leave this blank."
+      options:
+        - label: "core"
+        - label: "db-doobie"
+        - label: "db-skunk"
+        - label: "db-migration"
+        - label: "docs"
+        - label: "flags"
+        - label: "http-client"
+        - label: "rabbitmq-fs2"
+        - label: "redis-rediculous"
+  - type: textarea
+    id: "description"
+    attributes:
+      label: "Description"
+      description: "Provide a detailed description of what is missing or needs to be improved"
+    validations:
+      required: true
