@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.2.26] - 2024-08-22
+### :wrench: Chores
+- [`39e1ae3`](https://github.com/rlemaitre/pillars/commit/39e1ae33154d9430f9c745038c0c3daa63f67293) - Add labels to issue templates and add documentation template *(PR [#145](https://github.com/rlemaitre/pillars/pull/145) by [@rlemaitre](https://github.com/rlemaitre))*
+
+
 ## [v0.2.23] - 2024-08-22
 ### :wrench: Chores
 - [`c2da005`](https://github.com/rlemaitre/pillars/commit/c2da00542b0cd52e9d864f738e506957909b1080) - Add templates for issues *(PR [#144](https://github.com/rlemaitre/pillars/pull/144) by [@rlemaitre](https://github.com/rlemaitre))*
@@ -140,3 +145,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.2.21]: https://github.com/rlemaitre/pillars/compare/v0.2.20...v0.2.21
 [v0.2.22]: https://github.com/rlemaitre/pillars/compare/v0.2.21...v0.2.22
 [v0.2.23]: https://github.com/rlemaitre/pillars/compare/v0.2.22...v0.2.23
+[v0.2.26]: https://github.com/rlemaitre/pillars/compare/v0.2.25...v0.2.26
