@@ -15,6 +15,14 @@ import sttp.model.StatusCode
 trait ApiServer[F[_]]:
     def start(endpoints: List[HttpEndpoint[F]]): F[Unit]
 
+    def startController(controller: Controller[F]): F[Unit] =
+        start(controller.endpoints)
+
+    def startControllers(controllers: List[Controller[F]]): F[Unit] =
+        start(controllers.flatMap(_.endpoints))
+
+end ApiServer
+
 object ApiServer:
     def apply[F[_]]: Run[F, ApiServer[F]] = summon[Pillars[F]].apiServer
     def init[F[_]: Async](
