@@ -3,7 +3,7 @@ object Dependencies {
     val effect: Seq[ModuleID] = Seq(
       "org.typelevel" %% "cats-core"             % "2.12.0",
       "org.typelevel" %% "cats-effect"           % "3.5.4",
-      "co.fs2"        %% "fs2-core"              % "3.10.2",
+      "co.fs2"        %% "fs2-core"              % "3.11.0",
       "org.typelevel" %% "cats-collections-core" % "0.9.8",
       "org.typelevel" %% "cats-time"             % "0.5.1"
     )
@@ -96,11 +96,11 @@ object Dependencies {
     ) ++ tests
 
     val migrationsRuntime: Seq[ModuleID] = Seq(
-      "org.postgresql" % "postgresql"                 % "42.7.3",
-      "org.flywaydb"   % "flyway-database-postgresql" % "10.17.1"
+      "org.postgresql" % "postgresql"                 % "42.7.4",
+      "org.flywaydb"   % "flyway-database-postgresql" % "10.17.3"
     )
     val migrations: Seq[ModuleID]        = Seq(
-      "org.flywaydb" % "flyway-core" % "10.17.1"
+      "org.flywaydb" % "flyway-core" % "10.17.3"
     ) ++ tests ++ testContainers ++ migrationsRuntime.map(_ % Test)
 
     val fs2Rabbit: Seq[ModuleID] = Seq(
