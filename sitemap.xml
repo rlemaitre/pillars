@@ -2,103 +2,103 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
     <url>
-    	<loc>http://jbake.org/contribute/10_contributing.html</loc>
-    	<lastmod>2024-08-22</lastmod>
-    </url>
-
-    <url>
-    	<loc>http://jbake.org/user-guide/30_modules/10_db.html</loc>
-    	<lastmod>2024-08-22</lastmod>
-    </url>
-
-    <url>
-    	<loc>http://jbake.org/contribute/20_code_of_conduct.html</loc>
-    	<lastmod>2024-08-22</lastmod>
-    </url>
-
-    <url>
     	<loc>http://jbake.org/user-guide/30_modules/20_http-client.html</loc>
-    	<lastmod>2024-08-22</lastmod>
-    </url>
-
-    <url>
-    	<loc>http://jbake.org/user-guide/30_modules/15_db-migration.html</loc>
-    	<lastmod>2024-08-22</lastmod>
-    </url>
-
-    <url>
-    	<loc>http://jbake.org/user-guide/30_modules/100_write-your-own-module.html</loc>
-    	<lastmod>2024-08-22</lastmod>
+    	<lastmod>2024-09-03</lastmod>
     </url>
 
     <url>
     	<loc>http://jbake.org/user-guide/30_modules/41_rabbitmq.html</loc>
-    	<lastmod>2024-08-22</lastmod>
+    	<lastmod>2024-09-03</lastmod>
     </url>
 
     <url>
-    	<loc>http://jbake.org/user-guide/30_modules/30_flags.html</loc>
-    	<lastmod>2024-08-22</lastmod>
+    	<loc>http://jbake.org/user-guide/30_modules/10_db.html</loc>
+    	<lastmod>2024-09-03</lastmod>
     </url>
 
     <url>
-    	<loc>http://jbake.org/user-guide/index.html</loc>
-    	<lastmod>2024-08-22</lastmod>
+    	<loc>http://jbake.org/user-guide/30_modules/100_write-your-own-module.html</loc>
+    	<lastmod>2024-09-03</lastmod>
     </url>
 
     <url>
     	<loc>http://jbake.org/user-guide/30_modules/index.html</loc>
-    	<lastmod>2024-08-22</lastmod>
+    	<lastmod>2024-09-03</lastmod>
     </url>
 
     <url>
     	<loc>http://jbake.org/user-guide/30_modules/40_redis.html</loc>
-    	<lastmod>2024-08-22</lastmod>
+    	<lastmod>2024-09-03</lastmod>
     </url>
 
     <url>
-    	<loc>http://jbake.org/user-guide/20_features/60_admin-server.html</loc>
-    	<lastmod>2024-08-22</lastmod>
+    	<loc>http://jbake.org/user-guide/30_modules/15_db-migration.html</loc>
+    	<lastmod>2024-09-03</lastmod>
     </url>
 
     <url>
-    	<loc>http://jbake.org/user-guide/20_features/40_api-server.html</loc>
-    	<lastmod>2024-08-22</lastmod>
-    </url>
-
-    <url>
-    	<loc>http://jbake.org/user-guide/20_features/30_probes.html</loc>
-    	<lastmod>2024-08-22</lastmod>
-    </url>
-
-    <url>
-    	<loc>http://jbake.org/user-guide/20_features/10_configuration.html</loc>
-    	<lastmod>2024-08-22</lastmod>
-    </url>
-
-    <url>
-    	<loc>http://jbake.org/user-guide/20_features/50_observability.html</loc>
-    	<lastmod>2024-08-22</lastmod>
-    </url>
-
-    <url>
-    	<loc>http://jbake.org/user-guide/20_features/20_logging.html</loc>
-    	<lastmod>2024-08-22</lastmod>
+    	<loc>http://jbake.org/user-guide/30_modules/30_flags.html</loc>
+    	<lastmod>2024-09-03</lastmod>
     </url>
 
     <url>
     	<loc>http://jbake.org/user-guide/10_quick-start.html</loc>
-    	<lastmod>2024-08-22</lastmod>
+    	<lastmod>2024-09-03</lastmod>
+    </url>
+
+    <url>
+    	<loc>http://jbake.org/user-guide/20_features/60_admin-server.html</loc>
+    	<lastmod>2024-09-03</lastmod>
+    </url>
+
+    <url>
+    	<loc>http://jbake.org/user-guide/20_features/10_configuration.html</loc>
+    	<lastmod>2024-09-03</lastmod>
+    </url>
+
+    <url>
+    	<loc>http://jbake.org/user-guide/20_features/50_observability.html</loc>
+    	<lastmod>2024-09-03</lastmod>
+    </url>
+
+    <url>
+    	<loc>http://jbake.org/user-guide/20_features/40_api-server.html</loc>
+    	<lastmod>2024-09-03</lastmod>
+    </url>
+
+    <url>
+    	<loc>http://jbake.org/user-guide/20_features/30_probes.html</loc>
+    	<lastmod>2024-09-03</lastmod>
+    </url>
+
+    <url>
+    	<loc>http://jbake.org/user-guide/index.html</loc>
+    	<lastmod>2024-09-03</lastmod>
+    </url>
+
+    <url>
+    	<loc>http://jbake.org/user-guide/20_features/20_logging.html</loc>
+    	<lastmod>2024-09-03</lastmod>
+    </url>
+
+    <url>
+    	<loc>http://jbake.org/contribute/10_contributing.html</loc>
+    	<lastmod>2024-09-03</lastmod>
+    </url>
+
+    <url>
+    	<loc>http://jbake.org/contribute/20_code_of_conduct.html</loc>
+    	<lastmod>2024-09-03</lastmod>
     </url>
 
     <url>
     	<loc>http://jbake.org/search.html</loc>
-    	<lastmod>2024-08-22</lastmod>
+    	<lastmod>2024-09-03</lastmod>
     </url>
 
     <url>
     	<loc>http://jbake.org/lunrjsindex.html</loc>
-    	<lastmod>2024-08-22</lastmod>
+    	<lastmod>2024-09-03</lastmod>
     </url>
 
 </urlset>
