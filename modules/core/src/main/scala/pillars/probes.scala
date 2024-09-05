@@ -13,7 +13,6 @@ import io.circe.derivation.Configuration
 import io.github.iltotore.iron.*
 import io.github.iltotore.iron.constraint.all.*
 import pillars.AdminServer.baseEndpoint
-import pillars.Controller.HttpEndpoint
 import pillars.codec.given
 import pillars.probes.Component.Name
 import pillars.probes.endpoints.*
@@ -140,17 +139,16 @@ object probes:
         given Codec[ProbeConfig] = Codec.AsObject.derivedConfigured
     end ProbeConfig
 
-    final case class ProbesController[F[_]: Applicative](manager: ProbeManager[F]) extends Controller[F]:
-        private val alive                             = liveness.serverLogicSuccess(_ => "OK".pure[F])
-        private val ready                             =
-            readiness.serverLogicSuccess: _ =>
-                manager.status.map: statuses =>
-                    val checks       = statuses.map: (component, status) =>
-                        CheckStatus(component.name, component.`type`, status)
-                    val globalStatus = statuses.values.foldLeft(Status.pass)(_ |+| _)
-                    HealthStatus(globalStatus, checks.toList)
-        override val endpoints: List[HttpEndpoint[F]] = List(alive, ready)
-    end ProbesController
+    def probesController[F[_]: Applicative](manager: ProbeManager[F]): Controller[F] =
+        val alive = liveness.serverLogicSuccess(_ => "OK".pure[F])
+        val ready = readiness.serverLogicSuccess: _ =>
+            manager.status.map: statuses =>
+                val checks       = statuses.map: (component, status) =>
+                    CheckStatus(component.name, component.`type`, status)
+                val globalStatus = statuses.values.foldLeft(Status.pass)(_ |+| _)
+                HealthStatus(globalStatus, checks.toList)
+        List(alive, ready)
+    end probesController
 
     object endpoints:
         private val prefix = baseEndpoint.in("probes")

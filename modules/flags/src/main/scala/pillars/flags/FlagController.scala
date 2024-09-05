@@ -5,7 +5,6 @@ import cats.syntax.all.*
 import io.github.iltotore.iron.*
 import pillars.AdminServer.baseEndpoint
 import pillars.Controller
-import pillars.Controller.HttpEndpoint
 import pillars.PillarsError
 import pillars.PillarsError.Code
 import pillars.PillarsError.ErrorNumber
@@ -17,16 +16,16 @@ import sttp.tapir.*
 import sttp.tapir.codec.iron.given
 import sttp.tapir.json.circe.jsonBody
 
-final case class FlagController[F[_]: Functor](manager: FlagManager[F]) extends Controller[F]:
-    private val listAll = FlagEndpoints.list.serverLogicSuccess(_ => manager.flags)
-    private val getOne  =
+def flagController[F[_]: Functor](manager: FlagManager[F]): Controller[F] =
+    val listAll = FlagEndpoints.list.serverLogicSuccess(_ => manager.flags)
+    val getOne  =
         FlagEndpoints.get.serverLogic: name =>
             manager
                 .getFlag(name)
                 .map:
                     case Some(flag) => Right(flag)
                     case None       => FlagError.FlagNotFound(name).httpResponse
-    private val modify  =
+    val modify  =
         FlagEndpoints.edit.serverLogic: (name, flag) =>
             manager
                 .setStatus(name, flag.status)
@@ -34,8 +33,8 @@ final case class FlagController[F[_]: Functor](manager: FlagManager[F]) extends 
                     case Some(flag) => Right(flag)
                     case None       => FlagError.FlagNotFound(name).httpResponse
 
-    override def endpoints: List[HttpEndpoint[F]] = List(listAll, getOne, modify)
-end FlagController
+    List(listAll, getOne, modify)
+end flagController
 
 object FlagController:
     enum FlagError(

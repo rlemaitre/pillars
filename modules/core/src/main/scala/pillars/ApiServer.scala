@@ -9,14 +9,21 @@ import io.circe.derivation.Configuration
 import io.github.iltotore.iron.*
 import pillars.Controller.HttpEndpoint
 import pillars.PillarsError.Code
+import scala.annotation.targetName
 import scribe.Scribe
 import sttp.model.StatusCode
 
 trait ApiServer[F[_]]:
+
     def start(endpoints: List[HttpEndpoint[F]]): F[Unit]
 
-    def expose(controllers: List[Controller[F]]): F[Unit] =
-        start(controllers.flatMap(_.endpoints))
+    @targetName("startWithEndpoints")
+    def start(endpoints: HttpEndpoint[F]*): F[Unit] =
+        start(endpoints.toList)
+
+    @targetName("startWithControllers")
+    def start(controllers: Controller[F]*): F[Unit] =
+        start(controllers*)
 
 end ApiServer
 

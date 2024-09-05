@@ -15,7 +15,7 @@ final case class AdminServer[F[_]: Async](
     config: Config,
     infos: AppInfo,
     obs: Observability[F],
-    controllers: List[Controller[F]] = List.empty[Controller[F]]
+    controllers: List[Controller[F]]
 ):
     def start(): F[Unit] =
         val logger = scribe.cats.effect[F]
@@ -30,7 +30,7 @@ final case class AdminServer[F[_]: Async](
                            config.openApi,
                            infos,
                            obs,
-                           controllers.foldLeft(List.empty)(_ ++ _.endpoints)
+                           controllers.flatten
                          )
                          .onFinalizeCase:
                              case ExitCase.Errored(e) => error(s"Admin server stopped with error: $e")
