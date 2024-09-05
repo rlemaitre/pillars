@@ -14,4 +14,4 @@ src_managed/
 .bloop
 project/project
 project/metals.sbt
-project/.bloop
+project/.bloop/*
