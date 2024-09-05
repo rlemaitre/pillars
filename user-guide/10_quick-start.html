@@ -170,7 +170,7 @@ You can help us by <a href="../../contribute/10_contributing.html">contributing 
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="sbt">libraryDependencies ++= Seq(
-  "com.rlemaitre" %% "pillars-core" % "0.2.27"
+  "com.rlemaitre" %% "pillars-core" % "0.2.28"
 )</code></pre>
 </div>
 </div>
@@ -180,10 +180,10 @@ You can help us by <a href="../../contribute/10_contributing.html">contributing 
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="sbt">libraryDependencies ++= Seq(
-  "com.rlemaitre" %% "pillars-db" % "0.2.27",
-  "com.rlemaitre" %% "pillars-db-migration" % "0.2.27",
-  "com.rlemaitre" %% "pillars-flags" % "0.2.27",
-  "com.rlemaitre" %% "pillars-http-client" % "0.2.27"
+  "com.rlemaitre" %% "pillars-db" % "0.2.28",
+  "com.rlemaitre" %% "pillars-db-migration" % "0.2.28",
+  "com.rlemaitre" %% "pillars-flags" % "0.2.28",
+  "com.rlemaitre" %% "pillars-http-client" % "0.2.28"
 )</code></pre>
 </div>
 </div>
@@ -209,10 +209,9 @@ You can find an example in the <code>modules/example/src/main/resources/applicat
         def endpoints = Endpoints.all
 
         def run: Run[IO, IO[Unit]] = // <i class="conum" data-value="4"></i><b>(4)</b>
-            val controllers: List[Controller[IO]] = List(HomeController(), UserController())
             for
                 _ &lt;- Logger[IO].info(s"📚 Welcome to ${Config[IO].name}!")
-                _ &lt;- DBMigration[IO].migrate("classpath:db-migrations") // <i class="conum" data-value="5"></i><b>(5)</b>
+                _ &lt;- DBMigration[IO].migrate("classpath:db-migrations")  // <i class="conum" data-value="5"></i><b>(5)</b>
                 _ &lt;- flag"feature-1".whenEnabled:
                          DB[IO].use: session =&gt;
                              for
@@ -225,7 +224,7 @@ You can find an example in the <code>modules/example/src/main/resources/applicat
                              size &lt;- response.body.compile.count
                              _    &lt;- Logger[IO].info(s"Body: $size bytes")
                          yield ()
-                _ &lt;- ApiServer[IO].start(controllers.foldLeft(List.empty)(_ ++ _.endpoints))
+                _ &lt;- ApiServer[IO].start(homeController, userController) // <i class="conum" data-value="6"></i><b>(6)</b>
             yield ()
             end for
         end run
