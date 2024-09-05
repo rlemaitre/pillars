@@ -6,15 +6,16 @@ import pillars.Controller
 import pillars.Controller.HttpEndpoint
 import pillars.Pillars
 
-final case class HomeController()(using Pillars[IO]) extends Controller[IO]:
+def homeController(using Pillars[IO]): Controller[IO] =
     def ping: HttpEndpoint[IO] = Endpoints.ping.serverLogicSuccess: _ =>
         "pong".pure[IO]
     def boom: HttpEndpoint[IO] = Endpoints.boom.serverLogic: _ =>
         throw new RuntimeException("💣 boom")
-    val endpoints              = List(ping, boom)
-end HomeController
 
-final case class UserController()(using Pillars[IO]) extends Controller[IO]:
+    List(ping, boom)
+end homeController
+
+def userController(using Pillars[IO]): Controller[IO] =
     def list: HttpEndpoint[IO] = Endpoints.listUser.serverLogic: _ =>
         Left(errors.api.NotImplemented.view).pure[IO]
 
@@ -27,5 +28,5 @@ final case class UserController()(using Pillars[IO]) extends Controller[IO]:
     def delete: HttpEndpoint[IO] = Endpoints.deleteUser.serverLogic: _ =>
         Left(errors.api.NotImplemented.view).pure[IO]
 
-    val endpoints = List(list, create, get, delete)
-end UserController
+    List(list, create, get, delete)
+end userController

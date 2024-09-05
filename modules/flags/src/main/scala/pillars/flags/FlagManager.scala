@@ -88,7 +88,7 @@ class FlagManagerLoader extends Loader:
                                         case None    => None
                                 .map(_.get(flag))
 
-                        override def adminControllers: List[Controller[F]] = FlagController(this).pure[List]
+                        override def adminControllers: List[Controller[F]] = flagController(this).pure[List]
         end if
     end createManager
 end FlagManagerLoader

@@ -9,3 +9,9 @@ src_managed/
 .bsp
 .idea
 /gnupg-*
+.vscode
+.metals
+.bloop
+project/project
+project/metals.sbt
+project/.bloop/*

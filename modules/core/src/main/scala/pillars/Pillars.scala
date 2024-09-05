@@ -12,7 +12,7 @@ import org.typelevel.otel4s.trace.Tracer
 import pillars.Config.PillarsConfig
 import pillars.Config.Reader
 import pillars.probes.ProbeManager
-import pillars.probes.ProbesController
+import pillars.probes.probesController
 import scala.jdk.CollectionConverters.IterableHasAsScala
 import scribe.*
 
@@ -89,7 +89,7 @@ object Pillars:
             probes         <- ProbeManager.build[F](_modules)
             _              <- Spawn[F].background(probes.start())
             _              <- Spawn[F].background:
-                                  AdminServer[F](_config.admin, infos, obs, _modules.adminControllers :+ ProbesController(probes))
+                                  AdminServer[F](_config.admin, infos, obs, _modules.adminControllers :+ probesController(probes))
                                       .start()
         yield new Pillars[F]:
             override def appInfo: AppInfo                      = infos
