@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.2.28] - 2024-09-05
+### :sparkles: New Features
+- [`d502b6f`](https://github.com/rlemaitre/pillars/commit/d502b6f99c7eb98a6b1a349c8fa8e995c554d000) - **api-server**: can be built from controllers *(PR [#149](https://github.com/rlemaitre/pillars/pull/149) by [@vbergeron](https://github.com/vbergeron))*
+
+
 ## [v0.2.27] - 2024-09-03
 ### :wrench: Chores
 - [`ac5b18c`](https://github.com/rlemaitre/pillars/commit/ac5b18cd24baa6263ac0182d29e06cab98465c54) - Patches/Minor updates *(PR [#147](https://github.com/rlemaitre/pillars/pull/147) by [@scala-steward](https://github.com/scala-steward))*
@@ -152,3 +157,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.2.23]: https://github.com/rlemaitre/pillars/compare/v0.2.22...v0.2.23
 [v0.2.26]: https://github.com/rlemaitre/pillars/compare/v0.2.25...v0.2.26
 [v0.2.27]: https://github.com/rlemaitre/pillars/compare/v0.2.26...v0.2.27
+[v0.2.28]: https://github.com/rlemaitre/pillars/compare/v0.2.27...v0.2.28
