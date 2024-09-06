@@ -17,8 +17,6 @@ object app extends pillars.EntryPoint: // // <1>
     def app: pillars.App[IO] = new: // // <2>
         def infos: AppInfo = BuildInfo.toAppInfo // // <3>
 
-        def endpoints = Endpoints.all
-
         def run: Run[IO, IO[Unit]] = // // <4>
             for
                 _ <- Logger[IO].info(s"📚 Welcome to ${Config[IO].name}!")
