@@ -5,7 +5,7 @@ import example.build.BuildInfo
 import io.github.iltotore.iron.*
 import pillars.*
 import pillars.db.*
-import pillars.db.migrations.dbMigration
+import pillars.db.migrations.*
 import pillars.flags.*
 import pillars.httpclient.*
 import skunk.*
