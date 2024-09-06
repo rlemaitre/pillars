@@ -119,7 +119,7 @@ final case class HttpClient[F[_]: Async](client: org.http4s.client.Client[F])
 
 end HttpClient
 
-def httpClient[F[_]: Async](using p: Pillars[F]): HttpClient[F] = p.module[HttpClient[F]](HttpClient.Key)
+def httpClient[F[_]](using p: Pillars[F]): HttpClient[F] = p.module[HttpClient[F]](HttpClient.Key)
 
 object HttpClient:
     case object Key extends Module.Key:
@@ -188,16 +188,14 @@ object FailureHandler:
 end FailureHandler
 
 private[httpclient] final case class Config(followRedirect: Boolean)
-extension [F[_]](p: Pillars[F])
-    def httpClient: HttpClient[F] = p.module[HttpClient[F]](HttpClient.Key)
 
 extension [I, EO, O, R](endpoint: PublicEndpoint[I, EO, O, R])
     def call[F[_]](uri: Option[Uri])(input: I): Run[F, F[Either[EO, O]]] =
-        summon[Pillars[F]].httpClient.call(endpoint, uri)(input)
+        httpClient.call(endpoint, uri)(input)
 
 extension [SI, I, EO, O, R](endpoint: Endpoint[SI, I, EO, O, R])
     def call[F[_]](uri: Option[Uri])(securityInput: SI, input: I): Run[F, F[Either[EO, O]]] =
-        summon[Pillars[F]].httpClient.callSecure(endpoint, uri)(securityInput, input)
+        httpClient.callSecure(endpoint, uri)(securityInput, input)
 
 //trait ClientMiddleware:
 //    implicit class ClientMiddlewareOps[F[_]: Tracer: Async, A](client: Client[F]):

@@ -22,8 +22,9 @@ import pillars.PillarsError.Message
 import scala.util.matching.Regex
 import scodec.bits.ByteVector
 
+def config[F[_]](using p: Pillars[F]): Config.PillarsConfig = p.config
+
 object Config:
-    def apply[F[_]]: Run[F, PillarsConfig] = summon[Pillars[F]].config
     case class PillarsConfig(
         name: App.Name,
         log: Logging.Config = Logging.Config(),

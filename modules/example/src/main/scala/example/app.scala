@@ -19,7 +19,7 @@ object app extends pillars.EntryPoint: // // <1>
 
         def run: Run[IO, IO[Unit]] = // // <4>
             for
-                _ <- logger.info(s"📚 Welcome to ${Config[IO].name}!")
+                _ <- logger.info(s"📚 Welcome to ${config.name}!")
                 _ <- dbMigration.migrate("classpath:db-migrations") // // <5>
                 _ <- flag"feature-1".whenEnabled:
                          db.sessions.use: session =>
@@ -27,7 +27,7 @@ object app extends pillars.EntryPoint: // // <1>
                                  date <- session.unique(sql"select now()".query(timestamptz))
                                  _    <- logger.info(s"The current date is $date.")
                              yield ()
-                _ <- httpClient[IO].get("https://swapi.dev/api/people/1"): response =>
+                _ <- httpClient.get("https://swapi.dev/api/people/1"): response =>
                          for
                              _    <- logger.info(s"Response: ${response.status}")
                              size <- response.body.compile.count
