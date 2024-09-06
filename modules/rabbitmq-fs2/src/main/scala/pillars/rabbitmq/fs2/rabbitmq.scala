@@ -67,7 +67,7 @@ class RabbitMQLoader extends Loader:
         given Files[F] = Files.forAsync[F]
         for
             _      <- Resource.eval(logger.info("Loading RabbitMQ module"))
-            config <- Resource.eval(configReader.read[RabbitMQConfig]("rabbitmq"))
+            config <- Resource.eval(reader.read[RabbitMQConfig]("rabbitmq"))
             client <- RabbitMQ[F](config)
             _      <- Resource.eval(logger.info("RabbitMQ module loaded"))
         yield client

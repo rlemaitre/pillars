@@ -22,8 +22,7 @@ import scribe.mdc.MDC
 import scribe.writer.ConsoleWriter
 import scribe.writer.Writer
 
-object Logger:
-    def apply[F[_]: Pillars]: Run[F, Scribe[F]] = summon[Pillars[F]].logger
+def logger[F[_]](using p: Pillars[F]): Scribe[F] = p.logger
 
 object Logging:
     def init[F[_]: Sync](config: Config): F[Unit] =

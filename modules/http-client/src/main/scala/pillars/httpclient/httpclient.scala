@@ -52,7 +52,7 @@ class Loader extends pillars.Loader:
         given Files[F] = Files.forAsync[F]
         for
             _       <- Resource.eval(logger.info("Loading HTTP client module"))
-            conf    <- Resource.eval(configReader.read[HttpClient.Config]("http-client"))
+            conf    <- Resource.eval(reader.read[HttpClient.Config]("http-client"))
             metrics <- ClientMetrics(observability).toResource
             client  <- NettyClientBuilder[F]
                            .withHttp2
@@ -119,8 +119,9 @@ final case class HttpClient[F[_]: Async](client: org.http4s.client.Client[F])
 
 end HttpClient
 
+def httpClient[F[_]: Async](using p: Pillars[F]): HttpClient[F] = p.module[HttpClient[F]](HttpClient.Key)
+
 object HttpClient:
-    def apply[F[_]: Async](using p: Pillars[F]): HttpClient[F] = p.module[HttpClient[F]](HttpClient.Key)
     case object Key extends Module.Key:
         override def name: String = "http-client"
 

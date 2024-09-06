@@ -25,9 +25,6 @@ import pillars.Modules
 import pillars.Pillars
 import pillars.probes.*
 
-extension [F[_]](p: Pillars[F])
-    def db: DB[F] = p.module[DB[F]](DB.Key)
-
 final case class DB[F[_]: MonadCancelThrow](transactor: Resource[F, Transactor[F]]) extends Module[F]:
     export transactor.*
 
@@ -39,10 +36,11 @@ final case class DB[F[_]: MonadCancelThrow](transactor: Resource[F, Transactor[F
     end probes
 end DB
 
+def db[F[_]](using p: Pillars[F]): DB[F] = p.module[DB[F]](DB.Key)
+
 object DB:
     case object Key extends Module.Key:
         override val name: String = "db-doobie"
-    def apply[F[_]](using p: Pillars[F]): DB[F] = p.module[DB[F]](DB.Key)
 
 class DBLoader extends Loader:
     override type M[F[_]] = DB[F]
@@ -56,7 +54,7 @@ class DBLoader extends Loader:
         given Files[F] = Files.forAsync[F]
         for
             _      <- Resource.eval(logger.info("Loading DB module"))
-            config <- Resource.eval(configReader.read[DatabaseConfig]("db"))
+            config <- Resource.eval(reader.read[DatabaseConfig]("db"))
             _      <- Resource.eval(logger.info("DB module loaded"))
         yield DB(HikariTransactor.fromHikariConfig[F](config.toHikariConfig))
         end for

@@ -28,8 +28,7 @@ import skunk.codec.all.*
 import skunk.implicits.*
 import skunk.util.Typer
 
-extension [F[_]](p: Pillars[F])
-    def db: DB[F] = p.module[DB[F]](DB.Key)
+def sessions[F[_]](using p: Pillars[F]): DB[F] = p.module[DB[F]](DB.Key)
 
 final case class DB[F[_]: Async: Network: Tracer: Console](pool: Resource[F, Session[F]]) extends Module[F]:
     export pool.*
@@ -45,7 +44,6 @@ end DB
 object DB:
     case object Key extends Module.Key:
         override val name: String = "db"
-    def apply[F[_]](using p: Pillars[F]): DB[F] = p.module[DB[F]](DB.Key)
 
 class DBLoader extends Loader:
     override type M[F[_]] = DB[F]
@@ -59,7 +57,7 @@ class DBLoader extends Loader:
         given Files[F] = Files.forAsync[F]
         for
             _       <- Resource.eval(logger.info("Loading DB module"))
-            config  <- Resource.eval(configReader.read[DatabaseConfig]("db"))
+            config  <- Resource.eval(reader.read[DatabaseConfig]("db"))
             poolRes <- Session.pooled[F](
                          host = config.host.toString,
                          port = config.port.value,

@@ -58,7 +58,7 @@ class FlagManagerLoader extends Loader:
         Resource.eval:
             for
                 _       <- logger.info("Loading Feature flags module")
-                config  <- configReader.read[FlagsConfig](key.name)
+                config  <- reader.read[FlagsConfig](key.name)
                 manager <- createManager(config)
                 _       <- logger.info("Feature flags module loaded")
             yield manager

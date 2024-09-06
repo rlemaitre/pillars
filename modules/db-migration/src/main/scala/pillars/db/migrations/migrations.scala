@@ -15,12 +15,12 @@ import org.flywaydb.core.Flyway
 import org.typelevel.otel4s.trace.Tracer
 import pillars.Config.Secret
 import pillars.Loader
-import pillars.Logger
 import pillars.Module
 import pillars.Modules
 import pillars.Pillars
 import pillars.Run
 import pillars.db.DB
+import pillars.logger
 
 final case class DBMigration[F[_]: Async: Console: Tracer: Network: Files](
     config: MigrationConfig
@@ -51,7 +51,7 @@ final case class DBMigration[F[_]: Async: Console: Tracer: Network: Files](
                        DatabaseTable(s"${key.name.replaceAll("[^0-9a-zA-Z$_]", "-")}_schema_history".assume),
                        "classpath:db/migrations"
                      ).migrate()
-            _ <- Logger[F].info(s"Migration completed for module ${key.name}")
+            _ <- logger.info(s"Migration completed for module ${key.name}")
         yield ()
     def migrate(
         path: String,
@@ -60,14 +60,14 @@ final case class DBMigration[F[_]: Async: Console: Tracer: Network: Files](
     ): Run[F, F[Unit]] =
         for
             _ <- Async[F].delay(flyway(schema, schemaHistoryTable, path).migrate())
-            _ <- Logger[F].info(s"Migration completed for $schema")
+            _ <- logger.info(s"Migration completed for $schema")
         yield ()
 
 end DBMigration
 
-object DBMigration:
-    def apply[F[_]](using p: Pillars[F]): DBMigration[F] = p.module[DBMigration[F]](DBMigration.Key)
+def dbMigration[F[_]](using p: Pillars[F]): DBMigration[F] = p.module[DBMigration[F]](DBMigration.Key)
 
+object DBMigration:
     case object Key extends Module.Key:
         override val name: String = "db-migration"
 end DBMigration
@@ -82,13 +82,12 @@ class DBMigrationLoader extends Loader:
         context: Loader.Context[F],
         modules: Modules[F]
     ): Resource[F, DBMigration[F]] =
-        import context.*
         given Files[F] = Files.forAsync[F]
         Resource.eval:
             for
-                _      <- logger.info("Loading DB Migration module")
-                config <- configReader.read[MigrationConfig]("db-migration")
-                _      <- logger.info("DB Migration module loaded")
+                _      <- context.logger.info("Loading DB Migration module")
+                config <- context.reader.read[MigrationConfig]("db-migration")
+                _      <- context.logger.info("DB Migration module loaded")
             yield DBMigration(config)
             end for
     end load
@@ -107,11 +106,6 @@ object MigrationConfig:
     given Configuration = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults
 
     given Codec[MigrationConfig] = Codec.AsObject.derivedConfigured
-
-extension [F[_]](p: Pillars[F])
-    def dbMigration: DBMigration[F] = p.module(DBMigration.Key)
-
-end extension
 
 private type JdbcUrlConstraint =
     Match["jdbc\\:[^:]+\\:.*"] DescribedAs "JDBC URL must be in jdbc:<subprotocol>:<subname> format"

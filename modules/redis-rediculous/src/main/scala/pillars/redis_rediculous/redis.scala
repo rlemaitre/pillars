@@ -61,7 +61,7 @@ class RedisLoader extends Loader:
         given Files[F] = Files.forAsync[F]
         for
             _         <- Resource.eval(logger.info("Loading Redis module"))
-            config    <- Resource.eval(configReader.read[RedisConfig]("redis"))
+            config    <- Resource.eval(reader.read[RedisConfig]("redis"))
             connection = Redis(
                            RedisConnection.queued[F]
                                .withHost(config.host)
