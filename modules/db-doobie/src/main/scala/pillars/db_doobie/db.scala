@@ -25,13 +25,12 @@ import pillars.Modules
 import pillars.Pillars
 import pillars.probes.*
 
-final case class DB[F[_]: MonadCancelThrow](transactor: Resource[F, Transactor[F]]) extends Module[F]:
-    export transactor.*
+final case class DB[F[_]: MonadCancelThrow](transactor: Transactor[F]) extends Module[F]:
 
     override def probes: List[Probe[F]] =
         val probe = new Probe[F]:
             override def component: Component = Component(Component.Name("db"), Component.Type.Datastore)
-            override def check: F[Boolean]    = transactor.use(xa => sql"select true".query[Boolean].unique.transact(xa))
+            override def check: F[Boolean]    = sql"select true".query[Boolean].unique.transact(transactor)
         probe.pure[List]
     end probes
 end DB
@@ -56,7 +55,8 @@ class DBLoader extends Loader:
             _      <- Resource.eval(logger.info("Loading DB module"))
             config <- Resource.eval(reader.read[DatabaseConfig]("db"))
             _      <- Resource.eval(logger.info("DB module loaded"))
-        yield DB(HikariTransactor.fromHikariConfig[F](config.toHikariConfig))
+            xa     <- HikariTransactor.fromHikariConfig[F](config.toHikariConfig)
+        yield DB(xa)
         end for
     end load
 end DBLoader

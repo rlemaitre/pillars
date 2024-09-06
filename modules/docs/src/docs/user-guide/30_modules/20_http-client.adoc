@@ -27,17 +27,14 @@ The configuration is read from the application's configuration file under the `h
 
 === Using the HttpClient Module
 
-To use the `HttpClient` module, you need to import it and then access it through the `Pillars` instance:
+To use the `HttpClient` module, you need to import it and then access it using the given `Pillars` instance:
 
 [source,scala,linenums]
 --
 import pillars.httpclient.*
 
-val httpClientModule = pillarsInstance.httpClient
+http.get("some.uri.com") // with a `Pillars[IO]` in scope
 --
-
-You can also use directly `Client[F]`
-You can then use the `httpClientModule` to perform HTTP operations.
 
 === HTTP Operations
 
@@ -48,7 +45,7 @@ You can use the `httpClient` extension method on `Pillars` to get an instance of
 --
 import org.http4s.client.Client
 
-val client: Client[F] = pillars.httpClient
+val client: Client[F] = http.client
 --
 
 This `Client[F]` instance can be used to send HTTP requests by using the same methods as `org.http4s.client.Client[F]`.

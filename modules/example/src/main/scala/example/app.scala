@@ -22,7 +22,7 @@ object app extends pillars.EntryPoint: // // <1>
                 _ <- logger.info(s"📚 Welcome to ${config.name}!")
                 _ <- dbMigration.migrate("classpath:db-migrations") // // <5>
                 _ <- flag"feature-1".whenEnabled:
-                         db.sessions.use: session =>
+                         sessions.use: session =>
                              for
                                  date <- session.unique(sql"select now()".query(timestamptz))
                                  _    <- logger.info(s"The current date is $date.")
