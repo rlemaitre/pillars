@@ -170,7 +170,7 @@ You can help us by <a href="../../contribute/10_contributing.html">contributing 
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="sbt">libraryDependencies ++= Seq(
-  "com.rlemaitre" %% "pillars-core" % "0.2.28"
+  "com.rlemaitre" %% "pillars-core" % "0.2.30"
 )</code></pre>
 </div>
 </div>
@@ -180,10 +180,10 @@ You can help us by <a href="../../contribute/10_contributing.html">contributing 
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="sbt">libraryDependencies ++= Seq(
-  "com.rlemaitre" %% "pillars-db" % "0.2.28",
-  "com.rlemaitre" %% "pillars-db-migration" % "0.2.28",
-  "com.rlemaitre" %% "pillars-flags" % "0.2.28",
-  "com.rlemaitre" %% "pillars-http-client" % "0.2.28"
+  "com.rlemaitre" %% "pillars-db" % "0.2.30",
+  "com.rlemaitre" %% "pillars-db-migration" % "0.2.30",
+  "com.rlemaitre" %% "pillars-flags" % "0.2.30",
+  "com.rlemaitre" %% "pillars-http-client" % "0.2.30"
 )</code></pre>
 </div>
 </div>
@@ -205,8 +205,6 @@ You can find an example in the <code>modules/example/src/main/resources/applicat
 <pre class="prettyprint highlight linenums"><code data-lang="scala">object app extends pillars.EntryPoint: // <i class="conum" data-value="1"></i><b>(1)</b>
     def app: pillars.App[IO] = new: // <i class="conum" data-value="2"></i><b>(2)</b>
         def infos: AppInfo = BuildInfo.toAppInfo // <i class="conum" data-value="3"></i><b>(3)</b>
-
-        def endpoints = Endpoints.all
 
         def run: Run[IO, IO[Unit]] = // <i class="conum" data-value="4"></i><b>(4)</b>
             for
