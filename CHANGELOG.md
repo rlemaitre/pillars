@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.2.31] - 2024-09-09
+### :wrench: Chores
+- [`cb8cffd`](https://github.com/rlemaitre/pillars/commit/cb8cffd7f8f26b0dc1c01b39408e353bcc054797) - Patches/Minor updates *(PR [#150](https://github.com/rlemaitre/pillars/pull/150) by [@scala-steward](https://github.com/scala-steward))*
+
+
 ## [v0.2.30] - 2024-09-09
 ### :sparkles: New Features
 - [`34f0770`](https://github.com/rlemaitre/pillars/commit/34f07707b8f237b4cc685a1add07992e7590684b) - **core**: [#126](https://github.com/rlemaitre/pillars/pull/126) Add traces for HTTP servers and client endpoints *(PR [#153](https://github.com/rlemaitre/pillars/pull/153) by [@rlemaitre](https://github.com/rlemaitre))*
@@ -164,3 +169,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.2.27]: https://github.com/rlemaitre/pillars/compare/v0.2.26...v0.2.27
 [v0.2.28]: https://github.com/rlemaitre/pillars/compare/v0.2.27...v0.2.28
 [v0.2.30]: https://github.com/rlemaitre/pillars/compare/v0.2.29...v0.2.30
+[v0.2.31]: https://github.com/rlemaitre/pillars/compare/v0.2.30...v0.2.31
