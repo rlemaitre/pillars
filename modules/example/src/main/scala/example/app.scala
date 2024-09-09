@@ -6,6 +6,7 @@ import io.github.iltotore.iron.*
 import pillars.*
 import pillars.db.*
 import pillars.db.migrations.*
+import pillars.flags.flag
 import pillars.flags.*
 import pillars.httpclient.*
 import skunk.*
