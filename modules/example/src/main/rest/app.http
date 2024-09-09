@@ -2,7 +2,8 @@
 
 ###
 # @name ping
-GET {{ host }}/ping
+
+GET {{host}}/ping
 
 > {%
   client.test("Request executed successfully", function () {
@@ -16,7 +17,7 @@ GET {{ host }}/ping
 
 ###
 # @name boom
-GET {{ host }}/boom
+GET {{host}}/boom
 
 > {%
   client.test("Request failed successfully 🙂", function () {
@@ -24,17 +25,17 @@ GET {{ host }}/boom
   });
 
   client.test("Request returned json", function () {
-    client.assert(response.contentType === "application/json", "Response is not in json format");
+    client.assert(response.contentType.mimeType === "application/json", "Response is not in json format");
   });
 %}
 
 ###
 # @name user list
-GET {{ host }}/v0/user
+GET {{host}}/v0/user
 
 ###
 # @name user create
-POST {{ host }}/v0/user
+PUT {{host}}/v0/user
 
 {
   "firstName": "John",
@@ -46,4 +47,4 @@ POST {{ host }}/v0/user
 
 ###
 # @name user get
-GET {{ host }}/v0/user/1
+GET {{host}}/v0/user/1

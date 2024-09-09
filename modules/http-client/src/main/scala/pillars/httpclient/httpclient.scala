@@ -30,7 +30,7 @@ import pillars.Pillars
 import pillars.PillarsError
 import pillars.PillarsError.*
 import pillars.Run
-import pillars.syntax.*
+import pillars.syntax.all.*
 import sttp.tapir.AnyEndpoint
 import sttp.tapir.DecodeResult
 import sttp.tapir.Endpoint

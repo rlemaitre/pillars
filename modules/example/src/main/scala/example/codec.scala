@@ -20,7 +20,7 @@ object codec:
         val email: Codec[Email]         = text.eimap(Email.either)(_.value)
         val age: Codec[Age]             = int4.eimap(Age.either)(_.value)
         val user: Codec[User]           =
-            (firstName *: lastName *: email *: age *: country).imap(User.apply)(u =>
+            (firstName.opt *: lastName.opt *: email *: age.opt *: countryCode.opt).imap(User.apply)(u =>
                 (u.firstName, u.lastName, u.email, u.age, u.country)
             )
     end db
