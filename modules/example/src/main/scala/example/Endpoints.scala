@@ -30,7 +30,7 @@ object Endpoints:
 
     val createUser: Endpoint[Unit, UserView, PillarsError.View, UserView, Any] = userBase
         .in(jsonBody[UserView])
-        .post
+        .put
         .out(jsonBody[UserView])
         .name("create user")
 

@@ -33,4 +33,10 @@ object CountryCode extends RefinedTypeOps[String, CountryCodeConstraint, Country
 
 case class Country(code: CountryCode, name: CountryName, niceName: String)
 
-case class User(firstName: FirstName, lastName: LastName, email: Email, age: Age, country: Country)
+case class User(
+    firstName: Option[FirstName],
+    lastName: Option[LastName],
+    email: Email,
+    age: Option[Age],
+    country: Option[CountryCode]
+)

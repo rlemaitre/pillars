@@ -23,7 +23,7 @@ trait ApiServer[F[_]]:
 
     @targetName("startWithControllers")
     def start(controllers: Controller[F]*): F[Unit] =
-        start(controllers*)
+        start(controllers.toList.flatten)
 
 end ApiServer
 

@@ -17,9 +17,10 @@ import org.http4s.server.Server
 import org.http4s.server.middleware.CORS
 import org.http4s.server.middleware.ErrorHandling
 import org.http4s.server.middleware.Logger
+import org.typelevel.otel4s.trace.Tracer
 import pillars.Controller.HttpEndpoint
 import pillars.codec.given
-import pillars.syntax.*
+import pillars.syntax.all.*
 import sttp.capabilities.StreamMaxLengthExceededException
 import sttp.monad.MonadError
 import sttp.tapir.*
@@ -58,7 +59,8 @@ object HttpServer:
             Http4sServerOptions
                 .customiseInterceptors
                 .prependInterceptor(observability.interceptor)
-                .exceptionHandler(exceptionHandler())
+                .prependInterceptor(Traces(observability.tracer))
+                .exceptionHandler(exceptionHandler(observability.tracer))
                 .options
 
         val openAPIEndpoints = if openApi.enabled then
@@ -84,7 +86,7 @@ object HttpServer:
             .resource
     end build
 
-    private def exceptionHandler[F[_]](): ExceptionHandler[F] =
+    private def exceptionHandler[F[_]: Async](tracer: Tracer[F]): ExceptionHandler[F] =
         new ExceptionHandler[F]:
             override def apply(ctx: ExceptionContext)(implicit
                 monad: MonadError[F]
@@ -92,14 +94,19 @@ object HttpServer:
                 def handlePillarsError(e: PillarsError) =
                     Some(ValuedEndpointOutput(statusCode.and(jsonBody[PillarsError.View]), (e.status, e.view)))
 
-                ctx.e match
-                    case e: PillarsError                            =>
-                        monad.unit(handlePillarsError(e))
-                    case StreamMaxLengthExceededException(maxBytes) =>
-                        monad.unit(handlePillarsError(PillarsError.PayloadTooLarge(maxBytes)))
-                    case _                                          =>
-                        monad.unit(handlePillarsError(PillarsError.fromThrowable(ctx.e)))
-                end match
+                tracer
+                    .currentSpanOrNoop
+                    .flatMap: span =>
+                        for
+                            _ <- span.addEvent("Handle exception")
+                            _ <- span.addAttributes(Observability.Attributes.fromError(ctx.e))
+                        yield ctx.e match
+                            case e: PillarsError                            =>
+                                handlePillarsError(e)
+                            case StreamMaxLengthExceededException(maxBytes) =>
+                                handlePillarsError(PillarsError.PayloadTooLarge(maxBytes))
+                            case _                                          =>
+                                handlePillarsError(PillarsError.fromThrowable(ctx.e))
             end apply
 
     private def buildExceptionHandler[F[_]: Applicative](): PartialFunction[Throwable, F[Response[F]]] =
