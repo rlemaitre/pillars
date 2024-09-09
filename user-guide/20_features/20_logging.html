@@ -165,16 +165,15 @@ Pillars uses the <a href="https://github.com/outr/scribe">scribe</a> library for
 <h2 id="_logging_in_your_code">Logging in your code</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>To log something in your code, you can use the <code>logger</code> defined on the <code>Pillars</code> instance.</p>
+<p>To log something in your code, you can use the <code>logger</code> defined in the <code>pillars</code> package.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="scala">        def run(using p: Pillars[IO]): IO[Unit] =
-            import p.*
-            for
-                _ &lt;- logger.info(s"📚 Welcome to ${config.name}!")
-                _ &lt;- logger.debug(s"📚 The configuration is: $config")
-            yield ()</code></pre>
+<pre class="prettyprint highlight"><code data-lang="scala">def run(using Pillars[IO]): IO[Unit] =
+    for
+        _ &lt;- logger.info(s"📚 Welcome to ${config.name}!")
+        _ &lt;- logger.debug(s"📚 The configuration is: $config")
+    yield ()</code></pre>
 </div>
 </div>
 <div class="paragraph">

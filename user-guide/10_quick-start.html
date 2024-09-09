@@ -170,7 +170,7 @@ You can help us by <a href="../../contribute/10_contributing.html">contributing 
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="sbt">libraryDependencies ++= Seq(
-  "com.rlemaitre" %% "pillars-core" % "0.2.31"
+  "com.rlemaitre" %% "pillars-core" % "0.2.32"
 )</code></pre>
 </div>
 </div>
@@ -180,10 +180,10 @@ You can help us by <a href="../../contribute/10_contributing.html">contributing 
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="sbt">libraryDependencies ++= Seq(
-  "com.rlemaitre" %% "pillars-db" % "0.2.31",
-  "com.rlemaitre" %% "pillars-db-migration" % "0.2.31",
-  "com.rlemaitre" %% "pillars-flags" % "0.2.31",
-  "com.rlemaitre" %% "pillars-http-client" % "0.2.31"
+  "com.rlemaitre" %% "pillars-db" % "0.2.32",
+  "com.rlemaitre" %% "pillars-db-migration" % "0.2.32",
+  "com.rlemaitre" %% "pillars-flags" % "0.2.32",
+  "com.rlemaitre" %% "pillars-http-client" % "0.2.32"
 )</code></pre>
 </div>
 </div>
@@ -208,21 +208,21 @@ You can find an example in the <code>modules/example/src/main/resources/applicat
 
         def run: Run[IO, IO[Unit]] = // <i class="conum" data-value="4"></i><b>(4)</b>
             for
-                _ &lt;- Logger[IO].info(s"📚 Welcome to ${Config[IO].name}!")
-                _ &lt;- DBMigration[IO].migrate("classpath:db-migrations")  // <i class="conum" data-value="5"></i><b>(5)</b>
+                _ &lt;- logger.info(s"📚 Welcome to ${config.name}!")
+                _ &lt;- dbMigration.migrate("classpath:db-migrations") // <i class="conum" data-value="5"></i><b>(5)</b>
                 _ &lt;- flag"feature-1".whenEnabled:
-                         DB[IO].use: session =&gt;
+                         sessions.use: session =&gt;
                              for
                                  date &lt;- session.unique(sql"select now()".query(timestamptz))
-                                 _    &lt;- Logger[IO].info(s"The current date is $date.")
+                                 _    &lt;- logger.info(s"The current date is $date.")
                              yield ()
-                _ &lt;- HttpClient[IO].get("https://swapi.dev/api/people/1"): response =&gt;
+                _ &lt;- http.get("https://swapi.dev/api/people/1"): response =&gt;
                          for
-                             _    &lt;- Logger[IO].info(s"Response: ${response.status}")
+                             _    &lt;- logger.info(s"Response: ${response.status}")
                              size &lt;- response.body.compile.count
-                             _    &lt;- Logger[IO].info(s"Body: $size bytes")
+                             _    &lt;- logger.info(s"Body: $size bytes")
                          yield ()
-                _ &lt;- ApiServer[IO].start(homeController, userController) // <i class="conum" data-value="6"></i><b>(6)</b>
+                _ &lt;- server.start(homeController, userController)   // <i class="conum" data-value="6"></i><b>(6)</b>
             yield ()
             end for
         end run

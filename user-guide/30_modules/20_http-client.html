@@ -170,18 +170,14 @@ It includes the following field:</p>
 <div class="sect2">
 <h3 id="_using_the_httpclient_module">Using the HttpClient Module</h3>
 <div class="paragraph">
-<p>To use the <code>HttpClient</code> module, you need to import it and then access it through the <code>Pillars</code> instance:</p>
+<p>To use the <code>HttpClient</code> module, you need to import it and then access it using the given <code>Pillars</code> instance:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight linenums"><code data-lang="scala">import pillars.httpclient.*
 
-val httpClientModule = pillarsInstance.httpClient</code></pre>
+http.get("some.uri.com") // with a `Pillars[IO]` in scope</code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p>You can also use directly <code>Client[F]</code>
-You can then use the <code>httpClientModule</code> to perform HTTP operations.</p>
 </div>
 </div>
 <div class="sect2">
@@ -194,7 +190,7 @@ You can use the <code>httpClient</code> extension method on <code>Pillars</code>
 <div class="content">
 <pre class="prettyprint highlight linenums"><code data-lang="scala">import org.http4s.client.Client
 
-val client: Client[F] = pillars.httpClient</code></pre>
+val client: Client[F] = http.client</code></pre>
 </div>
 </div>
 <div class="paragraph">
