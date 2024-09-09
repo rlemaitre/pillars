@@ -22,9 +22,9 @@ object Dependencies {
     )
 
     val json: Seq[ModuleID] = Seq(
-      "io.circe" %% "circe-core"    % "0.14.9",
-      "io.circe" %% "circe-generic" % "0.14.9",
-      "io.circe" %% "circe-parser"  % "0.14.9",
+      "io.circe" %% "circe-core"    % "0.14.10",
+      "io.circe" %% "circe-generic" % "0.14.10",
+      "io.circe" %% "circe-parser"  % "0.14.10",
       "io.circe" %% "circe-yaml"    % "0.15.3"
     )
 
@@ -36,7 +36,7 @@ object Dependencies {
 
     val http4sClient: Seq[ModuleID] = Seq(
       "org.http4s"                  %% "http4s-netty-client" % "0.5.18",
-      "com.softwaremill.sttp.tapir" %% "tapir-http4s-client" % "1.11.1",
+      "com.softwaremill.sttp.tapir" %% "tapir-http4s-client" % "1.11.2",
       "com.alejandrohdezma"         %% "http4s-munit"        % "1.1.0" % Test
     )
     val http4sServer: Seq[ModuleID] = Seq(
@@ -48,14 +48,14 @@ object Dependencies {
     )
 
     private val tapir = Seq(
-      "com.softwaremill.sttp.tapir"   %% "tapir-http4s-server"         % "1.11.1",
-      "com.softwaremill.sttp.tapir"   %% "tapir-json-circe"            % "1.11.1",
-      "com.softwaremill.sttp.tapir"   %% "tapir-opentelemetry-metrics" % "1.11.1",
-      "com.softwaremill.sttp.tapir"   %% "tapir-iron"                  % "1.11.1",
-      "com.softwaremill.sttp.tapir"   %% "tapir-openapi-docs"          % "1.11.1",
+      "com.softwaremill.sttp.tapir"   %% "tapir-http4s-server"         % "1.11.2",
+      "com.softwaremill.sttp.tapir"   %% "tapir-json-circe"            % "1.11.2",
+      "com.softwaremill.sttp.tapir"   %% "tapir-opentelemetry-metrics" % "1.11.2",
+      "com.softwaremill.sttp.tapir"   %% "tapir-iron"                  % "1.11.2",
+      "com.softwaremill.sttp.tapir"   %% "tapir-openapi-docs"          % "1.11.2",
       "com.softwaremill.sttp.apispec" %% "openapi-circe-yaml"          % "0.11.3",
-      "com.softwaremill.sttp.tapir"   %% "tapir-swagger-ui-bundle"     % "1.11.1",
-      "com.softwaremill.sttp.tapir"   %% "tapir-sttp-stub-server"      % "1.11.1" % Test,
+      "com.softwaremill.sttp.tapir"   %% "tapir-swagger-ui-bundle"     % "1.11.2",
+      "com.softwaremill.sttp.tapir"   %% "tapir-sttp-stub-server"      % "1.11.2" % Test,
       "com.softwaremill.sttp.client3" %% "core"                        % "3.9.8"  % Test
     )
 
