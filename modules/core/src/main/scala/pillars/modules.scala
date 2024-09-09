@@ -50,7 +50,7 @@ end Loader
 object Loader:
     final case class Context[F[_]: Async: Network: Tracer: Console](
         observability: Observability[F],
-        configReader: Reader[F],
+        reader: Reader[F],
         logger: Scribe[F]
     )
 end Loader

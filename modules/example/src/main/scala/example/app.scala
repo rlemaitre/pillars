@@ -5,8 +5,9 @@ import example.build.BuildInfo
 import io.github.iltotore.iron.*
 import pillars.*
 import pillars.db.*
-import pillars.db.migrations.DBMigration
+import pillars.db.migrations.*
 import pillars.flags.*
+import pillars.flags.flag
 import pillars.httpclient.*
 import skunk.*
 import skunk.codec.all.*
@@ -19,21 +20,21 @@ object app extends pillars.EntryPoint: // // <1>
 
         def run: Run[IO, IO[Unit]] = // // <4>
             for
-                _ <- Logger[IO].info(s"📚 Welcome to ${Config[IO].name}!")
-                _ <- DBMigration[IO].migrate("classpath:db-migrations")  // // <5>
+                _ <- logger.info(s"📚 Welcome to ${config.name}!")
+                _ <- dbMigration.migrate("classpath:db-migrations") // // <5>
                 _ <- flag"feature-1".whenEnabled:
-                         DB[IO].use: session =>
+                         sessions.use: session =>
                              for
                                  date <- session.unique(sql"select now()".query(timestamptz))
-                                 _    <- Logger[IO].info(s"The current date is $date.")
+                                 _    <- logger.info(s"The current date is $date.")
                              yield ()
-                _ <- HttpClient[IO].get("https://swapi.dev/api/people/1"): response =>
+                _ <- http.get("https://swapi.dev/api/people/1"): response =>
                          for
-                             _    <- Logger[IO].info(s"Response: ${response.status}")
+                             _    <- logger.info(s"Response: ${response.status}")
                              size <- response.body.compile.count
-                             _    <- Logger[IO].info(s"Body: $size bytes")
+                             _    <- logger.info(s"Body: $size bytes")
                          yield ()
-                _ <- ApiServer[IO].start(homeController, userController) // // <6>
+                _ <- server.start(homeController, userController)   // // <6>
             yield ()
             end for
         end run

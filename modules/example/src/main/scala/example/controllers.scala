@@ -4,9 +4,9 @@ import cats.effect.IO
 import cats.syntax.all.*
 import pillars.Controller
 import pillars.Controller.HttpEndpoint
-import pillars.Logger
 import pillars.Pillars
-import pillars.db.DB
+import pillars.db.*
+import pillars.logger
 import skunk.implicits.sql
 
 def homeController(using p: Pillars[IO]): Controller[IO] =
@@ -24,10 +24,10 @@ def userController(using Pillars[IO]): Controller[IO] =
         Left(errors.api.NotImplemented.view).pure[IO]
 
     def create: HttpEndpoint[IO] = Endpoints.createUser.serverLogic: user =>
-        DB[IO].use: session =>
+        sessions.use: session =>
             for
                 completion <- session.execute(db.users.createUser)(user.toModel)
-                _          <- Logger[IO].debug(s"Create user resulted in $completion.")
+                _          <- logger.debug(s"Create user resulted in $completion.")
             yield Right(user)
 
     def get: HttpEndpoint[IO] = Endpoints.getUser.serverLogic: _ =>

@@ -27,8 +27,9 @@ trait ApiServer[F[_]]:
 
 end ApiServer
 
+def server[F[_]](using p: Pillars[F]): Run[F, ApiServer[F]] = p.apiServer
+
 object ApiServer:
-    def apply[F[_]]: Run[F, ApiServer[F]] = summon[Pillars[F]].apiServer
     def init[F[_]: Async](
         config: Config,
         infos: AppInfo,

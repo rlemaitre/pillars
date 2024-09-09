@@ -20,16 +20,15 @@ The logging configuration is described in the xref:10_configuration.adoc#logging
 
 == Logging in your code
 
-To log something in your code, you can use the `logger` defined on the `Pillars` instance.
+To log something in your code, you can use the `logger` defined in the `pillars` package.
 
 [source,scala]
 ----
-        def run(using p: Pillars[IO]): IO[Unit] =
-            import p.*
-            for
-                _ <- logger.info(s"📚 Welcome to ${config.name}!")
-                _ <- logger.debug(s"📚 The configuration is: $config")
-            yield ()
+def run(using Pillars[IO]): IO[Unit] =
+    for
+        _ <- logger.info(s"📚 Welcome to ${config.name}!")
+        _ <- logger.debug(s"📚 The configuration is: $config")
+    yield ()
 ----
 
 As the logger is configured before the application starts, you can use it in any part of your code with the classic scribe usage.

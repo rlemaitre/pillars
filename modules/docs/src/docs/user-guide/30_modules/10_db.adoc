@@ -70,16 +70,12 @@ It contains the following fields:
 
 === Using the DB Module
 
-To use the `DB` module, you need to import it and then access it through the `Pillars` instance:
-
+To use the `DB` module, you need to import it and then access it.
 [source,scala,linenums]
 --
-val dbModule = pillarsInstance.db
+import pillars.db.* // using skunk
+import pillars.db // using doobie
 --
-
-You can then use the `dbModule` to perform database operations.
-
-You can also use directly `DB[F]` to perform database operations:
 
 For Skunk:
 [source,scala,linenums]
@@ -88,7 +84,7 @@ import pillars.db.*
 import skunk.*
 
 def foo[F[_]](using Pillars[F]) =
-    DB[F].use: session =>
+    sessions.use: session =>
         session.unique(sql"SELECT 1".query[Int])
 --
 
@@ -99,8 +95,7 @@ import pillars.db_doobie.*
 import doobie.*
 
 def foo[F[_]](using Pillars[F]) =
-    DB[F].use: xa =>
-        sql"SELECT 1".query[Int].unique.transact(xa)
+    sql"SELECT 1".query[Int].unique.transact(db.transactor)
 --
 
 === Probe

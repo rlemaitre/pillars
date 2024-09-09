@@ -48,3 +48,4 @@ The migration files must be named in the following format: `V\{version}__{descri
 The migration files are executed in the order of their version.
 
 To execute the migrations, you can use the `migrate` method of the `DBMigration[F]` class.
+The `DBMigration[F]` object can be obtained via the `dbMigrations` access method having a `Pillars[F]` instance in scope.

@@ -52,7 +52,7 @@ class Loader extends pillars.Loader:
         given Files[F] = Files.forAsync[F]
         for
             _       <- Resource.eval(logger.info("Loading HTTP client module"))
-            conf    <- Resource.eval(configReader.read[HttpClient.Config]("http-client"))
+            conf    <- Resource.eval(reader.read[HttpClient.Config]("http-client"))
             metrics <- ClientMetrics(observability).toResource
             client  <- NettyClientBuilder[F]
                            .withHttp2
@@ -119,8 +119,9 @@ final case class HttpClient[F[_]: Async](client: org.http4s.client.Client[F])
 
 end HttpClient
 
+def http[F[_]](using p: Pillars[F]): HttpClient[F] = p.module[HttpClient[F]](HttpClient.Key)
+
 object HttpClient:
-    def apply[F[_]: Async](using p: Pillars[F]): HttpClient[F] = p.module[HttpClient[F]](HttpClient.Key)
     case object Key extends Module.Key:
         override def name: String = "http-client"
 
@@ -187,16 +188,14 @@ object FailureHandler:
 end FailureHandler
 
 private[httpclient] final case class Config(followRedirect: Boolean)
-extension [F[_]](p: Pillars[F])
-    def httpClient: HttpClient[F] = p.module[HttpClient[F]](HttpClient.Key)
 
 extension [I, EO, O, R](endpoint: PublicEndpoint[I, EO, O, R])
     def call[F[_]](uri: Option[Uri])(input: I): Run[F, F[Either[EO, O]]] =
-        summon[Pillars[F]].httpClient.call(endpoint, uri)(input)
+        http.call(endpoint, uri)(input)
 
 extension [SI, I, EO, O, R](endpoint: Endpoint[SI, I, EO, O, R])
     def call[F[_]](uri: Option[Uri])(securityInput: SI, input: I): Run[F, F[Either[EO, O]]] =
-        summon[Pillars[F]].httpClient.callSecure(endpoint, uri)(securityInput, input)
+        http.callSecure(endpoint, uri)(securityInput, input)
 
 //trait ClientMiddleware:
 //    implicit class ClientMiddlewareOps[F[_]: Tracer: Async, A](client: Client[F]):
