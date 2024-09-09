@@ -74,7 +74,7 @@ To use the `DB` module, you need to import it and then access it.
 [source,scala,linenums]
 --
 import pillars.db.* // using skunk
-import pillars.db_doobie // using doobie
+import pillars.db // using doobie
 --
 
 For Skunk:
