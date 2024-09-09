@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.2.30] - 2024-09-09
+### :sparkles: New Features
+- [`34f0770`](https://github.com/rlemaitre/pillars/commit/34f07707b8f237b4cc685a1add07992e7590684b) - **core**: [#126](https://github.com/rlemaitre/pillars/pull/126) Add traces for HTTP servers and client endpoints *(PR [#153](https://github.com/rlemaitre/pillars/pull/153) by [@rlemaitre](https://github.com/rlemaitre))*
+
+
 ## [v0.2.28] - 2024-09-05
 ### :sparkles: New Features
 - [`d502b6f`](https://github.com/rlemaitre/pillars/commit/d502b6f99c7eb98a6b1a349c8fa8e995c554d000) - **api-server**: can be built from controllers *(PR [#149](https://github.com/rlemaitre/pillars/pull/149) by [@vbergeron](https://github.com/vbergeron))*
@@ -158,3 +163,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.2.26]: https://github.com/rlemaitre/pillars/compare/v0.2.25...v0.2.26
 [v0.2.27]: https://github.com/rlemaitre/pillars/compare/v0.2.26...v0.2.27
 [v0.2.28]: https://github.com/rlemaitre/pillars/compare/v0.2.27...v0.2.28
+[v0.2.30]: https://github.com/rlemaitre/pillars/compare/v0.2.29...v0.2.30
