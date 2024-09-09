@@ -7,6 +7,11 @@
     </url>
 
     <url>
+    	<loc>http://jbake.org/user-guide/30_modules/41_rabbitmq.html</loc>
+    	<lastmod>2024-09-09</lastmod>
+    </url>
+
+    <url>
     	<loc>http://jbake.org/user-guide/30_modules/10_db.html</loc>
     	<lastmod>2024-09-09</lastmod>
     </url>
@@ -22,17 +27,12 @@
     </url>
 
     <url>
-    	<loc>http://jbake.org/user-guide/30_modules/41_rabbitmq.html</loc>
+    	<loc>http://jbake.org/user-guide/30_modules/40_redis.html</loc>
     	<lastmod>2024-09-09</lastmod>
     </url>
 
     <url>
     	<loc>http://jbake.org/user-guide/30_modules/15_db-migration.html</loc>
-    	<lastmod>2024-09-09</lastmod>
-    </url>
-
-    <url>
-    	<loc>http://jbake.org/user-guide/30_modules/40_redis.html</loc>
     	<lastmod>2024-09-09</lastmod>
     </url>
 
@@ -67,12 +67,12 @@
     </url>
 
     <url>
-    	<loc>http://jbake.org/user-guide/index.html</loc>
+    	<loc>http://jbake.org/user-guide/20_features/30_probes.html</loc>
     	<lastmod>2024-09-09</lastmod>
     </url>
 
     <url>
-    	<loc>http://jbake.org/user-guide/20_features/30_probes.html</loc>
+    	<loc>http://jbake.org/user-guide/index.html</loc>
     	<lastmod>2024-09-09</lastmod>
     </url>
 
