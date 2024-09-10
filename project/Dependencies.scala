@@ -29,7 +29,7 @@ object Dependencies {
     )
 
     val http4s: Seq[ModuleID] = Seq(
-      "org.http4s" %% "http4s-core"  % "0.23.27",
+      "org.http4s" %% "http4s-core"  % "0.23.28",
       "org.http4s" %% "http4s-dsl"   % "0.23.27",
       "org.http4s" %% "http4s-circe" % "0.23.28"
     )
