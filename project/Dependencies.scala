@@ -29,18 +29,18 @@ object Dependencies {
     )
 
     val http4s: Seq[ModuleID] = Seq(
-      "org.http4s" %% "http4s-core"  % "0.23.27",
-      "org.http4s" %% "http4s-dsl"   % "0.23.27",
-      "org.http4s" %% "http4s-circe" % "0.23.27"
+      "org.http4s" %% "http4s-core"  % "0.23.28",
+      "org.http4s" %% "http4s-dsl"   % "0.23.28",
+      "org.http4s" %% "http4s-circe" % "0.23.28"
     )
 
     val http4sClient: Seq[ModuleID] = Seq(
-      "org.http4s"                  %% "http4s-netty-client" % "0.5.18",
+      "org.http4s"                  %% "http4s-netty-client" % "0.5.19",
       "com.softwaremill.sttp.tapir" %% "tapir-http4s-client" % "1.11.2",
       "com.alejandrohdezma"         %% "http4s-munit"        % "1.1.0" % Test
     )
     val http4sServer: Seq[ModuleID] = Seq(
-      "org.http4s" %% "http4s-netty-server" % "0.5.18"
+      "org.http4s" %% "http4s-netty-server" % "0.5.19"
     )
     val scodec: Seq[ModuleID]       = Seq(
       "org.scodec" %% "scodec-bits" % "2.2.2",
