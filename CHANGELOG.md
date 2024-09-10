@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.3.2] - 2024-09-10
+### :wrench: Chores
+- [`555f4b5`](https://github.com/rlemaitre/pillars/commit/555f4b5090fe8d685a2af227ab93b47daf3b0f09) - Patches/Minor updates *(PR [#154](https://github.com/rlemaitre/pillars/pull/154) by [@scala-steward](https://github.com/scala-steward))*
+
+
 ## [v0.2.32] - 2024-09-09
 ### :sparkles: New Features
 - [`701bf0f`](https://github.com/rlemaitre/pillars/commit/701bf0fb6a8e13c2733c983725baa67bdc949612) - **core**: improve type inference on the F type *(PR [#152](https://github.com/rlemaitre/pillars/pull/152) by [@vbergeron](https://github.com/vbergeron))*
@@ -176,3 +181,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.2.30]: https://github.com/rlemaitre/pillars/compare/v0.2.29...v0.2.30
 [v0.2.31]: https://github.com/rlemaitre/pillars/compare/v0.2.30...v0.2.31
 [v0.2.32]: https://github.com/rlemaitre/pillars/compare/v0.2.31...v0.2.32
+[v0.3.2]: https://github.com/rlemaitre/pillars/compare/v0.3.1...v0.3.2
