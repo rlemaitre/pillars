@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.3.3] - 2024-09-12
+### :wrench: Chores
+- [`9ca6472`](https://github.com/rlemaitre/pillars/commit/9ca6472a384ab7225b96d9b49e389bf59ca312e6) - Patches/Minor updates *(PR [#160](https://github.com/rlemaitre/pillars/pull/160) by [@scala-steward](https://github.com/scala-steward))*
+
+
 ## [v0.3.2] - 2024-09-10
 ### :wrench: Chores
 - [`555f4b5`](https://github.com/rlemaitre/pillars/commit/555f4b5090fe8d685a2af227ab93b47daf3b0f09) - Patches/Minor updates *(PR [#154](https://github.com/rlemaitre/pillars/pull/154) by [@scala-steward](https://github.com/scala-steward))*
@@ -182,3 +187,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.2.31]: https://github.com/rlemaitre/pillars/compare/v0.2.30...v0.2.31
 [v0.2.32]: https://github.com/rlemaitre/pillars/compare/v0.2.31...v0.2.32
 [v0.3.2]: https://github.com/rlemaitre/pillars/compare/v0.3.1...v0.3.2
+[v0.3.3]: https://github.com/rlemaitre/pillars/compare/v0.3.2...v0.3.3
