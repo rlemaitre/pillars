@@ -131,7 +131,7 @@ object probes:
         timeout: FiniteDuration = 5.seconds,
         interval: FiniteDuration = 10.seconds,
         failureCount: Int = 3
-    )
+    ) extends pillars.Config
 
     object ProbeConfig:
         given Configuration = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults

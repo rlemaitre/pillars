@@ -49,7 +49,7 @@ object AdminServer:
         enabled: Boolean,
         http: HttpServer.Config = defaultHttp,
         openApi: HttpServer.Config.OpenAPI = HttpServer.Config.OpenAPI()
-    )
+    ) extends pillars.Config
 
     given Configuration = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults
     given Codec[Config] = Codec.AsObject.derivedConfigured

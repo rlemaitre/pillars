@@ -67,7 +67,7 @@ object Observability:
         metrics: Config.Metrics = Config.Metrics(),
         traces: Config.Traces = Config.Traces(),
         serviceName: ServiceName = ServiceName("pillars")
-    )
+    ) extends pillars.Config
 
     object Config:
         given Configuration = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults

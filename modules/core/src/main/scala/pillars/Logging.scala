@@ -130,7 +130,7 @@ object Logging:
         format: Logging.Format = Logging.Format.Enhanced,
         output: Logging.Output = Logging.Output.Console,
         excludeHikari: Boolean = false
-    )
+    ) extends pillars.Config
 
     object Config:
         given Configuration = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults
@@ -147,7 +147,7 @@ object Logging:
         level: Level = Level.Debug,
         headers: Boolean = false,
         body: Boolean = true
-    ):
+    ) extends pillars.Config:
         def logAction[F[_]: Sync]: Option[String => F[Unit]] = Some(scribe.cats.effect[F].log(level, MDC.instance, _))
     end HttpConfig
 

@@ -24,6 +24,8 @@ import scodec.bits.ByteVector
 
 def config[F[_]](using p: Pillars[F]): Config.PillarsConfig = p.config
 
+trait Config
+
 object Config:
     case class PillarsConfig(
         name: App.Name,
@@ -31,7 +33,7 @@ object Config:
         api: ApiServer.Config,
         admin: AdminServer.Config,
         observability: Observability.Config
-    )
+    ) extends pillars.Config
 
     object PillarsConfig:
         given Configuration          = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults

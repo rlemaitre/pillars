@@ -25,6 +25,8 @@ import pillars.logger
 final case class DBMigration[F[_]: Async: Console: Tracer: Network: Files](
     config: MigrationConfig
 ) extends Module[F]:
+    override type ModuleConfig = MigrationConfig
+
     private def flyway(schema: DatabaseSchema, table: DatabaseTable, location: String) = Flyway
         .configure()
         .loggers("slf4j")
@@ -101,7 +103,7 @@ final case class MigrationConfig(
     systemSchema: DatabaseSchema = DatabaseSchema.public,
     appSchema: DatabaseSchema = DatabaseSchema.public,
     baselineVersion: String = "0"
-)
+) extends pillars.Config
 object MigrationConfig:
     given Configuration = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults
 

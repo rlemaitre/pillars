@@ -27,8 +27,10 @@ import pillars.probes.*
 extension [F[_]](p: Pillars[F])
     def redis: Redis[F] = p.module[Redis[F]](Redis.Key)
 
-final case class Redis[F[_]: MonadCancelThrow](connection: Resource[F, RedisConnection[F]])(using c: Concurrent[F])
-    extends Module[F]:
+final case class Redis[F[_]: MonadCancelThrow](config: RedisConfig, connection: Resource[F, RedisConnection[F]])(using
+    c: Concurrent[F]
+) extends Module[F]:
+    override type ModuleConfig = RedisConfig
     export connection.*
 
     override def probes: List[Probe[F]] =
@@ -63,6 +65,7 @@ class RedisLoader extends Loader:
             _         <- Resource.eval(logger.info("Loading Redis module"))
             config    <- Resource.eval(reader.read[RedisConfig]("redis"))
             connection = Redis(
+                           config,
                            RedisConnection.queued[F]
                                .withHost(config.host)
                                .withPort(config.port)
@@ -86,7 +89,7 @@ final case class RedisConfig(
     username: Option[RedisUser],
     password: RedisPassword,
     probe: ProbeConfig
-)
+) extends pillars.Config
 
 object RedisConfig:
     given Configuration      = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults

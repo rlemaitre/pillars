@@ -127,7 +127,7 @@ object HttpServer:
         host: Host,
         port: Port,
         logging: Logging.HttpConfig = Logging.HttpConfig()
-    )
+    ) extends pillars.Config
 
     object Config:
         given Configuration = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults
