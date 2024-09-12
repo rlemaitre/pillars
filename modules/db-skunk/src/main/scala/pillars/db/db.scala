@@ -30,7 +30,10 @@ import skunk.util.Typer
 
 def sessions[F[_]](using p: Pillars[F]): DB[F] = p.module[DB[F]](DB.Key)
 
-final case class DB[F[_]: Async: Network: Tracer: Console](pool: Resource[F, Session[F]]) extends Module[F]:
+final case class DB[F[_]: Async: Network: Tracer: Console](config: DatabaseConfig, pool: Resource[F, Session[F]])
+    extends Module[F]:
+
+    override type ModuleConfig = DatabaseConfig
     export pool.*
 
     override def probes: List[Probe[F]] =
@@ -76,7 +79,7 @@ class DBLoader extends Loader:
                          ssl = config.ssl
                        )
             _       <- Resource.eval(logger.info("DB module loaded"))
-        yield DB(poolRes)
+        yield DB(config, poolRes)
         end for
     end load
 end DBLoader
@@ -102,7 +105,7 @@ final case class DatabaseConfig(
     parseCache: Int = 1024,
     readTimeout: Duration = Duration.Inf,
     redactionStrategy: RedactionStrategy = RedactionStrategy.OptIn
-)
+) extends pillars.Config
 
 object DatabaseConfig:
     given Configuration         = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults

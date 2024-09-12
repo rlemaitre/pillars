@@ -7,7 +7,7 @@ import org.http4s.client.Client
 import sttp.tapir.*
 
 class HttpClientSuite extends munit.CatsEffectSuite, munit.Http4sMUnitSyntax:
-    val fixture = Client.partialFixture(client => Resource.pure(HttpClient(client))) {
+    val fixture = Client.partialFixture(client => Resource.pure(HttpClient(HttpClient.Config())(client))) {
         case GET -> Root / "success" / input => Ok("Success")
         case GET -> Root / "error"           => NotFound("Error")
     }

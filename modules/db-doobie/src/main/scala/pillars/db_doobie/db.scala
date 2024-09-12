@@ -25,7 +25,8 @@ import pillars.Modules
 import pillars.Pillars
 import pillars.probes.*
 
-final case class DB[F[_]: MonadCancelThrow](transactor: Transactor[F]) extends Module[F]:
+final case class DB[F[_]: MonadCancelThrow](config: DatabaseConfig, transactor: Transactor[F]) extends Module[F]:
+    override type ModuleConfig = DatabaseConfig
 
     override def probes: List[Probe[F]] =
         val probe = new Probe[F]:
@@ -56,7 +57,7 @@ class DBLoader extends Loader:
             config <- Resource.eval(reader.read[DatabaseConfig]("db"))
             _      <- Resource.eval(logger.info("DB module loaded"))
             xa     <- HikariTransactor.fromHikariConfig[F](config.toHikariConfig)
-        yield DB(xa)
+        yield DB(config, xa)
         end for
     end load
 end DBLoader
@@ -72,7 +73,7 @@ final case class DatabaseConfig(
     statementCache: StatementCacheConfig = StatementCacheConfig(),
     debug: Boolean = false,
     probe: ProbeConfig
-):
+) extends pillars.Config:
     def toHikariConfig: HikariConfig =
         val cfg = new HikariConfig
         cfg.setDriverClassName(driverClassName)

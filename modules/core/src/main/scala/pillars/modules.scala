@@ -10,9 +10,12 @@ import pillars.probes.Probe
 import scribe.Scribe
 
 trait Module[F[_]]:
+    type ModuleConfig <: Config
     def probes: List[Probe[F]] = Nil
 
     def adminControllers: List[Controller[F]] = Nil
+
+    def config: ModuleConfig
 
 end Module
 

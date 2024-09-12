@@ -74,15 +74,16 @@ class Loader extends pillars.Loader:
                                    |> metrics.middleware
                                    |> logging
                                    |> followRedirect
-                                   |> HttpClient.apply
+                                   |> HttpClient(conf)
             _       <- Resource.eval(logger.info("HTTP client module loaded"))
         yield client
         end for
     end load
 end Loader
 
-final case class HttpClient[F[_]: Async](client: org.http4s.client.Client[F])
+final case class HttpClient[F[_]: Async](config: HttpClient.Config)(client: org.http4s.client.Client[F])
     extends pillars.Module[F]:
+    override type ModuleConfig = HttpClient.Config
     export client.*
 
     private val interpreter = Http4sClientInterpreter[F](Http4sClientOptions.default)
@@ -129,7 +130,8 @@ object HttpClient:
         followRedirect: Boolean = true,
         userAgent: `User-Agent` = Config.defaultUserAgent,
         logging: Logging.HttpConfig = Logging.HttpConfig()
-    )
+    ) extends pillars.Config
+
     object Config:
         given Configuration         = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults
         given Decoder[`User-Agent`] = Decoder.decodeString.emap(s =>

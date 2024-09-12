@@ -16,7 +16,9 @@ import pillars.Modules
 import pillars.Pillars
 
 trait FlagManager[F[_]: Sync] extends Module[F]:
+    override type ModuleConfig = FlagsConfig
     def isEnabled(flag: Flag): F[Boolean]
+    def config: FlagsConfig
     def getFlag(name: Flag): F[Option[FeatureFlag]]
     def flags: F[List[FeatureFlag]]
 
@@ -36,9 +38,10 @@ object FlagManager:
     case object Key extends Module.Key:
         def name: String = "feature-flags"
     end Key
-    def noop[F[_]: Sync]: FlagManager[F] =
+    def noop[F[_]: Sync](conf: FlagsConfig): FlagManager[F] =
         new FlagManager[F]:
             def isEnabled(flag: Flag): F[Boolean]                    = false.pure[F]
+            override def config: FlagsConfig                         = conf
             def getFlag(name: Flag): F[Option[FeatureFlag]]          = None.pure[F]
             def flags: F[List[FeatureFlag]]                          = List.empty.pure[F]
             private[flags] def setStatus(flag: Flag, status: Status) = None.pure[F]
@@ -64,15 +67,17 @@ class FlagManagerLoader extends Loader:
             yield manager
     end load
 
-    private[flags] def createManager[F[_]: Async: Network: Tracer: Console](config: FlagsConfig): F[FlagManager[F]] =
-        if !config.enabled then Sync[F].pure(FlagManager.noop[F])
+    private[flags] def createManager[F[_]: Async: Network: Tracer: Console](conf: FlagsConfig): F[FlagManager[F]] =
+        if !conf.enabled then Sync[F].pure(FlagManager.noop[F](conf))
         else
-            val flags = config.flags.groupBy(_.name).map((name, flags) => name -> flags.head)
+            val flags = conf.flags.groupBy(_.name).map((name, flags) => name -> flags.head)
             Ref
                 .of[F, Map[Flag, FeatureFlag]](flags)
                 .map: ref =>
                     new FlagManager[F]:
                         def flags: F[List[FeatureFlag]] = ref.get.map(_.values.toList)
+
+                        override def config: FlagsConfig = conf
 
                         def getFlag(name: Flag): F[Option[FeatureFlag]] =
                             ref.get.map(_.get(name))
