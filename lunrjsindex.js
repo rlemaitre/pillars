@@ -10,14 +10,6 @@ var documents = [
 
 {
     "id": 1,
-    "uri": "user-guide/30_modules/41_rabbitmq.html",
-    "menu": "user-guide",
-    "title": "RabbitMQ Module",
-    "text": " Table of Contents RabbitMQ module RabbitMQ Module Configuration Using the RabbitMQ Module RabbitMQ Operations RabbitMQ module The RabbitMQ module provides integration with RabbitMQ . It uses the fs2-rabbit library. RabbitMQ Module Configuration The RabbitMQ configuration is defined in the Config case class. It includes the following fields: host : the RabbitMQ host port : the RabbitMQ port virtualHost : the RabbitMQ virtual host connectionTimeout : the connection timeout ssl : enable SSL mode username : RabbitMQ username password : RabbitMQ password requeueOnNack : requeue messages when not ACK-ed requeueOnReject : requeue messages when rejected internalQueueSize : client internal queue size requestedHeartbeat : heartbeat interval automaticRecovery : automatically reconnect on failure clientProvidedConnectionName : client label The configuration is read from the application&#8217;s configuration file under the rabbitmq section. Using the RabbitMQ Module To use the RabbitMQ module, you need to import it and then access it through the Pillars instance: import pillars.redis.* val rabbitmqModule = pillarsInstance.redis You can also use directly RabbitMQ[F] . You can then use the rabbitmqModule to perform RabbitMQ operations. RabbitMQ Operations import pillars.redis.* for client &lt;- RabbitMQ[IO](configFor(container)).map(_.client) _ &lt;- client.createConnectionChannel.evalMap { implicit channel =&gt; for publisher &lt;- client.createPublisher[String](exchange, routingKey) _ &lt;- publisher(\"test message\") subscriber &lt;- client.createAutoAckConsumer[String](queue) out &lt;- subscriber.head.compile.onlyOrError yield assertEquals(out.payload, \"test message\") } yield () end for "
-},
-
-{
-    "id": 2,
     "uri": "user-guide/30_modules/10_db.html",
     "menu": "user-guide",
     "title": "Database Module",
@@ -25,7 +17,7 @@ var documents = [
 },
 
 {
-    "id": 3,
+    "id": 2,
     "uri": "user-guide/30_modules/100_write-your-own-module.html",
     "menu": "user-guide",
     "title": "Write your own module",
@@ -33,7 +25,7 @@ var documents = [
 },
 
 {
-    "id": 4,
+    "id": 3,
     "uri": "user-guide/30_modules/index.html",
     "menu": "user-guide",
     "title": "Optional Modules",
@@ -41,19 +33,27 @@ var documents = [
 },
 
 {
-    "id": 5,
-    "uri": "user-guide/30_modules/40_redis.html",
+    "id": 4,
+    "uri": "user-guide/30_modules/41_rabbitmq.html",
     "menu": "user-guide",
-    "title": "Redis Module",
-    "text": " Table of Contents Redis module Redis Module Configuration Using the Redis Module Redis Operations Redis module The Redis module provides integration with redis . It uses the rediculous library. Redis Module Configuration The configuration is read from the application&#8217;s configuration file under the redis section. Using the Redis Module To use the Redis module, you need to import it and then access it through the Pillars instance: import pillars.redis.* val redisModule = pillarsInstance.redis You can also use directly Redis[F] You can then use the redisModule to perform Redis operations. Redis Operations TODO "
+    "title": "RabbitMQ Module",
+    "text": " Table of Contents RabbitMQ module RabbitMQ Module Configuration Using the RabbitMQ Module RabbitMQ Operations RabbitMQ module The RabbitMQ module provides integration with RabbitMQ . It uses the fs2-rabbit library. RabbitMQ Module Configuration The RabbitMQ configuration is defined in the Config case class. It includes the following fields: host : the RabbitMQ host port : the RabbitMQ port virtualHost : the RabbitMQ virtual host connectionTimeout : the connection timeout ssl : enable SSL mode username : RabbitMQ username password : RabbitMQ password requeueOnNack : requeue messages when not ACK-ed requeueOnReject : requeue messages when rejected internalQueueSize : client internal queue size requestedHeartbeat : heartbeat interval automaticRecovery : automatically reconnect on failure clientProvidedConnectionName : client label The configuration is read from the application&#8217;s configuration file under the rabbitmq section. Using the RabbitMQ Module To use the RabbitMQ module, you need to import it and then access it through the Pillars instance: import pillars.redis.* val rabbitmqModule = pillarsInstance.redis You can also use directly RabbitMQ[F] . You can then use the rabbitmqModule to perform RabbitMQ operations. RabbitMQ Operations import pillars.redis.* for client &lt;- RabbitMQ[IO](configFor(container)).map(_.client) _ &lt;- client.createConnectionChannel.evalMap { implicit channel =&gt; for publisher &lt;- client.createPublisher[String](exchange, routingKey) _ &lt;- publisher(\"test message\") subscriber &lt;- client.createAutoAckConsumer[String](queue) out &lt;- subscriber.head.compile.onlyOrError yield assertEquals(out.payload, \"test message\") } yield () end for "
 },
 
 {
-    "id": 6,
+    "id": 5,
     "uri": "user-guide/30_modules/15_db-migration.html",
     "menu": "user-guide",
     "title": "DB Migration Module",
     "text": " Table of Contents DB Migration module Configuration Usage DB Migration module The DB Migration module is a standalone module that is used to manage the database schema and data. It depends on the DB module. Configuration The configuration of the DB Migration module is done in the application.yml file, in a db-migration section. Parameters are: log-after : (duration) the time after which the migration log will be printed. It must be declared in the ISO-8601 format. Default is PT5s (five seconds). See Dumbo for more information. validate-on-migrate : (boolean) whether to validate the schema after migration. db-migration: log-after: PT5s validate-on-migrate: true Usage In order to use the DB Migration module, you need to add it as a dependency to your project. The migrations are written in SQL and are located in the src/main/resources/db/migration directory of your project. The migration files must be named in the following format: V{version}__{description}.sql , where: {version} is the version of the migration, and {description} is a description of the migration. The migration files are executed in the order of their version. To execute the migrations, you can use the migrate method of the DBMigration[F] class. The DBMigration[F] object can be obtained via the dbMigrations access method having a Pillars[F] instance in scope. "
+},
+
+{
+    "id": 6,
+    "uri": "user-guide/30_modules/40_redis.html",
+    "menu": "user-guide",
+    "title": "Redis Module",
+    "text": " Table of Contents Redis module Redis Module Configuration Using the Redis Module Redis Operations Redis module The Redis module provides integration with redis . It uses the rediculous library. Redis Module Configuration The configuration is read from the application&#8217;s configuration file under the redis section. Using the Redis Module To use the Redis module, you need to import it and then access it through the Pillars instance: import pillars.redis.* val redisModule = pillarsInstance.redis You can also use directly Redis[F] You can then use the redisModule to perform Redis operations. Redis Operations TODO "
 },
 
 {
@@ -69,7 +69,7 @@ var documents = [
     "uri": "user-guide/10_quick-start.html",
     "menu": "user-guide",
     "title": "Quick Start",
-    "text": " Table of Contents Quick Start Installation Usage Application Metadata Quick Start This documentation needs to be written. You can help us by contributing to the documentation . Installation This library is currently available for Scala binary version 3.3.1. To use the latest version, include the following in your build.sbt : libraryDependencies ++= Seq( \"com.rlemaitre\" %% \"pillars-core\" % \"0.3.4\" ) You can also add optional modules to your dependencies: libraryDependencies ++= Seq( \"com.rlemaitre\" %% \"pillars-db\" % \"0.3.4\", \"com.rlemaitre\" %% \"pillars-db-migration\" % \"0.3.4\", \"com.rlemaitre\" %% \"pillars-flags\" % \"0.3.4\", \"com.rlemaitre\" %% \"pillars-http-client\" % \"0.3.4\" ) Usage You can find an example project in the modules/example directory. First, you need to create a configuration file . You can find an example in the modules/example/src/main/resources/application.conf file. Then, you can create your entry point by extending the EntryPoint trait: object app extends pillars.EntryPoint: // (1) def app: pillars.App[IO] = new: // (2) def infos: AppInfo = BuildInfo.toAppInfo // (3) def run: Run[IO, IO[Unit]] = // (4) for _ &lt;- logger.info(s\"📚 Welcome to ${config.name}!\") _ &lt;- dbMigration.migrate(\"classpath:db-migrations\") // (5) _ &lt;- flag\"feature-1\".whenEnabled: sessions.use: session =&gt; for date &lt;- session.unique(sql\"select now()\".query(timestamptz)) _ &lt;- logger.info(s\"The current date is $date.\") yield () _ &lt;- http.get(\"https://swapi.dev/api/people/1\"): response =&gt; for _ &lt;- logger.info(s\"Response: ${response.status}\") size &lt;- response.body.compile.count _ &lt;- logger.info(s\"Body: $size bytes\") yield () _ &lt;- server.start(homeController, userController) // (6) yield () end for end run end app 1 The EntryPoint trait is a simple trait that provides a main method and initialize the Pillars instance. 2 The pillars.App[IO] must contain your application logic 3 infos defines some metadata about your application. It is used by the admin server to display information about your application. See 4 The run is the entry point of your application. Here, you have access to the Pillars instance. Then, you can run your application. For example, you can run it with sbt : sbt \"example/run\" The log should display something like: 2024.01.21 22:36:19:0000 [io-comp...] [INFO ] pillars.Pillars.apply:52 - Loading modules... 2024.01.21 22:36:19:0001 [io-comp...] [INFO ] pillars.Pillars.loadModules:87 - Found 2 module loaders: db, feature-flags 2024.01.21 22:36:19:0002 [io-comp...] [INFO ] pillars.db.db.load:57 - Loading DB module 2024.01.21 22:36:19:0003 [io-comp...] [INFO ] pillars.db.db.load:68 - DB module loaded 2024.01.21 22:36:19:0004 [io-comp...] [INFO ] pillars.flags.FlagManager.load:54 - Loading Feature flags module 2024.01.21 22:36:19:0005 [io-comp...] [INFO ] pillars.flags.FlagManager.load:57 - Feature flags module loaded 2024.01.21 22:36:19:0000 [io-comp...] [INFO ] pillars.AdminServer.start:22 - Starting admin server on 0.0.0.0:19876 2024.01.21 22:36:19:0006 [io-comp...] [INFO ] example.app.run:24 - 📚 Welcome to Bookstore! 2024.01.21 22:36:19:0000 [io-comp...] [INFO ] example.app.run:29 - The current date is 2024-01-21T22:36:19.695572+01:00. 2024.01.21 22:36:19:0000 [io-comp...] [INFO ] pillars.ApiServer.init:21 - Starting API server on 0.0.0.0:9876 2024.01.21 22:36:19:0001 [io-comp...] [INFO ] org.http4s.netty.server.NettyServerBuilder - Using NIO EventLoopGroup 2024.01.21 22:36:19:0001 [io-comp...] [INFO ] org.http4s.netty.server.NettyServerBuilder - Using NIO EventLoopGroup 2024.01.21 22:36:19:0002 [io-comp...] [INFO ] org.http4s.netty.server.NettyServerBuilder - Started Http4s Netty Server at http://[::]:9876/ 2024.01.21 22:36:19:0002 [io-comp...] [INFO ] org.http4s.netty.server.NettyServerBuilder - Started Http4s Netty Server at http://[::]:19876/ You can now access the API at http://localhost:9876 and the admin server at http://localhost:19876 . For example, to get the readiness porbe status, you can run: $ curl http://localhost:19876/admin/probes/health | jq { \"status\": \"pass\", \"checks\": [ { \"componentId\": \"db\", \"componentType\": \"datastore\", \"status\": \"pass\" } ] } Application Metadata The infos property of the App[F] trait defines some metadata about your application. You have two ways of defining it: You can directly create an instance of AppInfo : val infos = AppInfo( name = App.Name(\"Bookstore\"), version = App.Version(\"1.0.0\"), description = App.Description(\"A simple bookstore\") ) Or, if you are using the sbt-buildinfo plugin, you can use the BuildInfo object. In your build.sbt , add the following lines to your project definition: lazy val example = Project(\"pillars-example\", file(\"modules/example\")) .enablePlugins(BuildInfoPlugin) // (1) .settings( name := \"pillars-example\", // (2) description := \"pillars-example is an example of application using pillars\", // (3) libraryDependencies ++= Dependencies.tests ++ Dependencies.migrationsRuntime, buildInfoKeys := Seq[BuildInfoKey](name, version, description), // (4) buildInfoOptions := Seq(BuildInfoOption.Traits(\"pillars.BuildInfo\")), // (5) buildInfoPackage := \"example.build\", // (6) publish / skip := true, libraryDependencySchemes += \"org.typelevel\" %% \"otel4s-core-trace\" % VersionScheme.Always ) .dependsOn(core, dbSkunk, flags, httpClient, dbMigrations) 1 Enable the BuildInfo plugin 2 Define the name of your application 3 Define the description of your application 4 Tell buildinfo to generate the BuildInfo object including at least name , description and version properties. In this specific case, version is defined by the sbt-dynver plugin. 5 Configure BuildInfo to implement the pillars.BuildInfo trait. It is required to use the BuildInfo object in your application. 6 Specify in which package will be generated the BuildInfo object. Then, you can use the BuildInfo object in your application: import example.build.BuildInfo val app = new App[IO]: override val infos = BuildInfo.toAppInfo override def run(pillars: Pillars[IO]): IO[Unit] = ??? "
+    "text": " Table of Contents Quick Start Installation Usage Application Metadata Quick Start This documentation needs to be written. You can help us by contributing to the documentation . Installation This library is currently available for Scala binary version 3.3.1. To use the latest version, include the following in your build.sbt : libraryDependencies ++= Seq( \"com.rlemaitre\" %% \"pillars-core\" % \"0.3.5\" ) You can also add optional modules to your dependencies: libraryDependencies ++= Seq( \"com.rlemaitre\" %% \"pillars-db\" % \"0.3.5\", \"com.rlemaitre\" %% \"pillars-db-migration\" % \"0.3.5\", \"com.rlemaitre\" %% \"pillars-flags\" % \"0.3.5\", \"com.rlemaitre\" %% \"pillars-http-client\" % \"0.3.5\" ) Usage You can find an example project in the modules/example directory. First, you need to create a configuration file . You can find an example in the modules/example/src/main/resources/application.conf file. Then, you can create your entry point by extending the EntryPoint trait: object app extends pillars.EntryPoint: // (1) def app: pillars.App[IO] = new: // (2) def infos: AppInfo = BuildInfo.toAppInfo // (3) def run: Run[IO, IO[Unit]] = // (4) for _ &lt;- logger.info(s\"📚 Welcome to ${config.name}!\") _ &lt;- dbMigration.migrate(\"classpath:db-migrations\") // (5) _ &lt;- flag\"feature-1\".whenEnabled: sessions.use: session =&gt; for date &lt;- session.unique(sql\"select now()\".query(timestamptz)) _ &lt;- logger.info(s\"The current date is $date.\") yield () _ &lt;- http.get(\"https://swapi.dev/api/people/1\"): response =&gt; for _ &lt;- logger.info(s\"Response: ${response.status}\") size &lt;- response.body.compile.count _ &lt;- logger.info(s\"Body: $size bytes\") yield () _ &lt;- server.start(homeController, userController) // (6) yield () end for end run end app 1 The EntryPoint trait is a simple trait that provides a main method and initialize the Pillars instance. 2 The pillars.App[IO] must contain your application logic 3 infos defines some metadata about your application. It is used by the admin server to display information about your application. See 4 The run is the entry point of your application. Here, you have access to the Pillars instance. Then, you can run your application. For example, you can run it with sbt : sbt \"example/run\" The log should display something like: 2024.01.21 22:36:19:0000 [io-comp...] [INFO ] pillars.Pillars.apply:52 - Loading modules... 2024.01.21 22:36:19:0001 [io-comp...] [INFO ] pillars.Pillars.loadModules:87 - Found 2 module loaders: db, feature-flags 2024.01.21 22:36:19:0002 [io-comp...] [INFO ] pillars.db.db.load:57 - Loading DB module 2024.01.21 22:36:19:0003 [io-comp...] [INFO ] pillars.db.db.load:68 - DB module loaded 2024.01.21 22:36:19:0004 [io-comp...] [INFO ] pillars.flags.FlagManager.load:54 - Loading Feature flags module 2024.01.21 22:36:19:0005 [io-comp...] [INFO ] pillars.flags.FlagManager.load:57 - Feature flags module loaded 2024.01.21 22:36:19:0000 [io-comp...] [INFO ] pillars.AdminServer.start:22 - Starting admin server on 0.0.0.0:19876 2024.01.21 22:36:19:0006 [io-comp...] [INFO ] example.app.run:24 - 📚 Welcome to Bookstore! 2024.01.21 22:36:19:0000 [io-comp...] [INFO ] example.app.run:29 - The current date is 2024-01-21T22:36:19.695572+01:00. 2024.01.21 22:36:19:0000 [io-comp...] [INFO ] pillars.ApiServer.init:21 - Starting API server on 0.0.0.0:9876 2024.01.21 22:36:19:0001 [io-comp...] [INFO ] org.http4s.netty.server.NettyServerBuilder - Using NIO EventLoopGroup 2024.01.21 22:36:19:0001 [io-comp...] [INFO ] org.http4s.netty.server.NettyServerBuilder - Using NIO EventLoopGroup 2024.01.21 22:36:19:0002 [io-comp...] [INFO ] org.http4s.netty.server.NettyServerBuilder - Started Http4s Netty Server at http://[::]:9876/ 2024.01.21 22:36:19:0002 [io-comp...] [INFO ] org.http4s.netty.server.NettyServerBuilder - Started Http4s Netty Server at http://[::]:19876/ You can now access the API at http://localhost:9876 and the admin server at http://localhost:19876 . For example, to get the readiness porbe status, you can run: $ curl http://localhost:19876/admin/probes/health | jq { \"status\": \"pass\", \"checks\": [ { \"componentId\": \"db\", \"componentType\": \"datastore\", \"status\": \"pass\" } ] } Application Metadata The infos property of the App[F] trait defines some metadata about your application. You have two ways of defining it: You can directly create an instance of AppInfo : val infos = AppInfo( name = App.Name(\"Bookstore\"), version = App.Version(\"1.0.0\"), description = App.Description(\"A simple bookstore\") ) Or, if you are using the sbt-buildinfo plugin, you can use the BuildInfo object. In your build.sbt , add the following lines to your project definition: lazy val example = Project(\"pillars-example\", file(\"modules/example\")) .enablePlugins(BuildInfoPlugin) // (1) .settings( name := \"pillars-example\", // (2) description := \"pillars-example is an example of application using pillars\", // (3) libraryDependencies ++= Dependencies.tests ++ Dependencies.migrationsRuntime, buildInfoKeys := Seq[BuildInfoKey](name, version, description), // (4) buildInfoOptions := Seq(BuildInfoOption.Traits(\"pillars.BuildInfo\")), // (5) buildInfoPackage := \"example.build\", // (6) publish / skip := true, libraryDependencySchemes += \"org.typelevel\" %% \"otel4s-core-trace\" % VersionScheme.Always ) .dependsOn(core, dbSkunk, flags, httpClient, dbMigrations) 1 Enable the BuildInfo plugin 2 Define the name of your application 3 Define the description of your application 4 Tell buildinfo to generate the BuildInfo object including at least name , description and version properties. In this specific case, version is defined by the sbt-dynver plugin. 5 Configure BuildInfo to implement the pillars.BuildInfo trait. It is required to use the BuildInfo object in your application. 6 Specify in which package will be generated the BuildInfo object. Then, you can use the BuildInfo object in your application: import example.build.BuildInfo val app = new App[IO]: override val infos = BuildInfo.toAppInfo override def run(pillars: Pillars[IO]): IO[Unit] = ??? "
 },
 
 {
@@ -82,6 +82,14 @@ var documents = [
 
 {
     "id": 10,
+    "uri": "user-guide/20_features/40_api-server.html",
+    "menu": "user-guide",
+    "title": "API Server",
+    "text": " Table of Contents API Server API Server This documentation needs to be written. You can help us by contributing to the documentation . "
+},
+
+{
+    "id": 11,
     "uri": "user-guide/20_features/10_configuration.html",
     "menu": "user-guide",
     "title": "Configuration",
@@ -89,19 +97,11 @@ var documents = [
 },
 
 {
-    "id": 11,
+    "id": 12,
     "uri": "user-guide/20_features/50_observability.html",
     "menu": "user-guide",
     "title": "Observability",
     "text": " Table of Contents Observability Configuration Metrics Traces Observability This documentation needs to be completed. You can help us by contributing to the documentation . Configuration Pillars integrates OpenTelemetry to provide observability features. You can configure the following settings in the application.conf file: observability: enabled: true service-name: bookstore metrics: enabled: true traces: enabled: true Metrics By default, the following metrics are defined on API server, Admin server and HTTP client API Server and Admin Server Metric Description Type Unit http.server.active_requests The number of HTTP active requests UpDownCounter requests http.server.request.total The total number of HTTP requests Counter requests http.server.request.duration Duration of HTTP requests Histogram milliseconds http.server.request.body.size The HTTP request payload body size Histogram bytes http.server.response.body.size The HTTP request payload body size Histogram bytes Attributes The following attributes are added to the HTTP server metrics: Attribute Description Type http.route The HTTP route String http.request.method The HTTP request method String url.scheme The URL scheme String http.response.status The HTTP response status class ( 1xx , 2xx , 3xx , 4xx or 5xx ) String http.response.status_code The HTTP response status String error.type The error type String HTTP Client Metric Description Type Unit http.client.active_requests The number of HTTP active requests UpDownCounter requests http.client.request.total The total number of HTTP requests Counter requests http.client.request.duration Duration of HTTP requests Histogram milliseconds http.client.response.body.size The HTTP request payload body size Histogram bytes Attributes The following attributes are added to the HTTP client metrics: Attribute Description Type http.route The HTTP path String http.request.host The HTTP request host String http.request.method The HTTP request method String url.scheme The URL scheme String http.response.status The HTTP response status class ( 1xx , 2xx , 3xx , 4xx or 5xx ) String http.response.status_code The HTTP response status code String error.type The error type String Traces "
-},
-
-{
-    "id": 12,
-    "uri": "user-guide/20_features/40_api-server.html",
-    "menu": "user-guide",
-    "title": "API Server",
-    "text": " Table of Contents API Server API Server This documentation needs to be written. You can help us by contributing to the documentation . "
 },
 
 {
@@ -114,18 +114,18 @@ var documents = [
 
 {
     "id": 14,
-    "uri": "user-guide/index.html",
-    "menu": "user-guide",
-    "title": "Overview",
-    "text": " Table of Contents Overview Features Overview This library is an opinionated library that provides a basis for backend applications written in Scala 3 using the TypeLevel stack. It is a work in progress and is not ready for production use. Features Pillars provides several core features used in backend applications: API server Admin server Configuration Logging Health checks OpenTelemetry-based observability It also provides several optional features: Database access HTTP client Feature flags "
-},
-
-{
-    "id": 15,
     "uri": "user-guide/20_features/20_logging.html",
     "menu": "user-guide",
     "title": "Logging",
     "text": " Table of Contents Logging Configuration Logging in your code Logging Logging is a very important part of any application. It allows you to see what is happening in your application and to debug it. Pillars uses the scribe library for logging. Configuration The logging configuration is described in the Configuration section. Logging in your code To log something in your code, you can use the logger defined in the pillars package. def run(using Pillars[IO]): IO[Unit] = for _ &lt;- logger.info(s\"📚 Welcome to ${config.name}!\") _ &lt;- logger.debug(s\"📚 The configuration is: $config\") yield () As the logger is configured before the application starts, you can use it in any part of your code with the classic scribe usage. import scribe.warn import scribe.cats.io.info def foo: IO[Unit] = info(\"Hello from foo!\") def bar: Unit = warn(\"Hello from bar!\") "
+},
+
+{
+    "id": 15,
+    "uri": "user-guide/index.html",
+    "menu": "user-guide",
+    "title": "Overview",
+    "text": " Table of Contents Overview Features Overview This library is an opinionated library that provides a basis for backend applications written in Scala 3 using the TypeLevel stack. It is a work in progress and is not ready for production use. Features Pillars provides several core features used in backend applications: API server Admin server Configuration Logging Health checks OpenTelemetry-based observability It also provides several optional features: Database access HTTP client Feature flags "
 },
 
 {
