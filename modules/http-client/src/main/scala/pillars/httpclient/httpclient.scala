@@ -82,7 +82,7 @@ class Loader extends pillars.Loader:
 end Loader
 
 final case class HttpClient[F[_]: Async](config: HttpClient.Config)(client: org.http4s.client.Client[F])
-    extends pillars.Module[F]:
+    extends pillars.Module[F], Client[F]:
     override type ModuleConfig = HttpClient.Config
     export client.*
 
