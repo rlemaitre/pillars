@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.3.6] - 2024-09-16
+### :wrench: Chores
+- [`76266d8`](https://github.com/rlemaitre/pillars/commit/76266d8c7bd0d1072eeaea948166dd4eec6a11ff) - Update tapir-http4s-client from 1.11.2 to 1.11.3 *(commit by [@scala-steward](https://github.com/scala-steward))*
+- [`214a8e3`](https://github.com/rlemaitre/pillars/commit/214a8e309eb54f325f794d8113d35451ad410858) - Update tapir-http4s-server from 1.11.2 to 1.11.3 *(commit by [@scala-steward](https://github.com/scala-steward))*
+- [`2fd8c05`](https://github.com/rlemaitre/pillars/commit/2fd8c05f862573e65fccc8fc6bbeeeb95f304e21) - Update tapir-iron from 1.11.2 to 1.11.3 *(commit by [@scala-steward](https://github.com/scala-steward))*
+- [`c2e9feb`](https://github.com/rlemaitre/pillars/commit/c2e9feb2de44f96e535112852f360500b318806e) - Update tapir-json-circe from 1.11.2 to 1.11.3 *(commit by [@scala-steward](https://github.com/scala-steward))*
+- [`3f4ea30`](https://github.com/rlemaitre/pillars/commit/3f4ea302cae608509fcfcb582bb9d34c063a99d8) - Update tapir-openapi-docs from 1.11.2 to 1.11.3 *(commit by [@scala-steward](https://github.com/scala-steward))*
+- [`27a7ed1`](https://github.com/rlemaitre/pillars/commit/27a7ed142de02eedbd5c3cc33b4915d3725b70a8) - Update tapir-opentelemetry-metrics from 1.11.2 to 1.11.3 *(commit by [@scala-steward](https://github.com/scala-steward))*
+- [`1aee1ab`](https://github.com/rlemaitre/pillars/commit/1aee1abf4eb799b79aad9a5cea2d25f2ed4d7f73) - Update tapir-sttp-stub-server from 1.11.2 to 1.11.3 *(commit by [@scala-steward](https://github.com/scala-steward))*
+- [`65e50d1`](https://github.com/rlemaitre/pillars/commit/65e50d11f36a8355b28330285536417e9694f9c4) - Update tapir-swagger-ui-bundle from 1.11.2 to 1.11.3 *(commit by [@scala-steward](https://github.com/scala-steward))*
+- [`c8f7e61`](https://github.com/rlemaitre/pillars/commit/c8f7e61fc02b3bf455f1a71ab1212d3c888e118d) - Update munit from 1.0.1 to 1.0.2 *(commit by [@scala-steward](https://github.com/scala-steward))*
+
+
 ## [v0.3.5] - 2024-09-13
 ### :sparkles: New Features
 - [`ccd8370`](https://github.com/rlemaitre/pillars/commit/ccd837040f703b215e77d12a3ede3b9e786ee14a) - **http-client**: Make HttpClient inherit from Client *(commit by [@rlemaitre](https://github.com/rlemaitre))*
@@ -200,3 +213,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.3.3]: https://github.com/rlemaitre/pillars/compare/v0.3.2...v0.3.3
 [v0.3.4]: https://github.com/rlemaitre/pillars/compare/v0.3.3...v0.3.4
 [v0.3.5]: https://github.com/rlemaitre/pillars/compare/v0.3.4...v0.3.5
+[v0.3.6]: https://github.com/rlemaitre/pillars/compare/v0.3.5...v0.3.6
