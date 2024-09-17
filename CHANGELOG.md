@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.3.7] - 2024-09-17
+### :wrench: Chores
+- [`18d188d`](https://github.com/rlemaitre/pillars/commit/18d188de2e1b5b12fd8bfd56b21440532d1304bc) - Update sbt from 1.10.1 to 1.10.2 *(commit by [@scala-steward](https://github.com/scala-steward))*
+
+
 ## [v0.3.6] - 2024-09-16
 ### :wrench: Chores
 - [`76266d8`](https://github.com/rlemaitre/pillars/commit/76266d8c7bd0d1072eeaea948166dd4eec6a11ff) - Update tapir-http4s-client from 1.11.2 to 1.11.3 *(commit by [@scala-steward](https://github.com/scala-steward))*
@@ -214,3 +219,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.3.4]: https://github.com/rlemaitre/pillars/compare/v0.3.3...v0.3.4
 [v0.3.5]: https://github.com/rlemaitre/pillars/compare/v0.3.4...v0.3.5
 [v0.3.6]: https://github.com/rlemaitre/pillars/compare/v0.3.5...v0.3.6
+[v0.3.7]: https://github.com/rlemaitre/pillars/compare/v0.3.6...v0.3.7
