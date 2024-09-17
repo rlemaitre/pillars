@@ -1,6 +1,7 @@
 package pillars
 
 import cats.data.Validated
+import cats.effect.IO
 import com.monovore.decline.Argument
 import fs2.io.file.Path
 
@@ -16,6 +17,8 @@ given Argument[Path] with
  * @tparam A The type of the value that is being computed.
  */
 type Run[F[_], A] = Pillars[F] ?=> A
+
+type RunIO[A] = Run[IO, A]
 
 extension [K, V](items: Map[K, V])
     def topologicalSort(dependencies: V => Iterable[K]): Either[String, List[(K, V)]] =
