@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.3.9] - 2024-09-17
+### :sparkles: New Features
+- [`0cd16d4`](https://github.com/rlemaitre/pillars/commit/0cd16d4047d740f1d3d0b08503bf6aca16f91f95) - **rabbit**: [#166](https://github.com/rlemaitre/pillars/pull/166) allow using multiple rabbitmq hosts *(PR [#167](https://github.com/rlemaitre/pillars/pull/167) by [@rlemaitre](https://github.com/rlemaitre))*
+  - :arrow_lower_right: *addresses issue [#166](https://github.com/rlemaitre/pillars/issues/166) opened by [@rlemaitre](https://github.com/rlemaitre)*
+
+
 ## [v0.3.8] - 2024-09-17
 ### :sparkles: New Features
 - [`8a13b2a`](https://github.com/rlemaitre/pillars/commit/8a13b2a19e8aa76b496d664404639320007c3684) - **core**: Add RunIO[A] type alias for Run[IO, A] *(commit by [@rlemaitre](https://github.com/rlemaitre))*
@@ -226,3 +232,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.3.6]: https://github.com/rlemaitre/pillars/compare/v0.3.5...v0.3.6
 [v0.3.7]: https://github.com/rlemaitre/pillars/compare/v0.3.6...v0.3.7
 [v0.3.8]: https://github.com/rlemaitre/pillars/compare/v0.3.7...v0.3.8
+[v0.3.9]: https://github.com/rlemaitre/pillars/compare/v0.3.8...v0.3.9
