@@ -1,5 +1,6 @@
 package pillars.rabbitmq.fs2
 
+import cats.data.NonEmptyList
 import cats.effect.Async
 import cats.effect.Resource
 import cats.effect.std.Console
@@ -9,6 +10,7 @@ import com.comcast.ip4s.Port
 import com.comcast.ip4s.host
 import com.comcast.ip4s.port
 import dev.profunktor.fs2rabbit.config.Fs2RabbitConfig
+import dev.profunktor.fs2rabbit.config.Fs2RabbitNodeConfig
 import dev.profunktor.fs2rabbit.interpreter.RabbitClient
 import fs2.io.file.Files
 import fs2.io.net.Network
@@ -77,8 +79,7 @@ class RabbitMQLoader extends Loader:
 end RabbitMQLoader
 
 case class RabbitMQConfig(
-    host: Host = host"localhost",
-    port: Port = port"5672",
+    nodes: NonEmptyList[RabbitMQConfig.Node] = NonEmptyList.one(RabbitMQConfig.Node(host"localhost", port"5672")),
     virtualHost: RabbitMQVirtualHost = RabbitMQVirtualHost("/"),
     connectionTimeout: FiniteDuration = 5 seconds,
     ssl: Boolean = true,
@@ -93,13 +94,15 @@ case class RabbitMQConfig(
 ) extends pillars.Config
 
 object RabbitMQConfig:
+    final case class Node(host: Host, port: Port) extends pillars.Config derives Codec.AsObject
     given Configuration         = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults
     given Codec[RabbitMQConfig] = Codec.AsObject.derivedConfigured
 
-    given Conversion[RabbitMQConfig, Fs2RabbitConfig] = cfg =>
+    given Conversion[RabbitMQConfig.Node, Fs2RabbitNodeConfig] =
+        node => Fs2RabbitNodeConfig(node.host.toString, node.port.value)
+    given Conversion[RabbitMQConfig, Fs2RabbitConfig]          = cfg =>
         Fs2RabbitConfig(
-          host = cfg.host.toString,
-          port = cfg.port.value,
+          nodes = cfg.nodes.map(_.convert),
           virtualHost = cfg.virtualHost,
           connectionTimeout = cfg.connectionTimeout,
           ssl = cfg.ssl,
