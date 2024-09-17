@@ -105,12 +105,12 @@
                 "label": "http-client"
             },
             {
-                "value": "rabbitmq-client",
-                "label": "rabbitmq-client"
+                "value": "rabbitmq",
+                "label": "rabbitmq"
             },
             {
-                "value": "redis-client",
-                "label": "redis-client"
+                "value": "redis",
+                "label": "redis"
             },
             {
                 "value": "",

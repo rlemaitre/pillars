@@ -32,8 +32,7 @@ import scala.concurrent.duration.DurationInt
 import scala.concurrent.duration.FiniteDuration
 import scala.language.postfixOps
 
-extension [F[_]](p: Pillars[F])
-    def rabbit: RabbitMQ[F] = p.module[RabbitMQ[F]](RabbitMQ.Key)
+def rabbit[F[_]](using p: Pillars[F]): RabbitMQ[F] = p.module[RabbitMQ[F]](RabbitMQ.Key)
 
 final case class RabbitMQ[F[_]: Async](config: RabbitMQConfig, client: RabbitClient[F]) extends Module[F]:
     override type ModuleConfig = RabbitMQConfig
