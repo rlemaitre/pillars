@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.3.10] - 2024-09-21
+### :wrench: Chores
+- [`4fd626f`](https://github.com/rlemaitre/pillars/commit/4fd626f8c82159e3a7bfb8d96f1768d950583e33) - Update tapir-http4s-client from 1.11.3 to 1.11.4 *(commit by [@scala-steward](https://github.com/scala-steward))*
+- [`1eab0e5`](https://github.com/rlemaitre/pillars/commit/1eab0e5e4132f9d290f3c85db0ddcdb161c7d721) - Update tapir-http4s-server from 1.11.3 to 1.11.4 *(commit by [@scala-steward](https://github.com/scala-steward))*
+- [`ee81b82`](https://github.com/rlemaitre/pillars/commit/ee81b82bb8a428bc95d0053a5e31617f1cac188d) - Update tapir-iron from 1.11.3 to 1.11.4 *(commit by [@scala-steward](https://github.com/scala-steward))*
+- [`6c265d3`](https://github.com/rlemaitre/pillars/commit/6c265d31f814bf1a7985d9cc8ace5e172bf1b99d) - Update tapir-json-circe from 1.11.3 to 1.11.4 *(commit by [@scala-steward](https://github.com/scala-steward))*
+- [`44a9cc3`](https://github.com/rlemaitre/pillars/commit/44a9cc3d578883c3ba2104926015c2f5c2d12419) - Update tapir-openapi-docs from 1.11.3 to 1.11.4 *(commit by [@scala-steward](https://github.com/scala-steward))*
+- [`46bcfd1`](https://github.com/rlemaitre/pillars/commit/46bcfd1645ecf9a1b84924426845ec017abcbd84) - Update tapir-opentelemetry-metrics from 1.11.3 to 1.11.4 *(commit by [@scala-steward](https://github.com/scala-steward))*
+- [`757ef99`](https://github.com/rlemaitre/pillars/commit/757ef99d0d6cb4f73dd709647cb3a7fb773bc859) - Update tapir-sttp-stub-server from 1.11.3 to 1.11.4 *(commit by [@scala-steward](https://github.com/scala-steward))*
+- [`8ca814b`](https://github.com/rlemaitre/pillars/commit/8ca814be4d7b2dc353b056484dfef01e681fe71d) - Update tapir-swagger-ui-bundle from 1.11.3 to 1.11.4 *(commit by [@scala-steward](https://github.com/scala-steward))*
+
+
 ## [v0.3.9] - 2024-09-17
 ### :sparkles: New Features
 - [`0cd16d4`](https://github.com/rlemaitre/pillars/commit/0cd16d4047d740f1d3d0b08503bf6aca16f91f95) - **rabbit**: [#166](https://github.com/rlemaitre/pillars/pull/166) allow using multiple rabbitmq hosts *(PR [#167](https://github.com/rlemaitre/pillars/pull/167) by [@rlemaitre](https://github.com/rlemaitre))*
@@ -233,3 +245,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.3.7]: https://github.com/rlemaitre/pillars/compare/v0.3.6...v0.3.7
 [v0.3.8]: https://github.com/rlemaitre/pillars/compare/v0.3.7...v0.3.8
 [v0.3.9]: https://github.com/rlemaitre/pillars/compare/v0.3.8...v0.3.9
+[v0.3.10]: https://github.com/rlemaitre/pillars/compare/v0.3.9...v0.3.10
