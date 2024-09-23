@@ -171,10 +171,31 @@ lazy val docs = Project("pillars-docs", file("modules/docs"))
     )
     .dependsOn(core)
 
+lazy val commandLine = Project("pillars-cli", file("modules/cli"))
+    .enablePlugins(BuildInfoPlugin)
+    .settings(
+      name             := "pillars-cli",
+      description      := "pillars-cli is a scala 3 library providing command line services for writing backend applications",
+      libraryDependencies ++= Dependencies.cli,
+      buildInfoKeys    := Seq[BuildInfoKey](name, version, description),
+      buildInfoPackage := "pillars.cli.build"
+    )
+
 lazy val pillars = project
     .in(file("."))
-    .aggregate(core, example, docs, dbSkunk, dbDoobie, dbMigrations, flags, httpClient, rabbitmqFs2, redisRediculous)
-    .settings(
+    .aggregate(
+        core,
+        example,
+        docs,
+        dbSkunk,
+        dbDoobie,
+        dbMigrations,
+        flags,
+        httpClient,
+        rabbitmqFs2,
+        redisRediculous,
+        commandLine
+    ).settings(
       name                                       := "pillars",
       publishArtifact                            := false,
       ScalaUnidoc / unidoc / unidocProjectFilter := inAnyProject -- inProjects(example, docs),
