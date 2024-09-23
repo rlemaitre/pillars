@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.3.11] - 2024-09-23
+### :wrench: Chores
+- [`948536d`](https://github.com/rlemaitre/pillars/commit/948536da955b77737b9f26ae16bbfa379cd1dd90) - Update doobie-core, doobie-hikari from 1.0.0-RC5 to 1.0.0-RC6 *(commit by [@scala-steward](https://github.com/scala-steward))*
+
+
 ## [v0.3.10] - 2024-09-21
 ### :wrench: Chores
 - [`4fd626f`](https://github.com/rlemaitre/pillars/commit/4fd626f8c82159e3a7bfb8d96f1768d950583e33) - Update tapir-http4s-client from 1.11.3 to 1.11.4 *(commit by [@scala-steward](https://github.com/scala-steward))*
@@ -246,3 +251,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.3.8]: https://github.com/rlemaitre/pillars/compare/v0.3.7...v0.3.8
 [v0.3.9]: https://github.com/rlemaitre/pillars/compare/v0.3.8...v0.3.9
 [v0.3.10]: https://github.com/rlemaitre/pillars/compare/v0.3.9...v0.3.10
+[v0.3.11]: https://github.com/rlemaitre/pillars/compare/v0.3.10...v0.3.11
