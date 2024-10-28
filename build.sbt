@@ -2,7 +2,7 @@ import org.typelevel.scalacoptions.ScalacOptions
 import org.typelevel.scalacoptions.ScalaVersion
 
 ThisBuild / versionScheme          := Some("semver-spec")
-ThisBuild / scalaVersion           := "3.3.3"
+ThisBuild / scalaVersion           := "3.3.4"
 ThisBuild / organization           := "com.rlemaitre"
 ThisBuild / homepage               := Some(url("https://pillars.dev/"))
 ThisBuild / sonatypeCredentialHost := "s01.oss.sonatype.org"

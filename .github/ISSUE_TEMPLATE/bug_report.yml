@@ -68,7 +68,7 @@ body:
       description: |
         examples:
           - **JVM**: Oracle GraalVM 21.0.2
-          - **Scala**: 3.3.3
+          - **Scala**: 3.3.4
           - **Pillars**: 0.2.22
       value: |
         - **JVM**:
