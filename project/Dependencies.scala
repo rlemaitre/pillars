@@ -54,7 +54,7 @@ object Dependencies {
       "com.softwaremill.sttp.tapir"   %% "tapir-iron"                  % "1.11.7",
       "com.softwaremill.sttp.tapir"   %% "tapir-openapi-docs"          % "1.11.7",
       "com.softwaremill.sttp.apispec" %% "openapi-circe-yaml"          % "0.11.3",
-      "com.softwaremill.sttp.tapir"   %% "tapir-swagger-ui-bundle"     % "1.11.4",
+      "com.softwaremill.sttp.tapir"   %% "tapir-swagger-ui-bundle"     % "1.11.7",
       "com.softwaremill.sttp.tapir"   %% "tapir-sttp-stub-server"      % "1.11.7" % Test,
       "com.softwaremill.sttp.client3" %% "core"                        % "3.10.1" % Test
     )
