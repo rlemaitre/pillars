@@ -137,7 +137,7 @@ object Logging:
 
         given Decoder[Level] = Decoder.decodeString.emap(s => Level.get(s).toRight(s"Invalid log level $s"))
 
-        given Encoder[Level] = Encoder.encodeString.contramap(_.toString)
+        given Encoder[Level] = Encoder.encodeString.contramap(_.name)
 
         given Codec[Config] = Codec.AsObject.derivedConfigured
     end Config
