@@ -36,14 +36,20 @@ object codec:
     given Decoder[FiniteDuration] = Decoder.decodeDuration.map(_.toScala)
     given Encoder[FiniteDuration] = Encoder.encodeDuration.contramap(_.toJava)
 
-    given Decoder[Duration] = Decoder.decodeDuration.map(_.toScala)
-    given Encoder[Duration] = Encoder.instance[Duration]:
-        case Duration.Inf       => "infinity".asJson
-        case Duration.MinusInf  => "-infinity".asJson
-        case Duration.Zero      => "0".asJson
-        case Duration.Undefined => "undefined".asJson
-        case d: FiniteDuration  => d.asJson
-        case other              => other.toString.asJson
+    given Decoder[Duration] = Decoder.decodeString.map {
+        case "infinity"  => Duration.Inf
+        case "-infinity" => Duration.MinusInf
+        case "0"         => Duration.Zero
+        case "undefined" => Duration.Undefined
+    } orElse Decoder.decodeDuration.map(_.toScala)
+
+    given [D <: Duration]: Encoder[D] = Encoder.instance[D]:
+        case Duration.Inf                          => "infinity".asJson
+        case Duration.MinusInf                     => "-infinity".asJson
+        case Duration.Zero                         => "0".asJson
+        case d: FiniteDuration                     => d.asJson
+        case other if other.eq(Duration.Undefined) => "undefined".asJson
+        case other                                 => other.toString.asJson
 
     given Configuration = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults
 end codec
