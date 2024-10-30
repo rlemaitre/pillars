@@ -35,7 +35,7 @@ class DurationCodecTest extends FunSuite:
     testDecode("PT24H", 1.day)
 
     testEncode(2.day + 3.hour + 4.minute + 5.second, "PT51H4M5S")
-    
+
     testDecode("PT72S", 72.seconds)
     testDecode("PT1M12S", 72.seconds)
 
