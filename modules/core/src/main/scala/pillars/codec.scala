@@ -40,23 +40,21 @@ object codec:
 
     given Encoder[FiniteDuration] = Encoder.instance:
         case Duration.Zero => "0".asJson
-        case other         => other.toJava.toString.asJson
+        case other         => other.toCoarsest.toJava.toString.asJson
 
-    given Decoder[Duration.Infinite] = Decoder.decodeString.map:
-        case "infinity"  => Duration.Inf
-        case "-infinity" => Duration.MinusInf
-        case "undefined" => Duration.Undefined
+    given Decoder[Duration] = Decoder.instance: hc =>
+        Decoder.decodeString(hc).flatMap:
+            case "infinity"  => Duration.Inf.asRight
+            case "-infinity" => Duration.MinusInf.asRight
+            case "undefined" => Duration.Undefined.asRight
+            case _           => Decoder[FiniteDuration].apply(hc)
 
-    given Encoder[Duration.Infinite] = Encoder.instance:
+    given Encoder[Duration] = Encoder.instance:
+        case finite: FiniteDuration                => finite.asJson
         case Duration.Inf                          => "infinity".asJson
         case Duration.MinusInf                     => "-infinity".asJson
         case other if other.eq(Duration.Undefined) => "undefined".asJson
         case other                                 => other.toString.asJson
-
-    given Decoder[Duration] = Decoder[FiniteDuration].widen.or(Decoder[Duration.Infinite].widen)
-    given Encoder[Duration] = Encoder.instance:
-        case infinite: Duration.Infinite => infinite.asJson
-        case finite: FiniteDuration      => finite.asJson
 
     given Configuration = Configuration.default.withKebabCaseMemberNames.withKebabCaseConstructorNames.withDefaults
 end codec
