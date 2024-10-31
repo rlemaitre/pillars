@@ -36,7 +36,7 @@ final case class Observability[F[_]](tracer: Tracer[F], metrics: Meter[F], inter
     export tracer.spanBuilder
 end Observability
 object Observability:
-    def apply[F[_]: Pillars]: Run[F, Observability[F]] = summon[Pillars[F]].observability
+    def apply[F[_]: Pillars]: Run[F, Observability[F]] = Pillars[F].observability
     def noop[F[_]: LiftIO: Async]: F[Observability[F]] =
         Observability(Tracer.noop[F], Meter.noop[F], EndpointInterceptor.noop[F]).pure[F]
 

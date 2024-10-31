@@ -103,6 +103,8 @@ object Pillars:
         end for
     end apply
 
+    inline def apply[F[_]](using p: Pillars[F]): Pillars[F] = p
+
     /**
      * Loads the modules for the application.
      *
