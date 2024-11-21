@@ -45,16 +45,16 @@ class DurationCodecTest extends FunSuite:
     testDecodeFailure("1", "DecodingFailure at : Text '1' cannot be parsed to a Duration")
     testDecodeFailure("PT1D", "DecodingFailure at : Text 'PT1D' cannot be parsed to a Duration")
 
-    def testEncode(input: Duration, expectedValue: String): Unit =
+    private def testEncode(input: Duration, expectedValue: String): Unit =
         test(s"encoding '$input''"):
             val encodedValue = input.asJson
             assertEquals(encodedValue, Json.fromString(expectedValue))
 
-    def testDecode(input: String, expectedValue: Duration): Unit =
+    private def testDecode(input: String, expectedValue: Duration): Unit =
         test(s"decoding of '$input''"):
             assertEquals(Decoder[Duration].decodeJson(input.asJson), expectedValue.asRight)
 
-    def testDecodeFailure(input: String, expectedError: String): Unit =
+    private def testDecodeFailure(input: String, expectedError: String): Unit =
         test(s"fail encoding of '$input''"):
             val encodedValue = input.asJson
             assertEquals(Decoder[Duration].decodeJson(encodedValue).leftMap(_.getMessage), expectedError.asLeft)

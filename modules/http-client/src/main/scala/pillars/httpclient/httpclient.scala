@@ -13,6 +13,7 @@ import io.circe.Encoder
 import io.circe.derivation.Configuration
 import io.github.iltotore.iron.*
 import io.github.iltotore.iron.constraint.all.*
+import org.http4s.ProductComment
 import org.http4s.ProductId
 import org.http4s.Request
 import org.http4s.Response
@@ -137,7 +138,18 @@ object HttpClient:
         given Decoder[`User-Agent`] = Decoder.decodeString.emap(s =>
             `User-Agent`.parse(10)(s).leftMap(f => s"Invalid User-Agent '$s': ${f.message}")
         )
-        given Encoder[`User-Agent`] = Encoder.encodeString.contramap(_.toString)
+
+        private def encodeUserAgent(ua: `User-Agent`): String =
+            def encodeProductId(p: ProductId): String = p.version.fold(p.value)(v => s"${p.value}/$v")
+            val productStr                            = encodeProductId(ua.product)
+            val restStr                               = ua.rest.map {
+                case p: ProductId          => encodeProductId(p)
+                case ProductComment(value) => s"($value)"
+            }.mkString(" ", " ", "")
+            productStr ++ restStr
+        end encodeUserAgent
+
+        given Encoder[`User-Agent`] = Encoder.encodeString.contramap(encodeUserAgent)
         given Codec[Config]         = Codec.AsObject.derivedConfigured
 
         private val defaultUserAgent: `User-Agent` = `User-Agent`(ProductId("pillars", None), ProductId("netty", None))
