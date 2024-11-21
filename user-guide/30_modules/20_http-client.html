@@ -211,7 +211,7 @@ val client: Client[F] = http.client</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight linenums"><code data-lang="scala">val client = summon[Pillars[F]].httpClient
+<pre class="prettyprint highlight linenums"><code data-lang="scala">val client = Pillars[F].httpClient
 val public: PublicEndpoint[Input, ErrorOutput, Output, Capabilities] = ???
 val secure: Endpoint[SecurityInput, Input, ErrorOutput, Output, Capabilities] = ???
 
