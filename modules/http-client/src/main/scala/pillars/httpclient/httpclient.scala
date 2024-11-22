@@ -142,11 +142,10 @@ object HttpClient:
         private def encodeUserAgent(ua: `User-Agent`): String =
             def encodeProductId(p: ProductId): String = p.version.fold(p.value)(v => s"${p.value}/$v")
             val productStr                            = encodeProductId(ua.product)
-            val restStr                               = ua.rest.map {
+            ua.rest.map {
                 case p: ProductId          => encodeProductId(p)
                 case ProductComment(value) => s"($value)"
-            }.mkString(" ", " ", "")
-            productStr ++ restStr
+            }.prepended(productStr).mkString(" ")
         end encodeUserAgent
 
         given Encoder[`User-Agent`] = Encoder.encodeString.contramap(encodeUserAgent)

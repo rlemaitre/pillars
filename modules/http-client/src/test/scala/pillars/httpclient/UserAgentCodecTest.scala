@@ -21,6 +21,11 @@ class UserAgentCodecTest extends FunSuite:
     testEncode(ua, str)
     testDecode(str, ua)
 
+    ua = `User-Agent`(ProductId("foo", None))
+    str = "foo"
+    testEncode(ua, str)
+    testDecode(str, ua)
+
     ua = `User-Agent`(
       ProductId("Mozilla", Some("5.0")),
       List(
