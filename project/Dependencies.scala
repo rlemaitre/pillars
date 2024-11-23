@@ -86,8 +86,8 @@ object Dependencies {
     )
 
     val skunk: Seq[ModuleID] = Seq(
-      "org.tpolecat" %% "skunk-core"  % "1.0.0-M7" exclude ("org.typelevel", "otel4s-core-trace"),
-      "org.tpolecat" %% "skunk-circe" % "1.0.0-M7"
+      "org.tpolecat" %% "skunk-core"  % "1.0.0-M8" exclude ("org.typelevel", "otel4s-core-trace"),
+      "org.tpolecat" %% "skunk-circe" % "1.0.0-M8"
     ) ++ tests
 
     val doobie: Seq[ModuleID] = Seq(
