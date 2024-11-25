@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.3.20] - 2024-11-25
+### :wrench: Chores
+- [`4d97131`](https://github.com/rlemaitre/pillars/commit/4d971317f5d94bdfae5a644f3010c663d73ccde3) - Update sbt-ci-release-early from 2.0.46 to 2.0.48 *(commit by [@scala-steward](https://github.com/scala-steward))*
+- [`17d38bd`](https://github.com/rlemaitre/pillars/commit/17d38bd094abb11a15c9fe25ffaf99ebc6c999b5) - Update sbt from 1.10.4 to 1.10.5 *(commit by [@scala-steward](https://github.com/scala-steward))*
+
+
 ## [v0.3.18] - 2024-11-25
 ### :wrench: Chores
 - [`02c8132`](https://github.com/rlemaitre/pillars/commit/02c81329bb4840d063a39f48db34f5372eb7f507) - upgrade dependencies *(PR [#183](https://github.com/rlemaitre/pillars/pull/183) by [@rlemaitre](https://github.com/rlemaitre))*
@@ -258,3 +264,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.3.10]: https://github.com/rlemaitre/pillars/compare/v0.3.9...v0.3.10
 [v0.3.11]: https://github.com/rlemaitre/pillars/compare/v0.3.10...v0.3.11
 [v0.3.18]: https://github.com/rlemaitre/pillars/compare/v0.3.17...v0.3.18
+[v0.3.20]: https://github.com/rlemaitre/pillars/compare/v0.3.19...v0.3.20
