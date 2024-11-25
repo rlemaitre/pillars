@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.3.18] - 2024-11-25
+### :wrench: Chores
+- [`02c8132`](https://github.com/rlemaitre/pillars/commit/02c81329bb4840d063a39f48db34f5372eb7f507) - upgrade dependencies *(PR [#183](https://github.com/rlemaitre/pillars/pull/183) by [@rlemaitre](https://github.com/rlemaitre))*
+
+
 ## [v0.3.11] - 2024-09-23
 ### :wrench: Chores
 - [`948536d`](https://github.com/rlemaitre/pillars/commit/948536da955b77737b9f26ae16bbfa379cd1dd90) - Update doobie-core, doobie-hikari from 1.0.0-RC5 to 1.0.0-RC6 *(commit by [@scala-steward](https://github.com/scala-steward))*
@@ -252,3 +257,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.3.9]: https://github.com/rlemaitre/pillars/compare/v0.3.8...v0.3.9
 [v0.3.10]: https://github.com/rlemaitre/pillars/compare/v0.3.9...v0.3.10
 [v0.3.11]: https://github.com/rlemaitre/pillars/compare/v0.3.10...v0.3.11
+[v0.3.18]: https://github.com/rlemaitre/pillars/compare/v0.3.17...v0.3.18
