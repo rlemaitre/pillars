@@ -89,6 +89,7 @@ case class RabbitMQConfig(
     internalQueueSize: Option[Int :| Positive] = Some(1024),
     requestedHeartbeat: FiniteDuration = 60 seconds,
     automaticRecovery: Boolean = true,
+    automaticTopologyRecovery: Boolean = true,
     clientProvidedConnectionName: Option[RabbitMQConnectionName] = None
 ) extends pillars.Config
 
@@ -112,6 +113,7 @@ object RabbitMQConfig:
           internalQueueSize = cfg.internalQueueSize,
           requestedHeartbeat = cfg.requestedHeartbeat,
           automaticRecovery = cfg.automaticRecovery,
+          automaticTopologyRecovery = cfg.automaticTopologyRecovery,
           clientProvidedConnectionName = cfg.clientProvidedConnectionName
         )
 end RabbitMQConfig

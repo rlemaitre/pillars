@@ -2,7 +2,7 @@ import org.typelevel.scalacoptions.ScalacOptions
 import org.typelevel.scalacoptions.ScalaVersion
 
 ThisBuild / versionScheme          := Some("semver-spec")
-ThisBuild / scalaVersion           := "3.3.4"
+ThisBuild / scalaVersion           := "3.5.2"
 ThisBuild / organization           := "com.rlemaitre"
 ThisBuild / homepage               := Some(url("https://pillars.dev/"))
 ThisBuild / sonatypeCredentialHost := "s01.oss.sonatype.org"
@@ -30,7 +30,7 @@ ThisBuild / licenses += (
   )
 )
 ThisBuild / scalacOptions ++= ScalacOptions.tokensForVersion(
-  ScalaVersion.V3_3_0,
+  ScalaVersion.V3_5_0,
   Set(
     ScalacOptions.deprecation,
     ScalacOptions.feature,
@@ -41,7 +41,7 @@ ThisBuild / scalacOptions ++= ScalacOptions.tokensForVersion(
 //javaOptions += "-Dotel.java.global-autoconfigure.enabled=true"
 
 Compile / scalacOptions ++= ScalacOptions.tokensForVersion(
-  ScalaVersion.V3_3_0,
+  ScalaVersion.V3_5_0,
   Set(
     ScalacOptions.sourceFuture,
     ScalacOptions.deprecation,
@@ -59,6 +59,10 @@ outputStrategy := Some(StdoutOutput)
 //libraryDependencySchemes ++= Seq(
 //  "org.typelevel" %% "otel4s-core-trace" % VersionScheme.Always
 //)
+val libDependencySchemes = Seq(
+  "io.circe"      %% "circe-yaml"        % VersionScheme.Always,
+  "org.typelevel" %% "otel4s-core-trace" % VersionScheme.Always
+)
 
 lazy val core = Project("pillars-core", file("modules/core"))
     .enablePlugins(BuildInfoPlugin)
@@ -67,18 +71,19 @@ lazy val core = Project("pillars-core", file("modules/core"))
       description      := "pillars-core is a scala 3 library providing base services for writing backend applications",
       libraryDependencies ++= Dependencies.core,
       buildInfoKeys    := Seq[BuildInfoKey](name, version, description),
-      buildInfoPackage := "pillars.build"
+      buildInfoPackage := "pillars.build",
+      libraryDependencySchemes ++= libDependencySchemes
     )
 
 lazy val dbSkunk = Project("pillars-db-skunk", file("modules/db-skunk"))
     .enablePlugins(BuildInfoPlugin)
     .settings(
-      name                                        := "pillars-db-skunk",
-      description                                 := "pillars-db-skunk is a scala 3 library providing database services for writing backend applications using skunk",
+      name             := "pillars-db-skunk",
+      description      := "pillars-db-skunk is a scala 3 library providing database services for writing backend applications using skunk",
       libraryDependencies ++= Dependencies.skunk,
-      buildInfoKeys                               := Seq[BuildInfoKey](name, version, description),
-      buildInfoPackage                            := "pillars.db.build",
-      libraryDependencySchemes += "org.typelevel" %% "otel4s-core-trace" % VersionScheme.Always
+      buildInfoKeys    := Seq[BuildInfoKey](name, version, description),
+      buildInfoPackage := "pillars.db.build",
+      libraryDependencySchemes ++= libDependencySchemes
     )
     .dependsOn(core)
 
@@ -89,7 +94,8 @@ lazy val dbDoobie = Project("pillars-db-doobie", file("modules/db-doobie"))
       description      := "pillars-db-doobie is a scala 3 library providing database services for writing backend applications using doobie",
       libraryDependencies ++= Dependencies.doobie,
       buildInfoKeys    := Seq[BuildInfoKey](name, version, description),
-      buildInfoPackage := "pillars.doobie.build"
+      buildInfoPackage := "pillars.doobie.build",
+      libraryDependencySchemes ++= libDependencySchemes
     )
     .dependsOn(core)
 
@@ -100,7 +106,8 @@ lazy val redisRediculous = Project("pillars-redis-rediculous", file("modules/red
       description      := "pillars-redis-rediculous is a scala 3 library providing redis services for writing backend applications using rediculous",
       libraryDependencies ++= Dependencies.rediculous,
       buildInfoKeys    := Seq[BuildInfoKey](name, version, description),
-      buildInfoPackage := "pillars.doobie.build"
+      buildInfoPackage := "pillars.doobie.build",
+      libraryDependencySchemes ++= libDependencySchemes
     )
     .dependsOn(core)
 
@@ -112,7 +119,8 @@ lazy val dbMigrations = Project("pillars-db-migration", file("modules/db-migrati
       libraryDependencySchemes += "org.typelevel" %% "otel4s-core-trace" % VersionScheme.Always,
       libraryDependencies ++= Dependencies.migrations,
       buildInfoKeys                               := Seq[BuildInfoKey](name, version, description),
-      buildInfoPackage                            := "pillars.db.migrations.build"
+      buildInfoPackage                            := "pillars.db.migrations.build",
+      libraryDependencySchemes ++= libDependencySchemes
     )
     .dependsOn(core, dbSkunk)
 
@@ -123,7 +131,8 @@ lazy val rabbitmqFs2 = Project("pillars-rabbitmq-fs2", file("modules/rabbitmq-fs
       description      := "pillars-rabbitmq-fs2 is a scala 3 library providing RabbitMQ services for writing backend applications using fs2-rabbit",
       libraryDependencies ++= Dependencies.fs2Rabbit,
       buildInfoKeys    := Seq[BuildInfoKey](name, version, description),
-      buildInfoPackage := "pillars.rabbitmq.fs2.build"
+      buildInfoPackage := "pillars.rabbitmq.fs2.build",
+      libraryDependencySchemes ++= libDependencySchemes
     )
     .dependsOn(core)
 
@@ -134,7 +143,8 @@ lazy val flags = Project("pillars-flags", file("modules/flags"))
       description      := "pillars-flag is a scala 3 library providing feature flag services for writing backend applications",
       libraryDependencies ++= Dependencies.flags,
       buildInfoKeys    := Seq[BuildInfoKey](name, version, description),
-      buildInfoPackage := "pillars.flags.build"
+      buildInfoPackage := "pillars.flags.build",
+      libraryDependencySchemes ++= libDependencySchemes
     )
     .dependsOn(core)
 
@@ -145,7 +155,8 @@ lazy val httpClient = Project("pillars-http-client", file("modules/http-client")
       description      := "pillars-http-client is a scala 3 library providing http client services for writing backend applications",
       libraryDependencies ++= Dependencies.httpClient,
       buildInfoKeys    := Seq[BuildInfoKey](name, version, description),
-      buildInfoPackage := "pillars.httpclient.build"
+      buildInfoPackage := "pillars.httpclient.build",
+      libraryDependencySchemes ++= libDependencySchemes
     )
     .dependsOn(core)
 
@@ -153,21 +164,22 @@ lazy val httpClient = Project("pillars-http-client", file("modules/http-client")
 lazy val example = Project("pillars-example", file("modules/example"))
     .enablePlugins(BuildInfoPlugin) // //<1>
     .settings(
-      name                                        := "pillars-example", // //<2>
-      description                                 := "pillars-example is an example of application using pillars", // //<3>
+      name             := "pillars-example",                                            // //<2>
+      description      := "pillars-example is an example of application using pillars", // //<3>
       libraryDependencies ++= Dependencies.tests ++ Dependencies.migrationsRuntime,
-      buildInfoKeys                               := Seq[BuildInfoKey](name, version, description), // //<4>
-      buildInfoOptions                            := Seq(BuildInfoOption.Traits("pillars.BuildInfo")), // //<5>
-      buildInfoPackage                            := "example.build", // //<6>
-      publish / skip                              := true,
-      libraryDependencySchemes += "org.typelevel" %% "otel4s-core-trace" % VersionScheme.Always
+      buildInfoKeys    := Seq[BuildInfoKey](name, version, description),                // //<4>
+      buildInfoOptions := Seq(BuildInfoOption.Traits("pillars.BuildInfo")),             // //<5>
+      buildInfoPackage := "example.build",                                              // //<6>
+      publish / skip   := true,
+      libraryDependencySchemes ++= libDependencySchemes
     )
     .dependsOn(core, dbSkunk, flags, httpClient, dbMigrations)
 // end::example[]
 lazy val docs = Project("pillars-docs", file("modules/docs"))
     .settings(
       name           := "pillars-docs",
-      publish / skip := true
+      publish / skip := true,
+      libraryDependencySchemes ++= libDependencySchemes
     )
     .dependsOn(core)
 

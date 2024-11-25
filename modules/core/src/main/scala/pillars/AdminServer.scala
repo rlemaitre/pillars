@@ -8,7 +8,6 @@ import com.comcast.ip4s.*
 import io.circe.Codec
 import io.circe.derivation.Configuration
 import pillars.AdminServer.Config
-import pillars.PillarsError.View
 import sttp.tapir.*
 
 final case class AdminServer[F[_]: Async](

@@ -90,7 +90,7 @@ object HttpServer:
         new ExceptionHandler[F]:
             override def apply(ctx: ExceptionContext)(implicit
                 monad: MonadError[F]
-            ): F[Option[ValuedEndpointOutput[_]]] =
+            ): F[Option[ValuedEndpointOutput[?]]] =
                 def handlePillarsError(e: PillarsError) =
                     Some(ValuedEndpointOutput(statusCode.and(jsonBody[PillarsError.View]), (e.status, e.view)))
 
