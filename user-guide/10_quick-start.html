@@ -170,7 +170,7 @@ You can help us by <a href="../../contribute/10_contributing.html">contributing 
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="sbt">libraryDependencies ++= Seq(
-  "com.rlemaitre" %% "pillars-core" % "0.3.17"
+  "com.rlemaitre" %% "pillars-core" % "0.3.18"
 )</code></pre>
 </div>
 </div>
@@ -180,10 +180,10 @@ You can help us by <a href="../../contribute/10_contributing.html">contributing 
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="sbt">libraryDependencies ++= Seq(
-  "com.rlemaitre" %% "pillars-db" % "0.3.17",
-  "com.rlemaitre" %% "pillars-db-migration" % "0.3.17",
-  "com.rlemaitre" %% "pillars-flags" % "0.3.17",
-  "com.rlemaitre" %% "pillars-http-client" % "0.3.17"
+  "com.rlemaitre" %% "pillars-db" % "0.3.18",
+  "com.rlemaitre" %% "pillars-db-migration" % "0.3.18",
+  "com.rlemaitre" %% "pillars-flags" % "0.3.18",
+  "com.rlemaitre" %% "pillars-http-client" % "0.3.18"
 )</code></pre>
 </div>
 </div>
@@ -327,14 +327,14 @@ In your <code>build.sbt</code>, add the following lines to your project definiti
 <pre class="prettyprint highlight linenums"><code data-lang="scala">lazy val example = Project("pillars-example", file("modules/example"))
     .enablePlugins(BuildInfoPlugin) // <i class="conum" data-value="1"></i><b>(1)</b>
     .settings(
-      name                                        := "pillars-example", // <i class="conum" data-value="2"></i><b>(2)</b>
-      description                                 := "pillars-example is an example of application using pillars", // <i class="conum" data-value="3"></i><b>(3)</b>
+      name             := "pillars-example",                                            // <i class="conum" data-value="2"></i><b>(2)</b>
+      description      := "pillars-example is an example of application using pillars", // <i class="conum" data-value="3"></i><b>(3)</b>
       libraryDependencies ++= Dependencies.tests ++ Dependencies.migrationsRuntime,
-      buildInfoKeys                               := Seq[BuildInfoKey](name, version, description), // <i class="conum" data-value="4"></i><b>(4)</b>
-      buildInfoOptions                            := Seq(BuildInfoOption.Traits("pillars.BuildInfo")), // <i class="conum" data-value="5"></i><b>(5)</b>
-      buildInfoPackage                            := "example.build", // <i class="conum" data-value="6"></i><b>(6)</b>
-      publish / skip                              := true,
-      libraryDependencySchemes += "org.typelevel" %% "otel4s-core-trace" % VersionScheme.Always
+      buildInfoKeys    := Seq[BuildInfoKey](name, version, description),                // <i class="conum" data-value="4"></i><b>(4)</b>
+      buildInfoOptions := Seq(BuildInfoOption.Traits("pillars.BuildInfo")),             // <i class="conum" data-value="5"></i><b>(5)</b>
+      buildInfoPackage := "example.build",                                              // <i class="conum" data-value="6"></i><b>(6)</b>
+      publish / skip   := true,
+      libraryDependencySchemes ++= libDependencySchemes
     )
     .dependsOn(core, dbSkunk, flags, httpClient, dbMigrations)</code></pre>
 </div>
