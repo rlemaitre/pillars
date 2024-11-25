@@ -24,4 +24,4 @@ pull_request_rules:
   - status-success=Build and Test (ubuntu-latest, 3, temurin@8)
   actions:
     merge:
-      method: merge
+      method: rebase
