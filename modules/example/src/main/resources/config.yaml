@@ -2,7 +2,7 @@
 name: Bookstore
 # tag::log[]
 log:
-  level: info
+  level: debug
   format: enhanced
   output:
     type: console

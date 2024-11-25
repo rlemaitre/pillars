@@ -1,6 +1,5 @@
 package pillars.flags
 
-import io.circe.Decoder
 import io.circe.Decoder.Result
 import io.circe.Json
 import io.circe.syntax.*

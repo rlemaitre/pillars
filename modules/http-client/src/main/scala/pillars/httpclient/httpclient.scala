@@ -105,7 +105,7 @@ final case class HttpClient[F[_]: Async](config: HttpClient.Config)(client: org.
         callRequest(endpoint, uri)(interpreter.toSecureRequest(endpoint, uri)(securityInput)(input))
     end callSecure
 
-    private[this] def callRequest[I, EO, O](
+    private def callRequest[I, EO, O](
         endpoint: AnyEndpoint,
         uri: Option[Uri],
         handler: FailureHandler[F, EO, O] = FailureHandler.default[F, EO, O]
@@ -166,7 +166,7 @@ object HttpClient:
             extends Error(endpoint, uri, ErrorNumber(1002), Message("Missing"))
         case Multiple[R](endpoint: AnyEndpoint, uri: Option[Uri], vs: Seq[R])
             extends Error(endpoint, uri, ErrorNumber(1003), Message("Multiple response"))
-        case InvalidInput(endpoint: AnyEndpoint, uri: Option[Uri], errors: List[ValidationError[_]])
+        case InvalidInput(endpoint: AnyEndpoint, uri: Option[Uri], errors: List[ValidationError[?]])
             extends Error(endpoint, uri, ErrorNumber(1004), Message("Invalid input"))
         case Mismatch(endpoint: AnyEndpoint, uri: Option[Uri], expected: String, actual: String)
             extends Error(endpoint, uri, ErrorNumber(1005), Message("Type mismatch"))

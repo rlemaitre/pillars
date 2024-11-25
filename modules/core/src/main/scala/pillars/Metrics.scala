@@ -21,7 +21,7 @@ import sttp.tapir.server.metrics.Metric
 import sttp.tapir.server.metrics.MetricLabels
 import sttp.tapir.server.model.ServerResponse
 
-case class Metrics[F[_]: Applicative](meter: Meter[F], metrics: List[Metric[F, _]]):
+case class Metrics[F[_]: Applicative](meter: Meter[F], metrics: List[Metric[F, ?]]):
     /** The interceptor which can be added to a server's options, to enable metrics collection. */
     def metricsInterceptor(ignoreEndpoints: Seq[AnyEndpoint] = Seq.empty): MetricsRequestInterceptor[F] =
         new MetricsRequestInterceptor[F](metrics, ignoreEndpoints)
@@ -75,9 +75,9 @@ object Metrics:
             duration     <- requestDuration(meter)
             requestSize  <- requestBodySize(meter)
             responseSize <- responseBodySize(meter)
-        yield Metrics(meter, List[Metric[F, _]](active, total, duration))
+        yield Metrics(meter, List[Metric[F, ?]](active, total, duration))
 
-    def init[F[_]: Applicative](meter: Meter[F], metrics: List[Metric[F, _]]): F[Metrics[F]] =
+    def init[F[_]: Applicative](meter: Meter[F], metrics: List[Metric[F, ?]]): F[Metrics[F]] =
         Metrics(meter, metrics).pure[F]
 
     def noop[F[_]: Applicative]: Metrics[F] = Metrics(Meter.noop[F], Nil)
