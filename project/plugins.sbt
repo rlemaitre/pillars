@@ -7,7 +7,7 @@ addSbtPlugin("com.github.sbt" % "sbt-unidoc"    % "0.5.0")
 addSbtPlugin("com.eed3si9n"   % "sbt-buildinfo" % "0.13.1")
 addSbtPlugin("com.github.sbt" % "sbt-dynver"    % "5.1.0")
 
-addSbtPlugin("io.shiftleft" % "sbt-ci-release-early" % "2.0.46")
+addSbtPlugin("io.shiftleft" % "sbt-ci-release-early" % "2.0.48")
 
 // Giter8 scaffold
 addSbtPlugin("org.foundweekends.giter8" % "sbt-giter8-scaffold" % "0.16.2")
