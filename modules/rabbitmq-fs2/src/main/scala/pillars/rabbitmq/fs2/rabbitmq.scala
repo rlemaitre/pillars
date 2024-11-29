@@ -25,8 +25,8 @@ import io.github.iltotore.iron.circe.given
 import io.github.iltotore.iron.constraint.all.*
 import org.typelevel.otel4s.trace.Tracer
 import pillars.Config.Secret
-import pillars.Loader
 import pillars.Module
+import pillars.ModuleDef
 import pillars.Modules
 import pillars.Pillars
 import pillars.codec.given
@@ -61,12 +61,12 @@ object RabbitMQ:
 
 end RabbitMQ
 
-class RabbitMQLoader extends Loader:
+object RabbitMQModule extends ModuleDef:
     override type M[F[_]] = RabbitMQ[F]
     override val key: Module.Key = RabbitMQ.Key
 
     override def load[F[_]: Async: Network: Tracer: Console](
-        context: Loader.Context[F],
+        context: ModuleDef.Context[F],
         modules: Modules[F]
     ): Resource[F, RabbitMQ[F]] =
         import context.*
@@ -79,7 +79,7 @@ class RabbitMQLoader extends Loader:
         yield client
         end for
     end load
-end RabbitMQLoader
+end RabbitMQModule
 
 case class RabbitMQConfig(
     nodes: NonEmptyList[RabbitMQConfig.Node] = NonEmptyList.one(RabbitMQConfig.Node(host"localhost", port"5672")),

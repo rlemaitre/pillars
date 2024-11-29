@@ -23,8 +23,8 @@ import io.github.iltotore.iron.constraint.all.*
 import java.util.Properties
 import org.typelevel.otel4s.trace.Tracer
 import pillars.Config.*
-import pillars.Loader
 import pillars.Module
+import pillars.ModuleDef
 import pillars.Modules
 import pillars.Pillars
 import pillars.probes.*
@@ -46,12 +46,12 @@ object DB:
     case object Key extends Module.Key:
         override val name: String = "db-doobie"
 
-class DBLoader extends Loader:
+object DBDoobieModule extends ModuleDef:
     override type M[F[_]] = DB[F]
     override val key: Module.Key = DB.Key
 
     def load[F[_]: Async: Network: Tracer: Console](
-        context: Loader.Context[F],
+        context: ModuleDef.Context[F],
         modules: Modules[F]
     ): Resource[F, DB[F]] =
         import context.*
@@ -64,7 +64,7 @@ class DBLoader extends Loader:
         yield DB(config, xa)
         end for
     end load
-end DBLoader
+end DBDoobieModule
 
 final case class DatabaseConfig(
     driverClassName: DriverClassName,

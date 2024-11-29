@@ -18,8 +18,8 @@ import io.github.iltotore.iron.constraint.all.*
 import org.flywaydb.core.Flyway
 import org.typelevel.otel4s.trace.Tracer
 import pillars.Config.Secret
-import pillars.Loader
 import pillars.Module
+import pillars.ModuleDef
 import pillars.Modules
 import pillars.Pillars
 import pillars.Run
@@ -78,14 +78,14 @@ object DBMigration:
         override val name: String = "db-migration"
 end DBMigration
 
-class DBMigrationLoader extends Loader:
+object DBMigrationModule extends ModuleDef:
     override type M[F[_]] = DBMigration[F]
     override val key: Module.Key = DBMigration.Key
 
     override def dependsOn: Set[Module.Key] = Set(DB.Key)
 
     def load[F[_]: Async: Network: Tracer: Console](
-        context: Loader.Context[F],
+        context: ModuleDef.Context[F],
         modules: Modules[F]
     ): Resource[F, DBMigration[F]] =
         given Files[F] = Files.forAsync[F]
@@ -98,7 +98,7 @@ class DBMigrationLoader extends Loader:
             end for
     end load
 
-end DBMigrationLoader
+end DBMigrationModule
 
 final case class MigrationConfig(
     url: JdbcUrl,

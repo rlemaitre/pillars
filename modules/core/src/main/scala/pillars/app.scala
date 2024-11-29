@@ -18,6 +18,7 @@ import pillars.probes.Probe
 
 trait App[F[_]]:
     def infos: AppInfo
+    def modules: List[ModuleDef]              = Nil
     def probes: List[Probe[F]]                = Nil
     def adminControllers: List[Controller[F]] = Nil
     def run: Run[F, F[Unit]]
@@ -54,7 +55,7 @@ trait EntryPoint extends IOApp:
     override final def run(args: List[String]): IO[ExitCode] =
         val command = Command(app.infos.name, app.infos.description):
             Opts.option[Path]("config", "Path to the configuration file").map: configPath =>
-                Pillars(app.infos, configPath).use: pillars =>
+                Pillars(app.infos, app.modules, configPath).use: pillars =>
                     given Pillars[IO] = pillars
                     app.run.as(ExitCode.Success)
 

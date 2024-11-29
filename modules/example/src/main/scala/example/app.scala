@@ -22,6 +22,13 @@ object app extends pillars.EntryPoint: // // <1>
     def app: pillars.App[IO] = new: // // <2>
         def infos: AppInfo = BuildInfo.toAppInfo // // <3>
 
+        override def modules: List[ModuleDef] = List( // // <4>
+          DBSkunkModule,
+          DBMigrationModule,
+          FeatureFlagsModule,
+          HttpClientModule
+        )
+
         def run: Run[IO, IO[Unit]] = // // <4>
             for
                 _ <- logger.info(s"📚 Welcome to ${config.name}!")

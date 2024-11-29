@@ -44,13 +44,13 @@ import sttp.tapir.ValidationError
 import sttp.tapir.client.http4s.Http4sClientInterpreter
 import sttp.tapir.client.http4s.Http4sClientOptions
 
-class Loader extends pillars.Loader:
+object HttpClientModule extends pillars.ModuleDef:
     override type M[F[_]] = HttpClient[F]
 
     override def key: Module.Key = HttpClient.Key
 
     override def load[F[_]: Async: Network: Tracer: Console](
-        context: pillars.Loader.Context[F],
+        context: pillars.ModuleDef.Context[F],
         modules: Modules[F]
     ): Resource[F, HttpClient[F]] =
         import context.*
@@ -84,7 +84,7 @@ class Loader extends pillars.Loader:
         yield client
         end for
     end load
-end Loader
+end HttpClientModule
 
 final case class HttpClient[F[_]: Async](config: HttpClient.Config)(client: org.http4s.client.Client[F])
     extends pillars.Module[F], Client[F]:

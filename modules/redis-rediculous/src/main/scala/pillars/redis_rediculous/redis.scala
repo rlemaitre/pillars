@@ -21,8 +21,8 @@ import io.github.iltotore.iron.*
 import io.github.iltotore.iron.circe.given
 import io.github.iltotore.iron.constraint.all.*
 import org.typelevel.otel4s.trace.Tracer
-import pillars.Loader
 import pillars.Module
+import pillars.ModuleDef
 import pillars.Modules
 import pillars.Pillars
 import pillars.codec.given
@@ -55,12 +55,12 @@ object Redis:
         override val name: String = "redis-rediculous"
     def apply[F[_]](using p: Pillars[F]): Redis[F] = p.module[Redis[F]](Redis.Key)
 
-class RedisLoader extends Loader:
+object RedisModule extends ModuleDef:
     override type M[F[_]] = Redis[F]
     override val key: Module.Key = Redis.Key
 
     def load[F[_]: Async: Network: Tracer: Console](
-        context: Loader.Context[F],
+        context: ModuleDef.Context[F],
         modules: Modules[F]
     ): Resource[F, Redis[F]] =
         import context.*
@@ -83,7 +83,7 @@ class RedisLoader extends Loader:
         yield connection
         end for
     end load
-end RedisLoader
+end RedisModule
 
 final case class RedisConfig(
     host: Host = host"localhost",

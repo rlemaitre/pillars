@@ -14,8 +14,8 @@ import fs2.io.file.Files
 import fs2.io.net.Network
 import org.typelevel.otel4s.trace.Tracer
 import pillars.Controller
-import pillars.Loader
 import pillars.Module
+import pillars.ModuleDef
 import pillars.Modules
 import pillars.Pillars
 
@@ -51,13 +51,13 @@ object FlagManager:
             private[flags] def setStatus(flag: Flag, status: Status) = None.pure[F]
 end FlagManager
 
-class FlagManagerLoader extends Loader:
+object FeatureFlagsModule extends ModuleDef:
     override type M[F[_]] = FlagManager[F]
 
     override def key: Module.Key = FlagManager.Key
 
     def load[F[_]: Async: Network: Tracer: Console](
-        context: Loader.Context[F],
+        context: ModuleDef.Context[F],
         modules: Modules[F]
     ): Resource[F, FlagManager[F]] =
         import context.*
@@ -100,4 +100,4 @@ class FlagManagerLoader extends Loader:
                         override def adminControllers: List[Controller[F]] = flagController(this).pure[List]
         end if
     end createManager
-end FlagManagerLoader
+end FeatureFlagsModule
