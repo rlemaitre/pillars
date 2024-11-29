@@ -165,11 +165,11 @@ As it uses a different port, it can be protected by a firewall or use authentica
 <div class="ulist">
 <ul>
 <li>
-<p><code>GET /probes/healthz</code>: the liveness probe.
+<p><code>GET /admin/probes/healthz</code>: the liveness probe.
 It always returns <code>200 OK</code> and can be used to check if the server is running.</p>
 </li>
 <li>
-<p><code>GET /probes/health</code>: the readiness probe.
+<p><code>GET /admin/probes/health</code>: the readiness probe.
 It returns <code>200 OK</code> if the server is ready to handle requests and all probes are successful.
 See the <a href="30_probes.html">Probes</a> section for more details.</p>
 </li>
