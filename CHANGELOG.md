@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.3.22] - 2024-11-29
+### :bug: Bug Fixes
+- [`3762306`](https://github.com/FunktionalIO/pillars/commit/37623065606aa8afe701f88ea5b47169515605d5) - **doc**: admin urls *(commit by [@jprudent](https://github.com/jprudent))*
+
+
 ## [v0.3.21] - 2024-11-29
 ### :wrench: Chores
 - [`7898344`](https://github.com/FunktionalIO/pillars/commit/7898344c9a90a5538c406914dcd4f29d4fb78221) - Update cats-effect from 3.5.6 to 3.5.7 *(commit by [@scala-steward](https://github.com/scala-steward))*
@@ -271,3 +276,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.3.18]: https://github.com/rlemaitre/pillars/compare/v0.3.17...v0.3.18
 [v0.3.20]: https://github.com/rlemaitre/pillars/compare/v0.3.19...v0.3.20
 [v0.3.21]: https://github.com/FunktionalIO/pillars/compare/v0.3.20...v0.3.21
+[v0.3.22]: https://github.com/FunktionalIO/pillars/compare/v0.3.21...v0.3.22
