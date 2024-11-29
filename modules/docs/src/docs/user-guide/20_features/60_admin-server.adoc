@@ -22,9 +22,9 @@ The configuration is described in the xref:10_configuration.adoc#admin-configura
 
 By default, the administration server is available on port `19876` and exposes the following endpoints:
 
-* `GET /probes/healthz`: the liveness probe.
+* `GET /admin/probes/healthz`: the liveness probe.
 It always returns `200 OK` and can be used to check if the server is running.
-* `GET /probes/health`: the readiness probe.
+* `GET /admin/probes/health`: the readiness probe.
 It returns `200 OK` if the server is ready to handle requests and all probes are successful.
 See the xref:30_probes.adoc[Probes] section for more details.
 
