@@ -11,9 +11,13 @@ import cats.syntax.all.*
 import fs2.io.file.Path
 import fs2.io.net.Network
 import io.circe.Decoder
+import io.github.iltotore.iron.*
 import org.typelevel.otel4s.trace.Tracer
 import pillars.Config.PillarsConfig
 import pillars.Config.Reader
+import pillars.PillarsError.Code
+import pillars.PillarsError.ErrorNumber
+import pillars.PillarsError.Message
 import pillars.probes.ProbeManager
 import pillars.probes.probesController
 import scribe.*
@@ -121,17 +125,62 @@ object Pillars:
         modules: Seq[ModuleSupport],
         context: ModuleSupport.Context[F]
     ): Resource[F, Modules[F]] =
-        val loaders = modules
-            .groupBy(_.key)
-            .map((key, value) => key -> value.head)
-        scribe.info(s"Found ${loaders.size} module loaders: ${loaders.keys.map(_.name).mkString(", ")}")
-        loaders.topologicalSort(_.dependsOn) match
-            case Left(value)  => throw IllegalStateException("Circular dependency detected in modules")
+        scribe.info(s"Found ${modules.size} modules: ${modules.map(_.key).map(_.name).mkString(", ")}")
+        modules.topologicalSort(_.dependsOn) match
+            case Left(value)  => throw value
             case Right(value) =>
                 value.foldLeftM(Modules.empty[F]):
-                    case (acc, (key, loader)) =>
-                        loader.load(context, acc).map(acc.add(key))
+                    case (acc, loader) =>
+                        loader.load(context, acc).map(acc.add(loader.key))
         end match
     end loadModules
 
+    extension [T](items: Seq[T])
+        def topologicalSort(dependencies: T => Iterable[T]): Either[StartupError, List[T]] =
+            @annotation.tailrec
+            def loop(
+                remaining: Iterable[T],
+                sorted: List[T],
+                visited: Set[T],
+                recursionStack: Set[T]
+            ): Either[StartupError, List[T]] =
+                if remaining.isEmpty then Right(sorted)
+                else
+                    val (allDepsResolved, hasUnresolvedDeps) = remaining.partition: value =>
+                        dependencies(value).forall(visited.contains)
+                    if allDepsResolved.isEmpty then
+                        if hasUnresolvedDeps.exists(recursionStack.contains) then
+                            Left(StartupError.CyclicDependencyError)
+                        else loop(hasUnresolvedDeps, sorted, visited, recursionStack ++ hasUnresolvedDeps)
+                    else
+                        loop(
+                          hasUnresolvedDeps,
+                          sorted ++ allDepsResolved.toList,
+                          visited ++ allDepsResolved.toSet,
+                          recursionStack
+                        )
+                    end if
+                end if
+            end loop
+
+            val missing = items.flatMap(dependencies).toSet -- items.toSet
+            if missing.nonEmpty then
+                Left(StartupError.MissingDependency(missing))
+            else
+                loop(items, List.empty, Set.empty, Set.empty)
+
+    enum StartupError(val number: ErrorNumber) extends PillarsError:
+        override def code: Code = Code("STARTUP")
+
+        case CyclicDependencyError                 extends StartupError(ErrorNumber(1))
+        case MissingDependency[T](missing: Set[T]) extends StartupError(ErrorNumber(2))
+
+        override def message: Message = this match
+            case StartupError.CyclicDependencyError      => Message("Cyclic dependency found")
+            case StartupError.MissingDependency(missing) =>
+                if missing.size == 1 then
+                    Message(s"Missing dependency: ${missing.head}".assume)
+                else
+                    Message(s"${missing.size} missing dependencies: ${missing.mkString(", ")}".assume)
+    end StartupError
 end Pillars

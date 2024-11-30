@@ -46,7 +46,7 @@ trait ModuleSupport:
     type M[F[_]] <: Module[F]
     def key: Module.Key
 
-    def dependsOn: Set[Module.Key] = Set.empty
+    def dependsOn: Set[ModuleSupport] = Set.empty
 
     def load[F[_]: Async: Network: Tracer: Console](
         context: ModuleSupport.Context[F],

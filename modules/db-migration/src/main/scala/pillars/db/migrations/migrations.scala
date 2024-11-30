@@ -80,7 +80,7 @@ object DBMigration extends ModuleSupport:
     override type M[F[_]] = DBMigration[F]
     override val key: Module.Key = DBMigration.Key
 
-    override def dependsOn: Set[Module.Key] = Set(DB.Key)
+    override def dependsOn: Set[ModuleSupport] = Set(DB)
 
     def load[F[_]: Async: Network: Tracer: Console](
         context: ModuleSupport.Context[F],
