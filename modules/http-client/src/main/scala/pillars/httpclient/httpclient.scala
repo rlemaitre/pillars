@@ -31,6 +31,7 @@ import org.typelevel.otel4s.trace.Tracer
 import pillars.Logging
 import pillars.Module
 import pillars.Modules
+import pillars.ModuleSupport
 import pillars.Pillars
 import pillars.PillarsError
 import pillars.PillarsError.*
@@ -44,47 +45,7 @@ import sttp.tapir.ValidationError
 import sttp.tapir.client.http4s.Http4sClientInterpreter
 import sttp.tapir.client.http4s.Http4sClientOptions
 
-object HttpClientModule extends pillars.ModuleDef:
-    override type M[F[_]] = HttpClient[F]
-
-    override def key: Module.Key = HttpClient.Key
-
-    override def load[F[_]: Async: Network: Tracer: Console](
-        context: pillars.ModuleDef.Context[F],
-        modules: Modules[F]
-    ): Resource[F, HttpClient[F]] =
-        import context.*
-        given Files[F] = Files.forAsync[F]
-        for
-            _       <- Resource.eval(logger.info("Loading HTTP client module"))
-            conf    <- Resource.eval(reader.read[HttpClient.Config]("http-client"))
-            metrics <- ClientMetrics(observability).toResource
-            client  <- NettyClientBuilder[F]
-                           .withHttp2
-                           .withNioTransport
-                           .withUserAgent(conf.userAgent)
-                           .resource
-                           .map: client =>
-                               val logging        =
-                                   if conf.logging.enabled then
-                                       Logger[F](
-                                         logHeaders = conf.logging.headers,
-                                         logBody = conf.logging.body,
-                                         logAction = conf.logging.logAction
-                                       )
-                                   else identity[Client[F]]
-                               val followRedirect =
-                                   if conf.followRedirect then FollowRedirect[F](10) else identity[Client[F]]
-                               client
-                                   |> metrics.middleware
-                                   |> logging
-                                   |> followRedirect
-                                   |> HttpClient(conf)
-            _       <- Resource.eval(logger.info("HTTP client module loaded"))
-        yield client
-        end for
-    end load
-end HttpClientModule
+def http[F[_]](using p: Pillars[F]): HttpClient[F] = p.module[HttpClient[F]](HttpClient.Key)
 
 final case class HttpClient[F[_]: Async](config: HttpClient.Config)(client: org.http4s.client.Client[F])
     extends pillars.Module[F], Client[F]:
@@ -125,11 +86,50 @@ final case class HttpClient[F[_]: Async](config: HttpClient.Config)(client: org.
 
 end HttpClient
 
-def http[F[_]](using p: Pillars[F]): HttpClient[F] = p.module[HttpClient[F]](HttpClient.Key)
-
-object HttpClient:
+object HttpClient extends ModuleSupport:
     case object Key extends Module.Key:
         override def name: String = "http-client"
+
+    override type M[F[_]] = HttpClient[F]
+
+    override def key: Module.Key = HttpClient.Key
+
+    override def load[F[_]: Async: Network: Tracer: Console](
+        context: pillars.ModuleSupport.Context[F],
+        modules: Modules[F]
+    ): Resource[F, HttpClient[F]] =
+        import context.*
+        given Files[F] = Files.forAsync[F]
+
+        for
+            _       <- Resource.eval(logger.info("Loading HTTP client module"))
+            conf    <- Resource.eval(reader.read[HttpClient.Config]("http-client"))
+            metrics <- ClientMetrics(observability).toResource
+            client  <- NettyClientBuilder[F]
+                           .withHttp2
+                           .withNioTransport
+                           .withUserAgent(conf.userAgent)
+                           .resource
+                           .map: client =>
+                               val logging        =
+                                   if conf.logging.enabled then
+                                       Logger[F](
+                                         logHeaders = conf.logging.headers,
+                                         logBody = conf.logging.body,
+                                         logAction = conf.logging.logAction
+                                       )
+                                   else identity[Client[F]]
+                               val followRedirect =
+                                   if conf.followRedirect then FollowRedirect[F](10) else identity[Client[F]]
+                               client
+                                   |> metrics.middleware
+                                   |> logging
+                                   |> followRedirect
+                                   |> HttpClient(conf)
+            _       <- Resource.eval(logger.info("HTTP client module loaded"))
+        yield client
+        end for
+    end load
 
     final case class Config(
         followRedirect: Boolean = true,
@@ -183,6 +183,7 @@ object HttpClient:
               |endpoint: $endpoint
               |""")
     end Error
+
 end HttpClient
 
 trait FailureHandler[F[_], EO, O]:

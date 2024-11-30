@@ -20,8 +20,8 @@ import io.github.iltotore.iron.constraint.all.*
 import org.typelevel.otel4s.trace.Tracer
 import pillars.Config.*
 import pillars.Module
-import pillars.ModuleDef
 import pillars.Modules
+import pillars.ModuleSupport
 import pillars.Pillars
 import pillars.codec.given
 import pillars.probes.*
@@ -48,16 +48,15 @@ final case class DB[F[_]: Async: Network: Tracer: Console](config: DatabaseConfi
     end probes
 end DB
 
-object DB:
+object DB extends ModuleSupport:
     case object Key extends Module.Key:
         override val name: String = "db"
 
-object DBSkunkModule extends ModuleDef:
     override type M[F[_]] = DB[F]
     override val key: Module.Key = DB.Key
 
     def load[F[_]: Async: Network: Tracer: Console](
-        context: ModuleDef.Context[F],
+        context: ModuleSupport.Context[F],
         modules: Modules[F]
     ): Resource[F, DB[F]] =
         import context.*
@@ -86,7 +85,7 @@ object DBSkunkModule extends ModuleDef:
         yield DB(config, poolRes)
         end for
     end load
-end DBSkunkModule
+end DB
 
 final case class DatabaseConfig(
     host: Host = host"localhost",

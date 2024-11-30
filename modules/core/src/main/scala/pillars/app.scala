@@ -4,11 +4,14 @@
 
 package pillars
 
-import cats.effect.*
+import cats.Parallel
+import cats.effect.{IOApp as CEIOApp, *}
 import cats.effect.std.Console
+import cats.syntax.all.*
 import com.monovore.decline.Command
 import com.monovore.decline.Opts
 import fs2.io.file.Path
+import fs2.io.net.Network
 import io.github.iltotore.iron.*
 import io.github.iltotore.iron.constraint.all.*
 import pillars.App.Description
@@ -16,13 +19,27 @@ import pillars.App.Name
 import pillars.App.Version
 import pillars.probes.Probe
 
-trait App[F[_]]:
+abstract class App[F[_]: LiftIO: Async: Console: Network: Parallel](val modules: ModuleSupport*):
     def infos: AppInfo
-    def modules: List[ModuleDef]              = Nil
     def probes: List[Probe[F]]                = Nil
     def adminControllers: List[Controller[F]] = Nil
     def run: Run[F, F[Unit]]
+
+    import pillars.given
+    def run(args: List[String]): F[ExitCode] =
+        val command = Command(infos.name, infos.description):
+            Opts.option[Path]("config", "Path to the configuration file").map: configPath =>
+                Pillars(infos, modules, configPath).use: pillars =>
+                    given Pillars[F] = pillars
+                    run.as(ExitCode.Success)
+
+        command.parse(args, sys.env) match
+            case Left(help)  => Console[F].errorln(help).as(ExitCode.Error)
+            case Right(prog) => prog
+    end run
 end App
+
+abstract class IOApp(override val modules: ModuleSupport*) extends App[IO](modules*), CEIOApp
 
 object App:
     private type NameConstraint = Not[Blank]
@@ -48,19 +65,3 @@ trait BuildInfo:
     def description: String
     def toAppInfo: AppInfo = AppInfo(Name(name.assume), Version(version.assume), Description(description.assume))
 end BuildInfo
-
-trait EntryPoint extends IOApp:
-    import pillars.given
-    def app: App[IO]
-    override final def run(args: List[String]): IO[ExitCode] =
-        val command = Command(app.infos.name, app.infos.description):
-            Opts.option[Path]("config", "Path to the configuration file").map: configPath =>
-                Pillars(app.infos, app.modules, configPath).use: pillars =>
-                    given Pillars[IO] = pillars
-                    app.run.as(ExitCode.Success)
-
-        command.parse(args, sys.env) match
-            case Left(help)  => Console[IO].errorln(help).as(ExitCode.Error)
-            case Right(prog) => prog
-    end run
-end EntryPoint

@@ -26,8 +26,8 @@ import io.github.iltotore.iron.constraint.all.*
 import org.typelevel.otel4s.trace.Tracer
 import pillars.Config.Secret
 import pillars.Module
-import pillars.ModuleDef
 import pillars.Modules
+import pillars.ModuleSupport
 import pillars.Pillars
 import pillars.codec.given
 import pillars.probes.Component
@@ -50,7 +50,7 @@ final case class RabbitMQ[F[_]: Async](config: RabbitMQConfig, client: RabbitCli
     end probes
 end RabbitMQ
 
-object RabbitMQ:
+object RabbitMQ extends ModuleSupport:
     case object Key extends Module.Key:
         override val name: String = "rabbitmq"
 
@@ -59,14 +59,11 @@ object RabbitMQ:
     def apply[F[_]: Async](config: RabbitMQConfig): Resource[F, RabbitMQ[F]] =
         RabbitClient.default[F](config.convert).resource.map(apply(config, _))
 
-end RabbitMQ
-
-object RabbitMQModule extends ModuleDef:
     override type M[F[_]] = RabbitMQ[F]
     override val key: Module.Key = RabbitMQ.Key
 
     override def load[F[_]: Async: Network: Tracer: Console](
-        context: ModuleDef.Context[F],
+        context: ModuleSupport.Context[F],
         modules: Modules[F]
     ): Resource[F, RabbitMQ[F]] =
         import context.*
@@ -79,7 +76,8 @@ object RabbitMQModule extends ModuleDef:
         yield client
         end for
     end load
-end RabbitMQModule
+
+end RabbitMQ
 
 case class RabbitMQConfig(
     nodes: NonEmptyList[RabbitMQConfig.Node] = NonEmptyList.one(RabbitMQConfig.Node(host"localhost", port"5672")),

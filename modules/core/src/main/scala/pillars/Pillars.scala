@@ -78,7 +78,7 @@ object Pillars:
      */
     def apply[F[_]: LiftIO: Async: Console: Network: Parallel](
         infos: AppInfo,
-        modules: Seq[ModuleDef],
+        modules: Seq[ModuleSupport],
         path: Path
     ): Resource[F, Pillars[F]] =
         val configReader = Reader[F](path)
@@ -88,7 +88,7 @@ object Pillars:
             given Tracer[F] = obs.tracer
             _              <- Resource.eval(Logging.init(_config.log))
             _logger         = ScribeImpl[F](Sync[F])
-            context         = ModuleDef.Context(obs, configReader, _logger)
+            context         = ModuleSupport.Context(obs, configReader, _logger)
             _              <- Resource.eval(_logger.info("Loading modules..."))
             _modules       <- loadModules(modules, context)
             _              <- Resource.eval(_logger.debug(s"Loaded ${_modules.size} modules"))
@@ -118,8 +118,8 @@ object Pillars:
      * @return a resource that will instantiate the modules.
      */
     private def loadModules[F[_]: Async: Network: Tracer: Console](
-        modules: Seq[ModuleDef],
-        context: ModuleDef.Context[F]
+        modules: Seq[ModuleSupport],
+        context: ModuleSupport.Context[F]
     ): Resource[F, Modules[F]] =
         val loaders = modules
             .groupBy(_.key)
