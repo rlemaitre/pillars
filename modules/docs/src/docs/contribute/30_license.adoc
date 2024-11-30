@@ -1,0 +1,58 @@
+== Code of Conduct
+:toc: preamble
+:icons: font
+:jbake-type: page
+:jbake-status: published
+ifndef::imagesdir[]
+:imagesdir: ../images
+endif::imagesdir[]
+:idprefix:
+:idseparator: -
+
+= License
+
+Pillars is licensed under the terms of the Eclipse Public License 2.0 (EPL-2.0).
+
+== Eclipse Public License 2.0 (EPL-2.0)
+
+This program and the accompanying materials are made available under the terms of the Eclipse Public License 2.0, which is available at the following URL:
+
+link:https://www.eclipse.org/legal/epl-2.0/[Eclipse Public License 2.0]
+
+=== Key Points of the EPL-2.0
+
+1. **Source Code Availability**:
+- When you distribute the software in binary (compiled) form, you must make the source code available under the same license terms.
+
+2. **Modifications**:
+- You are free to modify the software, but modified versions must also comply with the terms of the EPL-2.0.
+
+3. **Derivative Works**:
+- If you create derivative works based on this software and distribute them, they must be licensed under the EPL-2.0.
+
+4. **Compatibility**:
+- Code licensed under the EPL-2.0 may be combined with code under other licenses, as long as this does not violate the terms of the EPL-2.0 or the other licenses.
+
+5. **Disclaimer**:
+- The software is provided "as is" without warranties or conditions of any kind.
+
+== How to Apply the EPL-2.0 to Your Code
+
+To apply this license to your code, include the following notice at the beginning of each file:
+
+[source,scala3]
+----
+/*
+ * • This program and the accompanying materials are made available under the
+ * • terms of the Eclipse Public License 2.0 which is available at
+ * • https://www.eclipse.org/legal/epl-2.0/
+ * •
+ * • SPDX-License-Identifier: EPL-2.0
+*/
+----
+
+== Questions?
+
+For more details about the Eclipse Public License 2.0, visit the official license page:
+
+link:https://www.eclipse.org/legal/epl-2.0/[https://www.eclipse.org/legal/epl-2.0/]

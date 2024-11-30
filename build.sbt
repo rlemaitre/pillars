@@ -23,12 +23,7 @@ ThisBuild / developers             := List(
     url("https://github.com/rlemaitre")
   )
 )
-ThisBuild / licenses += (
-  "Apache-2.0",
-  url(
-    "https://www.apache.org/licenses/LICENSE-2.0"
-  )
-)
+ThisBuild / licenses               := Seq("EPL-2.0" -> url("https://www.eclipse.org/legal/epl-2.0/"))
 ThisBuild / scalacOptions ++= ScalacOptions.tokensForVersion(
   ScalaVersion.V3_5_0,
   Set(

@@ -101,14 +101,14 @@ microsite.with {
 //    footerSO = '##Stackoverflow-url##'
     //
     // Github Repository
-    footerGithub = 'https://github.com/rlemaitre/pillars'
+    footerGithub = 'https://github.com/FunktionalIO/pillars'
     //
     // Slack Channel
 //    footerSlack = '##Slack-url##'
     //
     // Footer Text
     // example: <small class="text-white">built with docToolchain and jBake <br /> theme: docsy</small>
-    footerText = 'built with <a href="https://doctoolchain.org">docToolchain</a> and <a href="https://jbake.org">jBake</a> <br /> theme: Custom based on <a href="https://github.com/amiechen/codrops-scribbler/">Scribbler</a></small>'
+    footerText = 'Made with ❤️ by the Pillars team<br>Licensed with <a href="https://www.eclipse.org/legal/epl-2.0/">EPL-2.0</a><br>Powered by docToolchain and jBake'
     //
     // site title if no other title is given
     title = 'Pillars'

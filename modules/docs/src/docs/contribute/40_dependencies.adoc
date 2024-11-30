@@ -1,0 +1,88 @@
+== Code of Conduct
+:toc: preamble
+:icons: font
+:jbake-type: page
+:jbake-status: published
+ifndef::imagesdir[]
+:imagesdir: ../images
+endif::imagesdir[]
+:idprefix:
+:idseparator: -
+
+= Dependencies for Pillars
+
+This document lists all dependencies used in the Pillars project along with their associated licenses.
+
+== Runtime Dependencies
+
+[cols="3,2,2", options="header"]
+|===
+| Library | Version | License
+| link:https://github.com/typelevel/fs2[`co.fs2:fs2-core`] | `3.11.0` | Apache License 2.0
+| link:https://github.com/alejandrohdezma/http4s-munit[`com.alejandrohdezma:http4s-munit`] | `1.1.0` | Apache License 2.0
+| link:https://github.com/Comcast/ip4s[`com.comcast:ip4s-core`] | `3.6.0` | Apache License 2.0
+| link:https://github.com/bkirwi/decline[`com.monovore:decline`] | `2.4.1` | MIT License
+| link:https://github.com/bkirwi/decline[`com.monovore:decline-effect`] | `2.4.1` | MIT License
+| link:https://github.com/outr/scribe[`com.outr:scribe`] | `3.15.2` | Apache License 2.0
+| link:https://github.com/outr/scribe[`com.outr:scribe-cats`] | `3.15.2` | Apache License 2.0
+| link:https://github.com/outr/scribe[`com.outr:scribe-file`] | `3.15.2` | Apache License 2.0
+| link:https://github.com/outr/scribe[`com.outr:scribe-json-circe`] | `3.15.2` | Apache License 2.0
+| link:https://github.com/outr/scribe[`com.outr:scribe-slf4j`] | `3.15.2` | Apache License 2.0
+| link:https://github.com/softwaremill/sttp-openapi[`com.softwaremill.sttp.apispec:openapi-circe-yaml`] | `0.11.3` | Apache License 2.0
+| link:https://github.com/softwaremill/sttp[`com.softwaremill.sttp.client3:core`] | `3.10.1` | Apache License 2.0
+| link:https://github.com/softwaremill/tapir[`com.softwaremill.sttp.tapir:tapir-http4s-client`] | `1.11.9` | Apache License 2.0
+| link:https://github.com/softwaremill/tapir[`com.softwaremill.sttp.tapir:tapir-http4s-server`] | `1.11.9` | Apache License 2.0
+| link:https://github.com/softwaremill/tapir[`com.softwaremill.sttp.tapir:tapir-iron`] | `1.11.9` | Apache License 2.0
+| link:https://github.com/softwaremill/tapir[`com.softwaremill.sttp.tapir:tapir-json-circe`] | `1.11.9` | Apache License 2.0
+| link:https://github.com/softwaremill/tapir[`com.softwaremill.sttp.tapir:tapir-openapi-docs`] | `1.11.9` | Apache License 2.0
+| link:https://github.com/softwaremill/tapir[`com.softwaremill.sttp.tapir:tapir-opentelemetry-metrics`] | `1.11.9` | Apache License 2.0
+| link:https://github.com/softwaremill/tapir[`com.softwaremill.sttp.tapir:tapir-sttp-stub-server`] | `1.11.9` | Apache License 2.0
+| link:https://github.com/softwaremill/tapir[`com.softwaremill.sttp.tapir:tapir-swagger-ui-bundle`] | `1.11.9` | Apache License 2.0
+| link:https://github.com/profunktor/fs2-rabbit[`dev.profunktor:fs2-rabbit`] | `5.3.0` | Apache License 2.0
+| link:https://github.com/davenverse/rediculous[`io.chrisdavenport:rediculous`] | `0.5.1` | Apache License 2.0
+| link:https://github.com/circe/circe[`io.circe:circe-core`] | `0.14.10` | Apache License 2.0
+| link:https://github.com/circe/circe[`io.circe:circe-generic`] | `0.14.10` | Apache License 2.0
+| link:https://github.com/circe/circe[`io.circe:circe-parser`] | `0.14.10` | Apache License 2.0
+| link:https://github.com/circe/circe-yaml[`io.circe:circe-yaml`] | `0.16.0` | Apache License 2.0
+| link:https://github.com/Iltotore/iron[`io.github.iltotore:iron`] | `2.6.0` | MIT License
+| link:https://github.com/Iltotore/iron[`io.github.iltotore:iron-cats`] | `2.6.0` | MIT License
+| link:https://github.com/Iltotore/iron[`io.github.iltotore:iron-circe`] | `2.6.0` | MIT License
+| link:https://github.com/Iltotore/iron[`io.github.iltotore:iron-decline`] | `2.6.0` | MIT License
+| link:https://flywaydb.org[`org.flywaydb:flyway-core`] | `11.0.0` | Apache License 2.0
+| link:https://http4s.org[`org.http4s:http4s-circe`] | `0.23.29` | Apache License 2.0
+| link:https://http4s.org[`org.http4s:http4s-core`] | `0.23.29` | Apache License 2.0
+| link:https://http4s.org[`org.http4s:http4s-dsl`] | `0.23.29` | Apache License 2.0
+| link:https://http4s.org[`org.http4s:http4s-netty-client`] | `0.5.21` | Apache License 2.0
+| link:https://http4s.org[`org.http4s:http4s-netty-server`] | `0.5.21` | Apache License 2.0
+| link:https://jdbc.postgresql.org[`org.postgresql:postgresql`] | `42.7.4` | PostgreSQL License
+| link:https://scodec.org[`org.scodec:scodec-bits`] | `2.2.2` | Apache License 2.0
+| link:https://scodec.org[`org.scodec:scodec-core`] | `2.3.2` | Apache License 2.0
+| link:https://tpolecat.github.io/doobie[`org.tpolecat:doobie-core`] | `1.0.0-RC6` | Apache License 2.0
+| link:https://tpolecat.github.io/doobie[`org.tpolecat:doobie-hikari`] | `1.0.0-RC6` | Apache License 2.0
+| link:https://tpolecat.github.io/skunk[`org.tpolecat:skunk-core`] | `1.0.0-M8` | MIT License
+| link:https://tpolecat.github.io/skunk[`org.tpolecat:skunk-circe`] | `1.0.0-M8` | MIT License
+| link:https://github.com/typelevel/cats-collections[`org.typelevel:cats-collections-core`] | `0.9.9` | Apache License 2.0
+| link:https://github.com/typelevel/cats[`org.typelevel:cats-core`] | `2.12.0` | Apache License 2.0
+| link:https://github.com/typelevel/cats-effect[`org.typelevel:cats-effect`] | `3.5.7` | Apache License 2.0
+| link:https://github.com/typelevel/cats-time[`org.typelevel:cats-time`] | `0.5.1` | Apache License 2.0
+|===
+
+== Development Plugins
+
+[cols="3,2,2", options="header"]
+|===
+| Plugin | Version | License
+| link:https://github.com/sbt/sbt-buildinfo[`com.eed3si9n:sbt-buildinfo`] | `0.13.1` | Apache License 2.0
+| link:https://github.com/sbt/sbt-dynver[`com.github.sbt:sbt-dynver`] | `5.1.0` | Apache License 2.0
+| link:https://github.com/sbt/sbt-unidoc[`com.github.sbt:sbt-unidoc`] | `0.5.0` | Apache License 2.0
+| link:https://github.com/shiftleftsecurity/sbt-ci-release-early[`io.shiftleft:sbt-ci-release-early`] | `2.0.48` | Apache License 2.0
+| link:https://github.com/foundweekends/giter8[`org.foundweekends.giter8:sbt-giter8-scaffold`] | `0.16.2` | Apache License 2.0
+| link:https://github.com/JetBrains/sbt-ide-settings[`org.jetbrains.scala:sbt-ide-settings`] | `1.1.2` | Apache License 2.0
+| link:https://github.com/scalameta/sbt-scalafmt[`org.scalameta:sbt-scalafmt`] | `2.5.2` | Apache License 2.0
+| link:https://github.com/typelevel/sbt-tpolecat[`org.typelevel:sbt-tpolecat`] | `0.5.2` | Apache License 2.0
+|===
+
+[NOTE]
+====
+The above licenses were inferred from standard practices and documentation. Please verify with the official project pages to ensure accuracy.
+====
