@@ -1,64 +1,58 @@
-import org.typelevel.scalacoptions.ScalacOptions
-import org.typelevel.scalacoptions.ScalaVersion
+import xerial.sbt.Sonatype.GitHubHosting
+import xerial.sbt.Sonatype.sonatypeCentralHost
 
-ThisBuild / versionScheme          := Some("semver-spec")
-ThisBuild / scalaVersion           := "3.5.2"
-ThisBuild / organization           := "com.rlemaitre"
-ThisBuild / homepage               := Some(url("https://pillars.dev/"))
-ThisBuild / sonatypeCredentialHost := "s01.oss.sonatype.org"
-ThisBuild / sonatypeRepository     := "https://s01.oss.sonatype.org/service/local"
-ThisBuild / pgpPublicRing          := file("/tmp/public.asc")
-ThisBuild / pgpSecretRing          := file("/tmp/secret.asc")
-ThisBuild / pgpPassphrase          := sys.env.get("PGP_PASSWORD").map(_.toArray)
-ThisBuild / publishTo              := sonatypePublishToBundle.value
-ThisBuild / startYear              := Some(2023)
+ThisBuild / tlBaseVersion := "0.3" // your current series x.y
+
+ThisBuild / organization := "com.rlemaitre"
+ThisBuild / homepage     := Some(url("https://pillars.dev"))
+ThisBuild / startYear    := Some(2023)
+ThisBuild / licenses     := Seq("Apache-2.0" -> url("https://www.apache.org/licenses/LICENSE-2.0"))
+ThisBuild / developers ++= List(
+  // your GitHub handle and name
+  tlGitHubDev("rlemaitre", "Raphaël Lemaitre")
+)
+
+ThisBuild / sonatypeCredentialHost := sonatypeCentralHost
+ThisBuild / sonatypeProjectHosting := Some(GitHubHosting(
+  "FunktionalIO",
+  "pillars",
+  "github.com.lushly070@passmail.net"
+))
 ThisBuild / scmInfo                := Some(
-  ScmInfo(url("https://github.com/rlemaitre/pillars/"), "scm:git:git@github.com:rlemaitre/pillars.git")
+  ScmInfo(url("https://github.com/FunktionalIO/pillars"), "scm:git:git@github.com:FunktionalIO/pillars.git")
 )
-ThisBuild / developers             := List(
-  Developer(
-    "rlemaitre",
-    "Raphaël Lemaitre",
-    "raphael@rlemaitre.com",
-    url("https://github.com/rlemaitre")
-  )
-)
-ThisBuild / licenses += (
-  "Apache-2.0",
-  url(
-    "https://www.apache.org/licenses/LICENSE-2.0"
-  )
-)
-ThisBuild / scalacOptions ++= ScalacOptions.tokensForVersion(
-  ScalaVersion.V3_5_0,
-  Set(
-    ScalacOptions.deprecation,
-    ScalacOptions.feature,
-    ScalacOptions.fatalWarnings,
-    ScalacOptions.lint
-  ) ++ ScalacOptions.privateWarnOptions ++ ScalacOptions.privateWarnUnusedOptions
-) ++ Seq("-new-syntax")
-//javaOptions += "-Dotel.java.global-autoconfigure.enabled=true"
 
-Compile / scalacOptions ++= ScalacOptions.tokensForVersion(
-  ScalaVersion.V3_5_0,
-  Set(
-    ScalacOptions.sourceFuture,
-    ScalacOptions.deprecation,
-    ScalacOptions.feature,
-    ScalacOptions.fatalWarnings,
-    ScalacOptions.lint
-  ) ++ ScalacOptions.privateWarnOptions ++ ScalacOptions.privateWarnUnusedOptions
-) ++ Seq("-new-syntax", "-Xmax-inlines=128")
+val Scala3 = "3.5.2"
+ThisBuild / scalaVersion := Scala3 // the default Scala
+
+ThisBuild / githubWorkflowOSes         := Seq("ubuntu-latest")
+ThisBuild / githubWorkflowJavaVersions := Seq(JavaSpec.temurin("17"))
+
+ThisBuild / tlCiHeaderCheck          := false
+ThisBuild / tlCiScalafmtCheck        := true
+ThisBuild / tlCiMimaBinaryIssueCheck := true
+ThisBuild / tlCiDependencyGraphJob   := true
+ThisBuild / autoAPIMappings          := true
+
+val sharedSettings = Seq(
+  scalaVersion   := "3.5.2",
+  libraryDependencies ++= Seq(
+    "org.scalameta" %% "munit" % "1.0.2" % Test
+  ),
+  // Headers
+  headerMappings := headerMappings.value + (HeaderFileType.scala -> HeaderCommentStyle.cppStyleLineComment)
+//    headerLicense  := Some(HeaderLicense.Custom(
+//        """|Copyright (c) 2024-2024 by Raphaël Lemaitre and Contributors
+//           |This software is licensed under the Eclipse Public License v2.0 (EPL-2.0).
+//           |For more information see LICENSE or https://opensource.org/license/epl-2-0
+//           |""".stripMargin
+//    ))
+)
 
 enablePlugins(ScalaUnidocPlugin)
 
 outputStrategy := Some(StdoutOutput)
 
-//assumedVersionScheme := VersionScheme.Always
-//libraryDependencySchemes ++= Seq(
-//  "org.typelevel" %% "otel4s-core-trace" % VersionScheme.Always
-//)
 val libDependencySchemes = Seq(
   "io.circe"      %% "circe-yaml"        % VersionScheme.Always,
   "org.typelevel" %% "otel4s-core-trace" % VersionScheme.Always
