@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.3.23] - 2024-12-02
+### :wrench: Chores
+- [`c488ccf`](https://github.com/FunktionalIO/pillars/commit/c488ccfaee9c9309d06ab98a3fc017781c79f123) - Update sbt from 1.10.5 to 1.10.6 *(commit by [@scala-steward](https://github.com/scala-steward))*
+- [`378f780`](https://github.com/FunktionalIO/pillars/commit/378f780a07c383bc365aac4ec8f48fbe826049d3) - Update otel4s-sdk from 0.11.1 to 0.11.2 *(commit by [@scala-steward](https://github.com/scala-steward))*
+- [`d65f922`](https://github.com/FunktionalIO/pillars/commit/d65f922de546a3c0602dd443694558caf9122d77) - Update otel4s-sdk-exporter from 0.11.1 to 0.11.2 *(commit by [@scala-steward](https://github.com/scala-steward))*
+
+
 ## [v0.3.22] - 2024-11-29
 ### :bug: Bug Fixes
 - [`3762306`](https://github.com/FunktionalIO/pillars/commit/37623065606aa8afe701f88ea5b47169515605d5) - **doc**: admin urls *(commit by [@jprudent](https://github.com/jprudent))*
@@ -277,3 +284,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.3.20]: https://github.com/rlemaitre/pillars/compare/v0.3.19...v0.3.20
 [v0.3.21]: https://github.com/FunktionalIO/pillars/compare/v0.3.20...v0.3.21
 [v0.3.22]: https://github.com/FunktionalIO/pillars/compare/v0.3.21...v0.3.22
+[v0.3.23]: https://github.com/FunktionalIO/pillars/compare/v0.3.22...v0.3.23
