@@ -34,20 +34,20 @@ ThisBuild / tlCiMimaBinaryIssueCheck := true
 ThisBuild / tlCiDependencyGraphJob   := true
 ThisBuild / autoAPIMappings          := true
 
-val sharedSettings = Seq(
-  scalaVersion   := "3.5.2",
-  libraryDependencies ++= Seq(
-    "org.scalameta" %% "munit" % "1.0.2" % Test
-  ),
-  // Headers
-  headerMappings := headerMappings.value + (HeaderFileType.scala -> HeaderCommentStyle.cppStyleLineComment)
-//    headerLicense  := Some(HeaderLicense.Custom(
-//        """|Copyright (c) 2024-2024 by Raphaël Lemaitre and Contributors
-//           |This software is licensed under the Eclipse Public License v2.0 (EPL-2.0).
-//           |For more information see LICENSE or https://opensource.org/license/epl-2-0
-//           |""".stripMargin
-//    ))
-)
+//val sharedSettings = Seq(
+//  scalaVersion   := "3.5.2",
+//  libraryDependencies ++= Seq(
+//    "org.scalameta" %% "munit" % "1.0.2" % Test
+//  ),
+//  // Headers
+//  headerMappings := headerMappings.value + (HeaderFileType.scala -> HeaderCommentStyle.cppStyleLineComment)
+////    headerLicense  := Some(HeaderLicense.Custom(
+////        """|Copyright (c) 2024-2024 by Raphaël Lemaitre and Contributors
+////           |This software is licensed under the Eclipse Public License v2.0 (EPL-2.0).
+////           |For more information see LICENSE or https://opensource.org/license/epl-2-0
+////           |""".stripMargin
+////    ))
+//)
 
 enablePlugins(ScalaUnidocPlugin)
 
