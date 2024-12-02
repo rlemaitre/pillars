@@ -7,7 +7,7 @@ package pillars
 import munit.FunSuite
 
 class TopologicalSortSuite extends FunSuite:
-    import Pillars.*
+    import graph.*
     test("topologicalSort returns sorted list for acyclic graph defined as List"):
         val items: List[Char] = List('A', 'B', 'C', 'D', 'E')
         assertEquals(
@@ -33,7 +33,7 @@ class TopologicalSortSuite extends FunSuite:
                   case 'C' => List('A')
                   case _   => ???
           ,
-          Left(StartupError.CyclicDependencyError)
+          Left(GraphError.CyclicDependencyError)
         )
 
     test("topologicalSort returns error if a dependency is missing"):
@@ -45,7 +45,7 @@ class TopologicalSortSuite extends FunSuite:
                   case 'C' => List('A')
                   case _   => ???
           ,
-          Left(StartupError.MissingDependency(Set('B')))
+          Left(GraphError.MissingDependency(Set('B')))
         )
 
     test("topologicalSort returns sorted list for single node graph"):
