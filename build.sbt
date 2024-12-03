@@ -7,7 +7,7 @@ ThisBuild / tlBaseVersion := "0.3" // your current series x.y
 ThisBuild / organization := "com.rlemaitre"
 ThisBuild / homepage     := Some(url("https://pillars.dev"))
 ThisBuild / startYear    := Some(2023)
-ThisBuild / licenses     := Seq("Apache-2.0" -> url("https://www.apache.org/licenses/LICENSE-2.0"))
+ThisBuild / licenses     := Seq("EPL-2.0" -> url("https://www.eclipse.org/legal/epl-2.0/"))
 ThisBuild / developers ++= List(
   // your GitHub handle and name
   tlGitHubDev("rlemaitre", "Raphaël Lemaitre")
@@ -29,26 +29,26 @@ ThisBuild / scalaVersion := Scala3 // the default Scala
 ThisBuild / githubWorkflowOSes         := Seq("ubuntu-latest")
 ThisBuild / githubWorkflowJavaVersions := Seq(JavaSpec.graalvm("21"))
 
-ThisBuild / tlCiHeaderCheck          := false
+ThisBuild / tlCiHeaderCheck          := true
 ThisBuild / tlCiScalafmtCheck        := true
 ThisBuild / tlCiMimaBinaryIssueCheck := true
 ThisBuild / tlCiDependencyGraphJob   := true
 ThisBuild / autoAPIMappings          := true
 
-//val sharedSettings = Seq(
-//  scalaVersion   := "3.5.2",
-//  libraryDependencies ++= Seq(
-//    "org.scalameta" %% "munit" % "1.0.2" % Test
-//  ),
-//  // Headers
-//  headerMappings := headerMappings.value + (HeaderFileType.scala -> HeaderCommentStyle.cppStyleLineComment)
-////    headerLicense  := Some(HeaderLicense.Custom(
-////        """|Copyright (c) 2024-2024 by Raphaël Lemaitre and Contributors
-////           |This software is licensed under the Eclipse Public License v2.0 (EPL-2.0).
-////           |For more information see LICENSE or https://opensource.org/license/epl-2-0
-////           |""".stripMargin
-////    ))
-//)
+val sharedSettings = Seq(
+  scalaVersion   := "3.5.2",
+  libraryDependencies ++= Seq(
+    "org.scalameta" %% "munit" % "1.0.3" % Test
+  ),
+  // Headers
+  headerMappings := headerMappings.value + (HeaderFileType.scala -> HeaderCommentStyle.cppStyleLineComment),
+  headerLicense  := Some(HeaderLicense.Custom(
+    """|Copyright (c) 2024-2024 by Raphaël Lemaitre and Contributors
+           |This software is licensed under the Eclipse Public License v2.0 (EPL-2.0).
+           |For more information see LICENSE or https://opensource.org/license/epl-2-0
+           |""".stripMargin
+  ))
+)
 
 githubWorkflowGeneratedCI ++= Seq(
   WorkflowJob(
@@ -127,6 +127,7 @@ val libDependencySchemes = Seq(
 
 lazy val core = Project("pillars-core", file("modules/core"))
     .enablePlugins(BuildInfoPlugin)
+    .settings(sharedSettings)
     .settings(
       name                   := "pillars-core",
       description            := "pillars-core is a scala 3 library providing base services for writing backend applications",
@@ -139,6 +140,7 @@ lazy val core = Project("pillars-core", file("modules/core"))
 
 lazy val dbSkunk = Project("pillars-db-skunk", file("modules/db-skunk"))
     .enablePlugins(BuildInfoPlugin)
+    .settings(sharedSettings)
     .settings(
       name                   := "pillars-db-skunk",
       description            := "pillars-db-skunk is a scala 3 library providing database services for writing backend applications using skunk",
@@ -152,6 +154,7 @@ lazy val dbSkunk = Project("pillars-db-skunk", file("modules/db-skunk"))
 
 lazy val dbDoobie = Project("pillars-db-doobie", file("modules/db-doobie"))
     .enablePlugins(BuildInfoPlugin)
+    .settings(sharedSettings)
     .settings(
       name                   := "pillars-db-doobie",
       description            := "pillars-db-doobie is a scala 3 library providing database services for writing backend applications using doobie",
@@ -165,6 +168,7 @@ lazy val dbDoobie = Project("pillars-db-doobie", file("modules/db-doobie"))
 
 lazy val redisRediculous = Project("pillars-redis-rediculous", file("modules/redis-rediculous"))
     .enablePlugins(BuildInfoPlugin)
+    .settings(sharedSettings)
     .settings(
       name                   := "pillars-redis-rediculous",
       description            := "pillars-redis-rediculous is a scala 3 library providing redis services for writing backend applications using rediculous",
@@ -178,6 +182,7 @@ lazy val redisRediculous = Project("pillars-redis-rediculous", file("modules/red
 
 lazy val dbMigrations = Project("pillars-db-migration", file("modules/db-migration"))
     .enablePlugins(BuildInfoPlugin)
+    .settings(sharedSettings)
     .settings(
       name                                        := "pillars-db-migration",
       description                                 := "pillars-db is a scala 3 library providing database migrations",
@@ -192,6 +197,7 @@ lazy val dbMigrations = Project("pillars-db-migration", file("modules/db-migrati
 
 lazy val rabbitmqFs2 = Project("pillars-rabbitmq-fs2", file("modules/rabbitmq-fs2"))
     .enablePlugins(BuildInfoPlugin)
+    .settings(sharedSettings)
     .settings(
       name                   := "pillars-rabbitmq-fs2",
       description            := "pillars-rabbitmq-fs2 is a scala 3 library providing RabbitMQ services for writing backend applications using fs2-rabbit",
@@ -205,6 +211,7 @@ lazy val rabbitmqFs2 = Project("pillars-rabbitmq-fs2", file("modules/rabbitmq-fs
 
 lazy val flags = Project("pillars-flags", file("modules/flags"))
     .enablePlugins(BuildInfoPlugin)
+    .settings(sharedSettings)
     .settings(
       name                   := "pillars-flags",
       description            := "pillars-flag is a scala 3 library providing feature flag services for writing backend applications",
@@ -218,6 +225,7 @@ lazy val flags = Project("pillars-flags", file("modules/flags"))
 
 lazy val httpClient = Project("pillars-http-client", file("modules/http-client"))
     .enablePlugins(BuildInfoPlugin)
+    .settings(sharedSettings)
     .settings(
       name                   := "pillars-http-client",
       description            := "pillars-http-client is a scala 3 library providing http client services for writing backend applications",
@@ -232,6 +240,7 @@ lazy val httpClient = Project("pillars-http-client", file("modules/http-client")
 // tag::example[]
 lazy val example = Project("pillars-example", file("modules/example"))
     .enablePlugins(BuildInfoPlugin) // //<1>
+    .settings(sharedSettings)
     .settings(
       name                   := "pillars-example",                                            // //<2>
       description            := "pillars-example is an example of application using pillars", // //<3>
@@ -246,6 +255,7 @@ lazy val example = Project("pillars-example", file("modules/example"))
     .dependsOn(core, dbSkunk, flags, httpClient, dbMigrations)
 // end::example[]
 lazy val docs = Project("pillars-docs", file("modules/docs"))
+    .settings(sharedSettings)
     .settings(
       name                   := "pillars-docs",
       publish / skip         := true,
@@ -257,8 +267,10 @@ lazy val docs = Project("pillars-docs", file("modules/docs"))
 lazy val pillars = project
     .in(file("."))
     .aggregate(core, example, docs, dbSkunk, dbDoobie, dbMigrations, flags, httpClient, rabbitmqFs2, redisRediculous)
+    .settings(sharedSettings)
     .settings(
       name                                       := "pillars",
+      publish / skip                             := true,
       publishArtifact                            := false,
       tlMimaPreviousVersions                     := Set.empty,
       ScalaUnidoc / unidoc / unidocProjectFilter := inAnyProject -- inProjects(example, docs),
