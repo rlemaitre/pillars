@@ -73,15 +73,15 @@ jobs:
         run: sbt '++ ${{ matrix.scala }}' doc
 
       - name: Make target directories
-        if: github.event_name != 'pull_request' && (startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/main')
+        if: github.event_name != 'pull_request' && (startsWith(github.ref, 'refs/tags/v'))
         run: mkdir -p modules/core/target modules/example/target modules/db-migration/target modules/http-client/target modules/db-skunk/target modules/flags/target modules/redis-rediculous/target modules/rabbitmq-fs2/target modules/docs/target modules/db-doobie/target project/target
 
       - name: Compress target directories
-        if: github.event_name != 'pull_request' && (startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/main')
+        if: github.event_name != 'pull_request' && (startsWith(github.ref, 'refs/tags/v'))
         run: tar cf targets.tar modules/core/target modules/example/target modules/db-migration/target modules/http-client/target modules/db-skunk/target modules/flags/target modules/redis-rediculous/target modules/rabbitmq-fs2/target modules/docs/target modules/db-doobie/target project/target
 
       - name: Upload target directories
-        if: github.event_name != 'pull_request' && (startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/main')
+        if: github.event_name != 'pull_request' && (startsWith(github.ref, 'refs/tags/v'))
         uses: actions/upload-artifact@v4
         with:
           name: target-${{ matrix.os }}-${{ matrix.java }}-${{ matrix.scala }}
@@ -90,7 +90,7 @@ jobs:
   publish:
     name: Publish Artifacts
     needs: [build]
-    if: github.event_name != 'pull_request' && (startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/main')
+    if: github.event_name != 'pull_request' && (startsWith(github.ref, 'refs/tags/v'))
     strategy:
       matrix:
         os: [ubuntu-latest]
