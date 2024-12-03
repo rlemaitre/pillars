@@ -1,3 +1,14 @@
-pillars
-Copyright 2023 Raphaël Lemaitre
-Licensed under Apache License 2.0 (see LICENSE)
+Copyright (c) 2023-2024 Raphaël
+
+This product includes software developed by the Pillars project contributors.
+
+Licensed under the Eclipse Public License 2.0 (EPL-2.0).
+You may obtain a copy of the license at:
+
+    https://www.eclipse.org/legal/epl-2.0/
+
+This product also includes dependencies licensed under various open-source licenses.
+See the dependencies.adoc file for details.
+
+Third-party attributions:
+- Portions of this software are derived from or inspired by open-source projects listed in dependencies.adoc.
