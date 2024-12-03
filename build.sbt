@@ -13,7 +13,7 @@ ThisBuild / developers ++= List(
   tlGitHubDev("rlemaitre", "Raphaël Lemaitre")
 )
 
-ThisBuild / sonatypeCredentialHost := sonatypeCentralHost
+//ThisBuild / sonatypeCredentialHost := sonatypeCentralHost
 ThisBuild / sonatypeProjectHosting := Some(GitHubHosting(
   "FunktionalIO",
   "pillars",
