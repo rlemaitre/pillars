@@ -22,7 +22,7 @@ include::{projectRootDir}/modules/example/src/main/resources/config.yaml[tag=pil
 ----
 
 [NOTE]
-If you are using the `EntryPoint` trait, the path to this file must be given to the application using the `--config` command line option.
+When using the `pillars.IOApp` trait, the path to this file must be given to the application using the `--config` command line option.
 
 The config *must* contain the following keys:
 

@@ -19,12 +19,12 @@ import skunk.implicits.*
 
 // tag::quick-start[]
 object app extends pillars.IOApp(DB, DBMigration, FeatureFlags, HttpClient): // // <1>
-    def infos: AppInfo = BuildInfo.toAppInfo // // <3>
+    def infos: AppInfo = BuildInfo.toAppInfo // // <2>
 
-    def run: Run[IO, IO[Unit]] = // // <4>
+    def run: Run[IO, IO[Unit]] = // // <3>
         for
             _ <- logger.info(s"📚 Welcome to ${config.name}!")
-            _ <- dbMigration.migrate("classpath:db-migrations") // // <5>
+            _ <- dbMigration.migrate("classpath:db-migrations") // // <4>
             _ <- flag"feature-1".whenEnabled:
                      sessions.use: session =>
                          for
@@ -37,7 +37,7 @@ object app extends pillars.IOApp(DB, DBMigration, FeatureFlags, HttpClient): // 
                          size <- response.body.compile.count
                          _    <- logger.info(s"Body: $size bytes")
                      yield ()
-            _ <- server.start(homeController, userController)   // // <6>
+            _ <- server.start(homeController, userController)   // // <5>
         yield ()
         end for
     end run

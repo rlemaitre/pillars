@@ -1,6 +1,5 @@
 import org.typelevel.sbt.gha.Permissions
 import xerial.sbt.Sonatype.GitHubHosting
-import xerial.sbt.Sonatype.sonatypeCentralHost
 
 ThisBuild / tlBaseVersion := "0.3" // your current series x.y
 
@@ -244,10 +243,10 @@ lazy val example = Project("pillars-example", file("modules/example"))
     .settings(
       name                   := "pillars-example",                                            // //<2>
       description            := "pillars-example is an example of application using pillars", // //<3>
-      libraryDependencies ++= Dependencies.tests ++ Dependencies.migrationsRuntime,
-      buildInfoKeys          := Seq[BuildInfoKey](name, version, description),                // //<4>
-      buildInfoOptions       := Seq(BuildInfoOption.Traits("pillars.BuildInfo")),             // //<5>
-      buildInfoPackage       := "example.build",                                              // //<6>
+      libraryDependencies ++= Dependencies.tests ++ Dependencies.migrationsRuntime, // //<4>
+      buildInfoKeys          := Seq[BuildInfoKey](name, version, description),                // //<5>
+      buildInfoOptions       := Seq(BuildInfoOption.Traits("pillars.BuildInfo")),             // //<6>
+      buildInfoPackage       := "example.build",                                              // //<7>
       publish / skip         := true,
       tlMimaPreviousVersions := Set.empty,
       libraryDependencySchemes ++= libDependencySchemes
