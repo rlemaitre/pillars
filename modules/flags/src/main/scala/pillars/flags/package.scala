@@ -30,10 +30,10 @@ package object flags:
 
     given Schema[FeatureFlag] = Schema.derived
     extension [F[_]](p: Pillars[F])
-        def flags: FlagManager[F] = p.module(FlagManager.Key)
+        def flags: FeatureFlags[F] = p.module(FeatureFlags.Key)
 
         def whenEnabled[A](flag: Flag)(thunk: => F[A]): F[Unit] =
-            p.module[FlagManager[F]](FlagManager.Key).when(flag)(thunk)
+            p.module[FeatureFlags[F]](FeatureFlags.Key).when(flag)(thunk)
     end extension
 
     extension (inline ctx: StringContext)
@@ -45,5 +45,5 @@ package object flags:
 
     extension (flag: Flag)
         def whenEnabled[F[_], A](using p: Pillars[F])(thunk: => F[A]): F[Unit] =
-            p.module[FlagManager[F]](FlagManager.Key).when(flag)(thunk)
+            p.module[FeatureFlags[F]](FeatureFlags.Key).when(flag)(thunk)
 end flags

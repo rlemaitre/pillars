@@ -10,7 +10,7 @@ import munit.CatsEffectSuite
 import org.typelevel.otel4s.trace.Tracer
 import pillars.flags.*
 
-class FlagManagerTests extends CatsEffectSuite:
+class FeatureFlagsTests extends CatsEffectSuite:
 
     val flag1               = FeatureFlag(flag"flag1", Status.Enabled)
     val flag2               = FeatureFlag(flag"flag2", Status.Disabled)
@@ -20,7 +20,7 @@ class FlagManagerTests extends CatsEffectSuite:
         given Tracer[IO] = Tracer.noop[IO]
         val flag         =
             for
-                manager <- FlagManagerLoader().createManager[IO](config)
+                manager <- FeatureFlags.createManager[IO](config)
                 flag    <- manager.getFlag(flag"flag1")
             yield flag
         assertIO(flag, flag1.some)
@@ -29,7 +29,7 @@ class FlagManagerTests extends CatsEffectSuite:
         given Tracer[IO] = Tracer.noop[IO]
         val flag         =
             for
-                manager <- FlagManagerLoader().createManager[IO](config)
+                manager <- FeatureFlags.createManager[IO](config)
                 flag    <- manager.getFlag(flag"undefined")
             yield flag
         assertIO(flag, none)
@@ -38,7 +38,7 @@ class FlagManagerTests extends CatsEffectSuite:
         given Tracer[IO]          = Tracer.noop[IO]
         def isEnabled(flag: Flag) =
             for
-                manager <- FlagManagerLoader().createManager[IO](config)
+                manager <- FeatureFlags.createManager[IO](config)
                 enabled <- manager.isEnabled(flag)
             yield enabled
         for
@@ -53,7 +53,7 @@ class FlagManagerTests extends CatsEffectSuite:
         var called       = false
         val performed    =
             for
-                manager <- FlagManagerLoader().createManager[IO](config)
+                manager <- FeatureFlags.createManager[IO](config)
                 _       <- manager.when(flag"flag1")(IO { called = true })
             yield called
         assertIO(performed, true)
@@ -63,7 +63,7 @@ class FlagManagerTests extends CatsEffectSuite:
         var called       = false
         val performed    =
             for
-                manager <- FlagManagerLoader().createManager[IO](config)
+                manager <- FeatureFlags.createManager[IO](config)
                 _       <- manager.when(flag"flag2")(IO { called = true })
             yield called
         assertIO(performed, false)
@@ -73,7 +73,7 @@ class FlagManagerTests extends CatsEffectSuite:
         var called       = false
         val performed    =
             for
-                manager <- FlagManagerLoader().createManager[IO](config)
+                manager <- FeatureFlags.createManager[IO](config)
                 _       <- manager.when(flag"undefined")(IO { called = true })
             yield called
         assertIO(performed, false)
@@ -82,7 +82,7 @@ class FlagManagerTests extends CatsEffectSuite:
         given Tracer[IO] = Tracer.noop[IO]
         val modified     =
             for
-                manager <- FlagManagerLoader().createManager[IO](config)
+                manager <- FeatureFlags.createManager[IO](config)
                 _       <- manager.setStatus(flag"flag1", Status.Disabled)
                 flag    <- manager.getFlag(flag"flag1")
             yield flag
@@ -92,10 +92,10 @@ class FlagManagerTests extends CatsEffectSuite:
         given Tracer[IO] = Tracer.noop[IO]
         val modified     =
             for
-                manager <- FlagManagerLoader().createManager[IO](config)
+                manager <- FeatureFlags.createManager[IO](config)
                 _       <- manager.setStatus(flag"undefined", Status.Disabled)
                 flag    <- manager.getFlag(flag"undefined")
             yield flag
         assertIO(modified, none)
 
-end FlagManagerTests
+end FeatureFlagsTests

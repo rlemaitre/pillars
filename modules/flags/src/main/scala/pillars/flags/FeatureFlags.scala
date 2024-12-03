@@ -14,12 +14,12 @@ import fs2.io.file.Files
 import fs2.io.net.Network
 import org.typelevel.otel4s.trace.Tracer
 import pillars.Controller
-import pillars.Loader
 import pillars.Module
 import pillars.Modules
+import pillars.ModuleSupport
 import pillars.Pillars
 
-trait FlagManager[F[_]: Sync] extends Module[F]:
+trait FeatureFlags[F[_]: Sync] extends Module[F]:
     override type ModuleConfig = FlagsConfig
     def isEnabled(flag: Flag): F[Boolean]
     def config: FlagsConfig
@@ -33,33 +33,31 @@ trait FlagManager[F[_]: Sync] extends Module[F]:
             case false => Sync[F].unit
 
     extension (pillars: Pillars[F])
-        def flags: FlagManager[F]                        = this
+        def flags: FeatureFlags[F]                       = this
         def when(flag: Flag)(thunk: => F[Unit]): F[Unit] = this.when(flag)(thunk)
     end extension
-end FlagManager
+end FeatureFlags
 
-object FlagManager:
+object FeatureFlags extends ModuleSupport:
     case object Key extends Module.Key:
         def name: String = "feature-flags"
     end Key
-    def noop[F[_]: Sync](conf: FlagsConfig): FlagManager[F] =
-        new FlagManager[F]:
+    def noop[F[_]: Sync](conf: FlagsConfig): FeatureFlags[F] =
+        new FeatureFlags[F]:
             def isEnabled(flag: Flag): F[Boolean]                    = false.pure[F]
             override def config: FlagsConfig                         = conf
             def getFlag(name: Flag): F[Option[FeatureFlag]]          = None.pure[F]
             def flags: F[List[FeatureFlag]]                          = List.empty.pure[F]
             private[flags] def setStatus(flag: Flag, status: Status) = None.pure[F]
-end FlagManager
 
-class FlagManagerLoader extends Loader:
-    override type M[F[_]] = FlagManager[F]
+    override type M[F[_]] = FeatureFlags[F]
 
-    override def key: Module.Key = FlagManager.Key
+    override def key: Module.Key = FeatureFlags.Key
 
     def load[F[_]: Async: Network: Tracer: Console](
-        context: Loader.Context[F],
+        context: ModuleSupport.Context[F],
         modules: Modules[F]
-    ): Resource[F, FlagManager[F]] =
+    ): Resource[F, FeatureFlags[F]] =
         import context.*
         given Files[F] = Files.forAsync[F]
         Resource.eval:
@@ -71,14 +69,14 @@ class FlagManagerLoader extends Loader:
             yield manager
     end load
 
-    private[flags] def createManager[F[_]: Async: Network: Tracer: Console](conf: FlagsConfig): F[FlagManager[F]] =
-        if !conf.enabled then Sync[F].pure(FlagManager.noop[F](conf))
+    private[flags] def createManager[F[_]: Async: Network: Tracer: Console](conf: FlagsConfig): F[FeatureFlags[F]] =
+        if !conf.enabled then Sync[F].pure(FeatureFlags.noop[F](conf))
         else
             val flags = conf.flags.groupBy(_.name).map((name, flags) => name -> flags.head)
             Ref
                 .of[F, Map[Flag, FeatureFlag]](flags)
                 .map: ref =>
-                    new FlagManager[F]:
+                    new FeatureFlags[F]:
                         def flags: F[List[FeatureFlag]] = ref.get.map(_.values.toList)
 
                         override def config: FlagsConfig = conf
@@ -100,4 +98,4 @@ class FlagManagerLoader extends Loader:
                         override def adminControllers: List[Controller[F]] = flagController(this).pure[List]
         end if
     end createManager
-end FlagManagerLoader
+end FeatureFlags

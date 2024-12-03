@@ -17,8 +17,8 @@ import io.github.iltotore.iron.circe.given
 import io.github.iltotore.iron.constraint.all.*
 import org.typelevel.otel4s.trace.Tracer
 import pillars.Config.Secret
-import pillars.Loader
 import pillars.Module
+import pillars.ModuleDef
 import pillars.Modules
 import pillars.Pillars
 import pillars.codec.given
@@ -29,7 +29,7 @@ import scala.language.postfixOps
 trait $Prefix$Client[F[_]]
 
 extension [F[_]](p: Pillars[F])
-    def $lowerCaseModuleName$ : $Prefix$[F] = p.module[$Prefix$[F]]($Prefix$.Key)
+def $lowerCaseModuleName$[F[_]](using p: Pillars[F]): $Prefix$[F] = p.module[$Prefix$[F]]($Prefix$.Key)
 
 final case class $Prefix$[F[_]: Async](client: $Prefix$Client[F]) extends Module[F]:
     export client.*
@@ -54,7 +54,7 @@ object $Prefix$ :
 
 end $Prefix$
 
-class $Prefix$Loader extends Loader:
+object $Prefix$Module extends ModuleDef:
     override type M[F[_]] = $Prefix$[F]
     override val key: Module.Key = $Prefix$.Key
 

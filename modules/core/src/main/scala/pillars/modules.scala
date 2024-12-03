@@ -42,22 +42,22 @@ end Modules
 object Modules:
     def empty[F[_]]: Modules[F] = Modules(Map.empty)
 
-trait Loader:
+trait ModuleSupport:
     type M[F[_]] <: Module[F]
     def key: Module.Key
 
-    def dependsOn: Set[Module.Key] = Set.empty
+    def dependsOn: Set[ModuleSupport] = Set.empty
 
     def load[F[_]: Async: Network: Tracer: Console](
-        context: Loader.Context[F],
+        context: ModuleSupport.Context[F],
         modules: Modules[F] = Modules.empty
     ): Resource[F, M[F]]
-end Loader
+end ModuleSupport
 
-object Loader:
+object ModuleSupport:
     final case class Context[F[_]: Async: Network: Tracer: Console](
         observability: Observability[F],
         reader: Reader[F],
         logger: Scribe[F]
     )
-end Loader
+end ModuleSupport

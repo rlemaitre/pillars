@@ -1,8 +1,7 @@
 import org.typelevel.sbt.gha.Permissions
 import xerial.sbt.Sonatype.GitHubHosting
-import xerial.sbt.Sonatype.sonatypeCentralHost
 
-ThisBuild / tlBaseVersion := "0.3" // your current series x.y
+ThisBuild / tlBaseVersion := "0.4" // your current series x.y
 
 ThisBuild / organization := "com.rlemaitre"
 ThisBuild / homepage     := Some(url("https://pillars.dev"))
@@ -134,7 +133,7 @@ lazy val core = Project("pillars-core", file("modules/core"))
       libraryDependencies ++= Dependencies.core,
       buildInfoKeys          := Seq[BuildInfoKey](name, version, description),
       buildInfoPackage       := "pillars.build",
-      tlMimaPreviousVersions := Set("0.3.20"),
+      tlMimaPreviousVersions := Set(),
       libraryDependencySchemes ++= libDependencySchemes
     )
 
@@ -147,7 +146,7 @@ lazy val dbSkunk = Project("pillars-db-skunk", file("modules/db-skunk"))
       libraryDependencies ++= Dependencies.skunk,
       buildInfoKeys          := Seq[BuildInfoKey](name, version, description),
       buildInfoPackage       := "pillars.db.build",
-      tlMimaPreviousVersions := Set("0.3.20"),
+      tlMimaPreviousVersions := Set(),
       libraryDependencySchemes ++= libDependencySchemes
     )
     .dependsOn(core)
@@ -161,7 +160,7 @@ lazy val dbDoobie = Project("pillars-db-doobie", file("modules/db-doobie"))
       libraryDependencies ++= Dependencies.doobie,
       buildInfoKeys          := Seq[BuildInfoKey](name, version, description),
       buildInfoPackage       := "pillars.doobie.build",
-      tlMimaPreviousVersions := Set("0.3.20"),
+      tlMimaPreviousVersions := Set(),
       libraryDependencySchemes ++= libDependencySchemes
     )
     .dependsOn(core)
@@ -175,7 +174,7 @@ lazy val redisRediculous = Project("pillars-redis-rediculous", file("modules/red
       libraryDependencies ++= Dependencies.rediculous,
       buildInfoKeys          := Seq[BuildInfoKey](name, version, description),
       buildInfoPackage       := "pillars.doobie.build",
-      tlMimaPreviousVersions := Set("0.3.20"),
+      tlMimaPreviousVersions := Set(),
       libraryDependencySchemes ++= libDependencySchemes
     )
     .dependsOn(core)
@@ -190,7 +189,7 @@ lazy val dbMigrations = Project("pillars-db-migration", file("modules/db-migrati
       libraryDependencies ++= Dependencies.migrations,
       buildInfoKeys                               := Seq[BuildInfoKey](name, version, description),
       buildInfoPackage                            := "pillars.db.migrations.build",
-      tlMimaPreviousVersions                      := Set("0.3.20"),
+      tlMimaPreviousVersions                      := Set(),
       libraryDependencySchemes ++= libDependencySchemes
     )
     .dependsOn(core, dbSkunk)
@@ -204,7 +203,7 @@ lazy val rabbitmqFs2 = Project("pillars-rabbitmq-fs2", file("modules/rabbitmq-fs
       libraryDependencies ++= Dependencies.fs2Rabbit,
       buildInfoKeys          := Seq[BuildInfoKey](name, version, description),
       buildInfoPackage       := "pillars.rabbitmq.fs2.build",
-      tlMimaPreviousVersions := Set("0.3.20"),
+      tlMimaPreviousVersions := Set(),
       libraryDependencySchemes ++= libDependencySchemes
     )
     .dependsOn(core)
@@ -218,7 +217,7 @@ lazy val flags = Project("pillars-flags", file("modules/flags"))
       libraryDependencies ++= Dependencies.flags,
       buildInfoKeys          := Seq[BuildInfoKey](name, version, description),
       buildInfoPackage       := "pillars.flags.build",
-      tlMimaPreviousVersions := Set("0.3.20"),
+      tlMimaPreviousVersions := Set(),
       libraryDependencySchemes ++= libDependencySchemes
     )
     .dependsOn(core)
@@ -232,7 +231,7 @@ lazy val httpClient = Project("pillars-http-client", file("modules/http-client")
       libraryDependencies ++= Dependencies.httpClient,
       buildInfoKeys          := Seq[BuildInfoKey](name, version, description),
       buildInfoPackage       := "pillars.httpclient.build",
-      tlMimaPreviousVersions := Set("0.3.20"),
+      tlMimaPreviousVersions := Set(),
       libraryDependencySchemes ++= libDependencySchemes
     )
     .dependsOn(core)
@@ -244,10 +243,10 @@ lazy val example = Project("pillars-example", file("modules/example"))
     .settings(
       name                   := "pillars-example",                                            // //<2>
       description            := "pillars-example is an example of application using pillars", // //<3>
-      libraryDependencies ++= Dependencies.tests ++ Dependencies.migrationsRuntime,
-      buildInfoKeys          := Seq[BuildInfoKey](name, version, description),                // //<4>
-      buildInfoOptions       := Seq(BuildInfoOption.Traits("pillars.BuildInfo")),             // //<5>
-      buildInfoPackage       := "example.build",                                              // //<6>
+      libraryDependencies ++= Dependencies.tests ++ Dependencies.migrationsRuntime, // //<4>
+      buildInfoKeys          := Seq[BuildInfoKey](name, version, description),                // //<5>
+      buildInfoOptions       := Seq(BuildInfoOption.Traits("pillars.BuildInfo")),             // //<6>
+      buildInfoPackage       := "example.build",                                              // //<7>
       publish / skip         := true,
       tlMimaPreviousVersions := Set.empty,
       libraryDependencySchemes ++= libDependencySchemes

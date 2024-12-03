@@ -49,18 +49,21 @@ First, you need to create a xref:20_features/10_configuration.adoc[configuration
 You can find an example in the `modules/example/src/main/resources/application.conf` file.
 
 
-Then, you can create your entry point by extending the `EntryPoint` trait:
+Then, you can create your entry point by extending the `pillars.IOApp` trait:
 
 [source,scala,linenums,role="data-noescape"]
 ----
 include::{projectRootDir}/modules/example/src/main/scala/example/app.scala[tag=quick-start]
 ----
 <1> The `EntryPoint` trait is a simple trait that provides a `main` method and initialize the `Pillars` instance.
-<2> The `pillars.App[IO]` must contain your application logic
-<3> `infos` defines some metadata about your application.
+<2> `infos` defines some metadata about your application.
 It is used by the admin server to display information about your application.
-See
-<4> The `run` is the entry point of your application. Here, you have access to the `Pillars` instance.
+See <<Application Metadata>> for more information.
+<3> The `run` is the entry point of your application.
+Thanks to the `Run[F[_], T]` context function, you have access to a `Pillars[F]` instance that contains all your modules.
+<4> Each module is accessible through the `Pillars` instance or through a top-level function in the module's package.
+The `dbMigration.migrate` function is a top-level function that is provided by the `db-migration` module.
+<5> The API server must be started with the `server.start` function with the controllers you want to expose.
 
 Then, you can run your application. For example, you can run it with `sbt`:
 
@@ -133,11 +136,18 @@ include::{projectRootDir}/build.sbt[tag=example]
 <1> Enable the `BuildInfo` plugin
 <2> Define the name of your application
 <3> Define the description of your application
-<4> Tell buildinfo to generate the `BuildInfo` object including at least `name`, `description` and `version` properties.
+<4> Declare the dependencies you want to use in your app.
+<5> Tell buildinfo to generate the `BuildInfo` object including at least `name`, `description` and `version` properties.
 In this specific case, `version` is defined by the link:https://github.com/sbt/sbt-dynver[sbt-dynver] plugin.
-<5> Configure BuildInfo to implement the `pillars.BuildInfo` trait.
+<6> Configure BuildInfo to implement the `pillars.BuildInfo` trait.
 It is required to use the `BuildInfo` object in your application.
-<6> Specify in which package will be generated the `BuildInfo` object.
+<7> Specify in which package will be generated the `BuildInfo` object.
+
+[CAUTION]
+====
+If you use the `db-migration` module, you have to add a dependency to your JDBC driver and possibly to a flyway
+specific library for your DB (`org.flyway:flyway-postgresql` for PostgreSQL for example).
+====
 
 Then, you can use the `BuildInfo` object in your application:
 
@@ -145,7 +155,6 @@ Then, you can use the `BuildInfo` object in your application:
 ----
 import example.build.BuildInfo
 
-val app = new App[IO]:
   override val infos = BuildInfo.toAppInfo
-  override def run(pillars: Pillars[IO]): IO[Unit] = ???
+  override def run(): Run[IO, IO[Unit]] = ???
 ----

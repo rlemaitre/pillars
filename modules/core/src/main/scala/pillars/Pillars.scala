@@ -11,13 +11,12 @@ import cats.syntax.all.*
 import fs2.io.file.Path
 import fs2.io.net.Network
 import io.circe.Decoder
-import java.util.ServiceLoader
 import org.typelevel.otel4s.trace.Tracer
 import pillars.Config.PillarsConfig
 import pillars.Config.Reader
+import pillars.graph.*
 import pillars.probes.ProbeManager
 import pillars.probes.probesController
-import scala.jdk.CollectionConverters.IterableHasAsScala
 import scribe.*
 
 /**
@@ -78,7 +77,11 @@ object Pillars:
      * @param path The path to the configuration file.
      * @return a resource that will create a new instance of Pillars.
      */
-    def apply[F[_]: LiftIO: Async: Console: Network: Parallel](infos: AppInfo, path: Path): Resource[F, Pillars[F]] =
+    def apply[F[_]: LiftIO: Async: Console: Network: Parallel](
+        infos: AppInfo,
+        modules: Seq[ModuleSupport],
+        path: Path
+    ): Resource[F, Pillars[F]] =
         val configReader = Reader[F](path)
         for
             _config        <- Resource.eval(configReader.read[PillarsConfig])
@@ -86,9 +89,9 @@ object Pillars:
             given Tracer[F] = obs.tracer
             _              <- Resource.eval(Logging.init(_config.log))
             _logger         = ScribeImpl[F](Sync[F])
-            context         = Loader.Context(obs, configReader, _logger)
+            context         = ModuleSupport.Context(obs, configReader, _logger)
             _              <- Resource.eval(_logger.info("Loading modules..."))
-            _modules       <- loadModules(context)
+            _modules       <- loadModules(modules, context)
             _              <- Resource.eval(_logger.debug(s"Loaded ${_modules.size} modules"))
             probes         <- ProbeManager.build[F](_modules)
             _              <- Spawn[F].background(probes.start())
@@ -115,19 +118,17 @@ object Pillars:
      * @param context The context for loading the modules.
      * @return a resource that will instantiate the modules.
      */
-    private def loadModules[F[_]: Async: Network: Tracer: Console](context: Loader.Context[F])
-        : Resource[F, Modules[F]] =
-        val loaders = ServiceLoader.load(classOf[Loader])
-            .asScala
-            .groupBy(_.key)
-            .map((key, value) => key -> value.head)
-        scribe.info(s"Found ${loaders.size} module loaders: ${loaders.keys.map(_.name).mkString(", ")}")
-        loaders.topologicalSort(_.dependsOn) match
-            case Left(value)  => throw IllegalStateException("Circular dependency detected in modules")
+    private def loadModules[F[_]: Async: Network: Tracer: Console](
+        modules: Seq[ModuleSupport],
+        context: ModuleSupport.Context[F]
+    ): Resource[F, Modules[F]] =
+        scribe.info(s"Found ${modules.size} modules: ${modules.map(_.key).map(_.name).mkString(", ")}")
+        modules.topologicalSort(_.dependsOn) match
+            case Left(value)  => throw value
             case Right(value) =>
                 value.foldLeftM(Modules.empty[F]):
-                    case (acc, (key, loader)) =>
-                        loader.load(context, acc).map(acc.add(key))
+                    case (acc, loader) =>
+                        loader.load(context, acc).map(acc.add(loader.key))
         end match
     end loadModules
 

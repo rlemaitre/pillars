@@ -20,7 +20,7 @@ import sttp.tapir.*
 import sttp.tapir.codec.iron.given
 import sttp.tapir.json.circe.jsonBody
 
-def flagController[F[_]: Functor](manager: FlagManager[F]): Controller[F] =
+def flagController[F[_]: Functor](manager: FeatureFlags[F]): Controller[F] =
     val listAll = FlagEndpoints.list.serverLogicSuccess(_ => manager.flags)
     val getOne  =
         FlagEndpoints.get.serverLogic: name =>

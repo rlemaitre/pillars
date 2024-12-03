@@ -7,30 +7,53 @@ package pillars
 import munit.FunSuite
 
 class TopologicalSortSuite extends FunSuite:
-    test("topologicalSort returns sorted list for acyclic graph"):
-        val dependencies: Map[Char, Iterable[Char]] = Map(
-          'A' -> List('D'),
-          'B' -> List('D'),
-          'C' -> List('A', 'B'),
-          'D' -> List('E'),
-          'E' -> List()
+    import graph.*
+    test("topologicalSort returns sorted list for acyclic graph defined as List"):
+        val items: List[Char] = List('A', 'B', 'C', 'D', 'E')
+        assertEquals(
+          items
+              .topologicalSort:
+                  case 'A' => List('D')
+                  case 'B' => List('D')
+                  case 'C' => List('A', 'B')
+                  case 'D' => List('E')
+                  case 'E' => List()
+                  case _   => ???
+          ,
+          Right(List('E', 'D', 'A', 'B', 'C'))
         )
-        end dependencies
-        assertEquals(dependencies.topologicalSort(identity).map(_.map(_._1)), Right(List('E', 'D', 'A', 'B', 'C')))
 
     test("topologicalSort returns error for cyclic graph"):
-        val dependencies: Map[Char, Iterable[Char]] = Map(
-          'A' -> List('B'),
-          'B' -> List('C'),
-          'C' -> List('A')
+        val items = List('A', 'B', 'C')
+        assertEquals(
+          items
+              .topologicalSort:
+                  case 'A' => List('B')
+                  case 'B' => List('C')
+                  case 'C' => List('A')
+                  case _   => ???
+          ,
+          Left(GraphError.CyclicDependencyError)
         )
-        assertEquals(dependencies.topologicalSort(identity).map(_.map(_._1)), Left("Cyclic dependency found"))
+
+    test("topologicalSort returns error if a dependency is missing"):
+        val items = List('A', 'C')
+        assertEquals(
+          items
+              .topologicalSort:
+                  case 'A' => List('B')
+                  case 'C' => List('A')
+                  case _   => ???
+          ,
+          Left(GraphError.MissingDependency(Set('B')))
+        )
 
     test("topologicalSort returns sorted list for single node graph"):
-        val dependencies: Map[Char, Iterable[Char]] = Map('A' -> List())
-        assertEquals(dependencies.topologicalSort(identity).map(_.map(_._1)), Right(List('A')))
+        val items = List('A')
+        assertEquals(items.topologicalSort(_ => Nil), Right(List('A')))
 
     test("topologicalSort returns sorted list for disconnected graph"):
-        val dependencies: Map[Char, Iterable[Char]] = Map('A' -> Nil, 'B' -> Nil, 'C' -> Nil, 'D' -> Nil, 'E' -> Nil)
-        assertEquals(dependencies.topologicalSort(identity), Right(dependencies.toList))
+        val items = List('A', 'B', 'C', 'D', 'E')
+        assertEquals(items.topologicalSort(_ => Nil), Right(items.toList))
+
 end TopologicalSortSuite
