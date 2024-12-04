@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.4.1] - 2024-12-04
+### :wrench: Chores
+- [`a88062e`](https://github.com/FunktionalIO/pillars/commit/a88062e329e3df13bf9cf74ebd1c11e34e896429) - Patches/Minor updates *(PR [#194](https://github.com/FunktionalIO/pillars/pull/194) by [@scala-steward](https://github.com/scala-steward))*
+
+
 ## [v0.4.0] - 2024-12-04
 ### :boom: BREAKING CHANGES
 - due to [`7077b72`](https://github.com/FunktionalIO/pillars/commit/7077b72724dba0688a219fe530ab85d808dba329) - [#188](https://github.com/FunktionalIO/pillars/pull/188) Make module loading explicit *(PR [#189](https://github.com/FunktionalIO/pillars/pull/189) by [@rlemaitre](https://github.com/rlemaitre))*:
@@ -301,3 +306,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.3.22]: https://github.com/FunktionalIO/pillars/compare/v0.3.21...v0.3.22
 [v0.3.23]: https://github.com/FunktionalIO/pillars/compare/v0.3.22...v0.3.23
 [v0.4.0]: https://github.com/FunktionalIO/pillars/compare/v0.3.23...v0.4.0
+[v0.4.1]: https://github.com/FunktionalIO/pillars/compare/v0.4.0...v0.4.1
