@@ -101,7 +101,7 @@ object Dependencies {
       "org.flywaydb"   % "flyway-database-postgresql" % "11.0.0"
     )
     val migrations: Seq[ModuleID]        = Seq(
-      "org.flywaydb" % "flyway-core" % "11.0.0"
+      "org.flywaydb" % "flyway-core" % "11.0.1"
     ) ++ tests ++ testContainers ++ migrationsRuntime.map(_ % Test)
 
     val fs2Rabbit: Seq[ModuleID] = Seq(
