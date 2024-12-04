@@ -52,7 +52,7 @@ val releasePreparation = WorkflowJob(
   id = "prepare-release",
   name = "👷 Prepare release",
   oses = List("ubuntu-latest"),
-  cond = Some("""github.event_name != 'pull_request' && (startsWith(github.ref, 'refs/tags/prepare-v'))"""),
+  cond = Some("""github.event_name != 'pull_request' && (startsWith(github.ref, 'refs/tags/v'))"""),
   needs = List("build"),
   env = Map("DTC_HEADLESS" -> "true"),
   permissions = Some(Permissions.Specify.defaultPermissive),
@@ -94,11 +94,11 @@ val releasePreparation = WorkflowJob(
     ),
     WorkflowStep.Use(
       name = Some("Create version tag"),
-      ref = UseRef.Public("mathieudutour", "github-tag-action", "v6.2"),
+      ref = UseRef.Public("rickstaa", "action-create-tag", "v1"),
       params = Map(
-        "github_token" -> "${{ github.token }}",
-        "custom_tag"   -> "${{ env.nextTag }}",
-        "tag_prefix"   -> "\"\""
+        "tag"            -> "${{ github.ref_name }}",
+        "message"        -> "Release ${{ github.ref_name }}",
+        "force_push_tag" -> "true" // force push the tag to move it to HEAD
       )
     ),
     WorkflowStep.Use(
@@ -108,8 +108,8 @@ val releasePreparation = WorkflowJob(
         "allowUpdates" -> "true",
         "draft"        -> "false",
         "makeLatest"   -> "true",
-        "name"         -> "v${{ env.nextTag }}",
-        "tag"          -> "v${{ env.nextTag }}",
+        "name"         -> "${{ env.nextTag }}",
+        "tag"          -> "${{ env.nextTag }}",
         "body"         -> "${{ steps.changelog.outputs.changes }}",
         "token"        -> "${{ github.token }}"
       )
@@ -179,8 +179,8 @@ val websitePublication = WorkflowJob(
         )
       )
 )
-githubWorkflowTargetTags := List("prepare-v*", "v*")
-githubWorkflowGeneratedCI ++= List(releasePreparation, websitePublication)
+ThisBuild / githubWorkflowGeneratedCI ++= List(releasePreparation, websitePublication)
+ThisBuild / githubWorkflowPublishNeeds := List("prepare-release")
 
 enablePlugins(ScalaUnidocPlugin)
 

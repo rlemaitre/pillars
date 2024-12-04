@@ -89,7 +89,7 @@ jobs:
 
   publish:
     name: Publish Artifacts
-    needs: [build]
+    needs: [prepare-release]
     if: github.event_name != 'pull_request' && (startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/main')
     strategy:
       matrix:
@@ -215,7 +215,7 @@ jobs:
   prepare-release:
     name: 👷 Prepare release
     needs: [build]
-    if: github.event_name != 'pull_request' && (startsWith(github.ref, 'refs/tags/prepare-v'))
+    if: github.event_name != 'pull_request' && (startsWith(github.ref, 'refs/tags/v'))
     strategy:
       matrix:
         os: [ubuntu-latest]
@@ -272,18 +272,18 @@ jobs:
           file_pattern: CHANGELOG.md docToolchainConfig.groovy
 
       - name: Create version tag
-        uses: mathieudutour/github-tag-action@v6.2
+        uses: rickstaa/action-create-tag@v1
         with:
-          github_token: ${{ github.token }}
-          custom_tag: ${{ env.nextTag }}
-          tag_prefix: '""'
+          tag: ${{ github.ref_name }}
+          message: Release ${{ github.ref_name }}
+          force_push_tag: true
 
       - name: Create release
         uses: ncipollo/release-action@v1.14.0
         with:
           body: ${{ steps.changelog.outputs.changes }}
-          name: v${{ env.nextTag }}
-          tag: v${{ env.nextTag }}
+          name: ${{ env.nextTag }}
+          tag: ${{ env.nextTag }}
           draft: false
           makeLatest: true
           allowUpdates: true
