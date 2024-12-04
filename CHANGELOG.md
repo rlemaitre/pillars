@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.4.0] - 2024-12-04
+### :boom: BREAKING CHANGES
+- due to [`7077b72`](https://github.com/FunktionalIO/pillars/commit/7077b72724dba0688a219fe530ab85d808dba329) - [#188](https://github.com/FunktionalIO/pillars/pull/188) Make module loading explicit *(PR [#189](https://github.com/FunktionalIO/pillars/pull/189) by [@rlemaitre](https://github.com/rlemaitre))*:
+
+  Module Management  
+  The way modules are defined and used changed in this version. To migrate from a prior version, you will have to change the base class of your app and explicitely declare what optional module your aer using. For more information, see the Quickstart section of the documentation.
+
+
+### :recycle: Refactors
+- [`7077b72`](https://github.com/FunktionalIO/pillars/commit/7077b72724dba0688a219fe530ab85d808dba329) - [#188](https://github.com/FunktionalIO/pillars/pull/188) Make module loading explicit *(PR [#189](https://github.com/FunktionalIO/pillars/pull/189) by [@rlemaitre](https://github.com/rlemaitre))*
+
+### :wrench: Chores
+- [`f0bb12a`](https://github.com/FunktionalIO/pillars/commit/f0bb12a2d383a4f2c65e446895cd094d41a881aa) - Change license from APL-2.0 to EPL-2.0 *(PR [#190](https://github.com/FunktionalIO/pillars/pull/190) by [@rlemaitre](https://github.com/rlemaitre))*
+
+
 ## [v0.3.23] - 2024-12-02
 ### :wrench: Chores
 - [`c488ccf`](https://github.com/FunktionalIO/pillars/commit/c488ccfaee9c9309d06ab98a3fc017781c79f123) - Update sbt from 1.10.5 to 1.10.6 *(commit by [@scala-steward](https://github.com/scala-steward))*
@@ -285,3 +300,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.3.21]: https://github.com/FunktionalIO/pillars/compare/v0.3.20...v0.3.21
 [v0.3.22]: https://github.com/FunktionalIO/pillars/compare/v0.3.21...v0.3.22
 [v0.3.23]: https://github.com/FunktionalIO/pillars/compare/v0.3.22...v0.3.23
+[v0.4.0]: https://github.com/FunktionalIO/pillars/compare/v0.3.23...v0.4.0
