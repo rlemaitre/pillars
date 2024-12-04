@@ -7,26 +7,25 @@
         <code class="language-scala">
 import ... // import your dependencies
 
-object app extends pillars.EntryPoint:
-  def app: pillars.App[IO] = new: // define your app
-    def infos: AppInfo = BuildInfo.toAppInfo // automatic description from your build
+object app extends pillars.IOApp(DB, DBMigration, FeatureFlags, HttpClient): //define your apps modules
+  def infos: AppInfo = BuildInfo.toAppInfo // automatic description from your build
 
-    def run: Run[IO, IO[Unit]] = // enjoy!
-      for
-        _ <- Logger[IO].info(s"📚 Welcome to \${Config[IO].name}!")
-        _ <- DBMigration[IO].migrate("db/migrations")
-        _ <- flag"feature-1".whenEnabled:
-              DB[IO].use: session =>
-                for
-                  date <- session.unique(sql"select now()".query(timestamptz))
-                  _    <- Logger[IO].info(s"The current date is \$date.")
-                yield ()
-        _ <- HttpClient[IO].get("https://pillars.dev"): response =>
-              Logger[IO].info(s"Response: \${response.status}")
-        _ <- ApiServer[IO].start(endpoints.all)
-      yield ()
-      end for
-    end run
+  def run: Run[IO, IO[Unit]] = // enjoy!
+    for
+      _ <- logger.info(s"📚 Welcome to \${Config[IO].name}!") // logging is included in pillars-core
+      _ <- dbMigration.migrate("classpath:db/migrations")     // you can access directly your modules
+      _ <- flag"feature-1".whenEnabled:                       // handy feature flag interpolation
+            db.use: session =>
+              for
+                date <- session.unique(sql"select now()".query(timestamptz))
+                _    <- Logger[IO].info(s"The current date is \$date.")
+              yield ()
+      _ <- http.get("https://pillars.dev"): response =>
+            logger.info(s"Response: \${response.status}")
+      _ <- server.start(homeController, userController)        // start your server with your controllers
+    yield ()
+    end for
+  end run
 end app
         </code>
     </pre>

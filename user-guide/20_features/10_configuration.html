@@ -158,7 +158,7 @@
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="yaml">name: Bookstore
 log:
-  level: debug
+  level: info
   format: enhanced
   output:
     type: console
@@ -251,7 +251,7 @@ feature-flags:
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-If you are using the <code>EntryPoint</code> trait, the path to this file must be given to the application using the <code>--config</code> command line option.
+When using the <code>pillars.IOApp</code> trait, the path to this file must be given to the application using the <code>--config</code> command line option.
 </td>
 </tr>
 </table>
@@ -527,7 +527,7 @@ If you are using the <code>EntryPoint</code> trait, the path to this file must b
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="yaml">log:
-  level: debug
+  level: info
   format: enhanced
   output:
     type: console</code></pre>
@@ -708,7 +708,11 @@ It <strong>must</strong> be under the <code>app</code> key.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="prettyprint highlight"><code data-lang="scala">package example
+<pre class="prettyprint highlight"><code data-lang="scala">// Copyright (c) 2024-2024 by Raphaël Lemaitre and Contributors
+// This software is licensed under the Eclipse Public License v2.0 (EPL-2.0).
+// For more information see LICENSE or https://opensource.org/license/epl-2-0
+
+package example
 
 import io.circe.Codec
 
@@ -857,7 +861,7 @@ object UsersConfig:
 <footer class="footer">
     <div class="row">
         
-        <a href="https://github.com/rlemaitre/pillars" rel="noopener noreferrer" title="Twitter"><i class="fa fa-github"></i></a>
+        <a href="https://github.com/FunktionalIO/pillars" rel="noopener noreferrer" title="Twitter"><i class="fa fa-github"></i></a>
         
         
         <a href="https://twitter.com/scaladdict" rel="noopener noreferrer" title="Twitter"><i class="fa fa-twitter"></i></a>
@@ -868,7 +872,7 @@ object UsersConfig:
         <a href="mailto:mailto:pillars@pillars.dev" rel="noopener noreferrer" target="_blank" title="Email"><i class="fa fa-envelope"></i></a>
         
     </div>
-    <div class="row">built with <a href="https://doctoolchain.org">docToolchain</a> and <a href="https://jbake.org">jBake</a> <br /> theme: Custom based on <a href="https://github.com/amiechen/codrops-scribbler/">Scribbler</a></small></div>
+    <div class="row">Made with ❤️ by the Pillars team<br>Licensed with <a href="https://www.eclipse.org/legal/epl-2.0/">EPL-2.0</a><br>Powered by docToolchain and jBake</div>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>

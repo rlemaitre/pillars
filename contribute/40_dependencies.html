@@ -1,0 +1,605 @@
+<!doctype html>
+<html lang="en">
+<head>
+    
+    <!-- sourceuri: contribute/40_dependencies.html -->
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <meta content="INDEX, FOLLOW" name="ROBOTS">
+
+    <title>Code of Conduct</title>
+
+    <meta content="Pillars" property="og:title">
+    <meta content="Build your backend service in Scala 3 the easy way" property="og:description">
+    <meta content="website" property="og:type">
+    <meta content="Pillars" property="og:site_name">
+    <meta content="Pillars" itemprop="name">
+    <meta content="Build your backend service in Scala 3 the easy way" itemprop="description">
+    <meta content="summary" name="twitter:card">
+    <meta content="@rlemaitre" name="twitter:creator">
+    <meta content="Pillars" name="twitter:title">
+    <meta content="Build your backend service in Scala 3 the easy way" name="twitter:description">
+    <meta property="og:url" content="https://pillars.dev/" />
+    <meta property="og:title" content="Pillars" />
+    <meta property="og:description" content="Build your backend service in Scala 3 the easy way" />
+    <meta property="og:image" content="https://pillars.dev/images/logo.svg" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800,900" rel="stylesheet">
+    <link rel="stylesheet" href="../css/asciidoctor.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <link rel="stylesheet" href="../css/scribbler-global.css">
+    
+        <link rel="stylesheet" href="../css/scribbler-doc.css">
+    
+    <link rel="author" href="..//humans.txt">
+
+    <!-- favicon generated with https://www.favicon-generator.org/ -->
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="icon" type="image/png" href="../favicon.png">
+    <meta name="theme-color" content="#0a1322">
+</head>
+
+<body>
+
+<nav class="header">
+    <a href="../"><img src="../images/logo_without_name.svg" width="43"></a>
+    <h1 class="logo">Pillars <span class="logo__thin">Doc</span></h1>
+    <ul class="menu">
+        <div class="menu__item toggle"><span></span></div>
+        <li class="menu__item"><a href="../" class="link link--dark"><i class="fa fa-home"></i> Home</a></li>
+
+        <li class="menu__item"><a href="../user-guide/index.html" class="link link--dark"><i class="fa fa-book"></i> User Guide</a></li>
+
+        <li class="menu__item"><a href="../contribute/10_contributing.html" class="link link--dark"><i class="fa fa-book"></i> Contribute</a></li>
+
+        <li class="menu__item"><a href="../api/" class="link link--dark"><i class="fa fa-cogs"></i> API</a></li>
+        <li class="menu__item"><a href="https://github.com/rlemaitre/pillars/" class="link link--dark"><i class="fa fa-github"></i> Github</a></li>
+        <li class="menu__item">
+            <form action="../search.html">
+                <input aria-label="Search this site…" autocomplete="off" class="form-control td-search-input"
+                       placeholder="Search this site…" type="search" name="q">
+            </form>
+        </li>
+    </ul>
+</nav>
+
+<div class="wrapper">
+	<aside class="doc__nav">
+		
+        
+                        <ul>
+                            <li>
+                                <a class="" href="../contribute/10_contributing.html">Contributing to Pillars</a>
+                            </li>
+                            <li>
+                                <a class="" href="../contribute/20_code_of_conduct.html">Code of Conduct</a>
+                            </li>
+                            <li>
+                                <a class="" href="../contribute/30_license.html">Code of Conduct</a>
+                            </li>
+                            <li>
+                                <a class="active" href="../contribute/40_dependencies.html">Code of Conduct</a>
+                            </li>
+                        </ul>
+
+	</aside>
+	<article class="doc__content">
+		    <nav aria-label="breadcrumb" class="d-none d-md-block d-print-none">
+        <ol class="breadcrumb spb-1">
+            <!--li aria-current="page" class="breadcrumb-item active">
+                <a href="https://example.docsy.dev/docs/">Documentation</a>
+            </li-->
+
+        </ol>
+    </nav>
+
+
+    <div class="td-content">
+        <p>
+            
+<div class="sect1">
+<h2 id="_code_of_conduct">Code of Conduct</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<h1 id="dependencies-for-pillars" class="sect0">Dependencies for Pillars</h1>
+<div class="paragraph">
+<p>This document lists all dependencies used in the Pillars project along with their associated licenses.</p>
+</div>
+<div class="sect1">
+<h2 id="runtime-dependencies">Runtime Dependencies</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 42.8571%;">
+<col style="width: 28.5714%;">
+<col style="width: 28.5715%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Library</th>
+<th class="tableblock halign-left valign-top">Version</th>
+<th class="tableblock halign-left valign-top">License</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/typelevel/fs2"><code>co.fs2:fs2-core</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>3.11.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/alejandrohdezma/http4s-munit"><code>com.alejandrohdezma:http4s-munit</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>1.1.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/Comcast/ip4s"><code>com.comcast:ip4s-core</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>3.6.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/bkirwi/decline"><code>com.monovore:decline</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>2.4.1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MIT License</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/bkirwi/decline"><code>com.monovore:decline-effect</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>2.4.1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MIT License</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/outr/scribe"><code>com.outr:scribe</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>3.15.2</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/outr/scribe"><code>com.outr:scribe-cats</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>3.15.2</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/outr/scribe"><code>com.outr:scribe-file</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>3.15.2</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/outr/scribe"><code>com.outr:scribe-json-circe</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>3.15.2</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/outr/scribe"><code>com.outr:scribe-slf4j</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>3.15.2</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/softwaremill/sttp-openapi"><code>com.softwaremill.sttp.apispec:openapi-circe-yaml</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>0.11.3</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/softwaremill/sttp"><code>com.softwaremill.sttp.client3:core</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>3.10.1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/softwaremill/tapir"><code>com.softwaremill.sttp.tapir:tapir-http4s-client</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>1.11.9</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/softwaremill/tapir"><code>com.softwaremill.sttp.tapir:tapir-http4s-server</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>1.11.9</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/softwaremill/tapir"><code>com.softwaremill.sttp.tapir:tapir-iron</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>1.11.9</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/softwaremill/tapir"><code>com.softwaremill.sttp.tapir:tapir-json-circe</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>1.11.9</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/softwaremill/tapir"><code>com.softwaremill.sttp.tapir:tapir-openapi-docs</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>1.11.9</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/softwaremill/tapir"><code>com.softwaremill.sttp.tapir:tapir-opentelemetry-metrics</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>1.11.9</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/softwaremill/tapir"><code>com.softwaremill.sttp.tapir:tapir-sttp-stub-server</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>1.11.9</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/softwaremill/tapir"><code>com.softwaremill.sttp.tapir:tapir-swagger-ui-bundle</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>1.11.9</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/profunktor/fs2-rabbit"><code>dev.profunktor:fs2-rabbit</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>5.3.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/davenverse/rediculous"><code>io.chrisdavenport:rediculous</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>0.5.1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/circe/circe"><code>io.circe:circe-core</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>0.14.10</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/circe/circe"><code>io.circe:circe-generic</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>0.14.10</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/circe/circe"><code>io.circe:circe-parser</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>0.14.10</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/circe/circe-yaml"><code>io.circe:circe-yaml</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>0.16.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/Iltotore/iron"><code>io.github.iltotore:iron</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>2.6.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MIT License</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/Iltotore/iron"><code>io.github.iltotore:iron-cats</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>2.6.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MIT License</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/Iltotore/iron"><code>io.github.iltotore:iron-circe</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>2.6.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MIT License</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/Iltotore/iron"><code>io.github.iltotore:iron-decline</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>2.6.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MIT License</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://flywaydb.org"><code>org.flywaydb:flyway-core</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>11.0.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://http4s.org"><code>org.http4s:http4s-circe</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>0.23.29</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://http4s.org"><code>org.http4s:http4s-core</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>0.23.29</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://http4s.org"><code>org.http4s:http4s-dsl</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>0.23.29</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://http4s.org"><code>org.http4s:http4s-netty-client</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>0.5.21</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://http4s.org"><code>org.http4s:http4s-netty-server</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>0.5.21</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://jdbc.postgresql.org"><code>org.postgresql:postgresql</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>42.7.4</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PostgreSQL License</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://scodec.org"><code>org.scodec:scodec-bits</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>2.2.2</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://scodec.org"><code>org.scodec:scodec-core</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>2.3.2</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://tpolecat.github.io/doobie"><code>org.tpolecat:doobie-core</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>1.0.0-RC6</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://tpolecat.github.io/doobie"><code>org.tpolecat:doobie-hikari</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>1.0.0-RC6</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://tpolecat.github.io/skunk"><code>org.tpolecat:skunk-core</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>1.0.0-M8</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MIT License</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://tpolecat.github.io/skunk"><code>org.tpolecat:skunk-circe</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>1.0.0-M8</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MIT License</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/typelevel/cats-collections"><code>org.typelevel:cats-collections-core</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>0.9.9</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/typelevel/cats"><code>org.typelevel:cats-core</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>2.12.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/typelevel/cats-effect"><code>org.typelevel:cats-effect</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>3.5.7</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/typelevel/cats-time"><code>org.typelevel:cats-time</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>0.5.1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="development-plugins">Development Plugins</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 42.8571%;">
+<col style="width: 28.5714%;">
+<col style="width: 28.5715%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Plugin</th>
+<th class="tableblock halign-left valign-top">Version</th>
+<th class="tableblock halign-left valign-top">License</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/sbt/sbt-buildinfo"><code>com.eed3si9n:sbt-buildinfo</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>0.13.1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/sbt/sbt-dynver"><code>com.github.sbt:sbt-dynver</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>5.1.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/sbt/sbt-unidoc"><code>com.github.sbt:sbt-unidoc</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>0.5.0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/shiftleftsecurity/sbt-ci-release-early"><code>io.shiftleft:sbt-ci-release-early</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>2.0.48</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/foundweekends/giter8"><code>org.foundweekends.giter8:sbt-giter8-scaffold</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>0.16.2</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/JetBrains/sbt-ide-settings"><code>org.jetbrains.scala:sbt-ide-settings</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>1.1.2</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/scalameta/sbt-scalafmt"><code>org.scalameta:sbt-scalafmt</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>2.5.2</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/typelevel/sbt-tpolecat"><code>org.typelevel:sbt-tpolecat</code></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>0.5.2</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The above licenses were inferred from standard practices and documentation. Please verify with the official project pages to ensure accuracy.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+        </p>
+
+        <style>
+.feedback--answer {
+    display: inline-block;
+}
+
+.feedback--answer-no {
+    margin-left: 1em;
+}
+
+.feedback--response {
+    display: none;
+    margin-top: 1em;
+}
+
+.feedback--response__visible {
+    display: block;
+}
+</style>
+
+<div class="d-print-none">
+    <h2 class="feedback--title">Feedback</h2>
+    <p class="feedback--question">Was this page helpful?</p>
+    <button class="feedback--answer feedback--answer-yes">Yes</button>
+    <button class="feedback--answer feedback--answer-no">No</button>
+    <p class="feedback--response feedback--response-yes">
+        Glad to hear it! Please <a href="https://github.com/rlemaitre/pillars/issues/new?title=Docs%3A+Feedback+for+%27Code+of+Conduct%27%20%F0%9F%91%8D&body=%0A%0A%5BEnter%20feedback%20here%5D%0A%0A%0A---%0A%23page:contribute/40_dependencies.adoc">tell us
+    how we can improve</a>.
+    </p>
+    <p class="feedback--response feedback--response-no">
+        Sorry to hear that. Please <a href="https://github.com/rlemaitre/pillars/issues/new?title=Docs%3A+Feedback+for+%27Code+of+Conduct%27%20%F0%9F%91%8E&body=%0A%0A%5BEnter%20feedback%20here%5D%0A%0A%0A---%0A%23page:contribute/40_dependencies.adoc">tell
+    us how we can improve</a>.
+    </p>
+</div>
+<script>
+    const yesButton = document.querySelector('.feedback--answer-yes');
+    const noButton = document.querySelector('.feedback--answer-no');
+    const yesResponse = document.querySelector('.feedback--response-yes');
+    const noResponse = document.querySelector('.feedback--response-no');
+    const disableButtons = () => {
+        yesButton.disabled = true;
+        noButton.disabled = true;
+    };
+    const sendFeedback = (value) => {
+        if (typeof ga !== 'function') return;
+        const args = {
+            command: 'send',
+            hitType: 'event',
+            category: 'Helpful',
+            action: 'click',
+            label: window.location.pathname,
+            value: value
+        };
+        ga(args.command, args.hitType, args.category, args.action, args.label, args.value);
+    };
+    yesButton.addEventListener('click', () => {
+        yesResponse.classList.add('feedback--response__visible');
+        disableButtons();
+        sendFeedback(1);
+    });
+    noButton.addEventListener('click', () => {
+        noResponse.classList.add('feedback--response__visible');
+        disableButtons();
+        sendFeedback(0);
+    });
+</script>
+
+
+        <br>
+
+        <!--div class="text-muted mt-5 pt-3 border-top">Last modified July 3, 2019: <a
+                href="https://github.com/google/docsy-example/commit/d6aa89c8b24089d7e6741030864eff209465e896">Added
+            links to user guide repo (d6aa89c)</a>
+        </div-->
+    </div>
+
+
+    <script src="https://giscus.app/client.js"
+            data-repo="rlemaitre/pillars"
+            data-repo-id="R_kgDOK-Le0g"
+            data-category="Comments"
+            data-category-id="DIC_kwDOK-Le0s4Ccs4S"
+            data-mapping="pathname"
+            data-strict="0"
+            data-reactions-enabled="1"
+            data-emit-metadata="0"
+            data-input-position="top"
+            data-theme="light"
+            data-lang="en"
+            data-loading="lazy"
+            crossorigin="anonymous"
+            async>
+    </script>
+	</article>
+	<aside class="doc__nav pop-out">
+		
+<div class="right__nav">
+
+        <div id="toc" class="toc">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_code_of_conduct">Code of Conduct</a></li>
+<li><a href="#dependencies-for-pillars">Dependencies for Pillars</a>
+<ul class="sectlevel1">
+<li><a href="#runtime-dependencies">Runtime Dependencies</a></li>
+<li><a href="#development-plugins">Development Plugins</a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+
+    <ul>
+
+        <li>
+            <a href="https://github.com/rlemaitre/pillars/edit/main/docs/contribute/40_dependencies.adoc" target="_blank"><i class="fa fa-edit fa-fw"></i> Improve this doc</a>
+        </li>
+
+
+        <li>
+            <a href="https://github.com/rlemaitre/pillars/issues/new?title=Docs%3A+Feedback+for+%27Code+of+Conduct%27&body=%0A%0A%5BEnter%20feedback%20here%5D%0A%0A%0A---%0A%23page:%20https://github.com/rlemaitre/pillars/edit/main/docs/contribute/40_dependencies.adoc%0A%23branch:%20main" target="_blank">
+                <i class="fa fa-github"></i> Create an issue
+            </a>
+        </li>
+
+    </ul>
+</div>
+
+	</aside>
+</div>
+<footer class="footer">
+    <div class="row">
+        
+        <a href="https://github.com/FunktionalIO/pillars" rel="noopener noreferrer" title="Twitter"><i class="fa fa-github"></i></a>
+        
+        
+        <a href="https://twitter.com/scaladdict" rel="noopener noreferrer" title="Twitter"><i class="fa fa-twitter"></i></a>
+        
+        
+        
+        
+        <a href="mailto:mailto:pillars@pillars.dev" rel="noopener noreferrer" target="_blank" title="Email"><i class="fa fa-envelope"></i></a>
+        
+    </div>
+    <div class="row">Made with ❤️ by the Pillars team<br>Licensed with <a href="https://www.eclipse.org/legal/epl-2.0/">EPL-2.0</a><br>Powered by docToolchain and jBake</div>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/gradle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/scala.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/sql.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/xml.min.js"></script>
+
+<script defer data-domain="pillars.dev" src="https://analytics.lemaitre.me/js/script.js"></script>
+
+<script>hljs.highlightAll();</script>
+<script src="../js/scribbler.js"></script>
+
+</body>
+</html>

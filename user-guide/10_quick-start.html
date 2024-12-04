@@ -170,7 +170,7 @@ You can help us by <a href="../../contribute/10_contributing.html">contributing 
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="sbt">libraryDependencies ++= Seq(
-  "com.rlemaitre" %% "pillars-core" % "0.3.23"
+  "com.rlemaitre" %% "pillars-core" % "<version>"
 )</code></pre>
 </div>
 </div>
@@ -180,10 +180,10 @@ You can help us by <a href="../../contribute/10_contributing.html">contributing 
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="sbt">libraryDependencies ++= Seq(
-  "com.rlemaitre" %% "pillars-db" % "0.3.23",
-  "com.rlemaitre" %% "pillars-db-migration" % "0.3.23",
-  "com.rlemaitre" %% "pillars-flags" % "0.3.23",
-  "com.rlemaitre" %% "pillars-http-client" % "0.3.23"
+  "com.rlemaitre" %% "pillars-db" % "<version>",
+  "com.rlemaitre" %% "pillars-db-migration" % "<version>",
+  "com.rlemaitre" %% "pillars-flags" % "<version>",
+  "com.rlemaitre" %% "pillars-http-client" % "<version>"
 )</code></pre>
 </div>
 </div>
@@ -198,34 +198,33 @@ You can help us by <a href="../../contribute/10_contributing.html">contributing 
 You can find an example in the <code>modules/example/src/main/resources/application.conf</code> file.</p>
 </div>
 <div class="paragraph">
-<p>Then, you can create your entry point by extending the <code>EntryPoint</code> trait:</p>
+<p>Then, you can create your entry point by extending the <code>pillars.IOApp</code> trait:</p>
 </div>
 <div class="listingblock data-noescape">
 <div class="content">
-<pre class="prettyprint highlight linenums"><code data-lang="scala">object app extends pillars.EntryPoint: // <i class="conum" data-value="1"></i><b>(1)</b>
-    def app: pillars.App[IO] = new: // <i class="conum" data-value="2"></i><b>(2)</b>
-        def infos: AppInfo = BuildInfo.toAppInfo // <i class="conum" data-value="3"></i><b>(3)</b>
+<pre class="prettyprint highlight linenums"><code data-lang="scala">object app extends pillars.IOApp(DB, DBMigration, FeatureFlags, HttpClient): // <i class="conum" data-value="1"></i><b>(1)</b>
+    def infos: AppInfo = BuildInfo.toAppInfo // <i class="conum" data-value="2"></i><b>(2)</b>
 
-        def run: Run[IO, IO[Unit]] = // <i class="conum" data-value="4"></i><b>(4)</b>
-            for
-                _ &lt;- logger.info(s"📚 Welcome to ${config.name}!")
-                _ &lt;- dbMigration.migrate("classpath:db-migrations") // <i class="conum" data-value="5"></i><b>(5)</b>
-                _ &lt;- flag"feature-1".whenEnabled:
-                         sessions.use: session =&gt;
-                             for
-                                 date &lt;- session.unique(sql"select now()".query(timestamptz))
-                                 _    &lt;- logger.info(s"The current date is $date.")
-                             yield ()
-                _ &lt;- http.get("https://swapi.dev/api/people/1"): response =&gt;
+    def run: Run[IO, IO[Unit]] = // <i class="conum" data-value="3"></i><b>(3)</b>
+        for
+            _ &lt;- logger.info(s"📚 Welcome to ${config.name}!")
+            _ &lt;- dbMigration.migrate("classpath:db-migrations") // <i class="conum" data-value="4"></i><b>(4)</b>
+            _ &lt;- flag"feature-1".whenEnabled:
+                     sessions.use: session =&gt;
                          for
-                             _    &lt;- logger.info(s"Response: ${response.status}")
-                             size &lt;- response.body.compile.count
-                             _    &lt;- logger.info(s"Body: $size bytes")
+                             date &lt;- session.unique(sql"select now()".query(timestamptz))
+                             _    &lt;- logger.info(s"The current date is $date.")
                          yield ()
-                _ &lt;- server.start(homeController, userController)   // <i class="conum" data-value="6"></i><b>(6)</b>
-            yield ()
-            end for
-        end run
+            _ &lt;- http.get("https://swapi.dev/api/people/1"): response =&gt;
+                     for
+                         _    &lt;- logger.info(s"Response: ${response.status}")
+                         size &lt;- response.body.compile.count
+                         _    &lt;- logger.info(s"Body: $size bytes")
+                     yield ()
+            _ &lt;- server.start(homeController, userController)   // <i class="conum" data-value="5"></i><b>(5)</b>
+        yield ()
+        end for
+    end run
 end app</code></pre>
 </div>
 </div>
@@ -237,17 +236,23 @@ end app</code></pre>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>The <code>pillars.App[IO]</code> must contain your application logic</td>
+<td><code>infos</code> defines some metadata about your application.
+It is used by the admin server to display information about your application.
+See <a href="#_application_metadata">Application Metadata</a> for more information.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td><code>infos</code> defines some metadata about your application.
-It is used by the admin server to display information about your application.
-See</td>
+<td>The <code>run</code> is the entry point of your application.
+Thanks to the <code>Run[F[_], T]</code> context function, you have access to a <code>Pillars[F]</code> instance that contains all your modules.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>The <code>run</code> is the entry point of your application. Here, you have access to the <code>Pillars</code> instance.</td>
+<td>Each module is accessible through the <code>Pillars</code> instance or through a top-level function in the module&#8217;s package.
+The <code>dbMigration.migrate</code> function is a top-level function that is provided by the <code>db-migration</code> module.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>The API server must be started with the <code>server.start</code> function with the controllers you want to expose.</td>
 </tr>
 </table>
 </div>
@@ -326,14 +331,16 @@ In your <code>build.sbt</code>, add the following lines to your project definiti
 <div class="content">
 <pre class="prettyprint highlight linenums"><code data-lang="scala">lazy val example = Project("pillars-example", file("modules/example"))
     .enablePlugins(BuildInfoPlugin) // <i class="conum" data-value="1"></i><b>(1)</b>
+    .settings(sharedSettings)
     .settings(
-      name             := "pillars-example",                                            // <i class="conum" data-value="2"></i><b>(2)</b>
-      description      := "pillars-example is an example of application using pillars", // <i class="conum" data-value="3"></i><b>(3)</b>
-      libraryDependencies ++= Dependencies.tests ++ Dependencies.migrationsRuntime,
-      buildInfoKeys    := Seq[BuildInfoKey](name, version, description),                // <i class="conum" data-value="4"></i><b>(4)</b>
-      buildInfoOptions := Seq(BuildInfoOption.Traits("pillars.BuildInfo")),             // <i class="conum" data-value="5"></i><b>(5)</b>
-      buildInfoPackage := "example.build",                                              // <i class="conum" data-value="6"></i><b>(6)</b>
-      publish / skip   := true,
+      name                   := "pillars-example",                                            // <i class="conum" data-value="2"></i><b>(2)</b>
+      description            := "pillars-example is an example of application using pillars", // <i class="conum" data-value="3"></i><b>(3)</b>
+      libraryDependencies ++= Dependencies.tests ++ Dependencies.migrationsRuntime, // <i class="conum" data-value="4"></i><b>(4)</b>
+      buildInfoKeys          := Seq[BuildInfoKey](name, version, description),                // <i class="conum" data-value="5"></i><b>(5)</b>
+      buildInfoOptions       := Seq(BuildInfoOption.Traits("pillars.BuildInfo")),             // <i class="conum" data-value="6"></i><b>(6)</b>
+      buildInfoPackage       := "example.build",                                              // <i class="conum" data-value="7"></i><b>(7)</b>
+      publish / skip         := true,
+      tlMimaPreviousVersions := Set.empty,
       libraryDependencySchemes ++= libDependencySchemes
     )
     .dependsOn(core, dbSkunk, flags, httpClient, dbMigrations)</code></pre>
@@ -355,17 +362,36 @@ In your <code>build.sbt</code>, add the following lines to your project definiti
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Declare the dependencies you want to use in your app.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
 <td>Tell buildinfo to generate the <code>BuildInfo</code> object including at least <code>name</code>, <code>description</code> and <code>version</code> properties.
 In this specific case, <code>version</code> is defined by the <a href="https://github.com/sbt/sbt-dynver">sbt-dynver</a> plugin.</td>
 </tr>
 <tr>
-<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
 <td>Configure BuildInfo to implement the <code>pillars.BuildInfo</code> trait.
 It is required to use the <code>BuildInfo</code> object in your application.</td>
 </tr>
 <tr>
-<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td><i class="conum" data-value="7"></i><b>7</b></td>
 <td>Specify in which package will be generated the <code>BuildInfo</code> object.</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>If you use the <code>db-migration</code> module, you have to add a dependency to your JDBC driver and possibly to a flyway
+specific library for your DB (<code>org.flyway:flyway-postgresql</code> for PostgreSQL for example).</p>
+</div>
+</td>
 </tr>
 </table>
 </div>
@@ -376,9 +402,8 @@ It is required to use the <code>BuildInfo</code> object in your application.</td
 <div class="content">
 <pre class="prettyprint highlight linenums"><code data-lang="scala">import example.build.BuildInfo
 
-val app = new App[IO]:
   override val infos = BuildInfo.toAppInfo
-  override def run(pillars: Pillars[IO]): IO[Unit] = ???</code></pre>
+  override def run(): Run[IO, IO[Unit]] = ???</code></pre>
 </div>
 </div>
 </div>
@@ -518,7 +543,7 @@ val app = new App[IO]:
 <footer class="footer">
     <div class="row">
         
-        <a href="https://github.com/rlemaitre/pillars" rel="noopener noreferrer" title="Twitter"><i class="fa fa-github"></i></a>
+        <a href="https://github.com/FunktionalIO/pillars" rel="noopener noreferrer" title="Twitter"><i class="fa fa-github"></i></a>
         
         
         <a href="https://twitter.com/scaladdict" rel="noopener noreferrer" title="Twitter"><i class="fa fa-twitter"></i></a>
@@ -529,7 +554,7 @@ val app = new App[IO]:
         <a href="mailto:mailto:pillars@pillars.dev" rel="noopener noreferrer" target="_blank" title="Email"><i class="fa fa-envelope"></i></a>
         
     </div>
-    <div class="row">built with <a href="https://doctoolchain.org">docToolchain</a> and <a href="https://jbake.org">jBake</a> <br /> theme: Custom based on <a href="https://github.com/amiechen/codrops-scribbler/">Scribbler</a></small></div>
+    <div class="row">Made with ❤️ by the Pillars team<br>Licensed with <a href="https://www.eclipse.org/legal/epl-2.0/">EPL-2.0</a><br>Powered by docToolchain and jBake</div>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>

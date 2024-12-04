@@ -73,26 +73,25 @@
         <code class="language-scala">
 import ... // import your dependencies
 
-object app extends pillars.EntryPoint:
-  def app: pillars.App[IO] = new: // define your app
-    def infos: AppInfo = BuildInfo.toAppInfo // automatic description from your build
+object app extends pillars.IOApp(DB, DBMigration, FeatureFlags, HttpClient): //define your apps modules
+  def infos: AppInfo = BuildInfo.toAppInfo // automatic description from your build
 
-    def run: Run[IO, IO[Unit]] = // enjoy!
-      for
-        _ <- Logger[IO].info(s"📚 Welcome to ${Config[IO].name}!")
-        _ <- DBMigration[IO].migrate("db/migrations")
-        _ <- flag"feature-1".whenEnabled:
-              DB[IO].use: session =>
-                for
-                  date <- session.unique(sql"select now()".query(timestamptz))
-                  _    <- Logger[IO].info(s"The current date is $date.")
-                yield ()
-        _ <- HttpClient[IO].get("https://pillars.dev"): response =>
-              Logger[IO].info(s"Response: ${response.status}")
-        _ <- ApiServer[IO].start(endpoints.all)
-      yield ()
-      end for
-    end run
+  def run: Run[IO, IO[Unit]] = // enjoy!
+    for
+      _ <- logger.info(s"📚 Welcome to ${Config[IO].name}!") // logging is included in pillars-core
+      _ <- dbMigration.migrate("classpath:db/migrations")     // you can access directly your modules
+      _ <- flag"feature-1".whenEnabled:                       // handy feature flag interpolation
+            db.use: session =>
+              for
+                date <- session.unique(sql"select now()".query(timestamptz))
+                _    <- Logger[IO].info(s"The current date is $date.")
+              yield ()
+      _ <- http.get("https://pillars.dev"): response =>
+            logger.info(s"Response: ${response.status}")
+      _ <- server.start(homeController, userController)        // start your server with your controllers
+    yield ()
+    end for
+  end run
 end app
         </code>
     </pre>
@@ -110,33 +109,33 @@ end app
                 <li class="tab" data-tab="maven">Maven</li>
             </ul>
             <pre class="code tab__pane active sbt">
-                <code class="highlight language-scala">libraryDependencies ++= Seq("com.rlemaitre" %% "pillars-core" % "0.3.23")</code>
+                <code class="highlight language-scala">libraryDependencies ++= Seq("com.rlemaitre" %% "pillars-core" % "<version>")</code>
             </pre>
             <pre class="code tab__pane mill">
-                <code class="highlight language-scala">ivy"com.rlemaitre::pillars-core:0.3.23"</code>
+                <code class="highlight language-scala">ivy"com.rlemaitre::pillars-core:<version>"</code>
             </pre>
             <pre class="code tab__pane scala-cli">
-                <code class="highlight language-scala">//> using dep com.rlemaitre::pillars-core:0.3.23</code>
+                <code class="highlight language-scala">//> using dep com.rlemaitre::pillars-core:<version></code>
             </pre>
             <pre class="code tab__pane pants">
                 <code class="highlight language-scala">
 scala_artifact(
     group="com.rlemaitre",
     artifact="pillars-core",
-    version="0.3.23",
+    version="<version>",
     packages=["pillars.**"],
 )
                 </code>
             </pre>
             <pre class="code tab__pane gradle">
-                <code class="highlight language-gradle">implementation 'com.rlemaitre:pillars-core:0.3.23'</code>
+                <code class="highlight language-gradle">implementation 'com.rlemaitre:pillars-core:<version>'</code>
             </pre>
             <pre class="code tab__pane maven">
                 <code class="highlight language-xml">
 &lt;dependency>
     &lt;groupId>com.rlemaitre&lt;/groupId>
     &lt;artifactId>pillars-core&lt;/artifactId>
-    &lt;version>0.3.23&lt;/version>
+    &lt;version><version>&lt;/version>
 &lt;/dependency>
                 </code>
             </pre>
@@ -177,7 +176,7 @@ scala_artifact(
 <footer class="footer">
     <div class="row">
         
-        <a href="https://github.com/rlemaitre/pillars" rel="noopener noreferrer" title="Twitter"><i class="fa fa-github"></i></a>
+        <a href="https://github.com/FunktionalIO/pillars" rel="noopener noreferrer" title="Twitter"><i class="fa fa-github"></i></a>
         
         
         <a href="https://twitter.com/scaladdict" rel="noopener noreferrer" title="Twitter"><i class="fa fa-twitter"></i></a>
@@ -188,7 +187,7 @@ scala_artifact(
         <a href="mailto:mailto:pillars@pillars.dev" rel="noopener noreferrer" target="_blank" title="Email"><i class="fa fa-envelope"></i></a>
         
     </div>
-    <div class="row">built with <a href="https://doctoolchain.org">docToolchain</a> and <a href="https://jbake.org">jBake</a> <br /> theme: Custom based on <a href="https://github.com/amiechen/codrops-scribbler/">Scribbler</a></small></div>
+    <div class="row">Made with ❤️ by the Pillars team<br>Licensed with <a href="https://www.eclipse.org/legal/epl-2.0/">EPL-2.0</a><br>Powered by docToolchain and jBake</div>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js"></script>
