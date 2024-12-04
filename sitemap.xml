@@ -77,17 +77,17 @@
     </url>
 
     <url>
-    	<loc>http://jbake.org/user-guide/20_features/60_admin-server.html</loc>
-    	<lastmod>2024-12-04</lastmod>
-    </url>
-
-    <url>
     	<loc>http://jbake.org/user-guide/20_features/50_observability.html</loc>
     	<lastmod>2024-12-04</lastmod>
     </url>
 
     <url>
     	<loc>http://jbake.org/user-guide/20_features/40_api-server.html</loc>
+    	<lastmod>2024-12-04</lastmod>
+    </url>
+
+    <url>
+    	<loc>http://jbake.org/user-guide/20_features/60_admin-server.html</loc>
     	<lastmod>2024-12-04</lastmod>
     </url>
 

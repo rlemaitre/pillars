@@ -122,14 +122,6 @@ var documents = [
 
 {
     "id": 15,
-    "uri": "user-guide/20_features/60_admin-server.html",
-    "menu": "user-guide",
-    "title": "Admin Server",
-    "text": " Table of Contents Admin Server Configuration Endpoints Defining administration endpoints Admin Server Pillars provides an administration server that can be used to manage the Pillars server. The administration endpoints are separated from the API server in order to ease security management. As it uses a different port, it can be protected by a firewall or use authentication on an ingress (such as nginx or caddy ). Configuration The configuration is described in the Configuration section. Endpoints By default, the administration server is available on port 19876 and exposes the following endpoints: GET /admin/probes/healthz : the liveness probe. It always returns 200 OK and can be used to check if the server is running. GET /admin/probes/health : the readiness probe. It returns 200 OK if the server is ready to handle requests and all probes are successful. See the Probes section for more details. Modules can add their own endpoints to the administration server. See the Flags section for the feature flags endpoints. Defining administration endpoints You can define administration endpoints easily by defining an adminControllers property in your App . "
-},
-
-{
-    "id": 16,
     "uri": "user-guide/20_features/50_observability.html",
     "menu": "user-guide",
     "title": "Observability",
@@ -137,11 +129,19 @@ var documents = [
 },
 
 {
-    "id": 17,
+    "id": 16,
     "uri": "user-guide/20_features/40_api-server.html",
     "menu": "user-guide",
     "title": "API Server",
     "text": " Table of Contents API Server API Server This documentation needs to be written. You can help us by contributing to the documentation . "
+},
+
+{
+    "id": 17,
+    "uri": "user-guide/20_features/60_admin-server.html",
+    "menu": "user-guide",
+    "title": "Admin Server",
+    "text": " Table of Contents Admin Server Configuration Endpoints Defining administration endpoints Admin Server Pillars provides an administration server that can be used to manage the Pillars server. The administration endpoints are separated from the API server in order to ease security management. As it uses a different port, it can be protected by a firewall or use authentication on an ingress (such as nginx or caddy ). Configuration The configuration is described in the Configuration section. Endpoints By default, the administration server is available on port 19876 and exposes the following endpoints: GET /admin/probes/healthz : the liveness probe. It always returns 200 OK and can be used to check if the server is running. GET /admin/probes/health : the readiness probe. It returns 200 OK if the server is ready to handle requests and all probes are successful. See the Probes section for more details. Modules can add their own endpoints to the administration server. See the Flags section for the feature flags endpoints. Defining administration endpoints You can define administration endpoints easily by defining an adminControllers property in your App . "
 },
 
 {
