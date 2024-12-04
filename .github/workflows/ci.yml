@@ -12,7 +12,7 @@ on:
     branches: ['**', '!update/**', '!pr/**']
   push:
     branches: ['**', '!update/**', '!pr/**']
-    tags: [prepare-v*, v*]
+    tags: [v*]
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
