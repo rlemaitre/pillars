@@ -47,8 +47,7 @@ object HttpServer:
         observability: Observability[F],
         endpoints: List[HttpEndpoint[F]]
     ): Resource[F, Server] =
-        val cors: HttpApp[F] => HttpApp[F]          =
-            CORS.policy.withAllowMethodsAll.withAllowOriginAll.withAllowHeadersAll.httpApp[F]
+        val cors: HttpApp[F] => HttpApp[F]          = CORS.policy.httpApp[F]
         val errorHandling: HttpApp[F] => HttpApp[F] = ErrorHandling.Custom.recoverWith(_)(buildExceptionHandler())
         val logging                                 =
             if config.logging.enabled then
