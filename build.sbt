@@ -108,8 +108,8 @@ val releasePreparation = WorkflowJob(
         "allowUpdates" -> "true",
         "draft"        -> "false",
         "makeLatest"   -> "true",
-        "name"         -> "${{ env.nextTag }}",
-        "tag"          -> "${{ env.nextTag }}",
+        "name"         -> "${{ github.ref_name }}",
+        "tag"          -> "${{ github.ref_name }}",
         "body"         -> "${{ steps.changelog.outputs.changes }}",
         "token"        -> "${{ github.token }}"
       )
@@ -124,7 +124,6 @@ val websitePublication = WorkflowJob(
   needs = List("publish"),
   env = Map("DTC_HEADLESS" -> "true"),
   permissions = Some(Permissions.Specify.defaultPermissive),
-  concurrency = Some(Concurrency(s"$${{ github.workflow }} @ $${{ github.ref }}", Some(true))),
   steps = List(
     WorkflowStep.Checkout,
     WorkflowStep.Run(

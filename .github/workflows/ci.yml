@@ -282,8 +282,8 @@ jobs:
         uses: ncipollo/release-action@v1.14.0
         with:
           body: ${{ steps.changelog.outputs.changes }}
-          name: ${{ env.nextTag }}
-          tag: ${{ env.nextTag }}
+          name: ${{ github.ref_name }}
+          tag: ${{ github.ref_name }}
           draft: false
           makeLatest: true
           allowUpdates: true
@@ -314,9 +314,6 @@ jobs:
       statuses: write
     env:
       DTC_HEADLESS: true
-    concurrency:
-      group: ${{ github.workflow }} @ ${{ github.ref }}
-      cancel-in-progress: true
     steps:
       - name: Checkout current branch (fast)
         uses: actions/checkout@v4
