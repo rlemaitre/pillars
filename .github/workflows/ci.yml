@@ -215,7 +215,7 @@ jobs:
   prepare-release:
     name: 👷 Prepare release
     needs: [build]
-    if: github.event_name != 'pull_request' && (startsWith(github.ref, 'refs/tags/v'))
+    if: github.event_name != 'pull_request' && (startsWith(github.ref, 'refs/tags/v') || startsWith(github.ref, 'refs/heads/main'))
     strategy:
       matrix:
         os: [ubuntu-latest]
@@ -245,6 +245,7 @@ jobs:
 
       - name: Get previous tag
         id: previousTag
+        if: startsWith(github.ref, 'refs/tags/v')
         run: |
           name=$(git --no-pager tag --sort=creatordate --merged ${{ github.ref_name }} | tail -2 | head -1)
           ref_name="${{ github.ref_name }}"
@@ -257,6 +258,7 @@ jobs:
 
       - name: Update CHANGELOG
         id: changelog
+        if: startsWith(github.ref, 'refs/tags/v')
         uses: requarks/changelog-action@v1
         with:
           token: ${{ github.token }}
@@ -265,6 +267,7 @@ jobs:
           writeToFile: true
 
       - name: Commit CHANGELOG.md
+        if: startsWith(github.ref, 'refs/tags/v')
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: 'docs: update CHANGELOG.md for ${{ env.nextTag }} [skip ci]'
@@ -272,6 +275,7 @@ jobs:
           file_pattern: CHANGELOG.md docToolchainConfig.groovy
 
       - name: Create version tag
+        if: startsWith(github.ref, 'refs/tags/v')
         uses: rickstaa/action-create-tag@v1
         with:
           tag: ${{ github.ref_name }}
@@ -279,6 +283,7 @@ jobs:
           force_push_tag: true
 
       - name: Create release
+        if: startsWith(github.ref, 'refs/tags/v')
         uses: ncipollo/release-action@v1.14.0
         with:
           body: ${{ steps.changelog.outputs.changes }}
@@ -292,7 +297,6 @@ jobs:
   website:
     name: 🌐 Publish website
     needs: [publish]
-    if: github.event_name != 'pull_request' && (startsWith(github.ref, 'refs/tags/v'))
     strategy:
       matrix:
         os: [ubuntu-latest]
@@ -349,7 +353,7 @@ jobs:
       - name: Get latest version
         id: version
         run: |
-          PILLARS_VERSION="$(git ls-remote --tags $REPO | awk -F"/" '{print $3}' | grep '^v[0-9]*\\.[0-9]*\\.[0-9]*' | grep -v {} | sort --version-sort | tail -n1)
+          PILLARS_VERSION="$(git ls-remote --tags $REPO | awk -F"/" '{print $3}' | grep '^v[0-9]*\.[0-9]*\.[0-9]*' | grep -v '\{\}' | sort --version-sort | tail -n1)"
           echo "latest version is [$PILLARS_VERSION]"
           echo "version=${PILLARS_VERSION#v}" >> "$GITHUB_OUTPUT"
 
@@ -362,10 +366,10 @@ jobs:
       - name: Copy to public
         run: cp -r target/microsite/output ./public
 
-      - name: Deply to GitHub Pages
+      - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ github.token }}
           publish_dir: ./public
           cname: pillars.dev
           enable_jekyll: false

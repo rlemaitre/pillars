@@ -52,7 +52,9 @@ val releasePreparation = WorkflowJob(
   id = "prepare-release",
   name = "👷 Prepare release",
   oses = List("ubuntu-latest"),
-  cond = Some("""github.event_name != 'pull_request' && (startsWith(github.ref, 'refs/tags/v'))"""),
+  cond = Some(
+    """github.event_name != 'pull_request' && (startsWith(github.ref, 'refs/tags/v') || startsWith(github.ref, 'refs/heads/main'))"""
+  ),
   needs = List("build"),
   env = Map("DTC_HEADLESS" -> "true"),
   permissions = Some(Permissions.Specify.defaultPermissive),
@@ -61,6 +63,7 @@ val releasePreparation = WorkflowJob(
     WorkflowStep.Run(
       name = Some("Get previous tag"),
       id = Some("previousTag"),
+      cond = Some("""startsWith(github.ref, 'refs/tags/v')"""),
       commands = List(
         """name=$(git --no-pager tag --sort=creatordate --merged ${{ github.ref_name }} | tail -2 | head -1)""",
         """ref_name="${{ github.ref_name }}"""",
@@ -76,6 +79,7 @@ val releasePreparation = WorkflowJob(
       name = Some("Update CHANGELOG"),
       id = Some("changelog"),
       ref = UseRef.Public("requarks", "changelog-action", "v1"),
+      cond = Some("""startsWith(github.ref, 'refs/tags/v')"""),
       params = Map(
         "token"       -> "${{ github.token }}",
         "fromTag"     -> "${{ github.ref_name }}",
@@ -86,6 +90,7 @@ val releasePreparation = WorkflowJob(
     WorkflowStep.Use(
       name = Some("Commit CHANGELOG.md"),
       ref = UseRef.Public("stefanzweifel", "git-auto-commit-action", "v5"),
+      cond = Some("""startsWith(github.ref, 'refs/tags/v')"""),
       params = Map(
         "commit_message" -> "docs: update CHANGELOG.md for ${{ env.nextTag }} [skip ci]",
         "branch"         -> "main",
@@ -95,6 +100,7 @@ val releasePreparation = WorkflowJob(
     WorkflowStep.Use(
       name = Some("Create version tag"),
       ref = UseRef.Public("rickstaa", "action-create-tag", "v1"),
+      cond = Some("""startsWith(github.ref, 'refs/tags/v')"""),
       params = Map(
         "tag"            -> "${{ github.ref_name }}",
         "message"        -> "Release ${{ github.ref_name }}",
@@ -104,6 +110,7 @@ val releasePreparation = WorkflowJob(
     WorkflowStep.Use(
       name = Some("Create release"),
       ref = UseRef.Public("ncipollo", "release-action", "v1.14.0"),
+      cond = Some("""startsWith(github.ref, 'refs/tags/v')"""),
       params = Map(
         "allowUpdates" -> "true",
         "draft"        -> "false",
@@ -120,7 +127,6 @@ val websitePublication = WorkflowJob(
   id = "website",
   name = "🌐 Publish website",
   oses = List("ubuntu-latest"),
-  cond = Some("""github.event_name != 'pull_request' && (startsWith(github.ref, 'refs/tags/v'))"""),
   needs = List("publish"),
   env = Map("DTC_HEADLESS" -> "true"),
   permissions = Some(Permissions.Specify.defaultPermissive),
@@ -152,7 +158,7 @@ val websitePublication = WorkflowJob(
           name = Some("Get latest version"),
           id = Some("version"),
           commands = List(
-            """PILLARS_VERSION="$(git ls-remote --tags $REPO | awk -F"/" '{print $3}' | grep '^v[0-9]*\\.[0-9]*\\.[0-9]*' | grep -v {} | sort --version-sort | tail -n1)""",
+            """PILLARS_VERSION="$(git ls-remote --tags $REPO | awk -F"/" '{print $3}' | grep '^v[0-9]*\.[0-9]*\.[0-9]*' | grep -v '\{\}' | sort --version-sort | tail -n1)"""",
             """echo "latest version is [$PILLARS_VERSION]"""",
             """echo "version=${PILLARS_VERSION#v}" >> "$GITHUB_OUTPUT""""
           )
@@ -167,10 +173,10 @@ val websitePublication = WorkflowJob(
           commands = List("cp -r target/microsite/output ./public")
         ),
         WorkflowStep.Use(
-          name = Some("Deply to GitHub Pages"),
+          name = Some("Deploy to GitHub Pages"),
           ref = UseRef.Public("peaceiris", "actions-gh-pages", "v4"),
           params = Map(
-            "github_token"  -> s"$${{ secrets.GITHUB_TOKEN }}",
+            "github_token"  -> s"$${{ github.token }}",
             "publish_dir"   -> "./public",
             "cname"         -> "pillars.dev",
             "enable_jekyll" -> "false"
