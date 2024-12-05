@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.4.2] - 2024-12-05
+### :bug: Bug Fixes
+- [`20db934`](https://github.com/FunktionalIO/pillars/commit/20db934af474f566f2a6b2073d547403b82c4e64) - **core**: Use default CORS policy *(commit by [@rlemaitre](https://github.com/rlemaitre))*
+
+### :wrench: Chores
+- [`440f987`](https://github.com/FunktionalIO/pillars/commit/440f98770179236be31e9eb54018627157a1c85a) - Downgrade circe-yaml to 0.15.1 *(commit by [@rlemaitre](https://github.com/rlemaitre))*
+
+
 ## [v0.4.1] - 2024-12-04
 ### :wrench: Chores
 - [`a88062e`](https://github.com/FunktionalIO/pillars/commit/a88062e329e3df13bf9cf74ebd1c11e34e896429) - Patches/Minor updates *(PR [#194](https://github.com/FunktionalIO/pillars/pull/194) by [@scala-steward](https://github.com/scala-steward))*
@@ -307,3 +315,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.3.23]: https://github.com/FunktionalIO/pillars/compare/v0.3.22...v0.3.23
 [v0.4.0]: https://github.com/FunktionalIO/pillars/compare/v0.3.23...v0.4.0
 [v0.4.1]: https://github.com/FunktionalIO/pillars/compare/v0.4.0...v0.4.1
+[v0.4.2]: https://github.com/FunktionalIO/pillars/compare/v0.4.1...v0.4.2
