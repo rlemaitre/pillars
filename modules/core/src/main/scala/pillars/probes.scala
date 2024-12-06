@@ -26,7 +26,6 @@ import scala.concurrent.duration.*
 import sttp.model.*
 import sttp.tapir.Schema
 import sttp.tapir.given
-import sttp.tapir.header
 import sttp.tapir.json.circe.jsonBody
 import sttp.tapir.stringBody
 
@@ -156,12 +155,12 @@ object probes:
 
     object endpoints:
         private val prefix = baseEndpoint.in("probes")
-        def liveness       = prefix.get.in("healthz").out(stringBody)
+        def liveness       = prefix.get.in("healthz").description("Liveness probe").out(stringBody)
         def readiness      =
             prefix.get
                 .in("health")
+                .description("Readiness probe")
                 .out(jsonBody[HealthStatus])
-                .out(header(Header(HeaderNames.ContentType, "application/health+json")))
         def all            = List(liveness, readiness)
     end endpoints
     object views:
