@@ -80,7 +80,7 @@ microsite.with {
     domain = 'pillars.dev'
 
     // plausible url for the microsite
-    plausibleUrl = 'https://analytics.lemaitre.me/js/script.js'
+    plausibleUrl = 'https://analytics.funktional.io/js/script.js'
     //project theme
     //site folder relative to the docs folder
     //see 'copyTheme' for more details
@@ -95,7 +95,7 @@ microsite.with {
     footerMail = 'mailto:pillars@pillars.dev'
     //
     // twitter account url
-    footerTwitter = 'https://twitter.com/scaladdict'
+//    footerTwitter = 'https://twitter.com/scaladdict'
     //
     // Stackoverflow QA
 //    footerSO = '##Stackoverflow-url##'
@@ -115,12 +115,12 @@ microsite.with {
     //
     // the url to create an issue in github
     // Example: https://github.com/docToolchain/docToolchain/issues/new
-    issueUrl = 'https://github.com/rlemaitre/pillars/issues/new'
+    issueUrl = 'https://github.com/FunktionalIO/pillars/issues/new'
     //
     // the base url for code files in github
     // Example: https://github.com/doctoolchain/doctoolchain/edit/master/src/docs
     branch = System.getenv("DTC_PROJECT_BRANCH")?:'-'
-    gitRepoUrl = 'https://github.com/rlemaitre/pillars/edit/main/docs'
+    gitRepoUrl = 'https://github.com/FunktionalIO/pillars/edit/main/docs'
 
     //
     // the location of the landing page
