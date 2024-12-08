@@ -58,14 +58,6 @@ var documents = [
 
 {
     "id": 7,
-    "uri": "user-guide/30_modules/10_db.html",
-    "menu": "user-guide",
-    "title": "Database Module",
-    "text": " Table of Contents Database module Database Configuration Using the DB Module Probe Database module The DB modules provide database connectivity and operations for the Pillars application. There are two database modules: db : the main database module using Skunk for interacting with PostgreSQL databases db-doobie : a Doobie-based database module for interacting with databases using JDBC drivers Use only one of these two modules in your application. Using both modules in the same application will result in a conflict. Database Configuration The configuration is read from the application&#8217;s configuration file under the db section. Skunk The database configuration is defined in the pillars.db.DatabaseConfig case class. It includes the following fields: host : The host of the database. port : The port of the database. database : The name of the database. username : The username for the database. password : The password for the database. system-schema : The schema for pillars configuration in the database. app-schema : The schema for the application in the database. ssl : The SSL mode for the database. Accepted values are none , trusted and system . See Skunk documentation for more information. pool-size : The size of the connection pool. debug : A flag indicating whether to enable debug mode. probe : The configuration for the database probe. Doobie The database configuration is defined in the pillars.db_doobie.DatabaseConfig case class. It includes the following fields: driver-class-name : The JDBC driver class name. url : The JDBC URL of the database. username : The username for the database. password : The password for the database. system-schema : The schema for pillars configuration in the database. app-schema : The schema for the application in the database. pool-size : The size of the connection pool. debug : A flag indicating whether to enable debug mode. probe : The configuration for the database probe. statement-cache : Configuration of the statement cache. It contains the following fields: enabled : A flag indicating whether to enable the statement cache. size : The size of the statement cache. sql-limit : The maximum length of the SQL string to be cached. Using the DB Module To use the DB module, you need to import it and then access it. import pillars.db.* // using skunk import pillars.db // using doobie For Skunk: import pillars.db.* import skunk.* def foo[F[_]](using Pillars[F]) = sessions.use: session =&gt; session.unique(sql\"SELECT 1\".query[Int]) For Doobie: import pillars.db_doobie.* import doobie.* def foo[F[_]](using Pillars[F]) = sql\"SELECT 1\".query[Int].unique.transact(db.transactor) Probe The DB module provides a probe for health checks. val isHealthy: F[Boolean] = dbModule.probes.head.check This will return a boolean indicating whether the database is healthy or not. "
-},
-
-{
-    "id": 8,
     "uri": "user-guide/30_modules/100_write-your-own-module.html",
     "menu": "user-guide",
     "title": "Write your own module",
@@ -73,7 +65,7 @@ var documents = [
 },
 
 {
-    "id": 9,
+    "id": 8,
     "uri": "user-guide/30_modules/index.html",
     "menu": "user-guide",
     "title": "Optional Modules",
@@ -81,11 +73,19 @@ var documents = [
 },
 
 {
-    "id": 10,
+    "id": 9,
     "uri": "user-guide/30_modules/20_http-client.html",
     "menu": "user-guide",
     "title": "HTTP Client Module",
     "text": " Table of Contents HTTP Client module HTTP Client Configuration Using the HttpClient Module HTTP Operations HTTP Client module The HttpClient module provides HTTP client functionality for the Pillars application. It uses the http4s library for creating HTTP requests and handling HTTP responses. HTTP Client Configuration The HTTP client configuration is defined in the Config case class. It includes the following field: followRedirect : A flag indicating whether to follow redirects. The configuration is read from the application&#8217;s configuration file under the http-client section. Using the HttpClient Module To use the HttpClient module, you need to import it and then access it using the given Pillars instance: import pillars.httpclient.* http.get(\"some.uri.com\") // with a `Pillars[IO]` in scope HTTP Operations The HttpClient module provides methods for sending HTTP requests and receiving HTTP responses. You can use the httpClient extension method on Pillars to get an instance of Client[F] : import org.http4s.client.Client val client: Client[F] = http.client This Client[F] instance can be used to send HTTP requests by using the same methods as org.http4s.client.Client[F] . In addition to org.http4s.client.Client[F] methods, the HttpClient module provides methods to directly call a tapir endpoint: call : Calls a tapir public endpoint with the specified input and returns either the output or the error output. callSecure : Calls a tapir secure endpoint with the specified input and security input and returns either the output or the error output. val client = Pillars[F].httpClient val public: PublicEndpoint[Input, ErrorOutput, Output, Capabilities] = ??? val secure: Endpoint[SecurityInput, Input, ErrorOutput, Output, Capabilities] = ??? val uri: Option[Uri] = ??? val input: Input = ??? val securityInput: SecurityInput = ??? val output: F[Either[ErrorOutput, Output]] = client.call(public, uri)(input) val secureOutput: F[Either[ErrorOutput, Output]] = client.callSecure(secure)(securityInput, input) If an infrastructure error occurs, a HttpClient.Error will be thrown on the error channel. "
+},
+
+{
+    "id": 10,
+    "uri": "user-guide/30_modules/10_db.html",
+    "menu": "user-guide",
+    "title": "Database Module",
+    "text": " Table of Contents Database module Database Configuration Using the DB Module Probe Database module The DB modules provide database connectivity and operations for the Pillars application. There are two database modules: db : the main database module using Skunk for interacting with PostgreSQL databases db-doobie : a Doobie-based database module for interacting with databases using JDBC drivers Use only one of these two modules in your application. Using both modules in the same application will result in a conflict. Database Configuration The configuration is read from the application&#8217;s configuration file under the db section. Skunk The database configuration is defined in the pillars.db.DatabaseConfig case class. It includes the following fields: host : The host of the database. port : The port of the database. database : The name of the database. username : The username for the database. password : The password for the database. system-schema : The schema for pillars configuration in the database. app-schema : The schema for the application in the database. ssl : The SSL mode for the database. Accepted values are none , trusted and system . See Skunk documentation for more information. pool-size : The size of the connection pool. debug : A flag indicating whether to enable debug mode. probe : The configuration for the database probe. Doobie The database configuration is defined in the pillars.db_doobie.DatabaseConfig case class. It includes the following fields: driver-class-name : The JDBC driver class name. url : The JDBC URL of the database. username : The username for the database. password : The password for the database. system-schema : The schema for pillars configuration in the database. app-schema : The schema for the application in the database. pool-size : The size of the connection pool. debug : A flag indicating whether to enable debug mode. probe : The configuration for the database probe. statement-cache : Configuration of the statement cache. It contains the following fields: enabled : A flag indicating whether to enable the statement cache. size : The size of the statement cache. sql-limit : The maximum length of the SQL string to be cached. Using the DB Module To use the DB module, you need to import it and then access it. import pillars.db.* // using skunk import pillars.db // using doobie For Skunk: import pillars.db.* import skunk.* def foo[F[_]](using Pillars[F]) = sessions.use: session =&gt; session.unique(sql\"SELECT 1\".query[Int]) For Doobie: import pillars.db_doobie.* import doobie.* def foo[F[_]](using Pillars[F]) = sql\"SELECT 1\".query[Int].unique.transact(db.transactor) Probe The DB module provides a probe for health checks. val isHealthy: F[Boolean] = dbModule.probes.head.check This will return a boolean indicating whether the database is healthy or not. "
 },
 
 {
