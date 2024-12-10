@@ -47,29 +47,26 @@ object Dependencies {
     )
 
     val model: Seq[ModuleID] = Seq(
-      "com.comcast"        %% "ip4s-core"    % versions.ip4s,
-      "io.github.iltotore" %% "iron"         % versions.iron,
-      "io.github.iltotore" %% "iron-cats"    % versions.iron,
-      "io.github.iltotore" %% "iron-circe"   % versions.iron,
-      "io.github.iltotore" %% "iron-decline" % versions.iron
+      "com.comcast"        %% "ip4s-core"  % versions.ip4s,
+      "io.github.iltotore" %% "iron"       % versions.iron,
+//      "io.github.iltotore" %% "iron-cats"    % versions.iron,
+      "io.github.iltotore" %% "iron-circe" % versions.iron
+//      "io.github.iltotore" %% "iron-decline" % versions.iron
     )
 
-    val commandLine: Seq[ModuleID] = Seq(
-      "com.monovore" %% "decline"        % versions.decline,
-      "com.monovore" %% "decline-effect" % versions.decline
+    val decline: Seq[ModuleID] = Seq(
+      "com.monovore" %% "decline" % versions.decline
     )
 
     val json: Seq[ModuleID] = Seq(
-      "io.circe" %% "circe-core"    % versions.circe,
-      "io.circe" %% "circe-generic" % versions.circe,
-      "io.circe" %% "circe-parser"  % versions.circe,
-      "io.circe" %% "circe-yaml"    % versions.circeYaml
+      "io.circe" %% "circe-core" % versions.circe,
+//      "io.circe" %% "circe-generic" % versions.circe,
+//      "io.circe" %% "circe-parser"  % versions.circe,
+      "io.circe" %% "circe-yaml" % versions.circeYaml
     )
 
     val http4s: Seq[ModuleID] = Seq(
-      "org.http4s" %% "http4s-core"  % versions.http4s,
-      "org.http4s" %% "http4s-dsl"   % versions.http4s,
-      "org.http4s" %% "http4s-circe" % versions.http4s
+      "org.http4s" %% "http4s-core" % versions.http4s
     )
 
     val http4sClient: Seq[ModuleID] = Seq(
@@ -85,22 +82,22 @@ object Dependencies {
       "org.scodec" %% "scodec-core" % versions.scodec.core
     )
 
-    private val openApiCirce = "0.11.3"
-    private val tapir        = Seq(
-      "com.softwaremill.sttp.tapir"   %% "tapir-http4s-server"         % versions.tapir,
-      "com.softwaremill.sttp.tapir"   %% "tapir-json-circe"            % versions.tapir,
-      "com.softwaremill.sttp.tapir"   %% "tapir-opentelemetry-metrics" % versions.tapir,
-      "com.softwaremill.sttp.tapir"   %% "tapir-iron"                  % versions.tapir,
-      "com.softwaremill.sttp.tapir"   %% "tapir-openapi-docs"          % versions.tapir,
-      "com.softwaremill.sttp.apispec" %% "openapi-circe-yaml"          % versions.openApiCirce,
-      "com.softwaremill.sttp.tapir"   %% "tapir-swagger-ui-bundle"     % versions.tapir,
-      "com.softwaremill.sttp.tapir"   %% "tapir-sttp-stub-server"      % versions.tapir % Test
+    val tapir: Seq[ModuleID]     = Seq(
+      "com.softwaremill.sttp.tapir" %% "tapir-http4s-server"     % versions.tapir,
+      "com.softwaremill.sttp.tapir" %% "tapir-json-circe"        % versions.tapir,
+//      "com.softwaremill.sttp.tapir" %% "tapir-opentelemetry-metrics" % versions.tapir,
+      "com.softwaremill.sttp.tapir" %% "tapir-openapi-docs"      % versions.tapir,
+      "com.softwaremill.sttp.tapir" %% "tapir-swagger-ui-bundle" % versions.tapir,
+      "com.softwaremill.sttp.tapir" %% "tapir-sttp-stub-server"  % versions.tapir % Test
+    )
+    val tapirIron: Seq[ModuleID] = Seq(
+      "com.softwaremill.sttp.tapir" %% "tapir-iron" % versions.tapir
     )
 
     val logging: Seq[ModuleID] = Seq( //
       "com.outr" %% "scribe"            % versions.scribe,
       "com.outr" %% "scribe-cats"       % versions.scribe,
-      "com.outr" %% "scribe-slf4j"      % versions.scribe,
+      "com.outr" %% "scribe-slf4j"      % versions.scribe % Runtime,
       "com.outr" %% "scribe-json-circe" % versions.scribe,
       "com.outr" %% "scribe-file"       % versions.scribe
     )
@@ -124,8 +121,7 @@ object Dependencies {
     )
 
     val skunk: Seq[ModuleID] = Seq(
-      "org.tpolecat" %% "skunk-core"  % versions.skunk,
-      "org.tpolecat" %% "skunk-circe" % versions.skunk
+      "org.tpolecat" %% "skunk-core" % versions.skunk
     ) ++ tests
 
     val doobie: Seq[ModuleID] = Seq(
@@ -134,12 +130,12 @@ object Dependencies {
     ) ++ tests
 
     val migrationsRuntime: Seq[ModuleID] = Seq(
-      "org.postgresql" % "postgresql"                 % versions.postgresqlDriver,
-      "org.flywaydb"   % "flyway-database-postgresql" % versions.flyway
+      "org.postgresql" % "postgresql"                 % versions.postgresqlDriver % Runtime,
+      "org.flywaydb"   % "flyway-database-postgresql" % versions.flyway           % Runtime
     )
     val migrations: Seq[ModuleID]        = Seq(
       "org.flywaydb" % "flyway-core" % versions.flyway
-    ) ++ tests ++ testContainers ++ migrationsRuntime.map(_ % Test)
+    ) ++ tests ++ testContainers
 
     val fs2Rabbit: Seq[ModuleID] = Seq(
       "dev.profunktor" %% "fs2-rabbit" % versions.fs2Rabbit
@@ -151,9 +147,9 @@ object Dependencies {
 
     val flags: Seq[ModuleID] = Seq(
       "org.typelevel" %% "literally" % versions.literally
-    ) ++ tests
+    ) ++ tapirIron ++ tests
 
     val httpClient: Seq[ModuleID] = http4sClient ++ http4s ++ tests
     val core: Seq[ModuleID]       =
-        effect ++ json ++ tapir ++ http4s ++ http4sServer ++ model ++ commandLine ++ logging ++ observability ++ tests
+        effect ++ json ++ tapir ++ http4s ++ http4sServer ++ model ++ decline ++ logging ++ observability ++ tests
 }

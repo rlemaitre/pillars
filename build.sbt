@@ -49,7 +49,6 @@ enablePlugins(ScalaUnidocPlugin)
 outputStrategy := Some(StdoutOutput)
 
 val libDependencySchemes = Seq(
-  "io.circe"      %% "circe-yaml"        % VersionScheme.Always,
   "org.typelevel" %% "otel4s-core-trace" % VersionScheme.Always
 )
 
@@ -64,7 +63,8 @@ def module(module: String, pkg: String, dependencies: Seq[ModuleID] = Seq.empty,
           buildInfoKeys          := Seq[BuildInfoKey](name, version, description),
           buildInfoPackage       := s"$pkg.build",
           tlMimaPreviousVersions := Set(),
-          libraryDependencySchemes ++= libDependencySchemes
+          libraryDependencySchemes ++= libDependencySchemes,
+          unusedCompileDependenciesFilter -= moduleFilter("org.typelevel", "scalac-compat-annotation")
         )
 
 lazy val core = module(
@@ -98,7 +98,7 @@ lazy val redisRediculous = module(
 lazy val dbMigrations = module(
   "db-migration",
   "pillars.db.migrations",
-  Dependencies.migrations,
+  Dependencies.migrations ++ Dependencies.migrationsRuntime,
   "pillars-db-migration is a scala 3 library providing database migrations"
 ).dependsOn(core, dbSkunk)
 
@@ -136,7 +136,8 @@ lazy val example = Project("pillars-example", file("modules/example"))
       buildInfoPackage       := "example.build",                                              // //<7>
       publish / skip         := true,
       tlMimaPreviousVersions := Set.empty,
-      libraryDependencySchemes ++= libDependencySchemes
+      libraryDependencySchemes ++= libDependencySchemes,
+      unusedCompileDependenciesFilter -= moduleFilter("org.typelevel", "scalac-compat-annotation")
     )
     .dependsOn(core, dbSkunk, flags, httpClient, dbMigrations)
 // end::example[]
@@ -147,7 +148,8 @@ lazy val docs = Project("pillars-docs", file("modules/docs"))
       name                   := "pillars-docs",
       publish / skip         := true,
       tlMimaPreviousVersions := Set.empty,
-      libraryDependencySchemes ++= libDependencySchemes
+      libraryDependencySchemes ++= libDependencySchemes,
+      unusedCompileDependenciesFilter -= moduleFilter("org.typelevel", "scalac-compat-annotation")
     )
     .dependsOn(core)
 
@@ -171,5 +173,6 @@ lazy val pillars = project
         "modules/docs/src/docs/images/logo.png",
         //    "-source-links:github://rlemaitre/pillars",
         "-social-links:github::https://rlemaitre.github.io/pillars"
-      )
+      ),
+      unusedCompileDependenciesFilter -= moduleFilter("org.typelevel", "scalac-compat-annotation")
     )
