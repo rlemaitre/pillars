@@ -1,4 +1,3 @@
-import org.typelevel.sbt.gha.Permissions
 import xerial.sbt.Sonatype.GitHubHosting
 
 ThisBuild / tlBaseVersion := "0.4" // your current series x.y
@@ -22,11 +21,7 @@ ThisBuild / scmInfo                := Some(
   ScmInfo(url("https://github.com/FunktionalIO/pillars"), "scm:git:git@github.com:FunktionalIO/pillars.git")
 )
 
-val Scala3 = "3.5.2"
-ThisBuild / scalaVersion := Scala3 // the default Scala
-
-ThisBuild / githubWorkflowOSes         := Seq("ubuntu-latest")
-ThisBuild / githubWorkflowJavaVersions := Seq(JavaSpec.graalvm("21"))
+ThisBuild / scalaVersion := versions.scala // the default Scala
 
 ThisBuild / tlCiHeaderCheck          := true
 ThisBuild / tlCiScalafmtCheck        := true
@@ -34,10 +29,10 @@ ThisBuild / tlCiMimaBinaryIssueCheck := true
 ThisBuild / tlCiDependencyGraphJob   := true
 ThisBuild / autoAPIMappings          := true
 
-val sharedSettings     = Seq(
+lazy val sharedSettings = Seq(
   scalaVersion   := "3.5.2",
   libraryDependencies ++= Seq(
-    "org.scalameta" %% "munit" % "1.0.3" % Test
+    "org.scalameta" %% "munit" % versions.munit.core % Test
   ),
   // Headers
   headerMappings := headerMappings.value + (HeaderFileType.scala -> HeaderCommentStyle.cppStyleLineComment),
@@ -48,144 +43,6 @@ val sharedSettings     = Seq(
            |""".stripMargin
   ))
 )
-val releasePreparation = WorkflowJob(
-  id = "prepare-release",
-  name = "👷 Prepare release",
-  oses = List("ubuntu-latest"),
-  cond = Some(
-    """github.event_name != 'pull_request' && (startsWith(github.ref, 'refs/tags/v') || startsWith(github.ref, 'refs/heads/main'))"""
-  ),
-  needs = List("build"),
-  env = Map("DTC_HEADLESS" -> "true"),
-  permissions = Some(Permissions.Specify.defaultPermissive),
-  steps = List(
-    WorkflowStep.CheckoutFull,
-    WorkflowStep.Run(
-      name = Some("Get previous tag"),
-      id = Some("previousTag"),
-      cond = Some("""startsWith(github.ref, 'refs/tags/v')"""),
-      commands = List(
-        """name=$(git --no-pager tag --sort=creatordate --merged ${{ github.ref_name }} | tail -2 | head -1)""",
-        """ref_name="${{ github.ref_name }}"""",
-        """prefix="prepare-"""",
-        """next_version=${ref_name/#$prefix}""",
-        """echo "previousTag=$name"""",
-        """echo "previousTag=$name" >> $GITHUB_ENV""",
-        """echo "nextTag=$next_version"""",
-        """echo "nextTag=$next_version" >> $GITHUB_ENV"""
-      )
-    ),
-    WorkflowStep.Use(
-      name = Some("Update CHANGELOG"),
-      id = Some("changelog"),
-      ref = UseRef.Public("requarks", "changelog-action", "v1"),
-      cond = Some("""startsWith(github.ref, 'refs/tags/v')"""),
-      params = Map(
-        "token"       -> "${{ github.token }}",
-        "fromTag"     -> "${{ github.ref_name }}",
-        "toTag"       -> "${{ env.previousTag }}",
-        "writeToFile" -> "true"
-      )
-    ),
-    WorkflowStep.Use(
-      name = Some("Commit CHANGELOG.md"),
-      ref = UseRef.Public("stefanzweifel", "git-auto-commit-action", "v5"),
-      cond = Some("""startsWith(github.ref, 'refs/tags/v')"""),
-      params = Map(
-        "commit_message" -> "docs: update CHANGELOG.md for ${{ env.nextTag }} [skip ci]",
-        "branch"         -> "main",
-        "file_pattern"   -> "CHANGELOG.md docToolchainConfig.groovy"
-      )
-    ),
-    WorkflowStep.Use(
-      name = Some("Create version tag"),
-      ref = UseRef.Public("rickstaa", "action-create-tag", "v1"),
-      cond = Some("""startsWith(github.ref, 'refs/tags/v')"""),
-      params = Map(
-        "tag"            -> "${{ github.ref_name }}",
-        "message"        -> "Release ${{ github.ref_name }}",
-        "force_push_tag" -> "true" // force push the tag to move it to HEAD
-      )
-    ),
-    WorkflowStep.Use(
-      name = Some("Create release"),
-      ref = UseRef.Public("ncipollo", "release-action", "v1.14.0"),
-      cond = Some("""startsWith(github.ref, 'refs/tags/v')"""),
-      params = Map(
-        "allowUpdates" -> "true",
-        "draft"        -> "false",
-        "makeLatest"   -> "true",
-        "name"         -> "${{ github.ref_name }}",
-        "tag"          -> "${{ github.ref_name }}",
-        "body"         -> "${{ steps.changelog.outputs.changes }}",
-        "token"        -> "${{ github.token }}"
-      )
-    )
-  )
-)
-val websitePublication = WorkflowJob(
-  id = "website",
-  name = "🌐 Publish website",
-  oses = List("ubuntu-latest"),
-  needs = List("publish"),
-  env = Map("DTC_HEADLESS" -> "true"),
-  permissions = Some(Permissions.Specify.defaultPermissive),
-  steps = List(
-    WorkflowStep.Checkout,
-    WorkflowStep.Run(
-      name = Some("Setup"),
-      commands = List("chmod +x dtcw")
-    )
-  ) ++
-      WorkflowStep.SetupJava(List(JavaSpec.temurin("17"))) ++
-      List(
-        WorkflowStep.Run(
-          name = Some("Install docToolchain"),
-          commands = List("./dtcw local install doctoolchain")
-        ),
-        WorkflowStep.Use(
-          name = Some("Cache sbt"),
-          ref = UseRef.Public("actions", "cache", "v4"),
-          params = Map(
-            "path"         ->
-                """.ivy2
-                          |.sbt""".stripMargin,
-            "key"          -> s"sbt-$${{ hashFiles('build.sbt', 'plugins.sbt') }}",
-            "restore-keys" -> s"pillars-cache-$${{ hashFiles('build.sbt', 'plugins.sbt') }}"
-          )
-        ),
-        WorkflowStep.Run(
-          name = Some("Get latest version"),
-          id = Some("version"),
-          commands = List(
-            """PILLARS_VERSION="$(git ls-remote --tags $REPO | awk -F"/" '{print $3}' | grep '^v[0-9]*\.[0-9]*\.[0-9]*' | grep -v '\{\}' | sort --version-sort | tail -n1)"""",
-            """echo "latest version is [$PILLARS_VERSION]"""",
-            """echo "version=${PILLARS_VERSION#v}" >> "$GITHUB_OUTPUT""""
-          )
-        ),
-        WorkflowStep.Run(
-          name = Some("Generate site"),
-          commands = List("""./dtcw local generateSite && sbt unidoc"""),
-          env = Map("PILLARS_VERSION" -> "${{ steps.version.outputs.version }}", "DTC_HEADLESS" -> "true")
-        ),
-        WorkflowStep.Run(
-          name = Some("Copy to public"),
-          commands = List("cp -r target/microsite/output ./public")
-        ),
-        WorkflowStep.Use(
-          name = Some("Deploy to GitHub Pages"),
-          ref = UseRef.Public("peaceiris", "actions-gh-pages", "v4"),
-          params = Map(
-            "github_token"  -> s"$${{ github.token }}",
-            "publish_dir"   -> "./public",
-            "cname"         -> "pillars.dev",
-            "enable_jekyll" -> "false"
-          )
-        )
-      )
-)
-ThisBuild / githubWorkflowGeneratedCI ++= List(releasePreparation, websitePublication)
-ThisBuild / githubWorkflowPublishNeeds := List("prepare-release")
 
 enablePlugins(ScalaUnidocPlugin)
 
@@ -196,117 +53,75 @@ val libDependencySchemes = Seq(
   "org.typelevel" %% "otel4s-core-trace" % VersionScheme.Always
 )
 
-lazy val core = Project("pillars-core", file("modules/core"))
-    .enablePlugins(BuildInfoPlugin)
-    .settings(sharedSettings)
-    .settings(
-      name                   := "pillars-core",
-      description            := "pillars-core is a scala 3 library providing base services for writing backend applications",
-      libraryDependencies ++= Dependencies.core,
-      buildInfoKeys          := Seq[BuildInfoKey](name, version, description),
-      buildInfoPackage       := "pillars.build",
-      tlMimaPreviousVersions := Set(),
-      libraryDependencySchemes ++= libDependencySchemes
-    )
+def module(module: String, pkg: String, dependencies: Seq[ModuleID] = Seq.empty, desc: String = "") =
+    Project(module, file(s"modules/$module"))
+        .enablePlugins(BuildInfoPlugin)
+        .settings(sharedSettings)
+        .settings(
+          name                   := s"pillars-$module",
+          description            := desc,
+          libraryDependencies ++= dependencies,
+          buildInfoKeys          := Seq[BuildInfoKey](name, version, description),
+          buildInfoPackage       := s"$pkg.build",
+          tlMimaPreviousVersions := Set(),
+          libraryDependencySchemes ++= libDependencySchemes
+        )
 
-lazy val dbSkunk = Project("pillars-db-skunk", file("modules/db-skunk"))
-    .enablePlugins(BuildInfoPlugin)
-    .settings(sharedSettings)
-    .settings(
-      name                   := "pillars-db-skunk",
-      description            := "pillars-db-skunk is a scala 3 library providing database services for writing backend applications using skunk",
-      libraryDependencies ++= Dependencies.skunk,
-      buildInfoKeys          := Seq[BuildInfoKey](name, version, description),
-      buildInfoPackage       := "pillars.db.build",
-      tlMimaPreviousVersions := Set(),
-      libraryDependencySchemes ++= libDependencySchemes
-    )
-    .dependsOn(core)
+lazy val core = module(
+  "core",
+  "pillars",
+  Dependencies.core,
+  "pillars-core is a scala 3 library providing base services for writing backend applications"
+)
 
-lazy val dbDoobie = Project("pillars-db-doobie", file("modules/db-doobie"))
-    .enablePlugins(BuildInfoPlugin)
-    .settings(sharedSettings)
-    .settings(
-      name                   := "pillars-db-doobie",
-      description            := "pillars-db-doobie is a scala 3 library providing database services for writing backend applications using doobie",
-      libraryDependencies ++= Dependencies.doobie,
-      buildInfoKeys          := Seq[BuildInfoKey](name, version, description),
-      buildInfoPackage       := "pillars.doobie.build",
-      tlMimaPreviousVersions := Set(),
-      libraryDependencySchemes ++= libDependencySchemes
-    )
-    .dependsOn(core)
+lazy val dbSkunk = module(
+  "db-skunk",
+  "pillars.db",
+  Dependencies.skunk,
+  "pillars-db-skunk is a scala 3 library providing database services for writing backend applications using skunk"
+).dependsOn(core)
 
-lazy val redisRediculous = Project("pillars-redis-rediculous", file("modules/redis-rediculous"))
-    .enablePlugins(BuildInfoPlugin)
-    .settings(sharedSettings)
-    .settings(
-      name                   := "pillars-redis-rediculous",
-      description            := "pillars-redis-rediculous is a scala 3 library providing redis services for writing backend applications using rediculous",
-      libraryDependencies ++= Dependencies.rediculous,
-      buildInfoKeys          := Seq[BuildInfoKey](name, version, description),
-      buildInfoPackage       := "pillars.doobie.build",
-      tlMimaPreviousVersions := Set(),
-      libraryDependencySchemes ++= libDependencySchemes
-    )
-    .dependsOn(core)
+lazy val dbDoobie = module(
+  "db-doobie",
+  "pillars.doobie",
+  Dependencies.doobie,
+  "pillars-db-doobie is a scala 3 library providing database services for writing backend applications using doobie"
+).dependsOn(core)
 
-lazy val dbMigrations = Project("pillars-db-migration", file("modules/db-migration"))
-    .enablePlugins(BuildInfoPlugin)
-    .settings(sharedSettings)
-    .settings(
-      name                                        := "pillars-db-migration",
-      description                                 := "pillars-db is a scala 3 library providing database migrations",
-      libraryDependencySchemes += "org.typelevel" %% "otel4s-core-trace" % VersionScheme.Always,
-      libraryDependencies ++= Dependencies.migrations,
-      buildInfoKeys                               := Seq[BuildInfoKey](name, version, description),
-      buildInfoPackage                            := "pillars.db.migrations.build",
-      tlMimaPreviousVersions                      := Set(),
-      libraryDependencySchemes ++= libDependencySchemes
-    )
-    .dependsOn(core, dbSkunk)
+lazy val redisRediculous = module(
+  "redis-rediculous",
+  "pillars.redis",
+  Dependencies.rediculous,
+  "pillars-redis-rediculous is a scala 3 library providing redis services for writing backend applications using rediculous"
+).dependsOn(core)
 
-lazy val rabbitmqFs2 = Project("pillars-rabbitmq-fs2", file("modules/rabbitmq-fs2"))
-    .enablePlugins(BuildInfoPlugin)
-    .settings(sharedSettings)
-    .settings(
-      name                   := "pillars-rabbitmq-fs2",
-      description            := "pillars-rabbitmq-fs2 is a scala 3 library providing RabbitMQ services for writing backend applications using fs2-rabbit",
-      libraryDependencies ++= Dependencies.fs2Rabbit,
-      buildInfoKeys          := Seq[BuildInfoKey](name, version, description),
-      buildInfoPackage       := "pillars.rabbitmq.fs2.build",
-      tlMimaPreviousVersions := Set(),
-      libraryDependencySchemes ++= libDependencySchemes
-    )
-    .dependsOn(core)
+lazy val dbMigrations = module(
+  "db-migration",
+  "pillars.db.migrations",
+  Dependencies.migrations,
+  "pillars-db-migration is a scala 3 library providing database migrations"
+).dependsOn(core, dbSkunk)
 
-lazy val flags = Project("pillars-flags", file("modules/flags"))
-    .enablePlugins(BuildInfoPlugin)
-    .settings(sharedSettings)
-    .settings(
-      name                   := "pillars-flags",
-      description            := "pillars-flag is a scala 3 library providing feature flag services for writing backend applications",
-      libraryDependencies ++= Dependencies.flags,
-      buildInfoKeys          := Seq[BuildInfoKey](name, version, description),
-      buildInfoPackage       := "pillars.flags.build",
-      tlMimaPreviousVersions := Set(),
-      libraryDependencySchemes ++= libDependencySchemes
-    )
-    .dependsOn(core)
+lazy val rabbitmqFs2 = module(
+  "rabbitmq-fs2",
+  "pillars.rabbitmq.fs2",
+  Dependencies.fs2Rabbit,
+  "pillars-rabbitmq-fs2 is a scala 3 library providing RabbitMQ services for writing backend applications using fs2-rabbit"
+).dependsOn(core)
 
-lazy val httpClient = Project("pillars-http-client", file("modules/http-client"))
-    .enablePlugins(BuildInfoPlugin)
-    .settings(sharedSettings)
-    .settings(
-      name                   := "pillars-http-client",
-      description            := "pillars-http-client is a scala 3 library providing http client services for writing backend applications",
-      libraryDependencies ++= Dependencies.httpClient,
-      buildInfoKeys          := Seq[BuildInfoKey](name, version, description),
-      buildInfoPackage       := "pillars.httpclient.build",
-      tlMimaPreviousVersions := Set(),
-      libraryDependencySchemes ++= libDependencySchemes
-    )
-    .dependsOn(core)
+lazy val flags = module(
+  "flags",
+  "pillars.flags",
+  Dependencies.flags,
+  "pillars-flag is a scala 3 library providing feature flag services for writing backend applications"
+).dependsOn(core)
+
+lazy val httpClient = module(
+  "http-client",
+  "pillars.httpclient",
+  Dependencies.httpClient,
+  "pillars-http-client is a scala 3 library providing http client services for writing backend applications"
+).dependsOn(core)
 
 // tag::example[]
 lazy val example = Project("pillars-example", file("modules/example"))
@@ -325,6 +140,7 @@ lazy val example = Project("pillars-example", file("modules/example"))
     )
     .dependsOn(core, dbSkunk, flags, httpClient, dbMigrations)
 // end::example[]
+
 lazy val docs = Project("pillars-docs", file("modules/docs"))
     .settings(sharedSettings)
     .settings(
