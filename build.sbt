@@ -22,7 +22,7 @@ ThisBuild / scmInfo                := Some(
   ScmInfo(url("https://github.com/FunktionalIO/pillars"), "scm:git:git@github.com:FunktionalIO/pillars.git")
 )
 
-val Scala3 = "3.5.2"
+val Scala3 = "3.6.2"
 ThisBuild / scalaVersion := Scala3 // the default Scala
 
 ThisBuild / githubWorkflowOSes         := Seq("ubuntu-latest")
