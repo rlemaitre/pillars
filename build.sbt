@@ -1,3 +1,4 @@
+import Dependencies.effect
 import xerial.sbt.Sonatype.GitHubHosting
 
 ThisBuild / tlBaseVersion := "0.4" // your current series x.y
@@ -70,56 +71,77 @@ def module(module: String, pkg: String, dependencies: Seq[ModuleID] = Seq.empty,
 lazy val core = module(
   "core",
   "pillars",
-  Dependencies.core,
+  Dependencies.effect ++
+      Dependencies.json ++
+      Dependencies.tapir ++
+      Dependencies.http4s ++
+      Dependencies.http4sServer ++
+      Dependencies.model ++
+      Dependencies.decline ++
+      Dependencies.logging ++
+      Dependencies.observability ++
+      Dependencies.tests,
   "pillars-core is a scala 3 library providing base services for writing backend applications"
 )
 
 lazy val dbSkunk = module(
   "db-skunk",
   "pillars.db",
-  Dependencies.skunk,
+  Dependencies.skunk ++
+      Dependencies.tests,
   "pillars-db-skunk is a scala 3 library providing database services for writing backend applications using skunk"
 ).dependsOn(core)
 
 lazy val dbDoobie = module(
   "db-doobie",
   "pillars.doobie",
-  Dependencies.doobie,
+  Dependencies.doobie ++
+      Dependencies.tests,
   "pillars-db-doobie is a scala 3 library providing database services for writing backend applications using doobie"
 ).dependsOn(core)
 
 lazy val redisRediculous = module(
   "redis-rediculous",
   "pillars.redis",
-  Dependencies.rediculous,
+  Dependencies.rediculous ++
+      Dependencies.tests,
   "pillars-redis-rediculous is a scala 3 library providing redis services for writing backend applications using rediculous"
 ).dependsOn(core)
 
 lazy val dbMigrations = module(
   "db-migration",
   "pillars.db.migrations",
-  Dependencies.migrations ++ Dependencies.migrationsRuntime,
+  Dependencies.migrations ++
+      Dependencies.migrationsRuntime ++
+      Dependencies.tests ++
+      Dependencies.testContainers,
   "pillars-db-migration is a scala 3 library providing database migrations"
 ).dependsOn(core, dbSkunk)
 
 lazy val rabbitmqFs2 = module(
   "rabbitmq-fs2",
   "pillars.rabbitmq.fs2",
-  Dependencies.fs2Rabbit,
+  Dependencies.fs2Rabbit ++
+      Dependencies.tests ++
+      Dependencies.testContainers,
   "pillars-rabbitmq-fs2 is a scala 3 library providing RabbitMQ services for writing backend applications using fs2-rabbit"
 ).dependsOn(core)
 
 lazy val flags = module(
   "flags",
   "pillars.flags",
-  Dependencies.flags,
+  Dependencies.literally ++
+      Dependencies.tapirIron ++
+      Dependencies.tests,
   "pillars-flag is a scala 3 library providing feature flag services for writing backend applications"
 ).dependsOn(core)
 
 lazy val httpClient = module(
   "http-client",
   "pillars.httpclient",
-  Dependencies.httpClient,
+  Dependencies.http4sClient ++
+      Dependencies.http4s ++
+      Dependencies.tests,
   "pillars-http-client is a scala 3 library providing http client services for writing backend applications"
 ).dependsOn(core)
 
@@ -172,7 +194,7 @@ lazy val pillars = project
         "-project-logo",
         "modules/docs/src/docs/images/logo.png",
         //    "-source-links:github://rlemaitre/pillars",
-        "-social-links:github::https://rlemaitre.github.io/pillars"
+        "-social-links:github::https://github.com/FunktionalIO/pillars"
       ),
       unusedCompileDependenciesFilter -= moduleFilter("org.typelevel", "scalac-compat-annotation")
     )

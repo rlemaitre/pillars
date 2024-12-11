@@ -122,12 +122,12 @@ object Dependencies {
 
     val skunk: Seq[ModuleID] = Seq(
       "org.tpolecat" %% "skunk-core" % versions.skunk
-    ) ++ tests
+    )
 
     val doobie: Seq[ModuleID] = Seq(
       "org.tpolecat" %% "doobie-core"   % versions.doobie,
       "org.tpolecat" %% "doobie-hikari" % versions.doobie // HikariCP transactor.
-    ) ++ tests
+    )
 
     val migrationsRuntime: Seq[ModuleID] = Seq(
       "org.postgresql" % "postgresql"                 % versions.postgresqlDriver % Runtime,
@@ -135,21 +135,17 @@ object Dependencies {
     )
     val migrations: Seq[ModuleID]        = Seq(
       "org.flywaydb" % "flyway-core" % versions.flyway
-    ) ++ tests ++ testContainers
+    )
 
     val fs2Rabbit: Seq[ModuleID] = Seq(
       "dev.profunktor" %% "fs2-rabbit" % versions.fs2Rabbit
-    ) ++ tests ++ testContainers
+    )
 
     val rediculous: Seq[ModuleID] = Seq(
       "io.chrisdavenport" %% "rediculous" % versions.rediculous
-    ) ++ tests
+    )
 
-    val flags: Seq[ModuleID] = Seq(
+    val literally: Seq[ModuleID] = Seq(
       "org.typelevel" %% "literally" % versions.literally
-    ) ++ tapirIron ++ tests
-
-    val httpClient: Seq[ModuleID] = http4sClient ++ http4s ++ tests
-    val core: Seq[ModuleID]       =
-        effect ++ json ++ tapir ++ http4s ++ http4sServer ++ model ++ decline ++ logging ++ observability ++ tests
+    )
 }
