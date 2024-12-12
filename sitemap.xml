@@ -42,6 +42,11 @@
     </url>
 
     <url>
+    	<loc>http://jbake.org/user-guide/30_modules/20_http-client.html</loc>
+    	<lastmod>2024-12-12</lastmod>
+    </url>
+
+    <url>
     	<loc>http://jbake.org/user-guide/30_modules/10_db.html</loc>
     	<lastmod>2024-12-12</lastmod>
     </url>
@@ -57,17 +62,12 @@
     </url>
 
     <url>
-    	<loc>http://jbake.org/user-guide/30_modules/20_http-client.html</loc>
+    	<loc>http://jbake.org/user-guide/index.html</loc>
     	<lastmod>2024-12-12</lastmod>
     </url>
 
     <url>
     	<loc>http://jbake.org/user-guide/30_modules/15_db-migration.html</loc>
-    	<lastmod>2024-12-12</lastmod>
-    </url>
-
-    <url>
-    	<loc>http://jbake.org/user-guide/index.html</loc>
     	<lastmod>2024-12-12</lastmod>
     </url>
 
